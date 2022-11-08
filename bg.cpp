@@ -8,6 +8,7 @@
 #include"bg.h"
 #include"texture.h"
 #include"sprite.h"
+//変更
 
 static	ID3D11Buffer		*g_VertexBufferBG = NULL;	//背景ポリゴン用
 static ID3D11ShaderResourceView	*g_texture;	//画像一枚で一つの変数が必要
