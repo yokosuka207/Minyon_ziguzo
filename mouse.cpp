@@ -13,7 +13,7 @@ int MouseIndex = -1;	//マウスの掴んだパズルの番号入れ
 //bool MouseFlag = false;	//マウスをクリックしているか
 
 long y,x;
-
+//新保翔麻
 HRESULT InitGameMouse()
 {
 	bool oneFlag = false;
