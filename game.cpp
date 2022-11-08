@@ -14,7 +14,7 @@
 #include"puzzlecip.h"
 #include"broken.h"
 #include"warp.h"
-//#include "KeepPuzzle.h"
+#include "KeepPuzzle.h"
 
 void InitGame()
 {
