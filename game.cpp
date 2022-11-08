@@ -14,6 +14,7 @@
 #include"puzzlecip.h"
 #include"broken.h"
 #include"warp.h"
+
 void InitGame()
 {
 	//----------Ç∞Å[Çﬁ
