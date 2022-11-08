@@ -6,6 +6,7 @@
 #include"puzzlecip.h"
 #include"broken.h"
 #include"warp.h"
+//p
 
 PUZZLE g_Puzzle[PUZZLE_MAX];
 
