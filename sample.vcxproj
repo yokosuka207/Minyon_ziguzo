@@ -143,7 +143,9 @@
     <ClCompile Include="goal.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MapChip.cpp" />
     <ClCompile Include="mouse.cpp" />
+    <ClCompile Include="OperatePiece.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="puzzle.cpp" />
@@ -165,7 +167,9 @@
     <ClInclude Include="goal.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="MapChip.h" />
     <ClInclude Include="mouse.h" />
+    <ClInclude Include="OperatePiece.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="polygon.h" />
     <ClInclude Include="puzzle.h" />
