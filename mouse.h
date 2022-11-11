@@ -17,6 +17,10 @@ typedef struct
 	long	oldPosX;
 	long	oldPosY;
 
+	D3DXVECTOR2	PlPos;	//プレイヤーの位置保存
+	D3DXVECTOR2	Size;	//プレイヤーの位置保存
+
+
 	bool UseFlag;
 	bool ScrollFlag;	//スクロールしているかどうか
 
