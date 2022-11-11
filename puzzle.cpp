@@ -33,7 +33,7 @@ HRESULT InitPuzzle()
 		g_Puzzle[i].texno = LoadTexture(g_textureName_Puzzle);
 
 		g_Puzzle[i].Position = D3DXVECTOR2(0.0f, 0.0f);
-		g_Puzzle[i].oldPosition = g_Puzzle[i].Position;
+		g_Puzzle[i].OneOldPosition = g_Puzzle[i].oldPosition = g_Puzzle[i].Position;
 		g_Puzzle[i].Size = D3DXVECTOR2(0.0f, 0.0f);
 		g_Puzzle[i].Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_Puzzle[i].Rotation = 0.0f;
