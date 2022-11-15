@@ -141,7 +141,7 @@ void UpdateGameMouse()
 					}
 					else if (oneFlag && i == MouseIndex)
 					{
-					//	D3DXVECTOR2 pPiece[MouseIndex].OldPos
+					///	D3DXVECTOR2 pPiece[MouseIndex].OldPos
 
 						pPiece[MouseIndex].pos.x = Mouse.PosX;
 						pPiece[MouseIndex].pos.y = Mouse.PosY;
