@@ -141,12 +141,25 @@ void UpdateGameMouse()
 					}
 					else if (oneFlag && i == MouseIndex)
 					{
-					///	D3DXVECTOR2 pPiece[MouseIndex].OldPos
+						pPiece[MouseIndex].OldPos = pPiece[MouseIndex].pos;
 
 						pPiece[MouseIndex].pos.x = Mouse.PosX;
 						pPiece[MouseIndex].pos.y = Mouse.PosY;
 						//pPiece[MouseIndex].MoveFlag = true;
+						D3DXVECTOR2 temp = (pPiece[MouseIndex].pos - pPiece[MouseIndex].OldPos);
 
+						for (int i = 0; i < BLOCK_MAX; i++)
+						{
+							if (pCipBlock[i].UseFlag)
+							{
+								if (pCipBlock[i].PieceIndex == MouseIndex)
+								{
+									pCipBlock[i].Position += temp;
+								}
+
+							}
+
+						}
 
 					}
 

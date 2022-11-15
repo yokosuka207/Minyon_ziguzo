@@ -13,7 +13,7 @@
 #include "renderer.h"
 #include"puzzlecip.h"
 
-#define	BLOCK_MAX	64
+#define	BLOCK_MAX	256
 #define BLOCK_H		30	//ブロックの縦サイズ
 #define BLOCK_W		30	//ブロックの横サイズ
 
