@@ -41,6 +41,7 @@ HRESULT InitBlock()
 		g_ChipBlock[i].Position = D3DXVECTOR2(0.0f, 0.0f);
 		g_ChipBlock[i].Size = D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE);
 		g_ChipBlock[i].Rotation = 0.0f;
+		g_ChipBlock[i].PieceIndex = -1;
 		g_ChipBlock[i].Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_ChipBlock[i].UseFlag = false;
 
@@ -96,11 +97,12 @@ void DrawBlock()
 }
 
 //----------マップチップ用ブロックのセッターとゲッター----------
-void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
+void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index) {
 	for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
 		if (!g_ChipBlock[i].UseFlag) {
 			g_ChipBlock[i].Position = pos;
 			g_ChipBlock[i].Size = size;
+			g_ChipBlock[i].PieceIndex = index;
 			g_ChipBlock[i].UseFlag = true;
 			break;
 		}

@@ -14,6 +14,8 @@
 #include"puzzlecip.h"
 #include"broken.h"
 #include"warp.h"
+#include"MapChip.h"
+#include"OperatePiece.h"
 
 void InitGame()
 {
