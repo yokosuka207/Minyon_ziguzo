@@ -69,5 +69,6 @@ void DrawBlock();
 void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index);
 void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size,GRAND_TYPE type,BLOCK_TYPE btype,int pIndex,CIP_TYPE ctype);
 BLOCK* GetBlock();
+BLOCK* GetChipBlock();
 
 #endif // !BLOCK_H_

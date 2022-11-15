@@ -27,7 +27,7 @@ static char* g_OperatePieceTextureName = (char*)"data\\texture\\green.png";	//ƒe
 HRESULT OperatePiece::Init() {
 	Piece* pMapChip = GetPiece();
 	for (int p = 0; p < PUZZLE_MAX; p++) {
-		pMapChip[p].UseFlag = true;
+		pMapChip[p].UseFlag = false;
 		pMapChip[p].no = 0;
 		pMapChip[p].TexNo = LoadTexture(g_OperatePieceTextureName);
 		pMapChip[p].direction = 0;
@@ -43,6 +43,9 @@ HRESULT OperatePiece::Init() {
 		}
 	}
 	FileLoad(0);
+
+	SetMapChip(D3DXVECTOR2(500.0f, 500.0f), 0);
+
 	return S_OK;
 }
 void OperatePiece::Uninit() {
@@ -60,7 +63,7 @@ void OperatePiece::Draw() {
 	Piece* pMapChip = GetPiece();
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (pMapChip[p].UseFlag){
-			SetMapChip(pMapChip[p].pos, pMapChip[p].no);
+			//SetMapChip(pMapChip[p].pos, pMapChip[p].no);
 
 			SetWorldViewProjection2D();
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(pMapChip[p].TexNo));

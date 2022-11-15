@@ -4,6 +4,9 @@
 #include"player.h"
 #include<math.h>
 #include"mouse.h"
+#include"block.h"
+#include"MapChip.h"
+#include"OperatePiece.h"
 /*==============================================================================
 
    当たり判定管理 [collsion.cpp]
@@ -29,6 +32,8 @@ DIRECSION Direcsion = NUM;	//方向の確認
 void UpdateCollision()
 {
 	//プレーヤー　対　敵キャラ	四角
+
+
 
 	//などの必要な判定をここで作る
 }
