@@ -27,7 +27,7 @@ static char* g_OperatePieceTextureName = (char*)"data\\texture\\green.png";	//ƒe
 HRESULT OperatePiece::Init() {
 	Piece* pMapChip = GetPiece();
 	for (int p = 0; p < PUZZLE_MAX; p++) {
-		pMapChip[p].UseFlag = true;
+		pMapChip[p].UseFlag = false;
 		pMapChip[p].no = 0;
 		pMapChip[p].TexNo = LoadTexture(g_OperatePieceTextureName);
 		pMapChip[p].direction = 0;
@@ -43,6 +43,7 @@ HRESULT OperatePiece::Init() {
 		}
 	}
 	FileLoad(0);
+	SetMapChip(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), 0);
 	return S_OK;
 }
 void OperatePiece::Uninit() {
