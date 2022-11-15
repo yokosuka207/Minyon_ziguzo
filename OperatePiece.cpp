@@ -28,7 +28,7 @@ HRESULT OperatePiece::Init() {
 	Piece* pMapChip = GetPiece();
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		pMapChip[p].UseFlag = false;
-		pMapChip[p].no = 0;
+		pMapChip[p].no = -1;
 		pMapChip[p].TexNo = LoadTexture(g_OperatePieceTextureName);
 		pMapChip[p].direction = 0;
 
@@ -44,7 +44,8 @@ HRESULT OperatePiece::Init() {
 	}
 	FileLoad(0);
 
-	SetMapChip(D3DXVECTOR2(500.0f, 500.0f), 0);
+	SetOperatePiece(D3DXVECTOR2(500.0f, 500.0f), 0);
+	SetOperatePiece(D3DXVECTOR2(200.0f, 500.0f), 1);
 
 	return S_OK;
 }
@@ -81,14 +82,23 @@ void OperatePiece::Rotate(int PieceNo) {
 
 	}
 }
+//-------------------------------
+//ピースの設置
+//引数：ポジション、ピースの番号
+//-------------------------------
 void OperatePiece::SetOperatePiece(D3DXVECTOR2 pos, int PieceNo) {
 	Piece* pMapChip = GetPiece();
-	for (int p = 0; p < PUZZLE_MAX; p++) {
-		if(!pMapChip[p].UseFlag)
-		pMapChip[p].pos = pos;
-		pMapChip[p].no = PieceNo;
-		pMapChip[p].UseFlag = true;
-		break;
+	for (int p = 0; p < PUZZLE_MAX; p++)
+	{
+		if (!pMapChip[p].UseFlag) {
+			pMapChip[p].pos = pos;
+			pMapChip[p].no = PieceNo;
+			SetMapChip(pos, PieceNo);
+
+			pMapChip[p].UseFlag = true;
+			break;
+
+		}
 	}
 }
 
