@@ -25,7 +25,7 @@
 #define BLOCK_CHIP_WARP_MAX (2)	//1ステージワープの個数
 #define BLOCK_CHIP_DIRECTION (4)//チップの回転4方向分
 
-#define PUZZLE_SIZE (BLOCK_CHIP_ARRAY * BLOCK_CHIP_SIZE)	//15 * 12 + 15 * 4 = 180 + 60 
+#define PUZZLE_SIZE (BLOCK_CHIP_ARRAY * BLOCK_CHIP_SIZE)	//180 + 60 
 
 //**************************************************
 // 構造体定義
