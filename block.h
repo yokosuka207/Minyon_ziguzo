@@ -13,7 +13,7 @@
 #include "renderer.h"
 #include"puzzlecip.h"
 
-#define	BLOCK_MAX	64
+#define	BLOCK_MAX	256
 #define BLOCK_H		30	//ブロックの縦サイズ
 #define BLOCK_W		30	//ブロックの横サイズ
 
@@ -54,6 +54,9 @@ typedef struct
 	D3DXCOLOR		Col;	//色
 	float			texno;	//テクスチャインデックス
 	float			Rotation;	//角度
+
+	int				PieceIndex; //ピースの添え字格納
+
 	bool			UseFlag;	//使用フラグ
 
 }BLOCK;
@@ -63,7 +66,9 @@ void UninitBlock();
 void UpdateBlock();
 void DrawBlock();
 
+void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index);
 void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size,GRAND_TYPE type,BLOCK_TYPE btype,int pIndex,CIP_TYPE ctype);
 BLOCK* GetBlock();
+BLOCK* GetChipBlock();
 
 #endif // !BLOCK_H_

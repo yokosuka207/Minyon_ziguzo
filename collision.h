@@ -12,7 +12,7 @@
 
 typedef enum
 {
-	UP=0,
+	UP = 0,
 	DOWN,
 	LEFT,
 	RIGHT,
@@ -36,6 +36,8 @@ void PuzzleCollision();
 bool PuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion);	//その方向のパズルが空いているか
 
 bool PlayerPuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion);	//その方向のパズルが空いているか
+
+bool fourCollision(PUZZLE puzzle, int index);			//四方向のパズルが空いているか
 
 
 

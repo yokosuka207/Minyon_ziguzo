@@ -1,17 +1,22 @@
 #include "block.h"
-#include"texture.h"
-#include"sprite.h"
-#include"input.h"
-#include"puzzle.h"
-#include"broken.h"
-#include"puzzlecip.h"
-#include"warp.h"
+#include "texture.h"
+#include "sprite.h"
+#include "input.h"
+#include "puzzle.h"
+#include "broken.h"
+#include "puzzlecip.h"
+#include "warp.h"
+#include "MapChip.h"
 
 BLOCK g_block[BLOCK_MAX];
-//aaa
+//----------マップチップ用ブロック配列の追加----------
+// 22/11/11
+//----------------------------------------------------
+BLOCK g_ChipBlock[BLOCK_CHIP_MAX];
+
 static ID3D11ShaderResourceView	*g_textureBlock;	//画像一枚で一つの変数が必要
 static char *g_textureName_Block = (char*)"data\\texture\\RED.jpg";	//テクスチャファイルパス
-//あああ
+
 
 HRESULT InitBlock()
 {
@@ -29,6 +34,20 @@ HRESULT InitBlock()
 
 	//SetBlock(D3DXVECTOR2(100.0f, 100.0f), D3DXVECTOR2(BLOCK_W, BLOCK_H));
 
+		//----------マップチップ用ブロックの初期化----------
+	for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
+		g_ChipBlock[i].texno = LoadTexture(g_textureName_Block);
+
+		g_ChipBlock[i].Position = D3DXVECTOR2(0.0f, 0.0f);
+		g_ChipBlock[i].Size = D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE);
+		g_ChipBlock[i].Rotation = 0.0f;
+		g_ChipBlock[i].PieceIndex = -1;
+		g_ChipBlock[i].Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_ChipBlock[i].UseFlag = false;
+
+	}
+
+
 	return S_OK;
 }
 
@@ -42,9 +61,7 @@ void UninitBlock()
 
 }
 
-void UpdateBlock()
-{
-}
+void UpdateBlock(){}
 
 void DrawBlock()
 {
@@ -65,7 +82,34 @@ void DrawBlock()
 				0, 1.0f, 1.0f, 1);
 		}
 	}
+	//----------マップチップ用のブロックの描画----------
+	for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
+		if (g_ChipBlock[i].UseFlag)
+		{
+			SetWorldViewProjection2D();
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ChipBlock[i].texno));
 
+			SpriteDrawColorRotation(g_ChipBlock[i].Position.x, g_ChipBlock[i].Position.y,
+				g_ChipBlock[i].Size.x, g_ChipBlock[i].Size.y, g_ChipBlock[i].Rotation, g_ChipBlock[i].Col,
+				0, 1.0f, 1.0f, 1);
+		}
+	}
+}
+
+//----------マップチップ用ブロックのセッターとゲッター----------
+void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index) {
+	for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
+		if (!g_ChipBlock[i].UseFlag) {
+			g_ChipBlock[i].Position = pos;
+			g_ChipBlock[i].Size = size;
+			g_ChipBlock[i].PieceIndex = index;
+			g_ChipBlock[i].UseFlag = true;
+			break;
+		}
+	}
+}
+BLOCK* GetChipBlock() {
+	return g_ChipBlock;
 }
 
 void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE btype, int pIndex, CIP_TYPE ctype)

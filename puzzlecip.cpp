@@ -7,8 +7,14 @@
 #include"player.h"
 //#include"block.h"
 #include"mouse.h"
+#include "MapChip.h"
 
 PUZZLE_CIP	g_PuzzleCip[CIP_MAX];
+//----------マップチップ用配列----------
+// 22/11/02
+//--------------------------------------
+PUZZLE_CIP g_ChipPuzzleChip[BLOCK_CHIP_MAX];
+
 static ID3D11ShaderResourceView	*g_texturePuzzleCip;	//画像一枚で一つの変数が必要
 static char *g_textureName_PuzzleCip = (char*)"data\\texture\\blue.png";	//テクスチャファイルパス
 
@@ -37,6 +43,23 @@ HRESULT InitPuzzleCip()
 			g_PuzzleCip[i].houkou[j] = 0;
 		}
 	}
+	//マップチップ用初期化
+	for (int i = 0; i < PUZZLE_MAX; i++) {
+		g_PuzzleCip[i].texno = LoadTexture(g_textureName_PuzzleCip);
+
+		g_ChipPuzzleChip[i].Position = D3DXVECTOR2(0.0f, 0.0f);
+		g_ChipPuzzleChip[i].Size = D3DXVECTOR2(CIP_SIZE_X, CIP_SIZE_Y);
+		g_ChipPuzzleChip[i].Type = CIP_NONE;
+		g_ChipPuzzleChip[i].Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_ChipPuzzleChip[i].Rotation = 0.0f;
+		g_ChipPuzzleChip[i].GoalFlag = false;
+		g_ChipPuzzleChip[i].UseFlag = false;
+		for (int j = 0; j < 4; j++)
+		{
+			g_PuzzleCip[i].houkou[j] = 0;
+		}
+	}
+
 	SetPuzzleCipCreate(CREATE_ZYUUZI, 0, 2, 2, 2,false);
 	SetPuzzleCipCreate(CREATE_TATE, 0, 0, 1, 2, false);
 	SetPuzzleCipCreate(CREATE_BOX, 1, 1, 1, 0, false);
@@ -110,7 +133,31 @@ void DrawPuzzleCip()
 				0, 1.0f, 1.0f, 1);
 		}
 	}
+	//マップチップ描写
+	for (int i = 0; i < PUZZLE_MAX; i++) {
+		if (g_ChipPuzzleChip[i].UseFlag) {
+			SetWorldViewProjection2D();
+
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ChipPuzzleChip[i].texno));
+
+			SpriteDrawColorRotation(g_ChipPuzzleChip[i].Position.x, g_ChipPuzzleChip[i].Position.y,
+				g_ChipPuzzleChip[i].Size.x, g_ChipPuzzleChip[i].Size.y, g_ChipPuzzleChip[i].Rotation, g_ChipPuzzleChip[i].Col,
+				0, 1.0f, 1.0f, 1);
+		}
+	}
+
 }
+void SetChipPuzzuleChip(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
+	for (int i = 0; i < PUZZLE_MAX; i++) {
+		if (!g_ChipPuzzleChip[i].UseFlag) {
+			g_ChipPuzzleChip[i].Position = pos;
+			g_ChipPuzzleChip[i].Size = size;
+			g_ChipPuzzleChip->UseFlag = true;
+			break;
+		}
+	}
+}
+
 
 int SetPuzzleCip(D3DXVECTOR2 pos, D3DXVECTOR2 size, CIP_TYPE type)
 {

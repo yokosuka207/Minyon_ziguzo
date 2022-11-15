@@ -41,6 +41,8 @@ typedef struct
 {
 	D3DXVECTOR2		Position;	//ポジション
 	D3DXVECTOR2		oldPosition;	//1フレーム前のポジション
+	D3DXVECTOR2		OneOldPosition;//ひとつ前のパズルの位置に戻す
+
 	D3DXVECTOR2		Size;	//サイズ
 	D3DXCOLOR		Col;	//色
 	float			texno;	//テクスチャインデックス

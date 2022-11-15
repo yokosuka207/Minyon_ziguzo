@@ -60,6 +60,7 @@ HRESULT InitPuzzleCip();
 void UninitPuzzleCip();
 void UpdatePuzzleCip();
 void DrawPuzzleCip();
+void SetChipPuzzuleChip(D3DXVECTOR2 pos, D3DXVECTOR2 size);
 
 int SetPuzzleCip(D3DXVECTOR2 pos,D3DXVECTOR2 size,CIP_TYPE type);
 PUZZLE_CIP* GetPuzzleCip();
