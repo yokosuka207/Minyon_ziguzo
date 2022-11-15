@@ -160,7 +160,10 @@ void UpdateGameMouse()
 							}
 
 						}
-
+						if (GetKeyboardTrigger(DIK_A))	//aƒL[‚ª‰Ÿ‚³‚ê‚½‚ç
+						{
+							RotateChipData();
+						}
 					}
 
 
