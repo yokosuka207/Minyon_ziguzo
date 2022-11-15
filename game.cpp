@@ -14,6 +14,10 @@
 #include"puzzlecip.h"
 #include"broken.h"
 #include"warp.h"
+#include "MapChip.h"
+#include "OperatePiece.h"
+
+OperatePiece op;
 
 void InitGame()
 {
@@ -29,7 +33,7 @@ void InitGame()
 	InitWarp();
 	InitPuzzleCip();
 	InitPuzzle();
-
+	op.Init();
 }
 
 void UninitGame()
@@ -44,7 +48,7 @@ void UninitGame()
 	UninitBroken();
 	UninitPlayer();
 	UninitWarp();
-
+	op.Uninit();
 }
 
 void UpdateGame()
@@ -64,11 +68,14 @@ void UpdateGame()
 	UpdateGoal();
 	UpdateBroken();
 	UpdateWarp();
+	op.Update();
 }	
 
 void DrawGame()
 {
 	BgDraw();
+	op.Draw();
+
 	DrawPolygon();		//ƒ|ƒŠƒSƒ“‚Ì•`‰æ
 	DrawPuzzle();
 	DrawBlock();
@@ -77,7 +84,6 @@ void DrawGame()
 	DrawWarp();
 	DrawGoal();
 	DrawBroken();
-
 }
 
 void ResetGame()
