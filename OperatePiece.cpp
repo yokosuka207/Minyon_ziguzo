@@ -1,7 +1,7 @@
 /*==============================================================================
 
-   ƒpƒYƒ‹‘€ìˆ— [OperatePiece.cpp]
-														 Author : •š–Ø@—à
+   ãƒ‘ã‚ºãƒ«æ“ä½œå‡¦ç† [OperatePiece.cpp]
+														 Author : ä¼æœ¨ã€€ä¼¶
 														 Date   : 2022/11/08
 --------------------------------------------------------------------------------
  Update:
@@ -13,22 +13,26 @@
 #include "puzzle.h"
 
 //**************************************************
-//@ƒ}ƒNƒ’è‹`
+//ã€€ãƒã‚¯ãƒ­å®šç¾©
 //**************************************************
 
 //**************************************************
-// ƒOƒ[ƒoƒ‹•Ï”:
+// ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°:
 //**************************************************
-static	ID3D11Buffer* g_OperatePieceVertexBuffer = NULL;	//ƒ|ƒŠƒSƒ“—p
-static ID3D11ShaderResourceView* g_OperatePieceTexture;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
+static	ID3D11Buffer* g_OperatePieceVertexBuffer = NULL;	//ãƒãƒªã‚´ãƒ³ç”¨
+static ID3D11ShaderResourceView* g_OperatePieceTexture;	//ç”»åƒä¸€æšã§ä¸€ã¤ã®å¤‰æ•°ãŒå¿…è¦
 
-static char* g_OperatePieceTextureName = (char*)"data\\texture\\green.png";	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
+static char* g_OperatePieceTextureName = (char*)"data\\texture\\green.png";	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 
 HRESULT OperatePiece::Init() {
 	Piece* pMapChip = GetPiece();
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		pMapChip[p].UseFlag = false;
+
 		pMapChip[p].no = 0;
+=======
+		pMapChip[p].no = -1;
+
 		pMapChip[p].TexNo = LoadTexture(g_OperatePieceTextureName);
 		pMapChip[p].direction = 0;
 
@@ -43,7 +47,14 @@ HRESULT OperatePiece::Init() {
 		}
 	}
 	FileLoad(0);
+
 	SetMapChip(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), 0);
+=======
+
+	SetOperatePiece(D3DXVECTOR2(500.0f, 500.0f), 0);
+	SetOperatePiece(D3DXVECTOR2(200.0f, 500.0f), 1);
+
+
 	return S_OK;
 }
 void OperatePiece::Uninit() {
@@ -61,7 +72,7 @@ void OperatePiece::Draw() {
 	Piece* pMapChip = GetPiece();
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (pMapChip[p].UseFlag){
-			SetMapChip(pMapChip[p].pos, pMapChip[p].no);
+			//SetMapChip(pMapChip[p].pos, pMapChip[p].no);
 
 			SetWorldViewProjection2D();
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(pMapChip[p].TexNo));
@@ -79,14 +90,23 @@ void OperatePiece::Rotate(int PieceNo) {
 
 	}
 }
+//-------------------------------
+//ãƒ”ãƒ¼ã‚¹ã®è¨­ç½®
+//å¼•æ•°ï¼šãƒã‚¸ã‚·ãƒ§ãƒ³ã€ãƒ”ãƒ¼ã‚¹ã®ç•ªå·
+//-------------------------------
 void OperatePiece::SetOperatePiece(D3DXVECTOR2 pos, int PieceNo) {
 	Piece* pMapChip = GetPiece();
-	for (int p = 0; p < PUZZLE_MAX; p++) {
-		if(!pMapChip[p].UseFlag)
-		pMapChip[p].pos = pos;
-		pMapChip[p].no = PieceNo;
-		pMapChip[p].UseFlag = true;
-		break;
+	for (int p = 0; p < PUZZLE_MAX; p++)
+	{
+		if (!pMapChip[p].UseFlag) {
+			pMapChip[p].pos = pos;
+			pMapChip[p].no = PieceNo;
+			SetMapChip(pos, PieceNo);
+
+			pMapChip[p].UseFlag = true;
+			break;
+
+		}
 	}
 }
 

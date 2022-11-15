@@ -52,6 +52,9 @@ typedef struct {
 	int			chip[BLOCK_CHIP_DIRECTION][BLOCK_CHIP_ARRAY][BLOCK_CHIP_ARRAY];	//パズルの中のブロックの個数
 	float		TexNo;
 	int			direction;	//パズルの方向
+
+
+
 	bool		UseFlag;//パズルが出現しているか否か
 
 }Piece;

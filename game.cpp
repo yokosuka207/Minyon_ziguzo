@@ -3,10 +3,10 @@
 #include"renderer.h"
 #include"polygon.h" 
 
-#include"input.h"	//“ü—Íˆ—
-#include"bg.h"	//”wŒi
-#include"player.h"//ƒvƒŒƒCƒ„[
-#include"collision.h"	//“–‚½‚è”»’è]
+#include"input.h"	//å…¥åŠ›å‡¦ç†
+#include"bg.h"	//èƒŒæ™¯
+#include"player.h"//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+#include"collision.h"	//å½“ãŸã‚Šåˆ¤å®š]
 #include"block.h"
 #include"puzzle.h"
 #include"mouse.h"
@@ -14,15 +14,21 @@
 #include"puzzlecip.h"
 #include"broken.h"
 #include"warp.h"
+
 #include "MapChip.h"
 #include "OperatePiece.h"
 
 OperatePiece op;
+=======
+#include"MapChip.h"
+#include"OperatePiece.h"
 
+
+OperatePiece op;
 void InitGame()
 {
-	//----------‚°[‚Ş
-	//InitPolygon();//ƒ|ƒŠƒSƒ“‚Ì‰Šú‰»
+	//----------ã’ãƒ¼ã‚€
+	//InitPolygon();//ãƒãƒªã‚´ãƒ³ã®åˆæœŸåŒ–
 	//-----------------------
 	BgInit();
 	InitBlock();
@@ -38,7 +44,7 @@ void InitGame()
 
 void UninitGame()
 {
-	//UninitPolygon();	//ƒ|ƒŠƒSƒ“‚ÌI—¹ˆ—
+	//UninitPolygon();	//ãƒãƒªã‚´ãƒ³ã®çµ‚äº†å‡¦ç†
 	BgUninit();
 	UninitBlock();
 	UninitPuzzle();
@@ -49,11 +55,15 @@ void UninitGame()
 	UninitPlayer();
 	UninitWarp();
 	op.Uninit();
+
+=======
+
+
 }
 
 void UpdateGame()
 {
-	//UpdatePolygon();	//ƒ|ƒŠƒSƒ“‚ÌXV
+	//UpdatePolygon();	//ãƒãƒªã‚´ãƒ³ã®æ›´æ–°
 	BgUpdate();
 	UpdatePlayer();
 
@@ -76,7 +86,8 @@ void DrawGame()
 	BgDraw();
 	op.Draw();
 
-	DrawPolygon();		//ƒ|ƒŠƒSƒ“‚Ì•`‰æ
+	DrawPolygon();		//ãƒãƒªã‚´ãƒ³ã®æç”»
+	op.Draw();
 	DrawPuzzle();
 	DrawBlock();
 	DrawPuzzleCip();
