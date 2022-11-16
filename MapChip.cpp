@@ -177,7 +177,7 @@ Piece* GetPiece() {
 }
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
-		if (g_PieceMapChip[p].UseFlag) {
+		if (!g_PieceMapChip[p].UseFlag) {
 			g_PieceMapChip[p].pos = pos;
 			g_PieceMapChip[p].no = PieceNo;
 			SetMapChip(pos, PieceNo);
