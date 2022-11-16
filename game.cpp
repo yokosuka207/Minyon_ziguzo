@@ -16,6 +16,7 @@
 #include "warp.h"
 #include "MapChip.h"
 #include "inventory.h"
+#include "joint.h"
 
 void InitGame()
 {
@@ -24,6 +25,7 @@ void InitGame()
 	//-----------------------
 	BgInit();
 	InitBlock();
+	InitJoint();
 	InitGameMouse();
 	InitGoal();
 	InitBroken();
@@ -40,6 +42,7 @@ void UninitGame()
 	//UninitPolygon();	//É|ÉäÉSÉìÇÃèIóπèàóù
 	BgUninit();
 	UninitBlock();
+	UninitJoint();
 	UninitPuzzle();
 	UninitGameMouse();
 	UninitGoal();
@@ -62,6 +65,7 @@ void UpdateGame()
 	UpdateCollision();
 
 	UpdateBlock();
+	UpdateJoint();
 	UpdatePuzzle();
 	UpdatePuzzleCip();
 
@@ -80,6 +84,7 @@ void DrawGame()
 	DrawPuzzle();
 	DrawMapChip();
 	DrawBlock();
+	DrawJoint();
 	DrawPuzzleCip();
 	DrawPlayer();
 	DrawWarp();

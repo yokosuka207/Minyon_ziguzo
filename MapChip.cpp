@@ -17,6 +17,7 @@
 #include "puzzlecip.h"
 #include "warp.h"
 #include "goal.h"
+#include "joint.h"
 #include "texture.h"
 #include "sprite.h"
 
@@ -97,35 +98,37 @@ void SetMapChip(D3DXVECTOR2 pos, int no) {
 	for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
 		//j=x方向
 		for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
+			// 中心座標変数
+			D3DXVECTOR2 position = D3DXVECTOR2((pos.x - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
+
 			switch (g_PieceMapChip[no].chip[g_PieceMapChip[no].direction][i][j]) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_NONE) :	//0
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLOCK) :	//1
-				SetBlock(D3DXVECTOR2((pos.x - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2), D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE),no);
+				SetBlock(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE),no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP) :	//2
-				SetChipPuzzuleChip(D3DXVECTOR2((pos.x - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2), D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE));
+				SetChipPuzzuleChip(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE));
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//3
-				SetWarp(D3DXVECTOR2((pos.x - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2), D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE));
+				SetWarp(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE));
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL) :	//4
-				SetGoal(D3DXVECTOR2((pos.x - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2), D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE),no);
+				SetGoal(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE),no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK) :	//5				
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//6
-
+				SetJoint(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE), no, JOINT_TYPE::TYPE_BUMP);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_PULL) :	//7
-
+				SetJoint(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE), no, JOINT_TYPE::TYPE_DIP);
 				break;
 			default:
 				break;
 			}
 		}
 	}
-	//g_PieceMapChip[no].UseFlag = true;
 }
 
 void FileLoad(int StageNo) {
@@ -162,32 +165,57 @@ void RotateChipData() {
 		//方向d
 		for (int d = 0; d < BLOCK_CHIP_DIRECTION - 1; d++) {
 			//i = x
-			for (int i = 0; i < BLOCK_CHIP_SIZE; i++) {
+			for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
 				//j = y
-				for (int j = 0; j < BLOCK_CHIP_SIZE; j++) {
-					g_PieceMapChip[p].chip[d + 1][j][BLOCK_CHIP_SIZE - 1 - i] =
+				for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
+					g_PieceMapChip[p].chip[d + 1][j][BLOCK_CHIP_ARRAY - 1 - i] =
 						g_PieceMapChip[p].chip[d][i][j];
 				}
 			}
 		}
 	}
 }
+
+
+//==================================================
+// ピース回転（右）
+//==================================================
 void RotateMapChipR(int PieceNo) {
+	// 方向の変数に +1
 	g_PieceMapChip[PieceNo].direction++;
+	// 0～3の範囲から出ないようにする
 	if (g_PieceMapChip[PieceNo].direction >= 4) {
 		g_PieceMapChip[PieceNo].direction = 0;
 	}
+
+	// 各種デリート
 	deleteBlock(PieceNo);
-	SetMapChip(g_PieceMapChip[PieceNo].pos,PieceNo);
+	DeleteJoint(PieceNo);
+
+	// ピース再構成
+	SetMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
 }
+
+
+//==================================================
+// ピース回転（左）
+//==================================================
 void RotateMapChipL(int PieceNo) {
+	// 方向の変数に -1
 	g_PieceMapChip[PieceNo].direction--;
+	// 0～3の範囲から出ないようにする
 	if (g_PieceMapChip[PieceNo].direction <= -1) {
 		g_PieceMapChip[PieceNo].direction = 3;
 	}
+
+	// 各種デリート
 	deleteBlock(PieceNo);
+	DeleteJoint(PieceNo);
+
+	// ピース再構成
 	SetMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
 }
+
 
 Piece* GetPiece() {
 	return g_PieceMapChip;
