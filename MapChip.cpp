@@ -60,6 +60,7 @@ HRESULT InitMapChip() {
 	}
 
 	FileLoad(0);	//‚ ‚Æ‚Åno‚É•ÏX‚·‚éHfusegi
+	RotateChipData();
 	SetPieceMapChip(D3DXVECTOR2(500.0f, 500.0f), 0);
 	SetPieceMapChip(D3DXVECTOR2(200.0f, 500.0f), 1);
 
@@ -176,16 +177,16 @@ void RotateMapChipR(int PieceNo) {
 	if (g_PieceMapChip[PieceNo].direction >= 4) {
 		g_PieceMapChip[PieceNo].direction = 0;
 	}
-	g_PieceMapChip[PieceNo].UseFlag = false;
-	SetPieceMapChip(g_PieceMapChip[PieceNo].pos,PieceNo);
+	deleteBlock(PieceNo);
+	SetMapChip(g_PieceMapChip[PieceNo].pos,PieceNo);
 }
 void RotateMapChipL(int PieceNo) {
 	g_PieceMapChip[PieceNo].direction--;
 	if (g_PieceMapChip[PieceNo].direction <= -1) {
 		g_PieceMapChip[PieceNo].direction = 3;
 	}
-	g_PieceMapChip[PieceNo].UseFlag = false;
-	SetPieceMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
+	deleteBlock(PieceNo);
+	SetMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
 }
 
 Piece* GetPiece() {
