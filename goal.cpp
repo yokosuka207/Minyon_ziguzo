@@ -11,8 +11,7 @@ GOAL g_Goal;
 static ID3D11ShaderResourceView	*g_textureGoal;	//画像一枚で一つの変数が必要
 static char *g_textureName_Goal = (char*)"data\\texture\\yello.jpg";	//テクスチャファイルパス
 
-HRESULT InitGoal()
-{
+HRESULT InitGoal(){
 	g_Goal.texno = LoadTexture(g_textureName_Goal);
 	g_Goal.Pos = D3DXVECTOR2(0.0f, 0.0f);
 	g_Goal.Size = D3DXVECTOR2(GOAL_SIEZX, GOAL_SIZEY);
@@ -25,8 +24,7 @@ HRESULT InitGoal()
 
 void UninitGoal()
 {
-	if (g_textureGoal)
-	{
+	if (g_textureGoal){
 		g_textureGoal->Release();
 		g_textureGoal = NULL;
 	}
@@ -57,8 +55,7 @@ void UpdateGoal()
 
 void DrawGoal()
 {
-	if (g_Goal.UseFlag)
-	{
+	if (g_Goal.UseFlag){
 		SetWorldViewProjection2D();
 
 
@@ -73,19 +70,14 @@ void DrawGoal()
 
 }
 
-void SetGoal(D3DXVECTOR2 pos, D3DXVECTOR2 size)
-{
-		if (!g_Goal.UseFlag)
-		{
-			g_Goal.Pos = pos;
-			g_Goal.Size = size;
-			g_Goal.UseFlag = true;
-		}
-	
-
+void SetGoal(D3DXVECTOR2 pos, D3DXVECTOR2 size){
+	if (!g_Goal.UseFlag){
+		g_Goal.Pos = pos;
+		g_Goal.Size = size;
+		g_Goal.UseFlag = true;
+	}
 }
 
-GOAL * GetGoal()
-{
+GOAL * GetGoal(){
 	return &g_Goal;
 }
