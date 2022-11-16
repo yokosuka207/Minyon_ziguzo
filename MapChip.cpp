@@ -124,7 +124,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no) {
 			}
 		}
 	}
-	g_PieceMapChip[no].UseFlag = true;
+	//g_PieceMapChip[no].UseFlag = true;
 }
 
 void FileLoad(int StageNo) {
@@ -176,12 +176,16 @@ void RotateMapChipR(int PieceNo) {
 	if (g_PieceMapChip[PieceNo].direction >= 4) {
 		g_PieceMapChip[PieceNo].direction = 0;
 	}
+	g_PieceMapChip[PieceNo].UseFlag = false;
+	SetPieceMapChip(g_PieceMapChip[PieceNo].pos,PieceNo);
 }
 void RotateMapChipL(int PieceNo) {
 	g_PieceMapChip[PieceNo].direction--;
 	if (g_PieceMapChip[PieceNo].direction <= -1) {
 		g_PieceMapChip[PieceNo].direction = 3;
 	}
+	g_PieceMapChip[PieceNo].UseFlag = false;
+	SetPieceMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
 }
 
 Piece* GetPiece() {
