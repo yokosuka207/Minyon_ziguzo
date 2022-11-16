@@ -1,22 +1,22 @@
 #include "game.h"
-#include"main.h"
-#include"renderer.h"
-#include"polygon.h" 
+#include "main.h"
+#include "renderer.h"
+#include "polygon.h" 
 
-#include"input.h"	//入力処理
-#include"bg.h"	//背景
-#include"player.h"//プレイヤー
-#include"collision.h"	//当たり判定]
-#include"block.h"
-#include"puzzle.h"
-#include"mouse.h"
-#include"goal.h"
-#include"puzzlecip.h"
-#include"broken.h"
-#include"warp.h"
-#include"MapChip.h"
-#include"OperatePiece.h"
-#include"inventory.h"
+#include "input.h"	//入力処理
+#include "bg.h"	//背景
+#include "player.h"//プレイヤー
+#include "collision.h"	//当たり判定]
+#include "block.h"
+#include "puzzle.h"
+#include "mouse.h"
+#include "goal.h"
+#include "puzzlecip.h"
+#include "broken.h"
+#include "warp.h"
+#include "MapChip.h"
+#include "OperatePiece.h"
+#include "inventory.h"
 
 OperatePiece op;
 void InitGame()
@@ -33,8 +33,8 @@ void InitGame()
 	InitWarp();
 	InitPuzzleCip();
 	InitPuzzle();
-	op.Init();
 	InitInventory();			// インベントリの初期化
+	InitMapChip();
 }
 
 void UninitGame()
@@ -49,8 +49,8 @@ void UninitGame()
 	UninitBroken();
 	UninitPlayer();
 	UninitWarp();
-	op.Uninit();
 	UninitInventory();			// インベントリの終了
+	UninitMapChip();
 }
 
 void UpdateGame()
@@ -70,19 +70,19 @@ void UpdateGame()
 	UpdateGoal();
 	UpdateBroken();
 	UpdateWarp();
-	op.Update();
 
 	UpdateInventory();			// インベントリの更新
+	UpdateMapChip();
 }	
 
 void DrawGame()
 {
 	BgDraw();
 	DrawPolygon();		//ポリゴンの描画
-	op.Draw();
 	DrawPuzzle();
 	DrawBlock();
 	DrawPuzzleCip();
+	DrawMapChip();
 	DrawPlayer();
 	DrawWarp();
 	DrawGoal();
