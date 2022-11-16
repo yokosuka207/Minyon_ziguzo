@@ -43,7 +43,7 @@ static char* g_MapChipTextureName = (char*)"data\\texture\\green.png";	//ÉeÉNÉXÉ
 
 
 HRESULT InitMapChip() {
-	for (int p; p < PUZZLE_MAX; p++) {
+	for (int p = 0; p < PUZZLE_MAX; p++) {
 		g_PieceMapChip[p].UseFlag = false;
 		g_PieceMapChip[p].no = -1;
 		g_PieceMapChip[p].TexNo = LoadTexture(g_MapChipTextureName);
@@ -76,7 +76,7 @@ void UpdateMapChip() {
 
 }
 void DrawMapChip() {
-	for (int p; p < PUZZLE_MAX; p++) {
+	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (g_PieceMapChip[p].UseFlag) {
 			SetWorldViewProjection2D();
 

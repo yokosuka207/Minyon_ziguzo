@@ -15,10 +15,8 @@
 #include "broken.h"
 #include "warp.h"
 #include "MapChip.h"
-#include "OperatePiece.h"
 #include "inventory.h"
 
-OperatePiece op;
 void InitGame()
 {
 	//----------Ç∞Å[Çﬁ
