@@ -167,8 +167,8 @@ void RotateChipData() {
 			//i = x
 			for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
 				//j = y
-				for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
-					g_PieceMapChip[p].chip[d + 1][j][BLOCK_CHIP_ARRAY - 1 - i] =
+				for (int j = 0; j < BLOCK_CHIP_SIZE; j++) {
+					g_PieceMapChip[p].chip[d + 1][j][BLOCK_CHIP_SIZE - 1 - i] =
 						g_PieceMapChip[p].chip[d][i][j];
 				}
 			}
