@@ -26,7 +26,7 @@
 #define BLOCK_CHIP_DIRECTION (4)//チップの回転4方向分
 
 #define PUZZLE_SIZE (BLOCK_CHIP_ARRAY * BLOCK_CHIP_SIZE)	//180 + 60 
-
+#define PIECE_SIZE (180)
 //**************************************************
 // 構造体定義
 //**************************************************
@@ -67,9 +67,13 @@ typedef struct {
 // グローバル変数:
 //**************************************************
 
+HRESULT InitMapChip();
+void UninitMapChip();
+void UpdateMapChip();
+void DrawMapChip();
+
 //-----enum別にセット-----
 void SetMapChip(D3DXVECTOR2 pos, int no);
-
 //-----ファイル一括管理-----
 void FileLoad(int StageNo);
 
@@ -77,5 +81,6 @@ void FileLoad(int StageNo);
 void RotateChipData();
 
 Piece* GetPiece();
+void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo);
 
 #endif // !_MAPCHIP_H_

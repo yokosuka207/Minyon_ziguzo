@@ -17,6 +17,8 @@
 #include "puzzlecip.h"
 #include "warp.h"
 #include "goal.h"
+#include "texture.h"
+#include "sprite.h"
 
 //**************************************************
 //　マクロ定義
@@ -33,6 +35,61 @@ Piece g_PieceMapChip[PUZZLE_MAX];
 //**************************************************
 // グローバル変数:
 //**************************************************
+
+static	ID3D11Buffer* g_MapChipVertexBuffer = NULL;	//ポリゴン用
+static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
+
+static char* g_MapChipTextureName = (char*)"data\\texture\\green.png";	//テクスチャファイルパス
+
+
+HRESULT InitMapChip() {
+	for (int p; p < PUZZLE_MAX; p++) {
+		g_PieceMapChip[p].UseFlag = false;
+		g_PieceMapChip[p].no = -1;
+		g_PieceMapChip[p].TexNo = LoadTexture(g_MapChipTextureName);
+		g_PieceMapChip[p].direction = 0;
+		g_PieceMapChip[p].pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
+		g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);
+		for (int d = 0; d < BLOCK_CHIP_DIRECTION; d++) {
+			for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
+				for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
+					g_PieceMapChip[p].chip[d][i][j] = 0;
+				}
+			}
+		}
+	}
+
+	FileLoad(0);	//あとでnoに変更する？fusegi
+	SetPieceMapChip(D3DXVECTOR2(500.0f, 500.0f), 0);
+	SetPieceMapChip(D3DXVECTOR2(200.0f, 500.0f), 1);
+
+	return S_OK;
+}
+void UninitMapChip() {
+	if (g_MapChipTexture) {
+		g_MapChipTexture->Release();
+		g_MapChipTexture = NULL;
+	}
+}
+void UpdateMapChip() {
+
+}
+void DrawMapChip() {
+	for (int p; p < PUZZLE_MAX; p++) {
+		if (g_PieceMapChip[p].UseFlag) {
+			SetWorldViewProjection2D();
+
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_PieceMapChip[p].TexNo));
+
+			SpriteDrawColorRotation(
+				g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,
+				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, g_PieceMapChip[p].direction * 90, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+				0, 1.0f, 1.0f, 1
+			);
+		}
+	}
+}
 
 void SetMapChip(D3DXVECTOR2 pos, int no) {
 	//p=ブロック最大数
@@ -118,3 +175,16 @@ void RotateChipData() {
 Piece* GetPiece() {
 	return g_PieceMapChip;
 }
+void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
+	for (int p = 0; p < PUZZLE_MAX; p++) {
+		if (g_PieceMapChip[p].UseFlag) {
+			g_PieceMapChip[p].pos = pos;
+			g_PieceMapChip[p].no = PieceNo;
+			SetMapChip(pos, PieceNo);
+
+			g_PieceMapChip[p].UseFlag = true;
+			break;
+		}
+	}
+}
+

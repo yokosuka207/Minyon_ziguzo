@@ -78,9 +78,7 @@ void OperatePiece::Draw() {
 }
 void OperatePiece::Rotate(int PieceNo) {
 	Piece* pMapChip = GetPiece();
-	for (int p = 0; p < PUZZLE_MAX; p++) {
-
-	}
+	
 }
 //-------------------------------
 //ピースの設置
@@ -97,7 +95,6 @@ void OperatePiece::SetOperatePiece(D3DXVECTOR2 pos, int PieceNo) {
 
 			pMapChip[p].UseFlag = true;
 			break;
-
 		}
 	}
 }
