@@ -22,6 +22,8 @@ typedef struct
 	float			texno;	//テクスチャインデックス
 	float			Rotation;	//角度
 
+	int pieceIndex;	//ピースの添え字格納
+
 	bool UseFlag;
 
 }GOAL;
@@ -32,7 +34,7 @@ void UninitGoal();
 void UpdateGoal();
 void DrawGoal();
 
-void SetGoal(D3DXVECTOR2 pos, D3DXVECTOR2 size);
+void SetGoal(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index);
 
 GOAL* GetGoal();
 

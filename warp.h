@@ -32,6 +32,9 @@ struct WARP
 	float uv_h;//縦サイズ
 	int NumPatern;//横枚数
 
+
+	int		PieceIndex; //ピースの添え字格納
+
 	int FrameWait;
 };
 
@@ -42,6 +45,9 @@ HRESULT InitWarp();
 void UninitWarp();
 void UpdateWarp();
 void DrawWarp();
+
+void cipSetWarp(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index);
+
 
 int SetWarp(D3DXVECTOR2 pos, D3DXVECTOR2 size);
 
