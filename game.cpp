@@ -78,9 +78,9 @@ void DrawGame()
 	BgDraw();
 	DrawPolygon();		//ƒ|ƒŠƒSƒ“‚Ì•`‰æ
 	DrawPuzzle();
+	DrawMapChip();
 	DrawBlock();
 	DrawPuzzleCip();
-	DrawMapChip();
 	DrawPlayer();
 	DrawWarp();
 	DrawGoal();

@@ -41,7 +41,6 @@ static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
 
 static char* g_MapChipTextureName = (char*)"data\\texture\\green.png";	//テクスチャファイルパス
 
-
 HRESULT InitMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		g_PieceMapChip[p].UseFlag = false;

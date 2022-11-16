@@ -53,8 +53,6 @@ typedef struct {
 	float		TexNo;
 	int			direction;	//パズルの方向
 
-
-
 	bool		UseFlag;//パズルが出現しているか否か
 
 }Piece;
