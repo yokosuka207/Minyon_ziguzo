@@ -142,6 +142,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="goal.cpp" />
     <ClCompile Include="input.cpp" />
+    <ClCompile Include="inventory.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapChip.cpp" />
     <ClCompile Include="mouse.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="goal.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="inventory.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MapChip.h" />
     <ClInclude Include="mouse.h" />

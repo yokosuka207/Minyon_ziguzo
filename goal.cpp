@@ -70,12 +70,17 @@ void DrawGoal()
 
 }
 
-void SetGoal(D3DXVECTOR2 pos, D3DXVECTOR2 size){
-	if (!g_Goal.UseFlag){
-		g_Goal.Pos = pos;
-		g_Goal.Size = size;
-		g_Goal.UseFlag = true;
-	}
+void SetGoal(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index)
+{
+		if (!g_Goal.UseFlag)
+		{
+			g_Goal.Pos = pos;
+			g_Goal.Size = size;
+			g_Goal.pieceIndex = index;
+			g_Goal.UseFlag = true;
+		}
+	
+
 }
 
 GOAL * GetGoal(){

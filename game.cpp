@@ -16,6 +16,7 @@
 #include"warp.h"
 #include"MapChip.h"
 #include"OperatePiece.h"
+#include"inventory.h"
 
 OperatePiece op;
 void InitGame()
@@ -33,6 +34,7 @@ void InitGame()
 	InitPuzzleCip();
 	InitPuzzle();
 	op.Init();
+	InitInventory();			// インベントリの初期化
 }
 
 void UninitGame()
@@ -48,7 +50,7 @@ void UninitGame()
 	UninitPlayer();
 	UninitWarp();
 	op.Uninit();
-
+	UninitInventory();			// インベントリの終了
 }
 
 void UpdateGame()
@@ -69,6 +71,8 @@ void UpdateGame()
 	UpdateBroken();
 	UpdateWarp();
 	op.Update();
+
+	UpdateInventory();			// インベントリの更新
 }	
 
 void DrawGame()
@@ -83,7 +87,7 @@ void DrawGame()
 	DrawWarp();
 	DrawGoal();
 	DrawBroken();
-
+	DrawInventory();			// インベントリの描画
 }
 
 void ResetGame()
