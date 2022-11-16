@@ -71,4 +71,6 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size,GRAND_TYPE type,BLOCK_TYPE btype
 BLOCK* GetBlock();
 BLOCK* GetChipBlock();
 
+void deleteBlock(int index);
+
 #endif // !BLOCK_H_
