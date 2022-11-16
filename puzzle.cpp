@@ -170,7 +170,7 @@ void SetPuzzle(D3DXVECTOR2 pos, D3DXVECTOR2 size,
 				
 				if (ptype == TYPE_GOAL)
 				{
-					SetGoal(D3DXVECTOR2(g_Puzzle[i].Position.x, g_Puzzle[i].Position.y),D3DXVECTOR2(GOAL_SIEZX,GOAL_SIZEY));
+					//SetGoal(D3DXVECTOR2(g_Puzzle[i].Position.x, g_Puzzle[i].Position.y),D3DXVECTOR2(GOAL_SIEZX,GOAL_SIZEY));
 				}
 
 				//g_Puzzle[i].CipIndex = SetPuzzleCip(D3DXVECTOR2(g_Puzzle[i].Position.x, g_Puzzle[i].Position.y), D3DXVECTOR2(GOAL_SIEZX, GOAL_SIZEY), ctype);

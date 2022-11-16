@@ -98,6 +98,30 @@ void DrawWarp()
 		}
 	}
 }
+//---------------------------------------------------
+//ピースのセットワープ
+//引数：ポジション、サイズ、ピースの番号
+//--------------------------------------------------
+void cipSetWarp(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index)
+{
+	for (int i = 0; i < WARP_MAX; i++)
+	{
+		if (!g_Warp[i].UseFlag)
+		{
+
+			g_Warp[i].Position = pos;
+			g_Warp[i].Size = size;
+			g_Warp[i].PieceIndex = index;
+			g_Warp[i].UseFlag = true;
+			break;
+
+		}
+
+
+	}
+
+}
+
 
 int SetWarp(D3DXVECTOR2 pos, D3DXVECTOR2 size)
 {
