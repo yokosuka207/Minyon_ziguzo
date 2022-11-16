@@ -77,6 +77,8 @@ void FileLoad(int StageNo);
 
 //-----ÉsÅ[ÉXÇÃâÒì]------
 void RotateChipData();
+void RotateMapChipR(int PieceNo);
+void RotateMapChipL(int PieceNo);
 
 Piece* GetPiece();
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo);

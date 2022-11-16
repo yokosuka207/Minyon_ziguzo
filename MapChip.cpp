@@ -171,6 +171,19 @@ void RotateChipData() {
 		}
 	}
 }
+void RotateMapChipR(int PieceNo) {
+	g_PieceMapChip[PieceNo].direction++;
+	if (g_PieceMapChip[PieceNo].direction >= 4) {
+		g_PieceMapChip[PieceNo].direction = 0;
+	}
+}
+void RotateMapChipL(int PieceNo) {
+	g_PieceMapChip[PieceNo].direction--;
+	if (g_PieceMapChip[PieceNo].direction <= -1) {
+		g_PieceMapChip[PieceNo].direction = 3;
+	}
+}
+
 Piece* GetPiece() {
 	return g_PieceMapChip;
 }
