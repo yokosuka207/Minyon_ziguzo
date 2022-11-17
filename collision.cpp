@@ -78,6 +78,38 @@ void PieceCollision()
 											PositionPlas(temp, i);
 
 										}
+										//ジョイントが左だったら
+										if (pPiece[i].pos.x - pPiece[i].size.x / 3 > pJoint[j].pos.x)
+										{
+											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].pieNo].pos.y) - pPiece[i].pos;
+
+											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].pieNo].pos.y);
+
+											PositionPlas(temp, i);
+
+										}
+										//ジョイントが上だったら
+										if (pPiece[i].pos.y - pPiece[i].size.y / 3 > pJoint[j].pos.y)
+										{
+											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x, pPiece[pJoint[k].pieNo].pos.y + PUZZLE_HEIGHT) - pPiece[i].pos;
+
+											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x, pPiece[pJoint[k].pieNo].pos.y + PUZZLE_HEIGHT);
+
+											PositionPlas(temp, i);
+
+										}
+										//ジョイントが下だったら
+										if (pPiece[i].pos.y + pPiece[i].size.y / 3 < pJoint[j].pos.y)
+										{
+											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x, pPiece[pJoint[k].pieNo].pos.y - PUZZLE_HEIGHT) - pPiece[i].pos;
+
+											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x, pPiece[pJoint[k].pieNo].pos.y - PUZZLE_HEIGHT);
+
+											PositionPlas(temp, i);
+
+										}
+
+										break;
 									}
 								}
 
