@@ -61,8 +61,9 @@ void UpdateGame()
 	UpdatePlayer();
 
 	UpdateGameMouse();
-	PuzzleCollision();
-	UpdateCollision();
+	//PuzzleCollision();
+	//UpdateCollision();
+	PieceCollision();
 
 	UpdateBlock();
 	UpdateJoint();

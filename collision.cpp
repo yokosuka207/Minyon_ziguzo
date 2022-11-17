@@ -40,17 +40,54 @@ void UpdateCollision()
 void PieceCollision()
 {
 	Piece* pPiece = GetPiece();
+	JOINT* pJoint = GetJoint();
 	bool colFlag = false;//当たって入ったか
 
 	for (int i = 0; i < PUZZLE_MAX; i++)
 	{
 		if (pPiece[i].UseFlag)
 		{
-			if (pPiece[i].MoveEndFlag)
+			if (pPiece[i].MoveEndFlag)	//動き終わったら
 			{
 				pPiece[i].MoveEndFlag = false;
 
+				for (int j = 0; j < JOINT_MAX; j++)
+				{
+					if (pJoint[j].pieNo == i)	//動き終わったピースの中にあったら
+					{
+						for (int k = 0; k < JOINT_MAX; k++)
+						{
+							if (pJoint[j].pieNo != pJoint[k].pieNo)//ピース番号が違ったら
+							{
+								//ジョイントが重なっていたら
+								colFlag = CollisionBB(pJoint[j].pos, pJoint[k].pos, pJoint[j].size, pJoint[k].size);
 
+								if (colFlag)
+								{
+									//凹凸が合っていたら
+									if (pJoint[j].type == JOINT_TYPE::TYPE_BUMP&&pJoint[k].type == JOINT_TYPE::TYPE_DIP||
+										pJoint[k].type == JOINT_TYPE::TYPE_BUMP && pJoint[j].type == JOINT_TYPE::TYPE_DIP)
+									{
+										//ジョイントが右だったら
+										if (pPiece[i].pos.x+pPiece[i].size.x/3 < pJoint[j].pos.x)
+										{
+											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].pieNo].pos.y)-pPiece[i].pos;
+
+											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].pieNo].pos.y);
+
+											PositionPlas(temp, i);
+
+										}
+									}
+								}
+
+
+
+							}
+						}
+					}
+
+				}
 
 			}
 		}
@@ -900,5 +937,43 @@ bool fourCollision(PUZZLE puzzle, int index)
 
 
 	return true;
+
+}
+//--------------------------------------
+//ピースの中のものを移動させる
+//引数：移動させたい分のポジション、そのピース番号
+//--------------------------------------
+void PositionPlas(D3DXVECTOR2 num,int pinNo)
+{
+	BLOCK* pBlock = GetChipBlock();
+	JOINT* pJoint = GetJoint();
+
+	for (int i = 0; i < BLOCK_MAX; i++)
+	{
+		if (pBlock[i].UseFlag)
+		{
+
+			if (pBlock[i].PieceIndex == pinNo)
+			{
+
+				pBlock[i].Position += num;
+
+			}
+
+		}
+
+	}
+	for (int i = 0; i < JOINT_MAX; i++)
+	{
+		if (pJoint[i].useFlag)
+		{
+			if (pJoint[i].pieNo == pinNo)
+			{
+				pJoint[i].pos += num;
+			}
+
+		}
+
+	}
 
 }
