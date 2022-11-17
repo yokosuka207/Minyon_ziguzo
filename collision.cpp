@@ -18,6 +18,8 @@
 //プロトタイプ宣言
 //=================================
 
+bool fourPieceCollision(Piece piece, int index);
+bool PieceOpen(Piece piece, int index, DIRECSION direcsion);	//その方向のパズルが空いているか
 
 
 
@@ -75,7 +77,18 @@ void PieceCollision()
 
 											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].pieNo].pos.y);
 
-											PositionPlas(temp, i);
+
+											if (fourPieceCollision(pPiece[i],i))
+											{
+												PositionPlas(temp, i);
+
+											}
+											else
+											{
+												pPiece[i].pos = D3DXVECTOR2(200.0f, 200.0f);
+
+											}
+
 
 										}
 										//ジョイントが左だったら
@@ -85,7 +98,16 @@ void PieceCollision()
 
 											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].pieNo].pos.y);
 
-											PositionPlas(temp, i);
+											if (fourPieceCollision(pPiece[i], i))
+											{
+												PositionPlas(temp, i);
+
+											}
+											else
+											{
+												pPiece[i].pos = D3DXVECTOR2(200.0f, 200.0f);
+
+											}
 
 										}
 										//ジョイントが上だったら
@@ -95,7 +117,16 @@ void PieceCollision()
 
 											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x, pPiece[pJoint[k].pieNo].pos.y + PUZZLE_HEIGHT);
 
-											PositionPlas(temp, i);
+											if (fourPieceCollision(pPiece[i], i))
+											{
+												PositionPlas(temp, i);
+
+											}
+											else
+											{
+												//pPiece[i].pos = D3DXVECTOR2(200.0f, 200.0f);
+
+											}
 
 										}
 										//ジョイントが下だったら
@@ -105,7 +136,17 @@ void PieceCollision()
 
 											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x, pPiece[pJoint[k].pieNo].pos.y - PUZZLE_HEIGHT);
 
-											PositionPlas(temp, i);
+											if (fourPieceCollision(pPiece[i], i))
+											{
+												PositionPlas(temp, i);
+
+											}
+											else
+											{
+												//pPiece[i].pos = D3DXVECTOR2(200.0f, 200.0f);
+
+												//D3DXVECTOR2(200.0f, 200.0f);
+											}
 
 										}
 
@@ -1007,5 +1048,311 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 		}
 
 	}
+
+}
+//--------------------------------------------
+//4方向にパズルがあるかあったらピースの出っ張りが有っているか
+//----------------------------------------------
+bool fourPieceCollision(Piece piece, int index)
+{
+	JOINT* pJoint = GetJoint();
+	Piece* pPiece = GetPiece();
+	punum = -1;
+
+	bool hitFlag;
+	bool 	JointFlag = false;
+
+
+	hitFlag = PieceOpen(piece, index, RIGHT);
+	//右が開いていなかったら
+	if (!hitFlag)
+	{
+		for (int i = 0; i < JOINT_MAX; i++)
+		{
+			if (pJoint[i].pieNo == index)	//元のピースのジョイントだったら
+			{
+				if (piece.pos.x + piece.size.x / 3 < pJoint[i].pos.x)	//ジョイントがピースの右だったら
+				{
+
+					for (int j = 0; j < JOINT_MAX; j++)
+					{
+						if (pJoint[j].pieNo ==punum)
+						{
+							if (pPiece[punum].pos.x - pPiece[punum].size.x / 3 > pJoint[j].size.x)
+							{
+								JointFlag = true;
+
+								//パズルのチップの右と左が有っているか
+								if ((pJoint[i].type == JOINT_TYPE::TYPE_BUMP && pJoint[j].type == JOINT_TYPE::TYPE_DIP) ||
+									(pJoint[i].type == JOINT_TYPE::TYPE_DIP && pJoint[j].type == JOINT_TYPE::TYPE_BUMP))
+								{
+									//合っていたら何もしない
+								}
+								else
+								{
+									//合っていなかったら
+									return false;
+								}
+
+
+							}
+
+
+						}
+
+					}
+
+				}
+			}
+		}
+		if (!JointFlag)
+		{
+			return false;
+		}
+
+
+	}
+	JointFlag = false;
+
+	//左が開いていなかったら
+	hitFlag = PieceOpen(piece, index, LEFT);
+
+	if (!hitFlag)
+	{
+		//パズルのチップの左と右が有っているか
+		for (int i = 0; i < JOINT_MAX; i++)
+		{
+			if (pJoint[i].pieNo == index)	//元のピースのジョイントだったら
+			{
+				if (piece.pos.x - piece.size.x / 3 > pJoint[i].pos.x)	//ジョイントがピースの右だったら
+				{
+
+					for (int j = 0; j < JOINT_MAX; j++)
+					{
+						if (pJoint[j].pieNo == punum)
+						{
+							if (pPiece[punum].pos.x + pPiece[punum].size.x / 3 < pJoint[j].size.x)
+							{
+								JointFlag = true;
+
+								//パズルのチップの右と左が有っているか
+								if ((pJoint[i].type == JOINT_TYPE::TYPE_BUMP && pJoint[j].type == JOINT_TYPE::TYPE_DIP) ||
+									(pJoint[i].type == JOINT_TYPE::TYPE_DIP && pJoint[j].type == JOINT_TYPE::TYPE_BUMP))
+								{
+									//合っていたら何もしない
+								}
+								else
+								{
+									//合っていなかったら
+									return false;
+								}
+
+
+							}
+
+
+						}
+
+					}
+
+				}
+			}
+		}
+		if (!JointFlag)
+		{
+			return false;
+		}
+
+	}
+	hitFlag = PieceOpen(piece, index, UP);
+	JointFlag = false;
+
+
+	if (!hitFlag)
+	{	//上が開いていなかったら
+
+		for (int i = 0; i < JOINT_MAX; i++)
+		{
+			if (pJoint[i].pieNo == index)	//元のピースのジョイントだったら
+			{
+				if (piece.pos.y - piece.size.y / 3 > pJoint[i].pos.y)	//ジョイントがピースの上だったら
+				{
+
+					for (int j = 0; j < JOINT_MAX; j++)
+					{
+						if (pJoint[j].pieNo == punum)
+						{
+							if (pPiece[punum].pos.y + pPiece[punum].size.y / 3 < pJoint[j].size.y)	//下
+							{
+								JointFlag = true;
+
+								//パズルのチップの右と左が有っているか
+								if ((pJoint[i].type == JOINT_TYPE::TYPE_BUMP && pJoint[j].type == JOINT_TYPE::TYPE_DIP) ||
+									(pJoint[i].type == JOINT_TYPE::TYPE_DIP && pJoint[j].type == JOINT_TYPE::TYPE_BUMP))
+								{
+									//合っていたら何もしない
+								}
+								else
+								{
+									//合っていなかったら
+									return false;
+								}
+
+
+							}
+
+
+						}
+
+					}
+
+				}
+			}
+		}
+		if (!JointFlag)
+		{
+			return false;
+		}
+
+	}
+
+	hitFlag = PieceOpen(piece, index, DOWN);
+	JointFlag = false;
+
+
+	if (!hitFlag)
+	{
+		//下が開いていなかったら
+
+		for (int i = 0; i < JOINT_MAX; i++)
+		{
+			if (pJoint[i].pieNo == index)	//元のピースのジョイントだったら
+			{
+				if (piece.pos.y + piece.size.y / 3 < pJoint[i].pos.y)	//ジョイントがピースの上だったら
+				{
+
+					for (int j = 0; j < JOINT_MAX; j++)
+					{
+						if (pJoint[j].pieNo == punum)
+						{
+							if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 > pJoint[j].size.y)	//下
+							{
+								JointFlag = true;
+								//パズルのチップの右と左が有っているか
+								if ((pJoint[i].type == JOINT_TYPE::TYPE_BUMP && pJoint[j].type == JOINT_TYPE::TYPE_DIP) ||
+									(pJoint[i].type == JOINT_TYPE::TYPE_DIP && pJoint[j].type == JOINT_TYPE::TYPE_BUMP))
+								{
+									//合っていたら何もしない
+								}
+								else
+								{
+									//合っていなかったら
+									return false;
+								}
+
+
+							}
+
+
+						}
+
+					}
+
+				}
+			}
+		}
+		if (!JointFlag)
+		{
+			return false;
+		}
+	}
+
+
+	return true;
+
+}
+//--------------------------------------------
+//パズルの移動先が空いているか
+//引数：元のパズル、移動したいパズルの添え字、移動したい場所
+//----------------------------------------------
+bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
+{
+	Piece* pPiece = GetPiece();
+
+	for (int i = 0; i < PUZZLE_MAX; i++)
+	{
+		if (pPiece[i].UseFlag)
+		{
+			if (i != index)
+			{
+
+				switch (direcsion)
+				{
+				case UP:
+
+					//pieceの上に別のパズルがあるか
+					if (piece.pos.y - PUZZLE_HEIGHT - (PUZZLE_HEIGHT / 2) < pPiece[i].pos.y &&
+						piece.pos.y - PUZZLE_HEIGHT + (PUZZLE_HEIGHT / 2) > pPiece[i].pos.y &&
+						piece.pos.x - PUZZLE_WIDHT / 3 <= pPiece[i].pos.x &&
+						piece.pos.x + PUZZLE_WIDHT / 3 >= pPiece[i].pos.x)
+					{
+
+						punum = i;
+						return false;
+					}
+
+					break;
+				case DOWN:
+					//if (piece.pos.y + PUZZLE_HEIGHT == pPiece[i].pos.y)	return false;
+										//pieceの下に別のパズルがあるか
+
+					if (piece.pos.y + PUZZLE_HEIGHT - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
+						piece.pos.y + PUZZLE_HEIGHT + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&
+						piece.pos.x - PUZZLE_WIDHT / 3 <= pPiece[i].pos.x &&
+						piece.pos.x + PUZZLE_WIDHT / 3 >= pPiece[i].pos.x)
+					{
+						punum = i;
+						return false;
+					}
+
+					break;
+				case LEFT:
+					//if (piece.pos.x - PUZZLE_WIDHT == pPiece[i].pos.x)	return false;
+										//pieceの左に別のパズルがあるか
+
+					if (piece.pos.y - PUZZLE_HEIGHT / 3 <= pPiece[i].pos.y &&
+						piece.pos.y + PUZZLE_HEIGHT / 3 >= pPiece[i].pos.y &&
+						piece.pos.x - PUZZLE_WIDHT - PUZZLE_WIDHT / 3 < pPiece[i].pos.x &&
+						piece.pos.x - PUZZLE_WIDHT + PUZZLE_WIDHT / 3 > pPiece[i].pos.x)
+					{
+						punum = i;
+
+						return false;
+					}
+
+					break;
+				case RIGHT:
+					//if (piece.pos.x + PUZZLE_WIDHT == pPiece[i].pos.x)	return false;
+					//pieceの右に別のパズルがあるか
+					if (piece.pos.y - PUZZLE_HEIGHT / 3 < pPiece[i].pos.y &&
+						piece.pos.y + PUZZLE_HEIGHT / 3 > pPiece[i].pos.y &&
+						piece.pos.x + PUZZLE_WIDHT - PUZZLE_WIDHT / 3 < pPiece[i].pos.x &&
+						piece.pos.x + PUZZLE_WIDHT + PUZZLE_WIDHT / 3 > pPiece[i].pos.x)
+					{
+						punum = i;
+
+						return false;
+					}
+
+
+					break;
+
+				}
+
+			}
+
+		}
+	}
+	return true;
 
 }

@@ -65,6 +65,7 @@ HRESULT InitMapChip() {
 	RotateChipData();
 	SetPieceMapChip(D3DXVECTOR2(500.0f, 500.0f), 0);
 	SetPieceMapChip(D3DXVECTOR2(200.0f, 500.0f), 1);
+	SetPieceMapChip(D3DXVECTOR2(700.0f, 500.0f), 2);
 
 	return S_OK;
 }
