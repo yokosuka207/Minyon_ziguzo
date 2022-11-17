@@ -1078,7 +1078,7 @@ bool fourPieceCollision(Piece piece, int index)
 					{
 						if (pJoint[j].pieNo ==punum)
 						{
-							if (pPiece[punum].pos.x - pPiece[punum].size.x / 3 > pJoint[j].size.x)
+							if (pPiece[punum].pos.x - pPiece[punum].size.x / 3 > pJoint[j].pos.x)
 							{
 								JointFlag = true;
 
@@ -1131,7 +1131,7 @@ bool fourPieceCollision(Piece piece, int index)
 					{
 						if (pJoint[j].pieNo == punum)
 						{
-							if (pPiece[punum].pos.x + pPiece[punum].size.x / 3 < pJoint[j].size.x)
+							if (pPiece[punum].pos.x + pPiece[punum].size.x / 3 < pJoint[j].pos.x)
 							{
 								JointFlag = true;
 
@@ -1182,7 +1182,8 @@ bool fourPieceCollision(Piece piece, int index)
 					{
 						if (pJoint[j].pieNo == punum)
 						{
-							if (pPiece[punum].pos.y + pPiece[punum].size.y / 3 < pJoint[j].size.y)	//下
+
+							if (pPiece[punum].pos.y + pPiece[punum].size.y / 3 < pJoint[j].pos.y)	//下
 							{
 								JointFlag = true;
 
@@ -1191,6 +1192,7 @@ bool fourPieceCollision(Piece piece, int index)
 									(pJoint[i].type == JOINT_TYPE::TYPE_DIP && pJoint[j].type == JOINT_TYPE::TYPE_BUMP))
 								{
 									//合っていたら何もしない
+									
 								}
 								else
 								{
@@ -1212,6 +1214,8 @@ bool fourPieceCollision(Piece piece, int index)
 		if (!JointFlag)
 		{
 			return false;
+
+
 		}
 
 	}
@@ -1235,7 +1239,7 @@ bool fourPieceCollision(Piece piece, int index)
 					{
 						if (pJoint[j].pieNo == punum)
 						{
-							if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 > pJoint[j].size.y)	//下
+							if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 > pJoint[j].pos.y)	//下
 							{
 								JointFlag = true;
 								//パズルのチップの右と左が有っているか
