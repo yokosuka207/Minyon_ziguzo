@@ -11,6 +11,7 @@ Update:
 #include "joint.h"
 #include "texture.h"
 #include "sprite.h"
+#include"MapChip.h"
 
 //**************************************************
 // É}ÉNÉçíËã`
@@ -147,3 +148,4 @@ void DeleteJoint(int no)
 		}
 	}
 }
+

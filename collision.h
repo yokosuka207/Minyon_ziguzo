@@ -30,6 +30,8 @@ bool CollisionCircle(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, float size1, float size
 
 
 void UpdateCollision();	//“–‚½‚è”»’è‚ğs‚¤
+//----------ƒpƒYƒ‹‚Ì”»’èŠÖ”----------------
+void PieceCollision();
 
 void PuzzleCollision();
 

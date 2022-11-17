@@ -6,7 +6,7 @@
 #include"mouse.h"
 #include"block.h"
 #include"MapChip.h"
-#include"OperatePiece.h"
+#include"joint.h"
 /*==============================================================================
 
    当たり判定管理 [collsion.cpp]
@@ -37,6 +37,27 @@ void UpdateCollision()
 
 	//などの必要な判定をここで作る
 }
+void PieceCollision()
+{
+	Piece* pPiece = GetPiece();
+	bool colFlag = false;//当たって入ったか
+
+	for (int i = 0; i < PUZZLE_MAX; i++)
+	{
+		if (pPiece[i].UseFlag)
+		{
+			if (pPiece[i].MoveEndFlag)
+			{
+				pPiece[i].MoveEndFlag = false;
+
+
+
+			}
+		}
+	}
+
+}
+
 //---------------------------------
 //パズルの当たり判定
 //くっつくけるかどうか

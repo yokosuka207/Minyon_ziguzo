@@ -68,4 +68,6 @@ JOINT* GetJoint();
 // 引数：ピース番号
 void DeleteJoint(int no);
 
+
+
 #endif // !_JOINT_H_

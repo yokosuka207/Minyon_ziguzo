@@ -193,7 +193,7 @@ void UpdateGameMouse()
 		{
 			pPuzzle[MouseIndex].MoveFlag = false;
 			pPuzzle[MouseIndex].MoveEndFlag = true;
-
+			pPiece[MouseIndex].MoveEndFlag = true;
 		}
 		oneFlag = false;
 		MouseIndex = -1;
