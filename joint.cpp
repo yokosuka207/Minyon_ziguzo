@@ -15,7 +15,6 @@ Update:
 //**************************************************
 // マクロ定義
 //**************************************************
-#define JOINT_MAX		64
 
 //**************************************************
 // プロトタイプ宣言
@@ -43,7 +42,7 @@ void InitJoint()
 		g_Joint[i].pos = D3DXVECTOR2(0.0f, 0.0f);			
 		g_Joint[i].size = D3DXVECTOR2(0.0f, 0.0f);	
 		g_Joint[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		g_Joint[i].pieNo = 0;								
+		g_Joint[i].pieNo = -1;								
 		g_Joint[i].type = JOINT_TYPE::TYPE_BUMP;	
 		g_Joint[i].texNo = texNo;
 

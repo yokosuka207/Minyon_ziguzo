@@ -6,6 +6,7 @@
 #include"input.h"
 #include"player.h"
 #include"MapChip.h"
+#include"joint.h"
 //#include"puzzlecip.h"
 
 MOUSE Mouse;
@@ -39,6 +40,7 @@ void UpdateGameMouse()
 	PLAYER* pPlayer=GetPlayer();
 	Piece* pPiece = GetPiece();
 	BLOCK* pCipBlock = GetChipBlock();
+	JOINT* pJoint = GetJoint();
 
 	Mouse.oldPosX = GetMousePosX();
 	Mouse.oldPosY = GetMousePosY();
@@ -159,6 +161,17 @@ void UpdateGameMouse()
 
 							}
 
+						}
+						for (int i = 0; i < JOINT_MAX; i++)
+						{
+							if (pJoint[i].useFlag)
+							{
+								if (pJoint[i].pieNo == MouseIndex)
+								{
+									pJoint[i].pos += temp;
+								}
+
+							}
 						}
 						if (GetKeyboardTrigger(DIK_A))	//aƒL[‚ª‰Ÿ‚³‚ê‚½‚ç
 						{
