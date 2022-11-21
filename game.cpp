@@ -17,6 +17,7 @@
 #include "MapChip.h"
 #include "inventory.h"
 #include "joint.h"
+#include "cursor.h"
 
 void InitGame()
 {
@@ -35,11 +36,14 @@ void InitGame()
 	InitPuzzle();
 	InitInventory();			// インベントリの初期化
 	InitMapChip();
+	InitCursor();				// カーソルの初期化
+
+	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 }
 
 void UninitGame()
 {
-	//UninitPolygon();	//ポリゴンの終了処理
+	//UninitPolygon();	//ポリゴンの終了
 	BgUninit();
 	UninitBlock();
 	UninitJoint();
@@ -52,6 +56,7 @@ void UninitGame()
 	UninitWarp();
 	UninitInventory();			// インベントリの終了
 	UninitMapChip();
+	UninitCursor();				// カーソルの終了
 }
 
 void UpdateGame()
@@ -76,6 +81,8 @@ void UpdateGame()
 
 	UpdateInventory();			// インベントリの更新
 	UpdateMapChip();
+
+	UpdateCursor();				// カーソルの更新
 }	
 
 void DrawGame()
@@ -91,7 +98,9 @@ void DrawGame()
 	DrawWarp();
 	DrawGoal();
 	DrawBroken();
+
 	DrawInventory();			// インベントリの描画
+	DrawCursor();				// カーソルの描画
 }
 
 void ResetGame()

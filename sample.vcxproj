@@ -139,6 +139,7 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="broken.cpp" />
     <ClCompile Include="collision.cpp" />
+    <ClCompile Include="cursor.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="goal.cpp" />
     <ClCompile Include="input.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="block.h" />
     <ClInclude Include="broken.h" />
     <ClInclude Include="collision.h" />
+    <ClInclude Include="cursor.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="goal.h" />
     <ClInclude Include="input.h" />

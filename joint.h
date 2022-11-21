@@ -64,7 +64,7 @@ void SetJoint(D3DXVECTOR2 po, D3DXVECTOR2 si, int no, JOINT_TYPE ty);
 JOINT* GetJoint();
 
 
-//----------ジョイントデリート関数----------
+//----------ジョイント削除関数----------
 // 引数：ピース番号
 void DeleteJoint(int no);
 
