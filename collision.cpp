@@ -7,6 +7,7 @@
 #include"block.h"
 #include"MapChip.h"
 #include"joint.h"
+#include"SplitStage.h"
 /*==============================================================================
 
    ìñÇΩÇËîªíËä«óù [collsion.cpp]
@@ -43,6 +44,7 @@ void PieceCollision()
 {
 	Piece* pPiece = GetPiece();
 	JOINT* pJoint = GetJoint();
+	SplitStage* pSplitStage = GetSplitStage();
 	bool colFlag = false;//ìñÇΩÇ¡Çƒì¸Ç¡ÇΩÇ©
 
 	for (int i = 0; i < PUZZLE_MAX; i++)
@@ -52,6 +54,30 @@ void PieceCollision()
 			if (pPiece[i].MoveEndFlag)	//ìÆÇ´èIÇÌÇ¡ÇΩÇÁ
 			{
 				pPiece[i].MoveEndFlag = false;
+
+				//int tempx = (pPiece[i].pos.x / SPLIT_SIZE) - 1;
+				//int tempy = (pPiece[i].pos.y / SPLIT_SIZE) - 1;
+				//pPiece[i].pos = pSplitStage->Split3[tempx][tempy];
+
+
+				for (int m = 0; m < 3; m++)
+				{
+					for (int n = 0; n < 3; n++)
+					{
+						if (pSplitStage->pos.y + SPLIT_SIZE * (m - 1) - pSplitStage->size.y / 2 < pPiece[i].pos.y &&
+							pSplitStage->pos.y + SPLIT_SIZE * (m - 1) + pSplitStage->size.y / 2 > pPiece[i].pos.y &&
+							pSplitStage->pos.x + SPLIT_SIZE * (n - 1) - pSplitStage->size.x / 2 < pPiece[i].pos.x &&
+							pSplitStage->pos.x + SPLIT_SIZE * (n - 1) + pSplitStage->size.x / 2 > pPiece[i].pos.x)
+						{
+							pPiece[i].pos = pSplitStage->Split3[n][m];
+							D3DXVECTOR2 temp = pPiece[i].pos-pPiece[i].OldPos  ;
+
+							PositionPlas(temp, i);
+
+						}
+					}
+				}
+
 
 				for (int j = 0; j < JOINT_MAX; j++)
 				{
