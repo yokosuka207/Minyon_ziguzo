@@ -20,7 +20,7 @@
 #include "joint.h"
 #include "texture.h"
 #include "sprite.h"
-#include"SplitStage.h"
+#include "SplitStage.h"
 //**************************************************
 //　マクロ定義
 //**************************************************
