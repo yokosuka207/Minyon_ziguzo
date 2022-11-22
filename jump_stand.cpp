@@ -197,6 +197,13 @@ bool Collition_JumpStand()
 	return false;
 }
 
+void DeletejumpStand(int PieceNo) {
+	//îzóÒÇ…ÇµÇ»Ç¢Ç∆ëSïîè¡Ç¶ÇÈÇ±Ç∆Ç…Ç»ÇÈ
+	if (g_JumpStand.UseJumpStand) {
+		g_JumpStand.UseJumpStand = false;
+	}
+}
+
 //bool Player_Push_JumpStand()
 //{
 //
