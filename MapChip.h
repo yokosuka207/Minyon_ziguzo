@@ -20,26 +20,28 @@
 //　マクロ定義
 //**************************************************
 #define BLOCK_CHIP_ARRAY (16)	// 配列の最小単位
-#define BLOCK_CHIP_SIZE (15)	//マップチップブロックのサイズ
-#define BLOCK_CHIP_MAX (12 * 12)//マップチップの中のブロック最大数
+#define BLOCK_CHIP_SIZE (15.0f)	//マップチップブロックのサイズ
+#define BLOCK_DRAW_SIZE (15.0f)	//マップチップブロックの表示サイズ
+#define BLOCK_CHIP_MAX (12 * 12 * 10)//マップチップの中のブロック最大数
 #define BLOCK_CHIP_WARP_MAX (2)	//1ステージワープの個数
 #define BLOCK_CHIP_DIRECTION (4)//チップの回転4方向分
 
-#define PUZZLE_SIZE (BLOCK_CHIP_ARRAY * BLOCK_CHIP_SIZE)	//180 + 60 
+#define PUZZLE_SIZE (BLOCK_CHIP_ARRAY * BLOCK_CHIP_SIZE)	//16 * 15 (180 + 60) 
 #define PIECE_SIZE (180)
 //**************************************************
 // 構造体定義
 //**************************************************
 enum class MAPCHIP_TYPE{
-	TYPE_NONE = 0,	//0
-	TYPE_BLOCK,		//1
-	TYPE_CHIP,		//2
-	TYPE_WARP,		//3
-	TYPE_GOAL,		//4
-
-	TYPE_BLANK,		//5	外側の空白
-	TYPE_PUSH,		//6	凸
-	TYPE_PULL,		//7	凹
+	TYPE_BLANK = 0,	// 0	外側の空白
+	TYPE_PUSH,		// 1	凸
+	TYPE_PULL,		// 2	凹
+	TYPE_NONE,		// 3
+	TYPE_BLOCK,		// 4
+	TYPE_CHIP,		// 5
+	TYPE_WARP,		// 6
+	TYPE_GOAL,		// 7
+	TYPE_JUMP,		// 8
+	TYPE_SPIKE,		// 9
 
 	TYPE_NUM,		
 };

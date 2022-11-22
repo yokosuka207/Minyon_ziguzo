@@ -150,7 +150,7 @@ void UpdateGameMouse()
 						//pPiece[MouseIndex].MoveFlag = true;
 						D3DXVECTOR2 temp = (pPiece[MouseIndex].pos - pPiece[MouseIndex].OldPos);
 
-						for (int i = 0; i < BLOCK_MAX; i++)
+						for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 						{
 							if (pCipBlock[i].UseFlag)
 							{

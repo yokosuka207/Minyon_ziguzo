@@ -101,30 +101,35 @@ void SetMapChip(D3DXVECTOR2 pos, int no) {
 		//j=x•ûŒü
 		for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
 			// ’†SÀ•W•Ï”
-			D3DXVECTOR2 position = D3DXVECTOR2((pos.x - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
+			//D3DXVECTOR2 position = D3DXVECTOR2((pos.x - PUZZLE_SIZE / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
+			D3DXVECTOR2 position = D3DXVECTOR2((pos.x - PUZZLE_SIZE / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
 
 			switch (g_PieceMapChip[no].chip[g_PieceMapChip[no].direction][i][j]) {
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_NONE) :	//0
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK) :	//0				
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLOCK) :	//1
-				SetBlock(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE),no);
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//1
+				SetJoint(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE), no, JOINT_TYPE::TYPE_BUMP);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP) :	//2
-				SetChipPuzzuleChip(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE));
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_PULL) :	//2
+				SetJoint(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE), no, JOINT_TYPE::TYPE_DIP);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//3
-				SetWarp(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE));
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_NONE) :	//3
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL) :	//4
-				SetGoal(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE),no);
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLOCK) :	//4
+				SetBlock(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE),no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK) :	//5				
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP) :	//5
+				SetChipPuzzuleChip(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE));
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//6
-				SetJoint(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE), no, JOINT_TYPE::TYPE_BUMP);
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//6
+				SetWarp(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE));
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_PULL) :	//7
-				SetJoint(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE), no, JOINT_TYPE::TYPE_DIP);
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL) :	//7
+				SetGoal(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE),no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP) :	//8
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9
 				break;
 			default:
 				break;
@@ -222,6 +227,8 @@ void RotateMapChipL(int PieceNo) {
 Piece* GetPiece() {
 	return g_PieceMapChip;
 }
+
+
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (!g_PieceMapChip[p].UseFlag) {

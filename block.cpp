@@ -103,7 +103,9 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index) {
 			g_ChipBlock[i].Position = pos;
 			g_ChipBlock[i].Size = size;
 			g_ChipBlock[i].PieceIndex = index;
+
 			g_ChipBlock[i].UseFlag = true;
+			
 			break;
 		}
 	}
@@ -125,8 +127,6 @@ void deleteBlock(int index)
 
 		}
 	}
-
-
 }
 
 void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE btype, int pIndex, CIP_TYPE ctype)
