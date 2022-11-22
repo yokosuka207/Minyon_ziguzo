@@ -18,12 +18,14 @@
 #include "inventory.h"
 #include "joint.h"
 #include "cursor.h"
+#include"SplitStage.h"
 
 void InitGame()
 {
 	//----------‚°[‚Ş
 	//InitPolygon();//ƒ|ƒŠƒSƒ“‚Ì‰Šú‰»
 	//-----------------------
+	InitSplitStage();
 	BgInit();
 	InitBlock();
 	InitJoint();
