@@ -106,35 +106,35 @@ void SetMapChip(D3DXVECTOR2 pos, int no) {
 			// íÜêSç¿ïWïœêî
 			//D3DXVECTOR2 position = D3DXVECTOR2((pos.x - PUZZLE_SIZE / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
 			D3DXVECTOR2 position = D3DXVECTOR2((pos.x - PUZZLE_SIZE / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
-
+			D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
 			switch (g_PieceMapChip[no].chip[g_PieceMapChip[no].direction][i][j]) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK) :	//0				
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//1
-				SetJoint(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE), no, JOINT_TYPE::TYPE_BUMP);
+				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_BUMP);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_PULL) :	//2
-				SetJoint(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE), no, JOINT_TYPE::TYPE_DIP);
+				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_DIP);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_NONE) :	//3
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLOCK) :	//4
-				SetBlock(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE),no);
+				SetBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP) :	//5
-				SetChipPuzzuleChip(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE));
+				SetChipPuzzuleChip(position, DrawSize);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//6
-				SetWarp(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE));
+				SetWarp(position, DrawSize);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL) :	//7
-				SetGoal(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE),no);
+				SetGoal(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP) :	//8
-				SetJumpStand(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE), no);
+				SetJumpStand(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9
-				//SetSpike(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE),no);
+				//SetSpike(position, DrawSize,no);
 				break;
 			default:
 				break;

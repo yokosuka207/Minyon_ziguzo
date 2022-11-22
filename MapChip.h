@@ -82,7 +82,7 @@ void FileLoad(int StageNo);
 void RotateChipData();
 void RotateMapChipR(int PieceNo);
 void RotateMapChipL(int PieceNo);
-void DeletemapChip(int PieceNo);
+void DeleteMapChip(int PieceNo);
 
 Piece* GetPiece();
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo);
