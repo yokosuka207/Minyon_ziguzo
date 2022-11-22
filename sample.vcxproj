@@ -173,6 +173,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="inventory.h" />
     <ClInclude Include="joint.h" />
+    <ClInclude Include="jump_stand.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MapChip.h" />
     <ClInclude Include="mouse.h" />

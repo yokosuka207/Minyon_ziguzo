@@ -22,6 +22,9 @@ void UninitJumoStand();
 void UpdateJumpStand();
 void DrawJumpStand();
 void SetJumpStand(D3DXVECTOR2 p);
+void SetJumpStand(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo);
+void DeleteJumpStand(int PieceNo);
+
 JUMPSTAND* GetJumpStand();
 
 bool Collition_JumpStand();
