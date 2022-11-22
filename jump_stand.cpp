@@ -10,7 +10,9 @@
 #include "block.h"
 #include "puzzle.h"
 
+//-------配列にしてほしい↓（マップチップの都合上必要）-------
 static JUMPSTAND g_JumpStand;
+//------------------------------------------------------------
 static PLAYER* p_Player;
 static BLOCK* p_Block;
 
@@ -197,8 +199,22 @@ bool Collition_JumpStand()
 	return false;
 }
 
+void SetjumpStand(D3DXVECTOR2 pos,D3DXVECTOR2 size, int PieceNo) {
+	if (!g_JumpStand.UseJumpStand) {
+		//for (int i = 0; i < ; i++) 
+		{
+			g_JumpStand.pos = pos;
+			g_JumpStand.size = size;
+
+			g_JumpStand.UseJumpStand = true;
+			//break;
+		}
+	}
+}
+
 void DeletejumpStand(int PieceNo) {
-	//配列にしないと全部消えることになる
+	//配列にしないとマップ上に存在するジャンプ台全部消えることになる
+	//今消したいのは PieceNo番目 のピースに存在するジャンプ台のみ
 	if (g_JumpStand.UseJumpStand) {
 		g_JumpStand.UseJumpStand = false;
 	}

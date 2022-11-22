@@ -131,8 +131,10 @@ void SetMapChip(D3DXVECTOR2 pos, int no) {
 				SetGoal(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE),no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP) :	//8
+				//SetJumpStand(position,D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE),no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9
+				//SetSpike(position, D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE),no);
 				break;
 			default:
 				break;
