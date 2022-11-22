@@ -147,6 +147,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="joint.cpp" />
+    <ClCompile Include="jump_stand.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapChip.cpp" />
     <ClCompile Include="mouse.cpp" />
