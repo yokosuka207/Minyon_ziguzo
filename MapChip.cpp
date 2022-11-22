@@ -49,7 +49,7 @@ HRESULT InitMapChip() {
 		g_PieceMapChip[p].TexNo = LoadTexture(g_MapChipTextureName);
 		g_PieceMapChip[p].direction = 0;
 		g_PieceMapChip[p].pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-		g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
+		g_PieceMapChip[p].OldMovePos = g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
 		g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);
 		g_PieceMapChip[p].MoveEndFlag = false;
 		for (int d = 0; d < BLOCK_CHIP_DIRECTION; d++) {

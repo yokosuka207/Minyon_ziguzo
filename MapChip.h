@@ -48,6 +48,7 @@ typedef struct {
 	int			no;		//現在のピース番号
 	D3DXVECTOR2 pos;	//パズルの座標
 	D3DXVECTOR2 OldPos;	//移動用oldpos
+	D3DXVECTOR2 OldMovePos;//動く前の座標
 	D3DXVECTOR2 size;	//パズルのサイズ
 	int			chip[BLOCK_CHIP_DIRECTION][BLOCK_CHIP_ARRAY][BLOCK_CHIP_ARRAY];	//パズルの中のブロックの個数
 	float		TexNo;

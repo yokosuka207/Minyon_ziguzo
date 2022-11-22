@@ -21,8 +21,8 @@
 
 bool fourPieceCollision(Piece piece, int index);
 bool PieceOpen(Piece piece, int index, DIRECSION direcsion);	//その方向のパズルが空いているか
-
-
+bool fourNomalPieceCollision(Piece piece, int index);
+void Rotreturn(int index);	//回転を戻す
 
 int punum = 0;	//パズルの配列の添え字の格納
 
@@ -60,23 +60,6 @@ void PieceCollision()
 				//pPiece[i].pos = pSplitStage->Split3[tempx][tempy];
 
 
-				for (int m = 0; m < 3; m++)
-				{
-					for (int n = 0; n < 3; n++)
-					{
-						if (pSplitStage->pos.y + SPLIT_SIZE * (m - 1) - pSplitStage->size.y / 2 < pPiece[i].pos.y &&
-							pSplitStage->pos.y + SPLIT_SIZE * (m - 1) + pSplitStage->size.y / 2 > pPiece[i].pos.y &&
-							pSplitStage->pos.x + SPLIT_SIZE * (n - 1) - pSplitStage->size.x / 2 < pPiece[i].pos.x &&
-							pSplitStage->pos.x + SPLIT_SIZE * (n - 1) + pSplitStage->size.x / 2 > pPiece[i].pos.x)
-						{
-							pPiece[i].pos = pSplitStage->Split3[n][m];
-							D3DXVECTOR2 temp = pPiece[i].pos-pPiece[i].OldPos  ;
-
-							PositionPlas(temp, i);
-
-						}
-					}
-				}
 
 
 				for (int j = 0; j < JOINT_MAX; j++)
@@ -106,12 +89,14 @@ void PieceCollision()
 
 											if (fourPieceCollision(pPiece[i],i))
 											{
-												PositionPlas(temp, i);
+												//PositionPlas(temp, i);
+												pPiece[i].OldMovePos = pPiece[i].pos;
 
 											}
 											else
 											{
-												//pPiece[i].pos = D3DXVECTOR2(200.0f, 200.0f);
+												pPiece[i].pos = pPiece[i].OldMovePos;
+												Rotreturn(i);
 
 											}
 
@@ -126,12 +111,14 @@ void PieceCollision()
 
 											if (fourPieceCollision(pPiece[i], i))
 											{
-												PositionPlas(temp, i);
+												//PositionPlas(temp, i);
+												pPiece[i].OldMovePos = pPiece[i].pos;
 
 											}
 											else
 											{
-												//pPiece[i].pos = D3DXVECTOR2(200.0f, 200.0f);
+												pPiece[i].pos = pPiece[i].OldMovePos;
+												Rotreturn(i);
 
 											}
 
@@ -145,12 +132,14 @@ void PieceCollision()
 
 											if (fourPieceCollision(pPiece[i], i))
 											{
-												PositionPlas(temp, i);
+												//PositionPlas(temp, i);
+												pPiece[i].OldMovePos = pPiece[i].pos;
 
 											}
 											else
 											{
-												//pPiece[i].pos = D3DXVECTOR2(200.0f, 200.0f);
+												pPiece[i].pos = pPiece[i].OldMovePos;
+												Rotreturn(i);
 
 											}
 
@@ -164,13 +153,15 @@ void PieceCollision()
 
 											if (fourPieceCollision(pPiece[i], i))
 											{
-												PositionPlas(temp, i);
+												//PositionPlas(temp, i);
+												pPiece[i].OldMovePos = pPiece[i].pos;
 
 											}
 											else
 											{
-												//pPiece[i].pos = D3DXVECTOR2(200.0f, 200.0f);
+												Rotreturn(i);
 
+												pPiece[i].pos = pPiece[i].OldMovePos;
 												//D3DXVECTOR2(200.0f, 200.0f);
 											}
 
@@ -179,13 +170,45 @@ void PieceCollision()
 										break;
 									}
 								}
+								else
+								{
 
+									if (fourNomalPieceCollision(pPiece[i],i))
+									{
+
+									}
+									else
+									{
+
+										pPiece[i].pos = pPiece[i].OldMovePos;
+										Rotreturn(i);
+									}
+
+								}
 
 
 							}
 						}
 					}
 
+				}
+
+				for (int m = 0; m < 3; m++)
+				{
+					for (int n = 0; n < 3; n++)
+					{
+						if (pSplitStage->pos.y + SPLIT_SIZE * (m - 1) - pSplitStage->size.y / 2 < pPiece[i].pos.y &&
+							pSplitStage->pos.y + SPLIT_SIZE * (m - 1) + pSplitStage->size.y / 2 > pPiece[i].pos.y &&
+							pSplitStage->pos.x + SPLIT_SIZE * (n - 1) - pSplitStage->size.x / 2 < pPiece[i].pos.x &&
+							pSplitStage->pos.x + SPLIT_SIZE * (n - 1) + pSplitStage->size.x / 2 > pPiece[i].pos.x)
+						{
+							pPiece[i].pos = pSplitStage->Split3[n][m];
+							D3DXVECTOR2 temp = pPiece[i].pos - pPiece[i].OldPos;
+
+							PositionPlas(temp, i);
+							break;
+						}
+					}
 				}
 
 			}
@@ -1384,5 +1407,172 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
 		}
 	}
 	return true;
+
+}
+//--------------------------------------------
+//4方向にパズルがあるかあったらピースのノーマルか
+//----------------------------------------------
+bool fourNomalPieceCollision(Piece piece, int index)
+{
+	JOINT* pJoint = GetJoint();
+	Piece* pPiece = GetPiece();
+	punum = -1;
+
+	bool hitFlag;
+	bool 	JointFlag = false;
+
+
+	hitFlag = PieceOpen(piece, index, RIGHT);
+	//右が開いていなかったら
+	if (!hitFlag)
+	{
+		for (int j = 0; j < JOINT_MAX; j++)
+		{
+			if (pJoint[j].pieNo == index)
+			{
+				if (pJoint[j].pos.x>piece.pos.x+piece.size.x/3)
+				{
+					return false;
+				}
+			}
+		}
+
+		for (int i = 0; i < JOINT_MAX; i++)
+		{
+			if (pJoint[i].pieNo == punum)	//元のピースのジョイントだったら
+			{
+				//ジョイントがなかったら
+				if (pPiece[punum].pos.x - pPiece[punum].size.x / 3 > pJoint[i].pos.x)
+				{
+					//合っていなかったら
+					return false;
+				}	
+			}
+		}
+	}
+	JointFlag = false;
+
+	//左が開いていなかったら
+	hitFlag = PieceOpen(piece, index, LEFT);
+
+	if (!hitFlag)
+	{
+		for (int j = 0; j < JOINT_MAX; j++)
+		{
+			if (pJoint[j].pieNo == index)
+			{
+				if (pJoint[j].pos.x < piece.pos.x - piece.size.x / 3)
+				{
+					return false;
+				}
+			}
+		}
+
+		//パズルのチップの左と右が有っているか
+		for (int i = 0; i < JOINT_MAX; i++)
+		{
+			if (pJoint[i].pieNo == punum)
+			{				//ジョイントがなかったら
+
+				if (pPiece[punum].pos.x + pPiece[punum].size.x / 3 < pJoint[i].pos.x)
+				{
+					//合っていなかったら
+					return false;
+				}
+			}
+		}
+	}
+	hitFlag = PieceOpen(piece, index, UP);
+	JointFlag = false;
+
+
+	if (!hitFlag)
+	{	//上が開いていなかったら
+		for (int j = 0; j < JOINT_MAX; j++)
+		{
+			if (pJoint[j].pieNo == index)
+			{
+				if (pJoint[j].pos.y < piece.pos.y - piece.size.y / 3)
+				{
+					return false;
+				}
+			}
+		}
+
+		for (int i = 0; i < JOINT_MAX; i++)
+		{
+			if (pJoint[i].pieNo == punum)
+			{
+				//ジョイントがなかったら
+
+				if (pPiece[punum].pos.y + pPiece[punum].size.y / 3 < pJoint[i].pos.y)	//下
+				{
+					{
+						//合っていなかったら
+						return false;
+					}
+
+
+				}
+
+
+			}
+
+		}
+
+	}
+
+	hitFlag = PieceOpen(piece, index, DOWN);
+	JointFlag = false;
+
+
+	if (!hitFlag)
+	{
+		for (int j = 0; j < JOINT_MAX; j++)
+		{
+			if (pJoint[j].pieNo == index)
+			{
+				if (pJoint[j].pos.y > piece.pos.y + piece.size.y / 3)
+				{
+					return false;
+				}
+			}
+		}
+
+		//下が開いていなかったら
+
+		for (int i = 0; i < JOINT_MAX; i++)
+		{
+			if (pJoint[i].pieNo == punum)
+			{
+				//ジョイントがなかったら
+				if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 > pJoint[i].pos.y)	//下
+				{
+					//合っていなかったら
+					return false;
+
+				}
+
+
+			}
+
+		}
+
+	}
+
+
+	return true;
+
+}
+
+void Rotreturn(int index)
+{
+	MOUSE* pMouse = GetMouse();
+
+	for (int i = pMouse->RotIndex; i > 0; i--)
+	{
+		RotateMapChipL(index);
+
+	}
 
 }
