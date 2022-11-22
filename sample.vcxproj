@@ -135,6 +135,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Desktop\パズル (2)\パズル - コピー\thorn_block.cpp" />
+    <ClCompile Include="..\HEW_JumpStand\jump_stand.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="broken.cpp" />
@@ -162,6 +164,8 @@
     <ClCompile Include="warp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Desktop\パズル (2)\パズル - コピー\thorn_block.h" />
+    <ClInclude Include="..\HEW_JumpStand\jump_stand.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="broken.h" />
