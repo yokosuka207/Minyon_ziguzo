@@ -114,17 +114,12 @@ BLOCK* GetChipBlock() {
 	return g_ChipBlock;
 }
 
-void deleteBlock(int index)
-{
+void deleteBlock(int index){
 	for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
-		if (g_ChipBlock[i].UseFlag)
-		{
-
-			if (g_ChipBlock[i].PieceIndex == index)
-			{
+		if (g_ChipBlock[i].UseFlag){
+			if (g_ChipBlock[i].PieceIndex == index){
 				g_ChipBlock[i].UseFlag = false;
 			}
-
 		}
 	}
 }

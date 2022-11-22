@@ -218,11 +218,24 @@ void RotateMapChipL(int PieceNo) {
 	}
 
 	// 各種デリート
-	deleteBlock(PieceNo);
-	DeleteJoint(PieceNo);
+	//deleteBlock(PieceNo);
+	//DeleteJoint(PieceNo);
+	DeletemapChip(PieceNo);
 
 	// ピース再構成
 	SetMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
+}
+
+
+//==================================================
+//ピースの回転やインベントリから取り出すときに使うピースを消す関数
+//==================================================
+void DeletemapChip(int PieceNo) {
+	if (!g_PieceMapChip[PieceNo].UseFlag) {
+		g_PieceMapChip[PieceNo].UseFlag = false;
+	}
+	deleteBlock(PieceNo);
+	DeleteJoint(PieceNo);
 }
 
 
