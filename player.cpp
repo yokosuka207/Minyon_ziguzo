@@ -14,6 +14,7 @@
 #include "texture.h"
 #include "input.h"
 #include "block.h"
+#include "thorn_block.h"
 #include "broken.h"
 #include "warp.h"
 //#include "piece.h"
@@ -234,6 +235,55 @@ void UpdatePlayer()
 					}
 				}
 			}
+
+			////プレイヤー・トゲブロック　当たり判定
+			//for (int i = 0; i < THORN_BLOCK_MAX; i++)
+			//{
+			//	THORN_BLOCK* thornblock = GetThornBlock();
+
+			//	if ((thornblock + i)->UseFlag == true)
+			//	{
+			//		//プレイヤー左・ブロック右
+			//		if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Position.x - (thornblock + i)->Size.x / 2 &&
+			//			g_Player.oldpos.x + g_Player.size.x / 2 <= (thornblock + i)->Position.x - (thornblock + i)->Size.x / 2 &&
+			//			g_Player.Position.y + g_Player.size.y / 2 > (thornblock + i)->Position.y - (thornblock + i)->Size.y / 2 &&
+			//			g_Player.Position.y - g_Player.size.y / 2 < (thornblock + i)->Position.y + (thornblock + i)->Size.y / 2)
+			//		{
+			//			g_Player.Position.x = (block + i)->Position.x - (block + i)->Size.x / 2 - g_Player.size.x / 2;
+			//		}
+			//		//プレイヤー右・ブロック左
+			//		if (g_Player.Position.x - g_Player.size.x / 2 < (block + i)->Position.x + (block + i)->Size.x / 2 &&
+			//			g_Player.oldpos.x - g_Player.size.x / 2 >= (block + i)->Position.x + (block + i)->Size.x / 2 &&
+			//			g_Player.Position.y + g_Player.size.y / 2 > (block + i)->Position.y - (block + i)->Size.y / 2 &&
+			//			g_Player.Position.y - g_Player.size.y / 2 < (block + i)->Position.y + (block + i)->Size.y / 2)
+			//		{
+			//			g_Player.Position.x = (block + i)->Position.x + (block + i)->Size.x / 2 + g_Player.size.x / 2;
+			//		}
+
+			//		//プレイヤー上・ブロック下,着地する
+			//		if (g_Player.Position.x + g_Player.size.x / 2 > (block + i)->Position.x - (block + i)->Size.x / 2 &&
+			//			g_Player.Position.x - g_Player.size.x / 2 < (block + i)->Position.x + (block + i)->Size.x / 2 &&
+			//			g_Player.Position.y + g_Player.size.y / 2 > (block + i)->Position.y - (block + i)->Size.y / 2 &&
+			//			g_Player.oldpos.y + g_Player.size.y / 2 <= (block + i)->Position.y - (block + i)->Size.y / 2)
+			//		{
+			//			g_Player.Position.y = (block + i)->Position.y - (block + i)->Size.y / 2 - g_Player.size.y / 2;
+			//			g_Player.jump = false;
+			//			g_Player.fall = false;
+			//			g_Player.WarpFlag = false;
+			//			g_Player.frame = 0;
+			//		}
+			//		//プレイヤー下・ブロック上,落下する
+			//		if (g_Player.Position.x + g_Player.size.x / 2 > (block + i)->Position.x - (block + i)->Size.x / 2 &&
+			//			g_Player.Position.x - g_Player.size.x / 2 < (block + i)->Position.x + (block + i)->Size.x / 2 &&
+			//			g_Player.Position.y - g_Player.size.y / 2 < (block + i)->Position.y + (block + i)->Size.y / 2 &&
+			//			g_Player.oldpos.y - g_Player.size.y / 2 >= (block + i)->Position.y + (block + i)->Size.y / 2)
+			//		{
+			//			g_Player.fall = true;
+			//			g_Player.getfall = true;
+			//			g_Player.frame = 50;
+			//		}
+			//	}
+			//}
 
 			//チップのブロックの当たり判定
 			for (int i = 0; i < BLOCK_MAX; i++)

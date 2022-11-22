@@ -18,6 +18,7 @@
 #include "inventory.h"
 #include "joint.h"
 #include "cursor.h"
+#include "thorn_block.h"	
 
 void InitGame()
 {
@@ -26,6 +27,7 @@ void InitGame()
 	//-----------------------
 	BgInit();
 	InitBlock();
+	InitThornBlock();
 	InitJoint();
 	InitGameMouse();
 	InitGoal();
@@ -51,6 +53,7 @@ void UninitGame()
 	UninitGameMouse();
 	UninitGoal();
 	UninitPuzzleCip();
+	UninitThornBlock();
 	UninitBroken();
 	UninitPlayer();
 	UninitWarp();
@@ -71,6 +74,7 @@ void UpdateGame()
 	PieceCollision();
 
 	UpdateBlock();
+	UpdateThornBlock();
 	UpdateJoint();
 	UpdatePuzzle();
 	UpdatePuzzleCip();
@@ -96,6 +100,7 @@ void DrawGame()
 	DrawPuzzleCip();
 	DrawPlayer();
 	DrawWarp();
+	DrawThornBlock();
 	DrawGoal();
 	DrawBroken();
 
