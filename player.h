@@ -27,6 +27,7 @@ struct PLAYER
 	bool fall;//落下中
 	bool getfall;//落下の開始
 	bool WarpFlag;//ワープしたか
+	bool GetJumpStand;
 	D3DXVECTOR2 size;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
 	D3DXVECTOR2 oldpos;//1フレーム前の座標

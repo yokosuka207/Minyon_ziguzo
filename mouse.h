@@ -20,6 +20,7 @@ typedef struct
 	D3DXVECTOR2	PlPos;	//プレイヤーの位置保存
 	D3DXVECTOR2	Size;	//プレイヤーの位置保存
 
+	int RotIndex;	//回転した回数
 
 	bool UseFlag;
 	bool ScrollFlag;	//スクロールしているかどうか

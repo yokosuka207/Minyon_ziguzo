@@ -20,7 +20,7 @@
 #include "joint.h"
 #include "texture.h"
 #include "sprite.h"
-
+#include"SplitStage.h"
 //**************************************************
 //　マクロ定義
 //**************************************************
@@ -49,7 +49,7 @@ HRESULT InitMapChip() {
 		g_PieceMapChip[p].TexNo = LoadTexture(g_MapChipTextureName);
 		g_PieceMapChip[p].direction = 0;
 		g_PieceMapChip[p].pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-		g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
+		g_PieceMapChip[p].OldMovePos = g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
 		g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);
 		g_PieceMapChip[p].MoveEndFlag = false;
 		for (int d = 0; d < BLOCK_CHIP_DIRECTION; d++) {
@@ -61,11 +61,13 @@ HRESULT InitMapChip() {
 		}
 	}
 
+	SplitStage* pSplitStage = GetSplitStage();
+
 	FileLoad(0);	//あとでnoに変更する？fusegi
 	RotateChipData();
-	SetPieceMapChip(D3DXVECTOR2(500.0f, 500.0f), 0);
-	SetPieceMapChip(D3DXVECTOR2(200.0f, 500.0f), 1);
-	SetPieceMapChip(D3DXVECTOR2(700.0f, 500.0f), 2);
+	SetPieceMapChip(pSplitStage->Split3[0][1], 0);
+	SetPieceMapChip(pSplitStage->Split3[1][0], 1);
+	SetPieceMapChip(pSplitStage->Split3[2][1], 2);
 
 	return S_OK;
 }

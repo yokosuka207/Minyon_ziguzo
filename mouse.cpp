@@ -24,7 +24,7 @@ HRESULT InitGameMouse()
 	Mouse.PosY = GetMousePosY();
 	Mouse.oldPosX = GetMousePosX();
 	Mouse.oldPosY = GetMousePosY();
-
+	Mouse.RotIndex = 0;
 	Mouse.UseFlag = false;
 	return S_OK;
 }
@@ -139,6 +139,7 @@ void UpdateGameMouse()
 					{
 						oneFlag = true;
 						MouseIndex = i;
+						pPiece[i].OldMovePos = pPiece[i].pos;
 
 					}
 					else if (oneFlag && i == MouseIndex)
@@ -176,6 +177,8 @@ void UpdateGameMouse()
 						if (GetKeyboardTrigger(DIK_A))	//aÉLÅ[Ç™âüÇ≥ÇÍÇΩÇÁ
 						{
 							RotateMapChipR(MouseIndex);
+							Mouse.RotIndex += 1;
+
 						}
 					}
 
@@ -194,7 +197,10 @@ void UpdateGameMouse()
 			pPuzzle[MouseIndex].MoveFlag = false;
 			pPuzzle[MouseIndex].MoveEndFlag = true;
 			pPiece[MouseIndex].MoveEndFlag = true;
+			Mouse.RotIndex = 0;
+
 		}
+
 		oneFlag = false;
 		MouseIndex = -1;
 	}
