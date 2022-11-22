@@ -22,7 +22,7 @@
 #include"puzzle.h"
 #include"collision.h"
 #include"mouse.h"
-/*#include"jump_stand.h"*/		//ジャンプ台
+#include"jump_stand.h"		//ジャンプ台
 
 //=============================================================================
 //マクロ定義
@@ -55,7 +55,7 @@ HRESULT InitPlayer()
 	g_Player.UseFlag = true;
 	g_Player.jump = false;
 	g_Player.getjump = false;
-	/*g_Player.GetJumpStand = false;*/		//ジャンプ台用
+	g_Player.GetJumpStand = false;		//ジャンプ台用
 	g_Player.fall = false;
 	g_Player.getfall = false;
 	g_Player.WarpFlag = false;
@@ -116,7 +116,7 @@ void UpdatePlayer()
 			}
 
 			//ジャンプ台処理
-			/*JUMPSTAND* p_JumpStand = GetJumpStand();
+			JUMPSTAND* p_JumpStand = GetJumpStand();
 			if (GetKeyboardPress(DIK_B))
 			{
 				if (CollisionBB(g_Player.Position, p_JumpStand->pos, g_Player.size, p_JumpStand->size * 2)) {
@@ -126,7 +126,7 @@ void UpdatePlayer()
 			else
 			{
 				g_Player.GetJumpStand = false;
-			}*/
+			}
 
 
 

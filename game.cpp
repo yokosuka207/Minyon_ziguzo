@@ -20,6 +20,8 @@
 #include "cursor.h"
 #include"SplitStage.h"
 
+#include "jump_stand.h"
+
 void InitGame()
 {
 	//----------げーむ
@@ -34,6 +36,7 @@ void InitGame()
 	InitBroken();
 	InitPlayer();
 	InitWarp();
+	InintJumpStand();
 	InitPuzzleCip();
 	InitPuzzle();
 	InitInventory();			// インベントリの初期化
@@ -56,6 +59,7 @@ void UninitGame()
 	UninitBroken();
 	UninitPlayer();
 	UninitWarp();
+	UninitJumoStand();
 	UninitInventory();			// インベントリの終了
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了
@@ -80,6 +84,7 @@ void UpdateGame()
 	UpdateGoal();
 	UpdateBroken();
 	UpdateWarp();
+	UpdateJumpStand();
 
 	UpdateInventory();			// インベントリの更新
 	UpdateMapChip();
@@ -98,6 +103,7 @@ void DrawGame()
 	DrawPuzzleCip();
 	DrawPlayer();
 	DrawWarp();
+	DrawJumpStand();
 	DrawGoal();
 	DrawBroken();
 
