@@ -85,7 +85,7 @@ void PieceCollision()
 											}
 											else
 											{
-												pPiece[i].pos = D3DXVECTOR2(200.0f, 200.0f);
+												//pPiece[i].pos = D3DXVECTOR2(200.0f, 200.0f);
 
 											}
 
@@ -105,7 +105,7 @@ void PieceCollision()
 											}
 											else
 											{
-												pPiece[i].pos = D3DXVECTOR2(200.0f, 200.0f);
+												//pPiece[i].pos = D3DXVECTOR2(200.0f, 200.0f);
 
 											}
 
