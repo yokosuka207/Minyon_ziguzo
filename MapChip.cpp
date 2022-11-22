@@ -20,6 +20,7 @@
 #include "joint.h"
 #include "texture.h"
 #include "sprite.h"
+#include "jump_stand.h"
 #include "SplitStage.h"
 //**************************************************
 //　マクロ定義
@@ -198,8 +199,9 @@ void RotateMapChipR(int PieceNo) {
 	}
 
 	// 各種デリート
-	deleteBlock(PieceNo);
-	DeleteJoint(PieceNo);
+	//deleteBlock(PieceNo);
+	//DeleteJoint(PieceNo);
+	DeleteMapChip(PieceNo);
 
 	// ピース再構成
 	SetMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
@@ -220,7 +222,7 @@ void RotateMapChipL(int PieceNo) {
 	// 各種デリート
 	//deleteBlock(PieceNo);
 	//DeleteJoint(PieceNo);
-	DeletemapChip(PieceNo);
+	DeleteMapChip(PieceNo);
 
 	// ピース再構成
 	SetMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
@@ -230,12 +232,14 @@ void RotateMapChipL(int PieceNo) {
 //==================================================
 //ピースの回転やインベントリから取り出すときに使うピースを消す関数
 //==================================================
-void DeletemapChip(int PieceNo) {
+void DeleteMapChip(int PieceNo) {
 	if (g_PieceMapChip[PieceNo].UseFlag) {
 		g_PieceMapChip[PieceNo].UseFlag = false;
 	}
 	deleteBlock(PieceNo);
 	DeleteJoint(PieceNo);
+	//DeleteJumpStand(PieceNo);
+	//DeleteSpike(PieceNo);
 }
 
 
