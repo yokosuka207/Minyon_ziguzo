@@ -24,7 +24,7 @@ HRESULT InitGameMouse()
 	Mouse.PosY = GetMousePosY();
 	Mouse.oldPosX = GetMousePosX();
 	Mouse.oldPosY = GetMousePosY();
-
+	Mouse.RotIndex = 0;
 	Mouse.UseFlag = false;
 	return S_OK;
 }
@@ -139,6 +139,7 @@ void UpdateGameMouse()
 					{
 						oneFlag = true;
 						MouseIndex = i;
+						pPiece[i].OldMovePos = pPiece[i].pos;
 
 					}
 					else if (oneFlag && i == MouseIndex)
@@ -150,7 +151,7 @@ void UpdateGameMouse()
 						//pPiece[MouseIndex].MoveFlag = true;
 						D3DXVECTOR2 temp = (pPiece[MouseIndex].pos - pPiece[MouseIndex].OldPos);
 
-						for (int i = 0; i < BLOCK_MAX; i++)
+						for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 						{
 							if (pCipBlock[i].UseFlag)
 							{
@@ -176,6 +177,8 @@ void UpdateGameMouse()
 						if (GetKeyboardTrigger(DIK_A))	//aƒL[‚ª‰Ÿ‚³‚ê‚½‚ç
 						{
 							RotateMapChipR(MouseIndex);
+							Mouse.RotIndex += 1;
+
 						}
 					}
 
@@ -194,7 +197,10 @@ void UpdateGameMouse()
 			pPuzzle[MouseIndex].MoveFlag = false;
 			pPuzzle[MouseIndex].MoveEndFlag = true;
 			pPiece[MouseIndex].MoveEndFlag = true;
+			Mouse.RotIndex = 0;
+
 		}
+
 		oneFlag = false;
 		MouseIndex = -1;
 	}

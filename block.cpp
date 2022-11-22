@@ -103,7 +103,9 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index) {
 			g_ChipBlock[i].Position = pos;
 			g_ChipBlock[i].Size = size;
 			g_ChipBlock[i].PieceIndex = index;
+
 			g_ChipBlock[i].UseFlag = true;
+			
 			break;
 		}
 	}
@@ -112,21 +114,14 @@ BLOCK* GetChipBlock() {
 	return g_ChipBlock;
 }
 
-void deleteBlock(int index)
-{
+void deleteBlock(int index){
 	for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
-		if (g_ChipBlock[i].UseFlag)
-		{
-
-			if (g_ChipBlock[i].PieceIndex == index)
-			{
+		if (g_ChipBlock[i].UseFlag){
+			if (g_ChipBlock[i].PieceIndex == index){
 				g_ChipBlock[i].UseFlag = false;
 			}
-
 		}
 	}
-
-
 }
 
 void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE btype, int pIndex, CIP_TYPE ctype)

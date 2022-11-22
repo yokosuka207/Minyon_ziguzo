@@ -20,7 +20,8 @@
 #include "joint.h"
 #include "texture.h"
 #include "sprite.h"
-
+#include "jump_stand.h"
+#include "SplitStage.h"
 //**************************************************
 //　マクロ定義
 //**************************************************
@@ -49,7 +50,7 @@ HRESULT InitMapChip() {
 		g_PieceMapChip[p].TexNo = LoadTexture(g_MapChipTextureName);
 		g_PieceMapChip[p].direction = 0;
 		g_PieceMapChip[p].pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-		g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
+		g_PieceMapChip[p].OldMovePos = g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
 		g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);
 		g_PieceMapChip[p].MoveEndFlag = false;
 		for (int d = 0; d < BLOCK_CHIP_DIRECTION; d++) {
@@ -61,11 +62,13 @@ HRESULT InitMapChip() {
 		}
 	}
 
+	SplitStage* pSplitStage = GetSplitStage();
+
 	FileLoad(0);	//あとでnoに変更する？fusegi
 	RotateChipData();
-	SetPieceMapChip(D3DXVECTOR2(500.0f, 500.0f), 0);
-	SetPieceMapChip(D3DXVECTOR2(200.0f, 500.0f), 1);
-	SetPieceMapChip(D3DXVECTOR2(700.0f, 500.0f), 2);
+	SetPieceMapChip(pSplitStage->Split3[0][1], 0);
+	SetPieceMapChip(pSplitStage->Split3[1][0], 1);
+	SetPieceMapChip(pSplitStage->Split3[2][1], 2);
 
 	return S_OK;
 }
@@ -101,30 +104,38 @@ void SetMapChip(D3DXVECTOR2 pos, int no) {
 		//j=x方向
 		for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
 			// 中心座標変数
-			D3DXVECTOR2 position = D3DXVECTOR2((pos.x - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - BLOCK_CHIP_SIZE * BLOCK_CHIP_ARRAY / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
+			//D3DXVECTOR2 position = D3DXVECTOR2((pos.x - PUZZLE_SIZE / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
+			D3DXVECTOR2 position = D3DXVECTOR2((pos.x - PUZZLE_SIZE / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
+			D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
 
 			switch (g_PieceMapChip[no].chip[g_PieceMapChip[no].direction][i][j]) {
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_NONE) :	//0
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK) :	//0				
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLOCK) :	//1
-				SetBlock(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE),no);
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//1
+				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_BUMP);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP) :	//2
-				SetChipPuzzuleChip(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE));
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_PULL) :	//2
+				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_DIP);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//3
-				SetWarp(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE));
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_NONE) :	//3
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL) :	//4
-				SetGoal(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE),no);
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLOCK) :	//4
+				SetBlock(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK) :	//5				
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP) :	//5
+				SetChipPuzzuleChip(position, DrawSize);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//6
-				SetJoint(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE), no, JOINT_TYPE::TYPE_BUMP);
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//6
+				SetWarp(position, DrawSize);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_PULL) :	//7
-				SetJoint(position, D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE), no, JOINT_TYPE::TYPE_DIP);
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL) :	//7
+				SetGoal(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP) :	//8
+				SetJumpStand(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9
+				//SetSpike(position, DrawSize,no);
 				break;
 			default:
 				break;
@@ -191,8 +202,9 @@ void RotateMapChipR(int PieceNo) {
 	}
 
 	// 各種デリート
-	deleteBlock(PieceNo);
-	DeleteJoint(PieceNo);
+	//deleteBlock(PieceNo);
+	//DeleteJoint(PieceNo);
+	DeleteMapChip(PieceNo);
 
 	// ピース再構成
 	SetMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
@@ -211,17 +223,34 @@ void RotateMapChipL(int PieceNo) {
 	}
 
 	// 各種デリート
-	deleteBlock(PieceNo);
-	DeleteJoint(PieceNo);
+	//deleteBlock(PieceNo);
+	//DeleteJoint(PieceNo);
+	DeleteMapChip(PieceNo);
 
 	// ピース再構成
 	SetMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
 }
 
 
+//==================================================
+//ピースの回転やインベントリから取り出すときに使うピースを消す関数
+//==================================================
+void DeleteMapChip(int PieceNo) {
+	if (g_PieceMapChip[PieceNo].UseFlag) {
+		g_PieceMapChip[PieceNo].UseFlag = false;
+	}
+	deleteBlock(PieceNo);
+	DeleteJoint(PieceNo);
+	DeleteJumpStand(PieceNo);
+	//DeleteSpike(PieceNo);
+}
+
+
 Piece* GetPiece() {
 	return g_PieceMapChip;
 }
+
+
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (!g_PieceMapChip[p].UseFlag) {

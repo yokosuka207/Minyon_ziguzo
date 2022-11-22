@@ -135,7 +135,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Desktop\パズル (2)\パズル - コピー\thorn_block.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="broken.cpp" />
@@ -146,6 +145,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="joint.cpp" />
+    <ClCompile Include="jump_stand.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapChip.cpp" />
     <ClCompile Include="mouse.cpp" />
@@ -157,14 +157,12 @@
     <ClCompile Include="result.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="SplitStage.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="warp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Desktop\パズル (2)\パズル - コピー\thorn_block.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="bg.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="broken.h" />
@@ -175,6 +173,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="inventory.h" />
     <ClInclude Include="joint.h" />
+    <ClInclude Include="jump_stand.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MapChip.h" />
     <ClInclude Include="mouse.h" />
@@ -186,6 +185,7 @@
     <ClInclude Include="result.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="SplitStage.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="warp.h" />
