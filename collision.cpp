@@ -96,7 +96,7 @@ void PieceCollision()
 											else
 											{
 												pPiece[i].pos = pPiece[i].OldMovePos;
-												Rotreturn(i);
+												//Rotreturn(i);
 
 											}
 
@@ -118,7 +118,7 @@ void PieceCollision()
 											else
 											{
 												pPiece[i].pos = pPiece[i].OldMovePos;
-												Rotreturn(i);
+												//Rotreturn(i);
 
 											}
 
@@ -139,7 +139,7 @@ void PieceCollision()
 											else
 											{
 												pPiece[i].pos = pPiece[i].OldMovePos;
-												Rotreturn(i);
+												//Rotreturn(i);
 
 											}
 
@@ -159,7 +159,7 @@ void PieceCollision()
 											}
 											else
 											{
-												Rotreturn(i);
+												//Rotreturn(i);
 
 												pPiece[i].pos = pPiece[i].OldMovePos;
 												//D3DXVECTOR2(200.0f, 200.0f);

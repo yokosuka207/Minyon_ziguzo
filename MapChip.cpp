@@ -237,7 +237,7 @@ void RotateMapChipL(int PieceNo) {
 //==================================================
 void DeleteMapChip(int PieceNo) {
 	if (g_PieceMapChip[PieceNo].UseFlag) {
-		g_PieceMapChip[PieceNo].UseFlag = false;
+		//g_PieceMapChip[PieceNo].UseFlag = false;
 	}
 	deleteBlock(PieceNo);
 	DeleteJoint(PieceNo);
