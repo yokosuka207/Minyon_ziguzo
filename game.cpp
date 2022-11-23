@@ -73,7 +73,7 @@ void UpdateGame()
 
 	UpdateGameMouse();
 	//PuzzleCollision();
-	//UpdateCollision();
+	UpdateCollision();
 	PieceCollision();
 
 	UpdateBlock();

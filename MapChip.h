@@ -21,7 +21,7 @@
 //**************************************************
 #define BLOCK_CHIP_ARRAY (16)	// 配列の最小単位
 #define BLOCK_CHIP_SIZE (15.0f)	//マップチップブロックのサイズ
-#define BLOCK_DRAW_SIZE (15.0f)	//マップチップブロックの表示サイズ
+#define BLOCK_DRAW_SIZE (16.0f)	//マップチップブロックの表示サイズ
 #define BLOCK_CHIP_MAX (12 * 12 * 10)//マップチップの中のブロック最大数
 #define BLOCK_CHIP_WARP_MAX (2)	//1ステージワープの個数
 #define BLOCK_CHIP_DIRECTION (4)//チップの回転4方向分

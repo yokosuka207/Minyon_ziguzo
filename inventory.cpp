@@ -16,6 +16,7 @@ Update:
 #include "sprite.h"
 #include "input.h"
 #include "puzzle.h"
+#include "MapChip.h"
 
 //**************************************************
 // マクロ定義
@@ -25,12 +26,6 @@ Update:
 #define INVENTORY_SIZE_Y		(60)
 #define INVENTORY_BIGSIZE_X		(80)
 #define INVENTORY_BIGSIZE_Y		(80)
-
-
-#define INVENTORYBG_SIZE_X		(100)
-#define INVENTORYBG_SIZE_Y		(SCREEN_HEIGHT)
-#define INVENTORYBG_POS_X		(INVENTORYBG_SIZE_X / 2)
-#define INVENTORYBG_POS_Y		(SCREEN_HEIGHT / 2)
 
 #define INVENTORY_BOX_SIZE_Y	(INVENTORYBG_SIZE_Y / INVENTORY_MAX)
 #define INVENTORY_POS_X			(INVENTORYBG_POS_X)
@@ -83,9 +78,9 @@ HRESULT InitInventory()
 
 	// デバッグ用
 	SetInventory(0);
-	SetInventory(0);
-	SetInventory(0);
-	SetInventory(0);
+	SetInventory(1);
+	SetInventory(2);
+	SetInventory(3);
 
 	return S_OK;
 }
@@ -124,23 +119,6 @@ void UpdateInventory()
 
 			// 左に置くバージョン
 			float bgmax_x = INVENTORYBG_POS_X + INVENTORYBG_SIZE_X / 2;
-			// 所持パズルとUI範囲の当たり判定
-			// 所持パズルが上に出たら
-			if (g_Inventory[i].pos.x > bgmax_x) {
-				// 外に出たよ
-				// パズル出す
-				PUZZLE_CIP* pPiece = GetPuzzleCip();
-				if (!pPiece[i].UseFlag) {
-					// ここでパズル出現
-				}
-
-				// 透明にする
-				g_Inventory[i].color.a = 0.5f;
-			}
-			else {
-				// 不透明にする
-				g_Inventory[i].color.a = 1.0f;
-			}
 
 			// 入力(マウス左Press)
 			if (IsMouseLeftPressed()) {
@@ -181,6 +159,14 @@ void UpdateInventory()
 				}
 				//-------------------------------
 			}
+
+			// 所持パズルとUI範囲の当たり判定
+			if (g_Inventory[i].pos.x > bgmax_x) {
+				// 外に出たよ
+				// ピースを出す
+				//SetPieceMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo);
+				//DeleteInventory(g_Inventory[i].PieNo);
+			}
 		}
 	}
 }
@@ -215,7 +201,7 @@ void DrawInventory()
 //==================================================
 // セット関数
 //==================================================
-void SetInventory(float PieNo)
+void SetInventory(int PieNo)
 {
 	// 保持するパズル配列の中を確認
 	for (int i = 0; i < INVENTORY_MAX; i++) {
@@ -240,3 +226,19 @@ KEEP_PUZZLE * GetInventory()
 	return g_Inventory;
 }
 
+
+//==================================================
+// ゲット関数
+//==================================================
+void DeleteInventory(int PieNo)
+{
+	for (int i = 0; i < INVENTORY_MAX; i++) {
+		if (g_Inventory[i].PieNo == PieNo) {
+			g_Inventory[i].IsCatch = false;
+
+			g_Inventory[i].IsUse = false;
+
+			break;
+		}
+	}
+}

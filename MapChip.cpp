@@ -207,7 +207,7 @@ void RotateMapChipR(int PieceNo) {
 	DeleteMapChip(PieceNo);
 
 	// ピース再構成
-	SetMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
+	SetPieceMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
 }
 
 
@@ -228,7 +228,7 @@ void RotateMapChipL(int PieceNo) {
 	DeleteMapChip(PieceNo);
 
 	// ピース再構成
-	SetMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
+	SetPieceMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
 }
 
 
@@ -237,7 +237,7 @@ void RotateMapChipL(int PieceNo) {
 //==================================================
 void DeleteMapChip(int PieceNo) {
 	if (g_PieceMapChip[PieceNo].UseFlag) {
-		//g_PieceMapChip[PieceNo].UseFlag = false;
+		g_PieceMapChip[PieceNo].UseFlag = false;
 	}
 	deleteBlock(PieceNo);
 	DeleteJoint(PieceNo);
