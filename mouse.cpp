@@ -179,7 +179,7 @@ void UpdateGameMouse()
 						if (GetKeyboardTrigger(DIK_A))	//aƒL[‚ª‰Ÿ‚³‚ê‚½‚ç
 						{
 							RotateMapChipR(MouseIndex);
-							//Mouse.RotIndex += 1;
+							Mouse.RotIndex += 1;
 
 						}
 					}
