@@ -9,6 +9,7 @@
 #ifndef COLLISION_H_
 #define COLLISION_H_
 #include"puzzle.h"
+#include"MapChip.h"
 typedef enum
 {
 	UP = 0,
@@ -42,5 +43,6 @@ bool fourCollision(PUZZLE puzzle, int index);			//四方向のパズルが空いているか
 
 void PositionPlas(D3DXVECTOR2 num,int pinNo);	//ピースの中のものを移動させる
 
+bool PlayerPieceOpen(Piece p, int index, DIRECSION direcsion);	//その方向のパズルが空いているか
 
 #endif // !COLLISION_H_

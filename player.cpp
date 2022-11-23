@@ -24,7 +24,7 @@
 #include"collision.h"
 #include"mouse.h"
 #include"jump_stand.h"		//ジャンプ台
-
+#include"MapChip.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -47,7 +47,7 @@ static char* g_TextureNameBroken = (char*)"data\\texture\\runningman001.png";
 HRESULT InitPlayer()
 {
 	//プレイヤーの初期化
-	g_Player.Position = D3DXVECTOR2(300.0f, 200.0f);
+	g_Player.Position = D3DXVECTOR2(300.0f, 300.0f);
 	g_Player.oldpos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	g_Player.sp = D3DXVECTOR2(0,8);
 	g_Player.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
@@ -201,7 +201,7 @@ void UpdatePlayer()
 
 
 			//プレイヤー・ブロック　当たり判定
-			for (int i = 0; i < BLOCK_MAX; i++)
+			/*for (int i = 0; i < BLOCK_MAX; i++)
 			{
 				BLOCK* block = GetBlock();
 
@@ -247,7 +247,7 @@ void UpdatePlayer()
 						g_Player.frame = 50;
 					}
 				}
-			}
+			}*/
 
 			//チップのブロックの当たり判定
 			for (int i = 0; i < BLOCK_MAX; i++)
@@ -268,8 +268,8 @@ void UpdatePlayer()
 					//プレイヤー右・ブロック左
 					if (g_Player.Position.x - g_Player.size.x / 2 < (cipblock + i)->Position.x + (cipblock + i)->Size.x / 2 &&
 						g_Player.oldpos.x - g_Player.size.x / 2 >= (cipblock + i)->Position.x + (cipblock + i)->Size.x / 2 &&
-						g_Player.Position.y + g_Player.size.y / 2 > (cipblock + i)->Position.y - (cipblock + i)->Size.y / 3 &&
-						g_Player.Position.y - g_Player.size.y / 2 < (cipblock + i)->Position.y + (cipblock + i)->Size.y / 3)
+						g_Player.Position.y + g_Player.size.y / 3 > (cipblock + i)->Position.y - (cipblock + i)->Size.y / 3 &&
+						g_Player.Position.y - g_Player.size.y / 3 < (cipblock + i)->Position.y + (cipblock + i)->Size.y / 3)
 					{
 						g_Player.Position.x = (cipblock + i)->Position.x + (cipblock + i)->Size.x / 2 + g_Player.size.x / 2;
 					}
@@ -281,7 +281,7 @@ void UpdatePlayer()
 						g_Player.oldpos.y + g_Player.size.y / 2 <= (cipblock + i)->Position.y - (cipblock + i)->Size.y / 2)
 					{
 						g_Player.Position.y = (cipblock + i)->Position.y - (cipblock + i)->Size.y / 2 - g_Player.size.y / 2-0.02f;
-						g_Player.jump = false;
+						g_Player.jump = false; 
 						g_Player.fall = false;
 						g_Player.WarpFlag = false;
 						g_Player.frame = 0;
@@ -403,19 +403,19 @@ void UpdatePlayer()
 
 			//プレイヤーとパズルの画面外判定
 
-			PUZZLE* pPuzzle = GetPuzzle();
+			Piece* pPiece = GetPiece();
 
 			for (int i = 0; i < PUZZLE_MAX; i++)
 			{
-				if (pPuzzle[i].UseFlag)
+				if (pPiece[i].UseFlag)
 				{
-					bool hitflag = CollisionBB(g_Player.Position, pPuzzle[i].Position, g_Player.size, pPuzzle[i].Size);
+					bool hitflag = CollisionBB(g_Player.Position, pPiece[i].pos, g_Player.size, pPiece[i].size);
 
 					if (hitflag)
 					{
-						if (g_Player.Position.y < pPuzzle[i].Position.y - PUZZLE_HEIGHT / 2)
+						if (g_Player.Position.y < pPiece[i].pos.y - PUZZLE_HEIGHT / 2)
 						{
-							bool hitflag2 = PlayerPuzzleOpen(pPuzzle[i], i, UP);
+							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, UP);
 
 							if (!hitflag2)
 							{
@@ -430,12 +430,12 @@ void UpdatePlayer()
 								//g_Player.sp.y += 0.2;//加速
 							}
 						}
-						if (g_Player.Position.x >= pPuzzle[i].Position.x + PUZZLE_WIDHT / 2)
+						else if (g_Player.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
 						{
 
-							bool hitflag2 = PlayerPuzzleOpen(pPuzzle[i], i, RIGHT);
+							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, RIGHT);
 
-							if (!hitflag2)
+  							if (!hitflag2)
 							{
 								//g_Player.sp.y += 0.2;//加速
 							}
@@ -446,10 +446,9 @@ void UpdatePlayer()
 
 
 						}
-						if (g_Player.Position.x <= pPuzzle[i].Position.x - PUZZLE_WIDHT / 2)
+						else if (g_Player.Position.x <= pPiece[i].pos.x - PUZZLE_WIDHT / 2)
 						{
-
-							bool hitflag2 = PlayerPuzzleOpen(pPuzzle[i], i, LEFT);
+							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, LEFT);
 
 							if (!hitflag2)
 							{
@@ -457,7 +456,7 @@ void UpdatePlayer()
 							}
 							else
 							{
-								g_Player.Position.x = g_Player.oldpos.x;
+ 								g_Player.Position.x = g_Player.oldpos.x;
 							}
 
 

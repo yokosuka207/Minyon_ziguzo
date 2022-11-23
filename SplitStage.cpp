@@ -6,7 +6,7 @@ SplitStage g_spritStage;
 void InitSplitStage()
 {
 
-	g_spritStage.pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	g_spritStage.pos = D3DXVECTOR2(SCREEN_WIDTH / 2+20.0f, SCREEN_HEIGHT / 2);
 
 	g_spritStage.size = D3DXVECTOR2(SPLIT_SIZE, SPLIT_SIZE);
 
