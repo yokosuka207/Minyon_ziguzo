@@ -20,6 +20,10 @@ Update:
 //**************************************************
 // マクロ定義
 //**************************************************
+#define INVENTORYBG_SIZE_X		(100)
+#define INVENTORYBG_SIZE_Y		(SCREEN_HEIGHT)
+#define INVENTORYBG_POS_X		(INVENTORYBG_SIZE_X / 2)
+#define INVENTORYBG_POS_Y		(SCREEN_HEIGHT / 2)
 
 
 //**************************************************
@@ -35,7 +39,7 @@ typedef struct
 
 typedef struct
 {
-	float			PieNo;		// ピース番号
+	int				PieNo;		// ピース番号
 
 	D3DXVECTOR2		pos;		// 表示座標
 	D3DXVECTOR2		size;		// 表示サイズ
@@ -56,8 +60,9 @@ void UninitInventory();
 void UpdateInventory();
 void DrawInventory();
 
-void SetInventory(float PieNo);
+void SetInventory(int PieNo);
 KEEP_PUZZLE* GetInventory();
+void DeleteInventory(int PieNo);
 
 
 #endif // !_INVENTORY_H_

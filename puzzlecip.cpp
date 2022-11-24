@@ -8,7 +8,9 @@
 //#include"block.h"
 #include"mouse.h"
 #include "MapChip.h"
+#include "SplitStage.h"
 
+#include"inventory.h"
 PUZZLE_CIP	g_PuzzleCip[CIP_MAX];
 //----------ƒ}ƒbƒvƒ`ƒbƒv—p”z—ñ----------
 // 22/11/02
@@ -21,28 +23,8 @@ static char *g_textureName_PuzzleCip = (char*)"data\\texture\\blue.png";	//ƒeƒNƒ
 
 void SetPuzzleCipCreate(CREATE_CIP_TYPE ctype,int u, int r, int d, int l, bool gflag);
 void CreatePuzzle(int i);
-int a = 0;
-int b = 0;
 HRESULT InitPuzzleCip()
 {
-	 a = 0;
-	 b = 0;
-	for (int i = 0; i < CIP_MAX; i++)
-	{
-		g_PuzzleCip[i].texno = LoadTexture(g_textureName_PuzzleCip);
-
-		g_PuzzleCip[i].Position = D3DXVECTOR2(0.0f, 0.0f);
-		g_PuzzleCip[i].Size = D3DXVECTOR2(CIP_SIZE_X, CIP_SIZE_Y);
-		g_PuzzleCip[i].Type = CIP_NONE;
-		g_PuzzleCip[i].Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		g_PuzzleCip[i].Rotation = 0.0f;
-		g_PuzzleCip[i].GoalFlag = false;
-		g_PuzzleCip[i].UseFlag = false;
-		for (int j = 0; j < 4; j++)
-		{
-			g_PuzzleCip[i].houkou[j] = 0;
-		}
-	}
 	//ƒ}ƒbƒvƒ`ƒbƒv—p‰Šú‰»
 	for (int i = 0; i < PUZZLE_MAX; i++) {
 		g_PuzzleCip[i].texno = LoadTexture(g_textureName_PuzzleCip);
@@ -52,18 +34,12 @@ HRESULT InitPuzzleCip()
 		g_ChipPuzzleChip[i].Type = CIP_NONE;
 		g_ChipPuzzleChip[i].Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_ChipPuzzleChip[i].Rotation = 0.0f;
+		g_ChipPuzzleChip[i].NextPieceIndex = -1;
+		g_ChipPuzzleChip[i].PieceIndex = -1;
 		g_ChipPuzzleChip[i].GoalFlag = false;
 		g_ChipPuzzleChip[i].UseFlag = false;
-		for (int j = 0; j < 4; j++)
-		{
-			g_PuzzleCip[i].houkou[j] = 0;
-		}
+		g_ChipPuzzleChip[i].GetFlag = false;
 	}
-
-	SetPuzzleCipCreate(CREATE_ZYUUZI, 0, 2, 2, 2,false);
-	SetPuzzleCipCreate(CREATE_TATE, 0, 0, 1, 2, false);
-	SetPuzzleCipCreate(CREATE_BOX, 1, 1, 1, 0, false);
-	SetPuzzleCipCreate(CREATE_COVER, 0, 2, 1, 2, true);
 
 	return S_OK;
 }
@@ -82,8 +58,10 @@ void UpdatePuzzleCip()
 {
 	for (int i = 0; i < CIP_MAX; i++)
 	{
-		if (g_PuzzleCip[i].UseFlag)
+		if (g_ChipPuzzleChip[i].UseFlag)
 		{
+			SplitStage* pSplitStage = GetSplitStage();
+
 			PLAYER* pPlayer = GetPlayer();
 			MOUSE* pMouse = GetMouse();
 			PUZZLE* pPuzzle = GetPuzzle();
@@ -91,24 +69,16 @@ void UpdatePuzzleCip()
 			{
 
 
-						if (g_PuzzleCip[i].Position.x + g_PuzzleCip[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2
-							&& g_PuzzleCip[i].Position.x - g_PuzzleCip[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2
-							&& g_PuzzleCip[i].Position.y + g_PuzzleCip[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2
-							&& g_PuzzleCip[i].Position.y - g_PuzzleCip[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2)
+						if (g_ChipPuzzleChip[i].Position.x + g_ChipPuzzleChip[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2
+							&& g_ChipPuzzleChip[i].Position.x - g_ChipPuzzleChip[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2
+							&& g_ChipPuzzleChip[i].Position.y + g_ChipPuzzleChip[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2
+							&& g_ChipPuzzleChip[i].Position.y - g_ChipPuzzleChip[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2)
 						{
+							//SetPieceMapChip(pSplitStage->Split3[2][2], g_ChipPuzzleChip[i].NextPieceIndex);
+							SetInventory(g_ChipPuzzleChip[i].NextPieceIndex);
+							g_ChipPuzzleChip[i].GetFlag = true;
 
-							switch (g_PuzzleCip[i].Type)
-							{
-							case CIP_NOMAL:
-								CreatePuzzle(i);
-								//SetPuzzle(D3DXVECTOR2(0.0f + PUZZLE_WIDHT / 2, 500.0f), D3DXVECTOR2(PUZZLE_WIDHT, PUZZLE_HEIGHT), STEAT_NUM, STEAT_HIKKOMI, STEAT_HIKKOMI, STEAT_HIKKOMI, GRAND_UP, TYPE_NOMAL, CIP_GOAL, TYPE_ZYUUZI,false);
-								g_PuzzleCip[i].UseFlag = false;
-								break;
-							case CIP_GOAL:
-								//	SetPuzzle(D3DXVECTOR2(800.0f, 200.0f), D3DXVECTOR2(PUZZLE_WIDHT, PUZZLE_HEIGHT), STEAT_NUM, STEAT_HIKKOMI, STEAT_DEPPARI, STEAT_NUM, GRAND_DOWN, TYPE_GOAL, CIP_NONE, TYPE_GRAND,false);
-								g_PuzzleCip[i].UseFlag = false;
-								break;
-							}
+							g_ChipPuzzleChip[i].UseFlag = false;
 						}
 
 			}
@@ -147,13 +117,29 @@ void DrawPuzzleCip()
 	}
 
 }
-void SetChipPuzzuleChip(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
+void SetChipPuzzuleChip(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index) {
 	for (int i = 0; i < PUZZLE_MAX; i++) {
 		if (!g_ChipPuzzleChip[i].UseFlag) {
 			g_ChipPuzzleChip[i].Position = pos;
 			g_ChipPuzzleChip[i].Size = size;
-			g_ChipPuzzleChip->UseFlag = true;
+			g_ChipPuzzleChip[i].NextPieceIndex = index;
+			g_ChipPuzzleChip[i].PieceIndex = index-1;
+			g_ChipPuzzleChip[i].UseFlag = true;
 			break;
+		}
+	}
+}
+
+void DeleteChipPiece(int index)
+{
+	for (int i = 0; i < PUZZLE_MAX; i++)
+	{
+		if (g_ChipPuzzleChip[i].UseFlag) 
+		{
+			if (index == g_ChipPuzzleChip[i].PieceIndex)
+			{
+				g_ChipPuzzleChip[i].UseFlag = false;
+			}
 		}
 	}
 }
@@ -161,7 +147,7 @@ void SetChipPuzzuleChip(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 
 int SetPuzzleCip(D3DXVECTOR2 pos, D3DXVECTOR2 size, CIP_TYPE type)
 {
-	for (int i = b; i < CIP_MAX; i++)
+	for (int i = 0; i < CIP_MAX; i++)
 	{
 		if (!g_PuzzleCip[i].UseFlag)
 		{
@@ -170,7 +156,7 @@ int SetPuzzleCip(D3DXVECTOR2 pos, D3DXVECTOR2 size, CIP_TYPE type)
 				return-1;
 			}
 
-			b++;
+		//	b++;
 			g_PuzzleCip[i].Position = pos;
 			g_PuzzleCip[i].Size = size;
 			g_PuzzleCip[i].Type = type;
@@ -182,7 +168,7 @@ int SetPuzzleCip(D3DXVECTOR2 pos, D3DXVECTOR2 size, CIP_TYPE type)
 
 PUZZLE_CIP * GetPuzzleCip()
 {
-	return &g_PuzzleCip[0];
+	return &g_ChipPuzzleChip[0];
 }
 //----------------------------
 //ƒpƒYƒ‹‚Ì’l‚ÌƒZƒbƒg
@@ -193,13 +179,13 @@ PUZZLE_CIP * GetPuzzleCip()
 //----------------------------
 void SetPuzzleCipCreate(CREATE_CIP_TYPE ctype, int u, int r, int d, int l, bool gflag)
 {
-	g_PuzzleCip[a].Num_type = ctype;
-	g_PuzzleCip[a].houkou[0] = u;
-	g_PuzzleCip[a].houkou[1] = r;
-	g_PuzzleCip[a].houkou[2] = d;
-	g_PuzzleCip[a].houkou[3] = l;
-	g_PuzzleCip[a].GoalFlag = gflag;
-	a++;
+	//g_PuzzleCip[a].Num_type = ctype;
+	//g_PuzzleCip[a].houkou[0] = u;
+	//g_PuzzleCip[a].houkou[1] = r;
+	//g_PuzzleCip[a].houkou[2] = d;
+	//g_PuzzleCip[a].houkou[3] = l;
+	//g_PuzzleCip[a].GoalFlag = gflag;
+	//a++;
 
 }
 

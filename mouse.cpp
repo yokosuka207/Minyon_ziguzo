@@ -7,6 +7,8 @@
 #include"player.h"
 #include"MapChip.h"
 #include"joint.h"
+#include"puzzlecip.h"
+#include"goal.h"
 //#include"puzzlecip.h"
 
 MOUSE Mouse;
@@ -26,6 +28,7 @@ HRESULT InitGameMouse()
 	Mouse.oldPosY = GetMousePosY();
 	Mouse.RotIndex = 0;
 	Mouse.UseFlag = false;
+	Mouse.pFlag = false;
 	return S_OK;
 }
 
@@ -41,7 +44,8 @@ void UpdateGameMouse()
 	Piece* pPiece = GetPiece();
 	BLOCK* pCipBlock = GetChipBlock();
 	JOINT* pJoint = GetJoint();
-
+	PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
+	GOAL* pGoal = GetGoal();
 	Mouse.oldPosX = GetMousePosX();
 	Mouse.oldPosY = GetMousePosY();
 
@@ -137,6 +141,18 @@ void UpdateGameMouse()
 						pPiece[i].pos.x + pPiece[i].size.x / 3 > Mouse.PosX &&
 						!oneFlag)
 					{
+						//プレーヤーが持ったピースの中にいたら
+						if (pPiece[i].pos.y - pPiece[i].size.y / 2 < pPlayer->Position.y &&
+							pPiece[i].pos.y + pPiece[i].size.y / 2 > pPlayer->Position.y &&
+							pPiece[i].pos.x - pPiece[i].size.x / 2 < pPlayer->Position.x &&
+							pPiece[i].pos.x + pPiece[i].size.x / 2 > pPlayer->Position.x
+							)
+						{
+							Mouse.pFlag = true;
+						}
+
+						Mouse.RotIndex = 0;
+
 						oneFlag = true;
 						MouseIndex = i;
 						pPiece[i].OldMovePos = pPiece[i].pos;
@@ -174,11 +190,35 @@ void UpdateGameMouse()
 
 							}
 						}
-						if (GetKeyboardTrigger(DIK_A))	//aキーが押されたら
+						for (int i = 0; i < PUZZLE_MAX; i++)
 						{
-							RotateMapChipR(MouseIndex);
-							Mouse.RotIndex += 1;
+							if (pPuzzleCip[i].UseFlag)
+							{
+								if (pPuzzleCip[i].PieceIndex == MouseIndex)
+								{
+									pPuzzleCip[i].Position += temp;
+								}
+							}
+						}
+						if (pGoal->UseFlag)
+						{
+							if (pGoal->pieceIndex == MouseIndex)
+							{
+								pGoal->Pos += temp;
+							}
+						}
+						if (!Mouse.pFlag)
+						{
+							if (GetKeyboardTrigger(DIK_A))	//aキーが押されたら
+							{
+								RotateMapChipR(MouseIndex);
+								Mouse.RotIndex += 1;
 
+							}
+						}
+						else
+						{
+							pPlayer->Position += temp;
 						}
 					}
 
@@ -197,7 +237,8 @@ void UpdateGameMouse()
 			pPuzzle[MouseIndex].MoveFlag = false;
 			pPuzzle[MouseIndex].MoveEndFlag = true;
 			pPiece[MouseIndex].MoveEndFlag = true;
-			Mouse.RotIndex = 0;
+			//Mouse.RotIndex = 0;
+			Mouse.pFlag = false;
 
 		}
 

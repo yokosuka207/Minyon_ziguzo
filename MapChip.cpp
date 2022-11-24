@@ -64,11 +64,11 @@ HRESULT InitMapChip() {
 
 	SplitStage* pSplitStage = GetSplitStage();
 
-	FileLoad(0);	//あとでnoに変更する？fusegi
+	FileLoad(1);	//あとでnoに変更する？fusegi
 	RotateChipData();
 	SetPieceMapChip(pSplitStage->Split3[0][1], 0);
-	SetPieceMapChip(pSplitStage->Split3[1][0], 1);
-	SetPieceMapChip(pSplitStage->Split3[2][1], 2);
+	//SetPieceMapChip(pSplitStage->Split3[1][0], 1);
+	//SetPieceMapChip(pSplitStage->Split3[2][1], 2);
 
 	return S_OK;
 }
@@ -123,7 +123,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no) {
 				SetBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP) :	//5
-				SetChipPuzzuleChip(position, DrawSize);
+				SetChipPuzzuleChip(position, DrawSize,no+1);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//6
 				SetWarp(position, DrawSize);
@@ -152,7 +152,7 @@ void FileLoad(int StageNo) {
 		filename = "MapData/map0.txt";
 		break;
 	case 1:
-		filename = "MapData/map1.txt";
+		filename = "MapData/map.txt"; 
 		break;
 	}
 	FILE* fp;
@@ -207,7 +207,7 @@ void RotateMapChipR(int PieceNo) {
 	DeleteMapChip(PieceNo);
 
 	// ピース再構成
-	SetMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
+	SetPieceMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
 }
 
 
@@ -228,7 +228,7 @@ void RotateMapChipL(int PieceNo) {
 	DeleteMapChip(PieceNo);
 
 	// ピース再構成
-	SetMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
+	SetPieceMapChip(g_PieceMapChip[PieceNo].pos, PieceNo);
 }
 
 
@@ -242,6 +242,7 @@ void DeleteMapChip(int PieceNo) {
 	deleteBlock(PieceNo);
 	DeleteJoint(PieceNo);
 	DeleteJumpStand(PieceNo);
+	DeleteChipPiece(PieceNo);
 	//DeleteSpike(PieceNo);
 }
 
