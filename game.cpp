@@ -21,6 +21,7 @@
 #include"SplitStage.h"
 
 #include "jump_stand.h"
+#include "thorn_block.h"
 
 void InitGame()
 {
@@ -30,6 +31,7 @@ void InitGame()
 	InitSplitStage();
 	BgInit();
 	InitBlock();
+	InitThornBlock();
 	InitJoint();
 	InitGameMouse();
 	InitGoal();
@@ -51,6 +53,7 @@ void UninitGame()
 	//UninitPolygon();	//É|ÉäÉSÉìÇÃèIóπ
 	BgUninit();
 	UninitBlock();
+	UninitThornBlock();
 	UninitJoint();
 	UninitPuzzle();
 	UninitGameMouse();
@@ -77,6 +80,7 @@ void UpdateGame()
 	PieceCollision();
 
 	UpdateBlock();
+	UpdateThornBlock();
 	UpdateJoint();
 	UpdatePuzzle();
 	UpdatePuzzleCip();
@@ -99,6 +103,7 @@ void DrawGame()
 	DrawPuzzle();
 	DrawMapChip();
 	DrawBlock();
+	DrawThornBlock();
 	DrawJoint();
 	DrawPuzzleCip();
 	DrawPlayer();

@@ -1,66 +1,53 @@
 /*==============================================================================
 
    トゲブロックヘッダー [thorn_block.h]
-														 Author :座間研佑
-														 Date   :2022/11/09
-
+														 Author		:座間研佑
+														 Date		:2022/11/09
+														 最終更新	:2022/11/224
 ==============================================================================*/
 
 #pragma once
 
-#ifndef THORN_BLOCK_H_
-#define THORN_BLOCK_H_
-
 #include "main.h"
 #include "renderer.h"
+
+
+//=============================================================================
+//マクロ定義
+//=============================================================================
+
 
 #define	THORN_BLOCK_MAX	64
 #define THORN_BLOCK_H		30	//ブロックの縦サイズ
 #define THORN_BLOCK_W		30	//ブロックの横サイズ
 
-#define THORN_GRAND_H		30	//ブロックの縦サイズ
-#define THORN_GRAND_W		135	//ブロックの横サイズ
-
-#define THORN_SQUAER_H	40	//四隅ブロックの縦サイズ
-#define THORN_SQUAER_W	40	//四隅ブロックの横サイズ
-
-typedef enum
+struct THORNBLOCK
 {
-	THORN_GRAND_DOWN = 0,
-	THORN_GRAND_LEFT,
-	THORN_GRAND_UP,
-	THORN_GRAND_RIGHT,
-	THORN_GRAND_NONE,
+	bool UseFlag;//構造体利用中フラグ
+	D3DXVECTOR2 Size;//BOXサイズ
+	D3DXVECTOR2 Postion;//表示座標(中心座標)
+	D3DXVECTOR2 sp;
+	float rot;//回転角度
+	float texno;//テクスチャインデックス
+	D3DXCOLOR col;//色
+	float PaternNo;//パターン番号
+	float uv_w;//横サイズ
+	float uv_h;//縦サイズ
+	int NumPatern;//横枚数
 
-}THORN_GRAND_TYPE;
+	int FrameWait;
+};
 
-typedef enum
-{
-	THORN_TYPE_GRAND = 0,
-	THORN_TYPE_HARFGRAND,
-	THORN_TYPE_CENTER,
-	THORN_TYPE_T,
-	THORN_TYPE_SQUARE,
-	THORN_TYPE_NUM
-}THORN_BLOCK_TYPE;
-
-typedef struct
-{
-	D3DXVECTOR2		Position;	//ポジション
-	D3DXVECTOR2		Size;	//サイズ
-	D3DXCOLOR		Col;	//色
-	float			texno;	//テクスチャインデックス
-	float			Rotation;	//角度
-	bool			UseFlag;	//使用フラグ
-
-}THORN_BLOCK;
+//=============================================================================
+//プロトタイプ宣言
+//=============================================================================
 
 HRESULT InitThornBlock();
 void UninitThornBlock();
 void UpdateThornBlock();
 void DrawThornBlock();
 
-void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, THORN_GRAND_TYPE type, THORN_BLOCK_TYPE btype, int pIndex);
-THORN_BLOCK* GetThornBlock();
+int SetThornBlock(D3DXVECTOR2 Pos, D3DXVECTOR2 s);
 
-#endif // !THORN_BLOCK_H_
+THORNBLOCK* GetThornBlock();
+
