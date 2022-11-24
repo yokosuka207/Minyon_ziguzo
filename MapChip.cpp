@@ -22,6 +22,9 @@
 #include "sprite.h"
 #include "jump_stand.h"
 #include "SplitStage.h"
+#include "Key.h"
+#include "OpenKey.h"
+#include "fallblock.h"
 //**************************************************
 //　マクロ定義
 //**************************************************
