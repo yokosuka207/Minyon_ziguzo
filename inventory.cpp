@@ -42,7 +42,8 @@ static KEEP_PUZZLE_BG	g_InventoryBG;
 static KEEP_PUZZLE		g_Inventory[INVENTORY_MAX];
 
 // テクスチャの名前
-static char* g_InventoryBGTextureName = (char*)"data\\texture\\white.jpg";
+static char* g_InventoryBGTextureName = (char*)"data\\texture\\JumpStand.jpg";
+//static char* g_InventoryBGTextureName = (char*)"data\\texture\\white.jpg";
 static char* g_InventoryTextureName = (char*)"data\\texture\\blue.png";
 
 

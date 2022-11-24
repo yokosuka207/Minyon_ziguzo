@@ -17,7 +17,8 @@ static PLAYER* p_Player;
 static BLOCK* p_Block;
 
 static ID3D11ShaderResourceView* g_textureBlock;	//画像一枚で一つの変数が必要
-static char* g_textureName_Block= (char*)"data\\texture\\JumpStand.jpg";	//テクスチャファイルパス
+//static char* g_textureName_Block= (char*)"data\\texture\\JumpStand.jpg";	//テクスチャファイルパス
+static char* g_textureName_Block= (char*)"data\\texture\\jump.png";	//テクスチャファイルパス
 static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
 
 HRESULT InintJumpStand()
@@ -76,9 +77,9 @@ void UpdateJumpStand()
 	{
 		g_JumpStand.pos.y++;
 
-		p_Block = GetBlock();
+		p_Block = GetChipBlock();
 
-		for (int i = 0; i < BLOCK_MAX; i++)
+		for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 		{
 			if ((p_Block + i)->UseFlag) 
 			{
@@ -113,10 +114,10 @@ void UpdateJumpStand()
 			}
 			p_Player->Position.y -= g_JumpStand.JumpPower;
 
-			for (int i = 0; i < BLOCK_MAX; i++)
+			for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 			{
 				p_Player = GetPlayer();
-				p_Block = GetBlock();
+				p_Block = GetChipBlock();
 
 				if ((p_Block + i)->UseFlag)
 				{
@@ -168,7 +169,7 @@ JUMPSTAND* GetJumpStand()
 bool Collition_JumpStand()
 {
 	p_Player = GetPlayer();
-	p_Block= GetBlock();
+	p_Block= GetChipBlock();
 
 	//プレイヤー左・壊れるブロック右
 	if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand.pos.x - g_JumpStand.size.x / 2 &&
