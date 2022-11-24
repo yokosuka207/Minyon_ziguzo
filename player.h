@@ -31,6 +31,8 @@ struct PLAYER
 	D3DXVECTOR2 size;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
 	D3DXVECTOR2 oldpos;//1フレーム前の座標
+	D3DXVECTOR2 OneOldpos;//1フレーム前の座標
+
 	D3DXVECTOR2 sp;
 	float rot;//回転角度
 	float texno;//テクスチャインデックス
