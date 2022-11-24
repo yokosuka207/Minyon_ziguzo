@@ -37,6 +37,7 @@ DIRECSION Direcsion = NUM;	//方向の確認
 //================================
 void UpdateCollision()
 {
+	// ゲット
 	Piece* pPiece = GetPiece();
 	//プレーヤー　対　敵キャラ	四角
 

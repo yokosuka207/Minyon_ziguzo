@@ -41,7 +41,7 @@ Piece g_PieceMapChip[PUZZLE_MAX];
 static	ID3D11Buffer* g_MapChipVertexBuffer = NULL;	//ポリゴン用
 static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
 
-static char* g_MapChipTextureName = (char*)"data\\texture\\green.png";	//テクスチャファイルパス
+static char* g_MapChipTextureName = (char*)"data\\texture\\jumpstand.jpg";	//テクスチャファイルパス
 
 HRESULT InitMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {

@@ -37,7 +37,7 @@
 //グローバル変数
 //=============================================================================
 static PLAYER g_Player;
-static char* g_TextureNameBroken = (char*)"data\\texture\\runningman001.png";
+static char* g_TextureNameBroken = (char*)"data\\texture\\waking_alpha.png";
 
 
 
@@ -63,9 +63,9 @@ HRESULT InitPlayer()
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
 	g_Player.PaternNo = 0;//パターン番号
-	g_Player.uv_w = 1.0f / 5;//横サイズ
-	g_Player.uv_h = 1.0f / 2;//縦サイズ
-	g_Player.NumPatern = 5;//横枚数
+	g_Player.uv_w = 1.0f / 4;//横サイズ
+	g_Player.uv_h = 1.0f / 4;//縦サイズ
+	g_Player.NumPatern = 4;//横枚数
 
 	g_Player.hp = 30;
 	g_Player.frame = 0;
@@ -103,12 +103,12 @@ void UpdatePlayer()
 			if (GetKeyboardPress(DIK_RIGHT))//右キー
 			{//押されているときの処理
 				g_Player.sp.x = 3.0f;
-				g_Player.PaternNo++;
+				g_Player.PaternNo += 0.25f;
 			}
 			else if (GetKeyboardPress(DIK_LEFT))//左キー
 			{//押されているときの処理
 				g_Player.sp.x = -3.0f;
-				g_Player.PaternNo++;
+				g_Player.PaternNo += 0.25f;
 			}
 			else
 			{
@@ -179,6 +179,8 @@ void UpdatePlayer()
 				{
 					g_Player.sp.y = 8;//最大落下速度
 				}
+
+				g_Player.jump = true;
 			}
 
 
@@ -199,55 +201,56 @@ void UpdatePlayer()
 
 
 
-
-			//プレイヤー・ブロック　当たり判定
-			/*for (int i = 0; i < BLOCK_MAX; i++)
 			{
-				BLOCK* block = GetBlock();
-
-				if ((block + i)->UseFlag == true)
+				//プレイヤー・ブロック　当たり判定
+				/*for (int i = 0; i < BLOCK_MAX; i++)
 				{
-					//プレイヤー左・ブロック右
-					if (g_Player.Position.x + g_Player.size.x / 2 > (block + i)->Position.x - (block + i)->Size.x / 2 &&
-						g_Player.oldpos.x + g_Player.size.x / 2 <= (block + i)->Position.x - (block + i)->Size.x / 2 &&
-						g_Player.Position.y + g_Player.size.y / 2 > (block + i)->Position.y - (block + i)->Size.y / 2 &&
-						g_Player.Position.y - g_Player.size.y / 2 < (block + i)->Position.y + (block + i)->Size.y / 2)
-					{
-						g_Player.Position.x = (block + i)->Position.x - (block + i)->Size.x / 2 - g_Player.size.x / 2;
-					}
-					//プレイヤー右・ブロック左
-					if (g_Player.Position.x - g_Player.size.x / 2 < (block + i)->Position.x + (block + i)->Size.x / 2 &&
-						g_Player.oldpos.x - g_Player.size.x / 2 >= (block + i)->Position.x + (block + i)->Size.x / 2 &&
-						g_Player.Position.y + g_Player.size.y / 2 > (block + i)->Position.y - (block + i)->Size.y / 2 &&
-						g_Player.Position.y - g_Player.size.y / 2 < (block + i)->Position.y + (block + i)->Size.y / 2)
-					{
-						g_Player.Position.x = (block + i)->Position.x + (block + i)->Size.x / 2 + g_Player.size.x / 2;
-					}
+					BLOCK* block = GetBlock();
 
-					//プレイヤー上・ブロック下,着地する
-					if (g_Player.Position.x + g_Player.size.x / 2 > (block + i)->Position.x - (block + i)->Size.x / 2 &&
-						g_Player.Position.x - g_Player.size.x / 2 < (block + i)->Position.x + (block + i)->Size.x / 2 &&
-						g_Player.Position.y + g_Player.size.y / 2 > (block + i)->Position.y - (block + i)->Size.y / 2 &&
-						g_Player.oldpos.y + g_Player.size.y / 2 <= (block + i)->Position.y - (block + i)->Size.y / 2)
+					if ((block + i)->UseFlag == true)
 					{
-						g_Player.Position.y = (block + i)->Position.y - (block + i)->Size.y / 2 - g_Player.size.y / 2;
-						g_Player.jump = false;
-						g_Player.fall = false;
-						g_Player.WarpFlag = false;
-						g_Player.frame = 0;
+						//プレイヤー左・ブロック右
+						if (g_Player.Position.x + g_Player.size.x / 2 > (block + i)->Position.x - (block + i)->Size.x / 2 &&
+							g_Player.oldpos.x + g_Player.size.x / 2 <= (block + i)->Position.x - (block + i)->Size.x / 2 &&
+							g_Player.Position.y + g_Player.size.y / 2 > (block + i)->Position.y - (block + i)->Size.y / 2 &&
+							g_Player.Position.y - g_Player.size.y / 2 < (block + i)->Position.y + (block + i)->Size.y / 2)
+						{
+							g_Player.Position.x = (block + i)->Position.x - (block + i)->Size.x / 2 - g_Player.size.x / 2;
+						}
+						//プレイヤー右・ブロック左
+						if (g_Player.Position.x - g_Player.size.x / 2 < (block + i)->Position.x + (block + i)->Size.x / 2 &&
+							g_Player.oldpos.x - g_Player.size.x / 2 >= (block + i)->Position.x + (block + i)->Size.x / 2 &&
+							g_Player.Position.y + g_Player.size.y / 2 > (block + i)->Position.y - (block + i)->Size.y / 2 &&
+							g_Player.Position.y - g_Player.size.y / 2 < (block + i)->Position.y + (block + i)->Size.y / 2)
+						{
+							g_Player.Position.x = (block + i)->Position.x + (block + i)->Size.x / 2 + g_Player.size.x / 2;
+						}
+
+						//プレイヤー上・ブロック下,着地する
+						if (g_Player.Position.x + g_Player.size.x / 2 > (block + i)->Position.x - (block + i)->Size.x / 2 &&
+							g_Player.Position.x - g_Player.size.x / 2 < (block + i)->Position.x + (block + i)->Size.x / 2 &&
+							g_Player.Position.y + g_Player.size.y / 2 > (block + i)->Position.y - (block + i)->Size.y / 2 &&
+							g_Player.oldpos.y + g_Player.size.y / 2 <= (block + i)->Position.y - (block + i)->Size.y / 2)
+						{
+							g_Player.Position.y = (block + i)->Position.y - (block + i)->Size.y / 2 - g_Player.size.y / 2;
+							g_Player.jump = false;
+							g_Player.fall = false;
+							g_Player.WarpFlag = false;
+							g_Player.frame = 0;
+						}
+						//プレイヤー下・ブロック上,落下する
+						if (g_Player.Position.x + g_Player.size.x / 2 > (block + i)->Position.x - (block + i)->Size.x / 2 &&
+							g_Player.Position.x - g_Player.size.x / 2 < (block + i)->Position.x + (block + i)->Size.x / 2 &&
+							g_Player.Position.y - g_Player.size.y / 2 < (block + i)->Position.y + (block + i)->Size.y / 2 &&
+							g_Player.oldpos.y - g_Player.size.y / 2 >= (block + i)->Position.y + (block + i)->Size.y / 2)
+						{
+							g_Player.fall = true;
+							g_Player.getfall = true;
+							g_Player.frame = 50;
+						}
 					}
-					//プレイヤー下・ブロック上,落下する
-					if (g_Player.Position.x + g_Player.size.x / 2 > (block + i)->Position.x - (block + i)->Size.x / 2 &&
-						g_Player.Position.x - g_Player.size.x / 2 < (block + i)->Position.x + (block + i)->Size.x / 2 &&
-						g_Player.Position.y - g_Player.size.y / 2 < (block + i)->Position.y + (block + i)->Size.y / 2 &&
-						g_Player.oldpos.y - g_Player.size.y / 2 >= (block + i)->Position.y + (block + i)->Size.y / 2)
-					{
-						g_Player.fall = true;
-						g_Player.getfall = true;
-						g_Player.frame = 50;
-					}
-				}
-			}*/
+				}*/
+			}
 
 			//チップのブロックの当たり判定
 			for (int i = 0; i < BLOCK_MAX; i++)
