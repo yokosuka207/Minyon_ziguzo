@@ -48,7 +48,7 @@ HRESULT InitPlayer()
 {
 	//プレイヤーの初期化
 	g_Player.Position = D3DXVECTOR2(300.0f, 300.0f);
-	g_Player.oldpos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	g_Player.OneOldpos = g_Player.oldpos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	g_Player.sp = D3DXVECTOR2(0,8);
 	g_Player.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
 	g_Player.col = D3DXCOLOR(0.0f, 1.0f, 0.0, 1.0f);
@@ -313,7 +313,7 @@ void UpdatePlayer()
 						g_Player.Position.y + g_Player.size.y / 2 > (broken + i)->Postion.y - (broken + i)->Size.y / 2 &&
 						g_Player.Position.y - g_Player.size.y / 2 < (broken + i)->Postion.y + (broken + i)->Size.y / 2)
 					{
-						//g_Player.Position.x = (broken + i)->Postion.x - (broken + i)->Size.x / 2 - g_Player.size.x / 2;
+						g_Player.Position.x = (broken + i)->Postion.x - (broken + i)->Size.x / 2 - g_Player.size.x / 2;
 					}
 					//プレイヤー右・壊れるブロック左
 					if (g_Player.Position.x - g_Player.size.x / 2 < (broken + i)->Postion.x + (broken + i)->Size.x / 2 &&
@@ -321,7 +321,7 @@ void UpdatePlayer()
 						g_Player.Position.y + g_Player.size.y / 2 > (broken + i)->Postion.y - (broken + i)->Size.y / 2 &&
 						g_Player.Position.y - g_Player.size.y / 2 < (broken + i)->Postion.y + (broken + i)->Size.y / 2)
 					{
-						//g_Player.Position.x = (broken + i)->Postion.x + (broken + i)->Size.x / 2 + g_Player.size.x / 2;
+						g_Player.Position.x = (broken + i)->Postion.x + (broken + i)->Size.x / 2 + g_Player.size.x / 2;
 					}
 
 					//プレイヤー上・壊れるブロック下
@@ -330,9 +330,9 @@ void UpdatePlayer()
 						g_Player.Position.y + g_Player.size.y / 2 > (broken + i)->Postion.y - (broken + i)->Size.y / 2 &&
 						g_Player.oldpos.y + g_Player.size.y / 2 <= (broken + i)->Postion.y - (broken + i)->Size.y / 2)
 					{
-						/*g_Player.Position.y = (broken + i)->Postion.y - (broken + i)->Size.y / 2 - g_Player.size.y / 2;
+						g_Player.Position.y = (broken + i)->Postion.y - (broken + i)->Size.y / 2 - g_Player.size.y / 2;
 						g_Player.jump = false;
-						g_Player.fall = false;*/
+						g_Player.fall = false;
 						g_Player.frame = 0;
 					}
 					//プレイヤー下・壊れるブロック上,壊れる
@@ -341,10 +341,10 @@ void UpdatePlayer()
 						g_Player.Position.y - g_Player.size.y / 2 < (broken + i)->Postion.y + (broken + i)->Size.y / 2 &&
 						g_Player.oldpos.y - g_Player.size.y / 2 >= (broken + i)->Postion.y + (broken + i)->Size.y / 2)
 					{
-						/*(broken + i)->UseFlag = false;
+						(broken + i)->UseFlag = false;
 						g_Player.fall = true;
 						g_Player.getfall = true;
-						g_Player.frame = 50;*/
+						g_Player.frame = 50;
 					}
 				}
 			}

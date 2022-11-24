@@ -59,9 +59,10 @@ void PieceCollision()
 
 	Piece* pPiece = GetPiece();
 	JOINT* pJoint = GetJoint();
+	PLAYER* pPlayer = GetPlayer();
 	bool colFlag = false;//当たって入ったか
 	bool colFlag2 = false;//当たって入ったか
-
+	bool pFlag =false;
 	for (int i = 0; i < PUZZLE_MAX; i++)
 	{
 		if (pPiece[i].UseFlag)
@@ -70,9 +71,15 @@ void PieceCollision()
 			{
 				pPiece[i].MoveEndFlag = false;
 
-				//int tempx = (pPiece[i].pos.x / SPLIT_SIZE) - 1;
-				//int tempy = (pPiece[i].pos.y / SPLIT_SIZE) - 1;
-				//pPiece[i].pos = pSplitStage->Split3[tempx][tempy];
+
+				if (pPiece[i].pos.y - pPiece[i].size.y / 2 < pPlayer->Position.y &&
+					pPiece[i].pos.y + pPiece[i].size.y / 2 > pPlayer->Position.y &&
+					pPiece[i].pos.x - pPiece[i].size.x / 2 < pPlayer->Position.x &&
+					pPiece[i].pos.x + pPiece[i].size.x / 2 > pPlayer->Position.x
+					)
+				{
+					pFlag = true;
+				}
 				for (int j = 0; j < JOINT_MAX; j++)
 				{
 					if (pJoint[j].pieNo == i)	//動き終わったピースの中にあったら
@@ -114,7 +121,10 @@ void PieceCollision()
 												temp = pPiece[i].OldMovePos - pPiece[i].pos;
 												PositionPlas(temp, i);
 												pPiece[i].pos = pPiece[i].OldMovePos;
-
+												if (pFlag)
+												{
+													pPlayer->Position = pPlayer->OneOldpos;
+												}
 
 											}
 
@@ -141,6 +151,10 @@ void PieceCollision()
 												PositionPlas(temp, i);
 
 												pPiece[i].pos = pPiece[i].OldMovePos;
+												if (pFlag)
+												{
+													pPlayer->Position = pPlayer->OneOldpos;
+												}
 
 											}
 
@@ -166,6 +180,10 @@ void PieceCollision()
 												PositionPlas(temp, i);
 
 												pPiece[i].pos = pPiece[i].OldMovePos;
+												if (pFlag)
+												{
+													pPlayer->Position = pPlayer->OneOldpos;
+												}
 
 											}
 
@@ -191,7 +209,11 @@ void PieceCollision()
 												PositionPlas(temp, i);
 
 												pPiece[i].pos = pPiece[i].OldMovePos;
-												//D3DXVECTOR2(200.0f, 200.0f);
+												if (pFlag)
+												{
+													pPlayer->Position = pPlayer->OneOldpos;
+												}
+
 											}
 
 										}
@@ -224,6 +246,10 @@ void PieceCollision()
 						PositionPlas(temp, i);
 						pPiece[i].pos = pPiece[i].OldMovePos;
 						pPiece[i].OldPos = pPiece[i].pos;
+						if (pFlag)
+						{
+							pPlayer->Position = pPlayer->OneOldpos;
+						}
 
 					}
 
@@ -256,6 +282,10 @@ void PieceCollision()
 										PositionPlas(temp, i);
 										pPiece[i].pos = pPiece[i].OldMovePos;
 										Rotreturn(i);
+										if (pFlag)
+										{
+											pPlayer->Position = pPlayer->OneOldpos;
+										}
 
 									}
 

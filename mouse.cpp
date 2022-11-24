@@ -149,6 +149,7 @@ void UpdateGameMouse()
 							)
 						{
 							Mouse.pFlag = true;
+							pPlayer->OneOldpos = pPlayer->Position;
 						}
 
 						Mouse.RotIndex = 0;
