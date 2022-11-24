@@ -11,7 +11,6 @@
 #include "main.h"
 #include "renderer.h"
 
-#define	THORN_BLOCK_MAX	(5)
 
 //=============================================================================
 //マクロ定義
@@ -39,27 +38,6 @@ struct THORNBLOCK
 	int FrameWait;
 };
 
-typedef enum
-{
-	THORN_TYPE_GRAND = 0,
-	THORN_TYPE_HARFGRAND,
-	THORN_TYPE_CENTER,
-	THORN_TYPE_T,
-	THORN_TYPE_SQUARE,
-	THORN_TYPE_NUM
-}THORN_BLOCK_TYPE;
-
-typedef struct
-{
-	D3DXVECTOR2		Position;	//ポジション
-	D3DXVECTOR2		Size;	//サイズ
-	D3DXCOLOR		Col;	//色
-	float			texno;	//テクスチャインデックス
-	float			Rotation;	//角度
-	int				PieceNo;	
-	bool			UseFlag;	//使用フラグ
-
-}THORN_BLOCK;
 //=============================================================================
 //プロトタイプ宣言
 //=============================================================================
@@ -69,9 +47,7 @@ void UninitThornBlock();
 void UpdateThornBlock();
 void DrawThornBlock();
 
-void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo);
-THORN_BLOCK* GetThornBlock();
 int SetThornBlock(D3DXVECTOR2 Pos, D3DXVECTOR2 s);
 
-THORN_BLOCK* GetThornBlock();
+THORNBLOCK* GetThornBlock();
 
