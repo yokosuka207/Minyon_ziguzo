@@ -356,7 +356,7 @@ void UpdatePlayer()
 
 
 			//プレイヤー・トゲブロック　当たり判定
-			for (int i = 0; i < BLOCK_MAX; i++)
+			for (int i = 0; i < THORN_BLOCK_MAX; i++)
 			{
 				THORNBLOCK* thornblock = GetThornBlock();
 				if ((thornblock + i)->UseFlag == true)
