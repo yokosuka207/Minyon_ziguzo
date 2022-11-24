@@ -84,7 +84,7 @@ void UpdateJumpStand()
 
 			p_Block = GetChipBlock();
 
-			for (int i = 0; i < BLOCK_MAX; i++)
+			for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 			{
 				if ((p_Block + i)->UseFlag)
 				{
