@@ -55,6 +55,7 @@ typedef struct
 	//CREATE_CIP_TYPE		Next_Type;//次のチップのタイプ
 	bool GoalFlag;	//ゴールのチップか
 	bool UseFlag;		//使用フラグ
+	bool GetFlag;	//取られたかどうか
 
 }PUZZLE_CIP;
 

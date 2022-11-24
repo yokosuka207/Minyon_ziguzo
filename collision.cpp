@@ -9,6 +9,7 @@
 #include"SplitStage.h"
 #include "inventory.h"
 #include "MapChip.h"
+#include"goal.h"
 /*==============================================================================
 
    ìñÇΩÇËîªíËä«óù [collsion.cpp]
@@ -108,11 +109,8 @@ void PieceCollision()
 											}
 											else
 											{
-												Rotreturn(i);
-
-												
-												//colFlag2 = true;
-
+												Rotreturn(i);						
+												colFlag2 = true;
 												temp = pPiece[i].OldMovePos - pPiece[i].pos;
 												PositionPlas(temp, i);
 												pPiece[i].pos = pPiece[i].OldMovePos;
@@ -138,7 +136,7 @@ void PieceCollision()
 											else
 											{
 												Rotreturn(i);
-												//colFlag2 = true;
+												colFlag2 = true;
 												temp = pPiece[i].OldMovePos - pPiece[i].pos;
 												PositionPlas(temp, i);
 
@@ -163,8 +161,8 @@ void PieceCollision()
 											else
 											{
 												Rotreturn(i);
-												//colFlag2 = true;
-												temp = pPiece[i].OldMovePos - pPiece[i].pos;
+												colFlag2 = true;
+												temp = pPiece[i].OldMovePos - pPiece[i].OldPos;
 												PositionPlas(temp, i);
 
 												pPiece[i].pos = pPiece[i].OldMovePos;
@@ -188,7 +186,7 @@ void PieceCollision()
 											else
 											{
 												Rotreturn(i);
-											//	colFlag2 = true;
+												colFlag2 = true;
 												temp = pPiece[i].OldMovePos - pPiece[i].pos;
 												PositionPlas(temp, i);
 
@@ -220,7 +218,8 @@ void PieceCollision()
 					else
 					{
 						Rotreturn(i);
-						//colFlag2 = true;
+
+						colFlag2 = true;
 						D3DXVECTOR2 temp = pPiece[i].OldMovePos - pPiece[i].pos;
 						PositionPlas(temp, i);
 						pPiece[i].pos = pPiece[i].OldMovePos;
@@ -231,33 +230,37 @@ void PieceCollision()
 
 					for (int m = 0; m < 3; m++)
 					{
-						for (int n = 0; n < 3; n++)
+						if (!colFlag2)
 						{
-							if (pSplitStage->pos.y + SPLIT_SIZE * (m - 1) - pSplitStage->size.y / 2 < pPiece[i].pos.y &&
-								pSplitStage->pos.y + SPLIT_SIZE * (m - 1) + pSplitStage->size.y / 2 > pPiece[i].pos.y &&
-								pSplitStage->pos.x + SPLIT_SIZE * (n - 1) - pSplitStage->size.x / 2 < pPiece[i].pos.x &&
-								pSplitStage->pos.x + SPLIT_SIZE * (n - 1) + pSplitStage->size.x / 2 > pPiece[i].pos.x)
+
+							for (int n = 0; n < 3; n++)
 							{
-								pPiece[i].pos = pSplitStage->Split3[n][m];
-
-								if (fourNomalPieceCollision(pPiece[i], i))
+								if (pSplitStage->pos.y + SPLIT_SIZE * (m - 1) - pSplitStage->size.y / 2 < pPiece[i].pos.y &&
+									pSplitStage->pos.y + SPLIT_SIZE * (m - 1) + pSplitStage->size.y / 2 > pPiece[i].pos.y &&
+									pSplitStage->pos.x + SPLIT_SIZE * (n - 1) - pSplitStage->size.x / 2 < pPiece[i].pos.x &&
+									pSplitStage->pos.x + SPLIT_SIZE * (n - 1) + pSplitStage->size.x / 2 > pPiece[i].pos.x)
 								{
-									D3DXVECTOR2 temp = pPiece[i].pos - pPiece[i].OldPos;
+									pPiece[i].pos = pSplitStage->Split3[n][m];
 
-									PositionPlas(temp, i);
+									if (fourNomalPieceCollision(pPiece[i], i))
+									{
+										D3DXVECTOR2 temp = pPiece[i].pos - pPiece[i].OldPos;
 
+										PositionPlas(temp, i);
+
+									}
+									else
+									{
+										colFlag2 = true;
+										D3DXVECTOR2 temp = pPiece[i].OldMovePos - pPiece[i].OldPos;
+										PositionPlas(temp, i);
+										pPiece[i].pos = pPiece[i].OldMovePos;
+										Rotreturn(i);
+
+									}
+
+									break;
 								}
-								else
-								{
-									Rotreturn(i);
-
-									D3DXVECTOR2 temp = pPiece[i].OldMovePos - pPiece[i].OldPos;
-									PositionPlas(temp, i);
-									pPiece[i].pos = pPiece[i].OldMovePos;
-
-								}
-								
-								break;
 							}
 						}
 					}
@@ -1122,7 +1125,8 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 {
 	BLOCK* pBlock = GetChipBlock();
 	JOINT* pJoint = GetJoint();
-
+	PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
+	GOAL* pGoal = GetGoal();
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
@@ -1149,6 +1153,23 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 
 		}
 
+	}
+	for (int i = 0; i < PUZZLE_MAX; i++)
+	{
+		if (pPuzzleCip[i].UseFlag)
+		{
+			if (pPuzzleCip[i].PieceIndex == pinNo)
+			{
+				pPuzzleCip[i].Position += num;
+			}
+		}
+	}
+	if (pGoal->UseFlag)
+	{
+		if (pGoal->pieceIndex == pinNo)
+		{
+			pGoal->Pos += num;
+		}
 	}
 
 }

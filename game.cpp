@@ -108,7 +108,7 @@ void DrawGame()
 	DrawBroken();
 
 	DrawInventory();			// インベントリの描画
-	DrawCursor();				// カーソルの描画
+	//DrawCursor();				// カーソルの描画
 }
 
 void ResetGame()

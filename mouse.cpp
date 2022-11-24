@@ -7,6 +7,8 @@
 #include"player.h"
 #include"MapChip.h"
 #include"joint.h"
+#include"puzzlecip.h"
+#include"goal.h"
 //#include"puzzlecip.h"
 
 MOUSE Mouse;
@@ -42,7 +44,8 @@ void UpdateGameMouse()
 	Piece* pPiece = GetPiece();
 	BLOCK* pCipBlock = GetChipBlock();
 	JOINT* pJoint = GetJoint();
-
+	PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
+	GOAL* pGoal = GetGoal();
 	Mouse.oldPosX = GetMousePosX();
 	Mouse.oldPosY = GetMousePosY();
 
@@ -185,6 +188,23 @@ void UpdateGameMouse()
 									pJoint[i].pos += temp;
 								}
 
+							}
+						}
+						for (int i = 0; i < PUZZLE_MAX; i++)
+						{
+							if (pPuzzleCip[i].UseFlag)
+							{
+								if (pPuzzleCip[i].PieceIndex == MouseIndex)
+								{
+									pPuzzleCip[i].Position += temp;
+								}
+							}
+						}
+						if (pGoal->UseFlag)
+						{
+							if (pGoal->pieceIndex == MouseIndex)
+							{
+								pGoal->Pos += temp;
 							}
 						}
 						if (!Mouse.pFlag)

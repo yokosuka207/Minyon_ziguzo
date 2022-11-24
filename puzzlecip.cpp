@@ -38,6 +38,7 @@ HRESULT InitPuzzleCip()
 		g_ChipPuzzleChip[i].PieceIndex = -1;
 		g_ChipPuzzleChip[i].GoalFlag = false;
 		g_ChipPuzzleChip[i].UseFlag = false;
+		g_ChipPuzzleChip[i].GetFlag = false;
 	}
 
 	return S_OK;
@@ -74,6 +75,7 @@ void UpdatePuzzleCip()
 							&& g_ChipPuzzleChip[i].Position.y - g_ChipPuzzleChip[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2)
 						{
 							SetPieceMapChip(pSplitStage->Split3[2][2], g_ChipPuzzleChip[i].NextPieceIndex);
+							g_ChipPuzzleChip[i].GetFlag = true;
 
 							g_ChipPuzzleChip[i].UseFlag = false;
 						}
@@ -165,7 +167,7 @@ int SetPuzzleCip(D3DXVECTOR2 pos, D3DXVECTOR2 size, CIP_TYPE type)
 
 PUZZLE_CIP * GetPuzzleCip()
 {
-	return &g_PuzzleCip[0];
+	return &g_ChipPuzzleChip[0];
 }
 //----------------------------
 //パズルの値のセット
