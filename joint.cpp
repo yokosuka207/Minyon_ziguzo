@@ -27,7 +27,7 @@ Update:
 JOINT g_Joint[JOINT_MAX];
 
 // テクスチャの名前
-static char* g_JointTextureName = (char*)"data\\texture\\yello.jpg";
+static char* g_JointTextureName = (char*)"data\\texture\\white.jpg";
 
 
 //==================================================
@@ -42,7 +42,7 @@ void InitJoint()
 	for (int i = 0; i < JOINT_MAX; i++) {
 		g_Joint[i].pos = D3DXVECTOR2(0.0f, 0.0f);			
 		g_Joint[i].size = D3DXVECTOR2(0.0f, 0.0f);	
-		g_Joint[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_Joint[i].color = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
 		g_Joint[i].pieNo = -1;								
 		g_Joint[i].type = JOINT_TYPE::TYPE_BUMP;	
 		g_Joint[i].texNo = texNo;
@@ -66,26 +66,7 @@ void UninitJoint()
 //==================================================
 void UpdateJoint()
 {
-	// 移植予定の当たり判定
-	for (int i = 0; i < JOINT_MAX; i++) {
-		// 使用中
-		if (g_Joint[i].useFlag) {
-			for (int j = i + 1; j < JOINT_MAX; j++) {
-				// 使用中
-				if (g_Joint[j].useFlag) {
-					// 当たり判定用変数
-					D3DXVECTOR2 iMin, iMax;
-					iMin = D3DXVECTOR2(g_Joint[i].pos.x - g_Joint[i].size.x, g_Joint[i].pos.y - g_Joint[i].size.y);
-					iMax = D3DXVECTOR2(g_Joint[i].pos.x + g_Joint[i].size.x, g_Joint[i].pos.y + g_Joint[i].size.y);
 
-					// 当たってる！			(i の外枠と j の中心座標で判定)
-					if (iMin.x < g_Joint[j].pos.x && iMax.x > g_Joint[j].pos.x && iMin.y < g_Joint[j].pos.y && iMax.y < g_Joint[j].pos.y) {
-						// 何かする
-					}
-				}
-			}
-		}
-	}
 }
 
 
@@ -100,7 +81,7 @@ void DrawJoint()
 			// テクスチャの設定
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Joint[i].texNo));
 			// 四角形の描画
-			SpriteDrawColorRotation(g_Joint[i].pos.x, g_Joint[i].pos.y, g_Joint[i].size.x, g_Joint[i].size.y, 0.0f, g_Joint[i].color, 1.0f, 1.0f, 1.0f, 1);
+			SpriteDrawColorRotation(g_Joint[i].pos.x, g_Joint[i].pos.y, g_Joint[i].size.x, g_Joint[i].size.y, 0.0f, g_Joint[i].color, 0, 1.0f, 1.0f, 1);
 		}
 	}
 }

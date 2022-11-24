@@ -18,7 +18,8 @@ static PLAYER* p_Player;
 static BLOCK* p_Block;
 
 static ID3D11ShaderResourceView* g_textureBlock;	//画像一枚で一つの変数が必要
-static char* g_textureName_Block= (char*)"data\\texture\\JumpStand.jpg";	//テクスチャファイルパス
+//static char* g_textureName_Block= (char*)"data\\texture\\JumpStand.jpg";	//テクスチャファイルパス
+static char* g_textureName_Block= (char*)"data\\texture\\jump.png";	//テクスチャファイルパス
 static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
 
 HRESULT InitJumpStand()
@@ -119,10 +120,10 @@ void UpdateJumpStand()
 				}
 				p_Player->Position.y -= g_JumpStand[i].JumpPower;
 
-				for (int i = 0; i < BLOCK_CHIP_MAX; i++)
-				{
-					p_Player = GetPlayer();
-					p_Block = GetChipBlock();
+			for (int i = 0; i < BLOCK_MAX; i++)
+			{
+				p_Player = GetPlayer();
+				p_Block = GetBlock();
 
 					if ((p_Block + i)->UseFlag)
 					{
@@ -179,35 +180,36 @@ JUMPSTAND* GetJumpStand()
 
 bool Collition_JumpStand()
 {
-		p_Player = GetPlayer();
-		p_Block = GetChipBlock();
-		for (int i = 0; i < JUMPSTAND_MAX; i++) {
-			//プレイヤー左・壊れるブロック右
-			if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
-				p_Player->oldpos.x + p_Player->size.x / 2 <= g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
-				p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
-				p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2)
-			{
-				p_Player->Position = p_Player->oldpos;
-			}
-			//プレイヤー右・壊れるブロック左
-			if (p_Player->Position.x - p_Player->size.x / 2 < g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 &&
-				p_Player->oldpos.x - p_Player->size.x / 2 >= g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 &&
-				p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
-				p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2)
-			{
-				p_Player->Position = p_Player->oldpos;
-			}
-			//プレイヤー下・壊れるブロック上
-			if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
-				p_Player->Position.x - p_Player->size.x / 2 < g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 &&
-				p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
-				p_Player->oldpos.y + p_Player->size.y / 2 <= g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2)
-			{
-				return true;
-			}
-			return false;
-		}
+	p_Player = GetPlayer();
+	p_Block= GetBlock();
+
+	//プレイヤー左・壊れるブロック右
+	if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand.pos.x - g_JumpStand.size.x / 2 &&
+		p_Player->oldpos.x + p_Player->size.x / 2 <= g_JumpStand.pos.x - g_JumpStand.size.x / 2 &&
+		p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand.pos.y - g_JumpStand.size.y / 2 &&
+		p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand.pos.y + g_JumpStand.size.y / 2)
+	{
+		p_Player->Position = p_Player->oldpos;
+	}
+	//プレイヤー右・壊れるブロック左
+	if (p_Player->Position.x - p_Player->size.x / 2 < g_JumpStand.pos.x + g_JumpStand.size.x / 2 &&
+		p_Player->oldpos.x - p_Player->size.x / 2 >= g_JumpStand.pos.x + g_JumpStand.size.x / 2 &&
+		p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand.pos.y - g_JumpStand.size.y / 2 &&
+		p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand.pos.y + g_JumpStand.size.y / 2)
+	{
+		p_Player->Position = p_Player->oldpos;
+	}
+
+	//プレイヤー下・壊れるブロック上
+	if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand.pos.x - g_JumpStand.size.x / 2 &&
+		p_Player->Position.x - p_Player->size.x / 2 < g_JumpStand.pos.x + g_JumpStand.size.x / 2 &&
+		p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand.pos.y - g_JumpStand.size.y / 2 &&
+		p_Player->oldpos.y + p_Player->size.y / 2 <= g_JumpStand.pos.y - g_JumpStand.size.y / 2)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void SetJumpStand(D3DXVECTOR2 pos,D3DXVECTOR2 size, int PieceNo) {

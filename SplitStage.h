@@ -19,6 +19,8 @@ typedef struct
 	D3DXVECTOR2 pos;
 	D3DXVECTOR2 size;
 
+	int texNo;		// テクスチャ番号
+
 	D3DXVECTOR2 Split3[3][3];
 	D3DXVECTOR2 Split4[4][4];
 

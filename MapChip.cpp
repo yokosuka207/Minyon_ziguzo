@@ -46,7 +46,7 @@ Piece g_PieceMapChip[PUZZLE_MAX];
 static	ID3D11Buffer* g_MapChipVertexBuffer = NULL;	//ポリゴン用
 static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
 
-static char* g_MapChipTextureName = (char*)"data\\texture\\green.png";	//テクスチャファイルパス
+static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
 
 HRESULT InitMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
@@ -69,7 +69,7 @@ HRESULT InitMapChip() {
 
 	SplitStage* pSplitStage = GetSplitStage();
 
-	FileLoad(1);	//あとでnoに変更する？fusegi
+	FileLoad(1);	//あとでnoに変更する？fusegi	yeah
 	RotateChipData();
 	SetPieceMapChip(pSplitStage->Split3[0][1], 0);
 	//SetPieceMapChip(pSplitStage->Split3[1][0], 1);
@@ -95,8 +95,8 @@ void DrawMapChip() {
 
 			SpriteDrawColorRotation(
 				g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,
-				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, g_PieceMapChip[p].direction * 90, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-				0, 1.0f, 1.0f, 1
+				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, g_PieceMapChip[p].direction * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+				1, 0.5f, 1.0f, 2
 			);
 		}
 	}

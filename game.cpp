@@ -107,6 +107,8 @@ void DrawGame()
 	DrawGoal();
 	DrawBroken();
 
+	DrawSplitStage();			// 区切り枠の描画
+
 	DrawInventory();			// インベントリの描画
 	//DrawCursor();				// カーソルの描画
 }
