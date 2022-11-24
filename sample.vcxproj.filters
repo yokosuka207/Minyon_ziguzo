@@ -30,6 +30,7 @@
     <ClCompile Include="OpenKey.cpp" />
     <ClCompile Include="fallblock.cpp" />
     <ClCompile Include="Key.cpp" />
+    <ClCompile Include="thorn_block.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -61,5 +62,6 @@
     <ClInclude Include="OpenKey.h" />
     <ClInclude Include="fallblock.h" />
     <ClInclude Include="Key.h" />
+    <ClInclude Include="thorn_block.h" />
   </ItemGroup>
 </Project>
