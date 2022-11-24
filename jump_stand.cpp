@@ -29,7 +29,7 @@ HRESULT InintJumpStand()
 	g_JumpStand.pos = D3DXVECTOR2(330.0f, 245.0f);
 	g_JumpStand.size = D3DXVECTOR2(JUMPSTAND_SIZE, JUMPSTAND_SIZE);
 	
-	g_JumpStand.UseJumpStand = true;
+	g_JumpStand.UseJumpStand = false;
 	g_JumpStand.JumpStandFlag = false;
 
 	return S_OK;

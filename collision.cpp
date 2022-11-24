@@ -239,9 +239,24 @@ void PieceCollision()
 								pSplitStage->pos.x + SPLIT_SIZE * (n - 1) + pSplitStage->size.x / 2 > pPiece[i].pos.x)
 							{
 								pPiece[i].pos = pSplitStage->Split3[n][m];
-								D3DXVECTOR2 temp = pPiece[i].pos - pPiece[i].OldPos;
 
-								PositionPlas(temp, i);
+								if (fourNomalPieceCollision(pPiece[i], i))
+								{
+									D3DXVECTOR2 temp = pPiece[i].pos - pPiece[i].OldPos;
+
+									PositionPlas(temp, i);
+
+								}
+								else
+								{
+									Rotreturn(i);
+
+									D3DXVECTOR2 temp = pPiece[i].OldMovePos - pPiece[i].OldPos;
+									PositionPlas(temp, i);
+									pPiece[i].pos = pPiece[i].OldMovePos;
+
+								}
+								
 								break;
 							}
 						}
@@ -1156,7 +1171,7 @@ bool PlayerPieceOpen(Piece p, int index, DIRECSION direcsion)
 				{
 				case UP:
 					//puzzleの上に別のパズルがあるか
-					if (p.pos.y - PUZZLE_HEIGHT == pPiece[i].pos.y)return false;
+					if (p.pos.y - PUZZLE_HEIGHT == pPiece[i].pos.y && p.pos.x == pPiece[i].pos.x)return false;
 
 					if (p.pos.y - PUZZLE_HEIGHT - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
 						p.pos.y - PUZZLE_HEIGHT + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&
@@ -1169,7 +1184,7 @@ bool PlayerPieceOpen(Piece p, int index, DIRECSION direcsion)
 					break;
 				case DOWN:
 					//pの下に別のパズルがあるか
-					if (p.pos.y + PUZZLE_HEIGHT == pPiece[i].pos.y)	return false;
+					if (p.pos.y + PUZZLE_HEIGHT == pPiece[i].pos.y && p.pos.x == pPiece[i].pos.x)	return false;
 
 					if (p.pos.y + PUZZLE_HEIGHT - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
 						p.pos.y + PUZZLE_HEIGHT + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&
@@ -1203,7 +1218,7 @@ bool PlayerPieceOpen(Piece p, int index, DIRECSION direcsion)
 						p.pos.x + PUZZLE_WIDHT - PUZZLE_WIDHT / 2 < pPiece[i].pos.x &&
 						p.pos.x + PUZZLE_WIDHT + PUZZLE_WIDHT / 2 > pPiece[i].pos.x)
 					{
-						return false;
+						//return false;
 					}
 
 
@@ -1228,7 +1243,17 @@ bool fourPieceCollision(Piece piece, int index)
 
 	bool hitFlag;
 	bool 	JointFlag = false;
+	for (int i = 0; i < PUZZLE_MAX; i++)
+	{
+		if (i != index)
+		{
+			if (piece.pos == pPiece[i].pos)
+			{
+				return false;
+			}
+		}
 
+	}
 
 	hitFlag = PieceOpen(piece, index, RIGHT);
 	//右が開いていなかったら
@@ -1538,6 +1563,17 @@ bool fourNomalPieceCollision(Piece piece, int index)
 
 	bool hitFlag;
 	bool 	JointFlag = false;
+	for (int i = 0; i < PUZZLE_MAX; i++)
+	{
+		if (i != index)
+		{
+			if (piece.pos == pPiece[i].pos)
+			{
+				return false;
+			}
+		}
+
+	}
 
 
 	hitFlag = PieceOpen(piece, index, RIGHT);
