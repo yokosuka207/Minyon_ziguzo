@@ -21,7 +21,6 @@
 #include"SplitStage.h"
 
 #include "jump_stand.h"
-#include "thorn_block.h"
 
 void InitGame()
 {
@@ -31,14 +30,13 @@ void InitGame()
 	InitSplitStage();
 	BgInit();
 	InitBlock();
-	InitThornBlock();
 	InitJoint();
 	InitGameMouse();
 	InitGoal();
 	InitBroken();
 	InitPlayer();
 	InitWarp();
-	InintJumpStand();
+	InitJumpStand();
 	InitPuzzleCip();
 	InitPuzzle();
 	InitInventory();			// インベントリの初期化
@@ -53,7 +51,6 @@ void UninitGame()
 	//UninitPolygon();	//ポリゴンの終了
 	BgUninit();
 	UninitBlock();
-	UninitThornBlock();
 	UninitJoint();
 	UninitPuzzle();
 	UninitGameMouse();
@@ -62,7 +59,7 @@ void UninitGame()
 	UninitBroken();
 	UninitPlayer();
 	UninitWarp();
-	UninitJumoStand();
+	UninitJumpStand();
 	UninitInventory();			// インベントリの終了
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了
@@ -80,7 +77,6 @@ void UpdateGame()
 	PieceCollision();
 
 	UpdateBlock();
-	UpdateThornBlock();
 	UpdateJoint();
 	UpdatePuzzle();
 	UpdatePuzzleCip();
@@ -103,7 +99,6 @@ void DrawGame()
 	DrawPuzzle();
 	DrawMapChip();
 	DrawBlock();
-	DrawThornBlock();
 	DrawJoint();
 	DrawPuzzleCip();
 	DrawPlayer();

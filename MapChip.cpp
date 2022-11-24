@@ -25,6 +25,8 @@
 #include "Key.h"
 #include "OpenKey.h"
 #include "fallblock.h"
+#include "thorn_block.h"
+
 //**************************************************
 //　マクロ定義
 //**************************************************
@@ -138,7 +140,16 @@ void SetMapChip(D3DXVECTOR2 pos, int no) {
 				SetJumpStand(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9
-				//SetSpike(position, DrawSize,no);
+				SetThornBlock(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL) :	//10
+				SetFallBlock(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11
+				//Set
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12
+				//Set
 				break;
 			default:
 				break;

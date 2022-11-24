@@ -9,9 +9,10 @@
 #include "collision.h"
 #include "block.h"
 #include "puzzle.h"
+#include "MapChip.h"
 
 //-------配列にしてほしい↓（マップチップの都合上必要）-------
-static JUMPSTAND g_JumpStand;
+static JUMPSTAND g_JumpStand[JUMPSTAND_MAX];
 //------------------------------------------------------------
 static PLAYER* p_Player;
 static BLOCK* p_Block;
@@ -21,22 +22,25 @@ static ID3D11ShaderResourceView* g_textureBlock;	//画像一枚で一つの変数が必要
 static char* g_textureName_Block= (char*)"data\\texture\\jump.png";	//テクスチャファイルパス
 static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
 
-HRESULT InintJumpStand()
+HRESULT InitJumpStand()
 {
 	p_Player = GetPlayer();
+	for (int i = 0; i < JUMPSTAND_MAX; i++) {
+		g_TextureNo = LoadTexture(g_textureName_Block);
 
-	g_TextureNo = LoadTexture(g_textureName_Block);
+		g_JumpStand[i].pos = D3DXVECTOR2(330.0f, 245.0f);
+		g_JumpStand[i].size = D3DXVECTOR2(JUMPSTAND_SIZE, JUMPSTAND_SIZE);
 
-	g_JumpStand.pos = D3DXVECTOR2(330.0f, 245.0f);
-	g_JumpStand.size = D3DXVECTOR2(JUMPSTAND_SIZE, JUMPSTAND_SIZE);
-	
-	g_JumpStand.UseJumpStand = false;
-	g_JumpStand.JumpStandFlag = false;
+		g_JumpStand[i].PieceIndex = -1;
 
-	return S_OK;
+		g_JumpStand[i].UseJumpStand = false;
+		g_JumpStand[i].JumpStandFlag = false;
+
+		return S_OK;
+	}
 }
 
-void UninitJumoStand()
+void UninitJumpStand()
 {
 	if (g_textureBlock)
 	{
@@ -47,89 +51,92 @@ void UninitJumoStand()
 
 void UpdateJumpStand()
 {
-	g_JumpStand.oldpos = g_JumpStand.pos;
+	for (int i = 0; i < JUMPSTAND_MAX; i++) {
 
-	if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand.pos.x - g_JumpStand.size.x / 2 &&
-		p_Player->oldpos.x + p_Player->size.x / 2 <= g_JumpStand.pos.x - g_JumpStand.size.x / 2 &&
-		p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand.pos.y - g_JumpStand.size.y / 2 &&
-		p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand.pos.y + g_JumpStand.size.y / 2)
-	{
-		g_JumpStand.sp = p_Player->sp;
-		g_JumpStand.pos.x += g_JumpStand.sp.x;
-	}
-	//プレイヤー右・壊れるブロック左
-	if (p_Player->Position.x - p_Player->size.x / 2 < g_JumpStand.pos.x + g_JumpStand.size.x / 2 &&
-		p_Player->oldpos.x - p_Player->size.x / 2 >= g_JumpStand.pos.x + g_JumpStand.size.x / 2 &&
-		p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand.pos.y - g_JumpStand.size.y / 2 &&
-		p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand.pos.y + g_JumpStand.size.y / 2)
-	{
-		g_JumpStand.sp = p_Player->sp;
-		g_JumpStand.pos.x += g_JumpStand.sp.x;
-	}
+		g_JumpStand[i].oldpos = g_JumpStand[i].pos;
 
-	if (p_Player->GetJumpStand)
-	{
-		g_JumpStand.sp = p_Player->sp;
-		g_JumpStand.pos.x += g_JumpStand.sp.x;
-	}
-
-	else
-	{
-		g_JumpStand.pos.y++;
-
-		p_Block = GetChipBlock();
-
-		for (int i = 0; i < BLOCK_CHIP_MAX; i++)
+		if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
+			p_Player->oldpos.x + p_Player->size.x / 2 <= g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
+			p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
+			p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2)
 		{
-			if ((p_Block + i)->UseFlag) 
-			{
-				if (g_JumpStand.pos.x + g_JumpStand.size.x / 2 >= (p_Block + i)->Position.x - (p_Block + i)->Size.x / 2 &&
-					g_JumpStand.pos.x - g_JumpStand.size.x / 2 <= (p_Block + i)->Position.x + (p_Block + i)->Size.x / 2 &&
-					g_JumpStand.pos.y + g_JumpStand.size.y / 2 >= (p_Block + i)->Position.y - (p_Block + i)->Size.y / 2 &&
-					g_JumpStand.pos.y + g_JumpStand.size.y / 2 <= (p_Block + i)->Position.y - (p_Block + i)->Size.y / 2)
-				{
-					g_JumpStand.pos.y--;
-				}
-				
-			}
+			g_JumpStand[i].sp = p_Player->sp;
+			g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
 		}
-	}
-
-	if (g_JumpStand.UseJumpStand) 
-	{
-
-		if (Collition_JumpStand())
+		//プレイヤー右・壊れるブロック左
+		if (p_Player->Position.x - p_Player->size.x / 2 < g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 &&
+			p_Player->oldpos.x - p_Player->size.x / 2 >= g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 &&
+			p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
+			p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2)
 		{
-			g_JumpStand.JumpStandFlag = true;
-
-			g_JumpStand.JumpPower = 17.0f;
-			g_JumpStand.JumpGravity = 0.2f;
+			g_JumpStand[i].sp = p_Player->sp;
+			g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
 		}
 
-		if (g_JumpStand.JumpStandFlag)
+		if (p_Player->GetJumpStand)
 		{
-			if (g_JumpStand.JumpPower > -10.0f)
-			{
-				g_JumpStand.JumpPower -= g_JumpStand.JumpGravity;
-			}
-			p_Player->Position.y -= g_JumpStand.JumpPower;
+			g_JumpStand[i].sp = p_Player->sp;
+			g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
+		}
 
-			for (int i = 0; i < BLOCK_CHIP_MAX; i++)
-			{
-				p_Player = GetPlayer();
-				p_Block = GetChipBlock();
+		else
+		{
+			g_JumpStand[i].pos.y++;
 
+			p_Block = GetChipBlock();
+
+			for (int i = 0; i < BLOCK_MAX; i++)
+			{
 				if ((p_Block + i)->UseFlag)
 				{
-					//上
-					if (p_Player->Position.x + p_Player->size.x / 2 >= (p_Block + i)->Position.x - (p_Block + i)->Size.x / 2 &&
-						p_Player->Position.x - p_Player->size.x / 2 <= (p_Block + i)->Position.x + (p_Block + i)->Size.x / 2 &&
-						p_Player->Position.y + p_Player->size.y / 2 >= (p_Block + i)->Position.y - (p_Block + i)->Size.y / 2 &&
-						p_Player->oldpos.y + p_Player->size.y / 2 <= (p_Block + i)->Position.y - (p_Block + i)->Size.y / 2)
+					if (g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 >= (p_Block + i)->Position.x - (p_Block + i)->Size.x / 2 &&
+						g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 <= (p_Block + i)->Position.x + (p_Block + i)->Size.x / 2 &&
+						g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2 >= (p_Block + i)->Position.y - (p_Block + i)->Size.y / 2 &&
+						g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 <= (p_Block + i)->Position.y + (p_Block + i)->Size.y / 2)
 					{
-						p_Player->Position.y = (p_Block + i)->Position.y - (p_Block + i)->Size.y / 2 - p_Player->size.y / 2;
-						g_JumpStand.JumpStandFlag = false;
-						g_JumpStand.JumpPower = 0.0f;
+						g_JumpStand[i].pos.y--;
+					}
+
+				}
+			}
+		}
+
+		if (g_JumpStand[i].UseJumpStand)
+		{
+
+			if (Collition_JumpStand())
+			{
+				g_JumpStand[i].JumpStandFlag = true;
+
+				g_JumpStand[i].JumpPower = 17.0f;
+				g_JumpStand[i].JumpGravity = 0.2f;
+			}
+
+			if (g_JumpStand[i].JumpStandFlag)
+			{
+				if (g_JumpStand[i].JumpPower > -10.0f)
+				{
+					g_JumpStand[i].JumpPower -= g_JumpStand[i].JumpGravity;
+				}
+				p_Player->Position.y -= g_JumpStand[i].JumpPower;
+
+			for (int i = 0; i < BLOCK_MAX; i++)
+			{
+				p_Player = GetPlayer();
+				p_Block = GetBlock();
+
+					if ((p_Block + i)->UseFlag)
+					{
+						//上
+						if (p_Player->Position.x + p_Player->size.x / 2 >= (p_Block + i)->Position.x - (p_Block + i)->Size.x / 2 &&
+							p_Player->Position.x - p_Player->size.x / 2 <= (p_Block + i)->Position.x + (p_Block + i)->Size.x / 2 &&
+							p_Player->Position.y + p_Player->size.y / 2 >= (p_Block + i)->Position.y - (p_Block + i)->Size.y / 2 &&
+							p_Player->oldpos.y   + p_Player->size.y / 2 <= (p_Block + i)->Position.y - (p_Block + i)->Size.y / 2)
+						{
+							p_Player->Position.y = (p_Block + i)->Position.y - (p_Block + i)->Size.y / 2 - p_Player->size.y / 2;
+							g_JumpStand[i].JumpStandFlag = false;
+							g_JumpStand[i].JumpPower = 0.0f;
+						}
 					}
 				}
 			}
@@ -139,37 +146,42 @@ void UpdateJumpStand()
 
 void DrawJumpStand()
 {
-	if (g_JumpStand.UseJumpStand)
-	{
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TextureNo));
+	for (int i = 0; i < JUMPSTAND_MAX; i++) {
+		if (g_JumpStand[i].UseJumpStand)
+		{
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TextureNo));
 
-		SpriteDrawColorRotation(g_JumpStand.pos.x, g_JumpStand.pos.y,
-			g_JumpStand.size.x, g_JumpStand.size.y, 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-			0, 1.0f, 1.0f, 1);
+			SpriteDrawColorRotation(g_JumpStand[i].pos.x, g_JumpStand[i].pos.y,
+				g_JumpStand[i].size.x, g_JumpStand[i].size.y, 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+				0, 1.0f, 1.0f, 1);
+		}
 	}
 }
 
 void SetJumpStand(D3DXVECTOR2 p)
 {
-	if (!g_JumpStand.UseJumpStand)
-	{
-		g_JumpStand.pos = p;
-		g_JumpStand.size = D3DXVECTOR2(JUMPSTAND_SIZE, JUMPSTAND_SIZE);
+	for (int i = 0; i < JUMPSTAND_MAX; i++) {
 
-		g_JumpStand.UseJumpStand = true;
-		g_JumpStand.JumpStandFlag = false;
+		if (!g_JumpStand[i].UseJumpStand)
+		{
+			g_JumpStand[i].pos = p;
+			g_JumpStand[i].size = D3DXVECTOR2(JUMPSTAND_SIZE, JUMPSTAND_SIZE);
+
+			g_JumpStand[i].UseJumpStand = true;
+			g_JumpStand[i].JumpStandFlag = false;
+		}
 	}
 }
 
 JUMPSTAND* GetJumpStand()
 {
-	return &g_JumpStand;
+	return g_JumpStand;
 }
 
 bool Collition_JumpStand()
 {
 	p_Player = GetPlayer();
-	p_Block= GetChipBlock();
+	p_Block= GetBlock();
 
 	//プレイヤー左・壊れるブロック右
 	if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand.pos.x - g_JumpStand.size.x / 2 &&
@@ -201,14 +213,13 @@ bool Collition_JumpStand()
 }
 
 void SetJumpStand(D3DXVECTOR2 pos,D3DXVECTOR2 size, int PieceNo) {
-	if (!g_JumpStand.UseJumpStand) {
-		//for (int i = 0; i < ; i++) 
-		{
-			g_JumpStand.pos = pos;
-			g_JumpStand.size = size;
-
-			g_JumpStand.UseJumpStand = true;
-			//break;
+	for (int i = 0; i < JUMPSTAND_MAX; i++) {
+		if (!g_JumpStand[i].UseJumpStand) {
+			g_JumpStand[i].pos = pos;
+			g_JumpStand[i].size = size;
+			g_JumpStand[i].PieceIndex = PieceNo;
+			g_JumpStand[i].UseJumpStand = true;
+			break;
 		}
 	}
 }
@@ -216,8 +227,10 @@ void SetJumpStand(D3DXVECTOR2 pos,D3DXVECTOR2 size, int PieceNo) {
 void DeleteJumpStand(int PieceNo) {
 	//配列にしないとマップ上に存在するジャンプ台全部消えることになる
 	//今消したいのは PieceNo番目 のピースに存在するジャンプ台のみ
-	if (g_JumpStand.UseJumpStand) {
-		g_JumpStand.UseJumpStand = false;
+	for (int i = 0; i < JUMPSTAND_MAX; i++) {
+		if (g_JumpStand[i].UseJumpStand) {
+			g_JumpStand[i].UseJumpStand = false;
+		}
 	}
 }
 
