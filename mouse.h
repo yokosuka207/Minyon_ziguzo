@@ -24,6 +24,7 @@ typedef struct
 
 	bool UseFlag;
 	bool ScrollFlag;	//スクロールしているかどうか
+	bool pFlag;			//プレイヤーがいるかどうか
 
 }MOUSE;
 

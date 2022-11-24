@@ -26,6 +26,7 @@ HRESULT InitGameMouse()
 	Mouse.oldPosY = GetMousePosY();
 	Mouse.RotIndex = 0;
 	Mouse.UseFlag = false;
+	Mouse.pFlag = false;
 	return S_OK;
 }
 
@@ -137,6 +138,16 @@ void UpdateGameMouse()
 						pPiece[i].pos.x + pPiece[i].size.x / 3 > Mouse.PosX &&
 						!oneFlag)
 					{
+						//プレーヤーが持ったピースの中にいたら
+						if (pPiece[i].pos.y - pPiece[i].size.y / 2 < pPlayer->Position.y &&
+							pPiece[i].pos.y + pPiece[i].size.y / 2 > pPlayer->Position.y &&
+							pPiece[i].pos.x - pPiece[i].size.x / 2 < pPlayer->Position.x &&
+							pPiece[i].pos.x + pPiece[i].size.x / 2 > pPlayer->Position.x
+							)
+						{
+							Mouse.pFlag = true;
+						}
+
 						Mouse.RotIndex = 0;
 
 						oneFlag = true;
@@ -176,11 +187,18 @@ void UpdateGameMouse()
 
 							}
 						}
-						if (GetKeyboardTrigger(DIK_A))	//aキーが押されたら
+						if (!Mouse.pFlag)
 						{
-							RotateMapChipR(MouseIndex);
-							Mouse.RotIndex += 1;
+							if (GetKeyboardTrigger(DIK_A))	//aキーが押されたら
+							{
+								RotateMapChipR(MouseIndex);
+								Mouse.RotIndex += 1;
 
+							}
+						}
+						else
+						{
+							pPlayer->Position += temp;
 						}
 					}
 
@@ -200,6 +218,7 @@ void UpdateGameMouse()
 			pPuzzle[MouseIndex].MoveEndFlag = true;
 			pPiece[MouseIndex].MoveEndFlag = true;
 			//Mouse.RotIndex = 0;
+			Mouse.pFlag = false;
 
 		}
 

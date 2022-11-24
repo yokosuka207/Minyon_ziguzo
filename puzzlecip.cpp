@@ -8,6 +8,8 @@
 //#include"block.h"
 #include"mouse.h"
 #include "MapChip.h"
+#include "SplitStage.h"
+
 
 PUZZLE_CIP	g_PuzzleCip[CIP_MAX];
 //----------マップチップ用配列----------
@@ -32,6 +34,7 @@ HRESULT InitPuzzleCip()
 		g_ChipPuzzleChip[i].Type = CIP_NONE;
 		g_ChipPuzzleChip[i].Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_ChipPuzzleChip[i].Rotation = 0.0f;
+		g_ChipPuzzleChip[i].NextPieceIndex = -1;
 		g_ChipPuzzleChip[i].GoalFlag = false;
 		g_ChipPuzzleChip[i].UseFlag = false;
 	}
@@ -55,6 +58,8 @@ void UpdatePuzzleCip()
 	{
 		if (g_ChipPuzzleChip[i].UseFlag)
 		{
+			SplitStage* pSplitStage = GetSplitStage();
+
 			PLAYER* pPlayer = GetPlayer();
 			MOUSE* pMouse = GetMouse();
 			PUZZLE* pPuzzle = GetPuzzle();
@@ -67,7 +72,9 @@ void UpdatePuzzleCip()
 							&& g_ChipPuzzleChip[i].Position.y + g_ChipPuzzleChip[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2
 							&& g_ChipPuzzleChip[i].Position.y - g_ChipPuzzleChip[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2)
 						{
+							SetPieceMapChip(pSplitStage->Split3[2][2], g_ChipPuzzleChip[i].NextPieceIndex);
 
+							g_ChipPuzzleChip[i].UseFlag = false;
 						}
 
 			}
@@ -106,7 +113,7 @@ void DrawPuzzleCip()
 	}
 
 }
-void SetChipPuzzuleChip(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
+void SetChipPuzzuleChip(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index) {
 	for (int i = 0; i < PUZZLE_MAX; i++) {
 		if (!g_ChipPuzzleChip[i].UseFlag) {
 			g_ChipPuzzleChip[i].Position = pos;
