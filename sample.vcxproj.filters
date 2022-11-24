@@ -27,6 +27,9 @@
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="warp.cpp" />
     <ClCompile Include="jump_stand.cpp" />
+    <ClCompile Include="OpenKey.cpp" />
+    <ClCompile Include="fallblock.cpp" />
+    <ClCompile Include="Key.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -55,5 +58,8 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="warp.h" />
     <ClInclude Include="jump_stand.h" />
+    <ClInclude Include="OpenKey.h" />
+    <ClInclude Include="fallblock.h" />
+    <ClInclude Include="Key.h" />
   </ItemGroup>
 </Project>
