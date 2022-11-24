@@ -36,7 +36,7 @@ void InitGame()
 	InitBroken();
 	InitPlayer();
 	InitWarp();
-	InintJumpStand();
+	InitJumpStand();
 	InitPuzzleCip();
 	InitPuzzle();
 	InitInventory();			// インベントリの初期化
@@ -59,7 +59,7 @@ void UninitGame()
 	UninitBroken();
 	UninitPlayer();
 	UninitWarp();
-	UninitJumoStand();
+	UninitJumpStand();
 	UninitInventory();			// インベントリの終了
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了

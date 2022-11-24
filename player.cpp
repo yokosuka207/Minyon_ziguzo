@@ -18,13 +18,13 @@
 #include "broken.h"
 #include "warp.h"
 //#include "piece.h"
-#include"puzzlecip.h"
-#include"game.h"
-#include"puzzle.h"
-#include"collision.h"
-#include"mouse.h"
-#include"jump_stand.h"		//ジャンプ台
-#include"MapChip.h"
+#include "puzzlecip.h"
+#include "game.h"
+#include "puzzle.h"
+#include "collision.h"
+#include "mouse.h"
+#include "jump_stand.h"		//ジャンプ台
+#include "MapChip.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================

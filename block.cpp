@@ -8,7 +8,7 @@
 #include "warp.h"
 #include "MapChip.h"
 
-BLOCK g_block[BLOCK_MAX];
+BLOCK g_ThornBlock[BLOCK_MAX];
 //----------マップチップ用ブロック配列の追加----------
 // 22/11/11
 //----------------------------------------------------
@@ -22,13 +22,13 @@ HRESULT InitBlock()
 {
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
-		g_block[i].texno = LoadTexture(g_textureName_Block);
+		g_ThornBlock[i].texno = LoadTexture(g_textureName_Block);
 
-		g_block[i].Position = D3DXVECTOR2(0.0f, 0.0f);
-		g_block[i].Size = D3DXVECTOR2(BLOCK_W, BLOCK_H);
-		g_block[i].Rotation = 0.0f;
-		g_block[i].Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		g_block[i].UseFlag = false;
+		g_ThornBlock[i].Position = D3DXVECTOR2(0.0f, 0.0f);
+		g_ThornBlock[i].Size = D3DXVECTOR2(BLOCK_W, BLOCK_H);
+		g_ThornBlock[i].Rotation = 0.0f;
+		g_ThornBlock[i].Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_ThornBlock[i].UseFlag = false;
 
 	}
 
@@ -67,7 +67,7 @@ void DrawBlock()
 {
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
-		if (g_block[i].UseFlag)
+		if (g_ThornBlock[i].UseFlag)
 		{
 
 			SetWorldViewProjection2D();
@@ -75,10 +75,10 @@ void DrawBlock()
 
 			//四角形の描画
 			//D3DXCOLOR	col = D3DXCOLOR(1.0f, 0.8f, 0.8f, 0.5f);
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_block[i].texno));
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ThornBlock[i].texno));
 
-			SpriteDrawColorRotation(g_block[i].Position.x, g_block[i].Position.y,
-				g_block[i].Size.x, g_block[i].Size.y, g_block[i].Rotation, g_block[i].Col,
+			SpriteDrawColorRotation(g_ThornBlock[i].Position.x, g_ThornBlock[i].Position.y,
+				g_ThornBlock[i].Size.x, g_ThornBlock[i].Size.y, g_ThornBlock[i].Rotation, g_ThornBlock[i].Col,
 				0, 1.0f, 1.0f, 1);
 		}
 	}
@@ -130,7 +130,7 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
-		if (!g_block[i].UseFlag)
+		if (!g_ThornBlock[i].UseFlag)
 		{
 
 			if (btype != TYPE_NUM)
@@ -142,33 +142,33 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 					switch (type)
 					{
 					case GRAND_DOWN:
-						g_block[i].Position = D3DXVECTOR2(pos.x, pos.y + PUZZLE_HEIGHT / 2 - BLOCK_H / 2);
-						g_block[i].Rotation = 0.0f;
-						g_block[i].Size = size;
+						g_ThornBlock[i].Position = D3DXVECTOR2(pos.x, pos.y + PUZZLE_HEIGHT / 2 - BLOCK_H / 2);
+						g_ThornBlock[i].Rotation = 0.0f;
+						g_ThornBlock[i].Size = size;
 						(pPuzzle + pIndex)->blockIndex[0] = i;
 						(pPuzzle + pIndex)->RotNum = 0;
 
 						break;
 					case GRAND_LEFT:
-						g_block[i].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2 + BLOCK_W / 2, pos.y);
-						g_block[i].Rotation = 0.0f;
-						g_block[i].Size = size;
+						g_ThornBlock[i].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2 + BLOCK_W / 2, pos.y);
+						g_ThornBlock[i].Rotation = 0.0f;
+						g_ThornBlock[i].Size = size;
 						(pPuzzle + pIndex)->blockIndex[0] = i;
 						(pPuzzle + pIndex)->RotNum = 1;
 
 						break;
 					case GRAND_UP:
-						g_block[i].Position = D3DXVECTOR2(pos.x, pos.y - PUZZLE_HEIGHT / 2 + BLOCK_H / 2);
-						g_block[i].Rotation = 0.0f;
-						g_block[i].Size = size;
+						g_ThornBlock[i].Position = D3DXVECTOR2(pos.x, pos.y - PUZZLE_HEIGHT / 2 + BLOCK_H / 2);
+						g_ThornBlock[i].Rotation = 0.0f;
+						g_ThornBlock[i].Size = size;
 						(pPuzzle + pIndex)->blockIndex[0] = i;
 						(pPuzzle + pIndex)->RotNum = 2;
 
 						break;
 					case GRAND_RIGHT:
-						g_block[i].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - BLOCK_W / 2, pos.y);
-						g_block[i].Rotation =0.0f;
-						g_block[i].Size = size;
+						g_ThornBlock[i].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - BLOCK_W / 2, pos.y);
+						g_ThornBlock[i].Rotation =0.0f;
+						g_ThornBlock[i].Size = size;
 						(pPuzzle + pIndex)->blockIndex[0] = i;
 						(pPuzzle + pIndex)->RotNum = 3;
 
@@ -184,32 +184,32 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 					switch (type)
 					{
 					case GRAND_DOWN:
-						g_block[i].Position = D3DXVECTOR2(pos.x, pos.y + PUZZLE_HEIGHT / 2 - BLOCK_H / 2);
-						g_block[i].Rotation = 0.0f;
-						g_block[i].Size = size / 2;
+						g_ThornBlock[i].Position = D3DXVECTOR2(pos.x, pos.y + PUZZLE_HEIGHT / 2 - BLOCK_H / 2);
+						g_ThornBlock[i].Rotation = 0.0f;
+						g_ThornBlock[i].Size = size / 2;
 						(pPuzzle + pIndex)->blockIndex[0] = i;
 						(pPuzzle + pIndex)->RotNum = 0;
 						break;
 					case GRAND_LEFT:
-						g_block[i].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2 + BLOCK_W / 2, pos.y);
-						g_block[i].Rotation = 0.0f;
-						g_block[i].Size = size / 2;
+						g_ThornBlock[i].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2 + BLOCK_W / 2, pos.y);
+						g_ThornBlock[i].Rotation = 0.0f;
+						g_ThornBlock[i].Size = size / 2;
 						(pPuzzle + pIndex)->blockIndex[0] = i;
 						(pPuzzle + pIndex)->RotNum = 1;
 
 						break;
 					case GRAND_UP:
-						g_block[i].Position = D3DXVECTOR2(pos.x, pos.y - PUZZLE_HEIGHT / 2 + BLOCK_H / 2);
-						g_block[i].Rotation = 0.0f;
-						g_block[i].Size = size / 2;
+						g_ThornBlock[i].Position = D3DXVECTOR2(pos.x, pos.y - PUZZLE_HEIGHT / 2 + BLOCK_H / 2);
+						g_ThornBlock[i].Rotation = 0.0f;
+						g_ThornBlock[i].Size = size / 2;
 						(pPuzzle + pIndex)->blockIndex[0] = i;
 						(pPuzzle + pIndex)->RotNum = 2;
 
 						break;
 					case GRAND_RIGHT:
-						g_block[i].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - BLOCK_W / 2, pos.y);
-						g_block[i].Rotation = 0.0f;
-						g_block[i].Size = size / 2;
+						g_ThornBlock[i].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - BLOCK_W / 2, pos.y);
+						g_ThornBlock[i].Rotation = 0.0f;
+						g_ThornBlock[i].Size = size / 2;
 						(pPuzzle + pIndex)->blockIndex[0] = i;
 						(pPuzzle + pIndex)->RotNum = 3;
 
@@ -219,9 +219,9 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 
 					break;
 				case TYPE_CENTER:
-					g_block[i].Position = D3DXVECTOR2(pos.x, pos.y);
-					g_block[i].Rotation = 0.0f;
-					g_block[i].Size = size / 2;
+					g_ThornBlock[i].Position = D3DXVECTOR2(pos.x, pos.y);
+					g_ThornBlock[i].Rotation = 0.0f;
+					g_ThornBlock[i].Size = size / 2;
 					(pPuzzle + pIndex)->blockIndex[0] = i;
 
 					break;
@@ -229,15 +229,15 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 					switch (type)
 					{
 					case GRAND_DOWN:
-						g_block[i].Position = D3DXVECTOR2(pos.x, pos.y + PUZZLE_HEIGHT / 2 - BLOCK_H / 2);
-						g_block[i].Rotation = 0.0f;
-						g_block[i].Size = size;
+						g_ThornBlock[i].Position = D3DXVECTOR2(pos.x, pos.y + PUZZLE_HEIGHT / 2 - BLOCK_H / 2);
+						g_ThornBlock[i].Rotation = 0.0f;
+						g_ThornBlock[i].Size = size;
 						(pPuzzle + pIndex)->blockIndex[0] = i;
 
-						g_block[i + 1].Position = D3DXVECTOR2(pos.x, pos.y);
-						g_block[i + 1].Rotation = 90.0f;
-						g_block[i + 1].Size = size;
-						g_block[i + 1].UseFlag = true;
+						g_ThornBlock[i + 1].Position = D3DXVECTOR2(pos.x, pos.y);
+						g_ThornBlock[i + 1].Rotation = 90.0f;
+						g_ThornBlock[i + 1].Size = size;
+						g_ThornBlock[i + 1].UseFlag = true;
 						(pPuzzle + pIndex)->blockIndex[1] = i + 1;
 
 						/*g_block[i + 2].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - BLOCK_W / 2, pos.y);
@@ -250,14 +250,14 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 
 						break;
 					case GRAND_LEFT:
-						g_block[i].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2 + BLOCK_W / 2, pos.y);
-						g_block[i].Rotation = 90.0f;
-						g_block[i].Size = size;
+						g_ThornBlock[i].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2 + BLOCK_W / 2, pos.y);
+						g_ThornBlock[i].Rotation = 90.0f;
+						g_ThornBlock[i].Size = size;
 
-						g_block[i + 1].Position = D3DXVECTOR2(pos.x, pos.y);
-						g_block[i + 1].Rotation = 0.0f;
-						g_block[i + 1].Size = size;
-						g_block[i + 1].UseFlag = true;
+						g_ThornBlock[i + 1].Position = D3DXVECTOR2(pos.x, pos.y);
+						g_ThornBlock[i + 1].Rotation = 0.0f;
+						g_ThornBlock[i + 1].Size = size;
+						g_ThornBlock[i + 1].UseFlag = true;
 						(pPuzzle + pIndex)->blockIndex[1] = i + 1;
 
 
@@ -270,14 +270,14 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 
 						break;
 					case GRAND_UP:
-						g_block[i].Position = D3DXVECTOR2(pos.x, pos.y - PUZZLE_HEIGHT / 2 + BLOCK_H / 2);
-						g_block[i].Rotation = 0.0f;
-						g_block[i].Size = size;
+						g_ThornBlock[i].Position = D3DXVECTOR2(pos.x, pos.y - PUZZLE_HEIGHT / 2 + BLOCK_H / 2);
+						g_ThornBlock[i].Rotation = 0.0f;
+						g_ThornBlock[i].Size = size;
 
-						g_block[i + 1].Position = D3DXVECTOR2(pos.x, pos.y);
-						g_block[i + 1].Rotation = 90.0f;
-						g_block[i + 1].Size = size;
-						g_block[i + 1].UseFlag = true;
+						g_ThornBlock[i + 1].Position = D3DXVECTOR2(pos.x, pos.y);
+						g_ThornBlock[i + 1].Rotation = 90.0f;
+						g_ThornBlock[i + 1].Size = size;
+						g_ThornBlock[i + 1].UseFlag = true;
 						(pPuzzle + pIndex)->blockIndex[1] = i + 1;
 
 						/*g_block[i + 2].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2 + BLOCK_W / 2, pos.y);
@@ -289,15 +289,15 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 
 						break;
 					case GRAND_RIGHT:
-						g_block[i].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - BLOCK_W / 2, pos.y);
-						g_block[i].Rotation = 90.0f;
-						g_block[i].Size = size;
+						g_ThornBlock[i].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - BLOCK_W / 2, pos.y);
+						g_ThornBlock[i].Rotation = 90.0f;
+						g_ThornBlock[i].Size = size;
 						
 
-						g_block[i + 1].Position = D3DXVECTOR2(pos.x, pos.y);
-						g_block[i + 1].Rotation = 0.0f;
-						g_block[i + 1].Size = size;
-						g_block[i + 1].UseFlag = true;
+						g_ThornBlock[i + 1].Position = D3DXVECTOR2(pos.x, pos.y);
+						g_ThornBlock[i + 1].Rotation = 0.0f;
+						g_ThornBlock[i + 1].Size = size;
+						g_ThornBlock[i + 1].UseFlag = true;
 						(pPuzzle + pIndex)->blockIndex[1] = i + 1;
 
 						/*g_block[i + 2].Position = D3DXVECTOR2(pos.x, pos.y - PUZZLE_HEIGHT / 2 + BLOCK_H / 2);
@@ -314,28 +314,28 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 					break;
 				case TYPE_SQUARE:
 
-					g_block[i].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2+SQUAER_W/2, pos.y - PUZZLE_HEIGHT / 2 + SQUAER_H / 2);
-					g_block[i].Rotation = 0.0f;
-					g_block[i].Size = D3DXVECTOR2(SQUAER_W,SQUAER_H);
+					g_ThornBlock[i].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2+SQUAER_W/2, pos.y - PUZZLE_HEIGHT / 2 + SQUAER_H / 2);
+					g_ThornBlock[i].Rotation = 0.0f;
+					g_ThornBlock[i].Size = D3DXVECTOR2(SQUAER_W,SQUAER_H);
 					(pPuzzle + pIndex)->blockIndex[0] = i;
 
-					g_block[i + 1].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2 + SQUAER_W / 2, pos.y + PUZZLE_HEIGHT / 2 - SQUAER_H / 2);
-					g_block[i + 1].Rotation = 0.0f;
-					g_block[i+1].Size = D3DXVECTOR2(SQUAER_W, SQUAER_H);
-					g_block[i + 1].UseFlag = true;
+					g_ThornBlock[i + 1].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2 + SQUAER_W / 2, pos.y + PUZZLE_HEIGHT / 2 - SQUAER_H / 2);
+					g_ThornBlock[i + 1].Rotation = 0.0f;
+					g_ThornBlock[i+1].Size = D3DXVECTOR2(SQUAER_W, SQUAER_H);
+					g_ThornBlock[i + 1].UseFlag = true;
 					(pPuzzle + pIndex)->blockIndex[1] = i + 1;
 
-					g_block[i + 2].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - SQUAER_W / 2, pos.y + PUZZLE_HEIGHT / 2 - SQUAER_H / 2);
-					g_block[i + 2].Rotation = 0.0f;
-					g_block[i+2].Size = D3DXVECTOR2(SQUAER_W, SQUAER_H);
-					g_block[i + 2].UseFlag = true;
+					g_ThornBlock[i + 2].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - SQUAER_W / 2, pos.y + PUZZLE_HEIGHT / 2 - SQUAER_H / 2);
+					g_ThornBlock[i + 2].Rotation = 0.0f;
+					g_ThornBlock[i+2].Size = D3DXVECTOR2(SQUAER_W, SQUAER_H);
+					g_ThornBlock[i + 2].UseFlag = true;
 
 					(pPuzzle + pIndex)->blockIndex[2] = i + 2;
 
-					g_block[i + 3].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - SQUAER_W / 2, pos.y - PUZZLE_HEIGHT / 2 + SQUAER_H / 2);
-					g_block[i + 3].Rotation = 0.0f;
-					g_block[i+3].Size = D3DXVECTOR2(SQUAER_W, SQUAER_H);
-					g_block[i + 3].UseFlag = true;
+					g_ThornBlock[i + 3].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - SQUAER_W / 2, pos.y - PUZZLE_HEIGHT / 2 + SQUAER_H / 2);
+					g_ThornBlock[i + 3].Rotation = 0.0f;
+					g_ThornBlock[i+3].Size = D3DXVECTOR2(SQUAER_W, SQUAER_H);
+					g_ThornBlock[i + 3].UseFlag = true;
 
 					(pPuzzle + pIndex)->blockIndex[3] = i + 3;
 
@@ -345,15 +345,15 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 
 					(pPuzzle + pIndex)->CipIndex = SetPuzzleCip(D3DXVECTOR2(pos.x-PUZZLE_WIDHT/3,pos.y-PUZZLE_HEIGHT/3), D3DXVECTOR2(CIP_SIZE_X, CIP_SIZE_Y), ctype);
 
-					g_block[i].Position = D3DXVECTOR2(pos.x, pos.y);
-					g_block[i].Rotation = 0.0f;
-					g_block[i].Size = D3DXVECTOR2(BLOCK_W, PUZZLE_HEIGHT-20.0f);
+					g_ThornBlock[i].Position = D3DXVECTOR2(pos.x, pos.y);
+					g_ThornBlock[i].Rotation = 0.0f;
+					g_ThornBlock[i].Size = D3DXVECTOR2(BLOCK_W, PUZZLE_HEIGHT-20.0f);
 					(pPuzzle + pIndex)->blockIndex[0] = i;
 
-					g_block[i + 1].Position = D3DXVECTOR2(pos.x, pos.y);
-					g_block[i + 1].Rotation = 0.0f;
-					g_block[i + 1].Size = D3DXVECTOR2(PUZZLE_WIDHT-20.0f, BLOCK_H);
-					g_block[i + 1].UseFlag = true;
+					g_ThornBlock[i + 1].Position = D3DXVECTOR2(pos.x, pos.y);
+					g_ThornBlock[i + 1].Rotation = 0.0f;
+					g_ThornBlock[i + 1].Size = D3DXVECTOR2(PUZZLE_WIDHT-20.0f, BLOCK_H);
+					g_ThornBlock[i + 1].UseFlag = true;
 					(pPuzzle + pIndex)->blockIndex[1] = i + 1;
 
 
@@ -361,15 +361,15 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 				case TYPE_TATE:
 					(pPuzzle + pIndex)->CipIndex = SetPuzzleCip(D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 3, pos.y + PUZZLE_HEIGHT / 3), D3DXVECTOR2(CIP_SIZE_X, CIP_SIZE_Y), ctype);
 
-					g_block[i].Position = D3DXVECTOR2(pos.x+PUZZLE_WIDHT/2, pos.y);
-					g_block[i].Rotation = 0.0f;
-					g_block[i].Size = D3DXVECTOR2(BLOCK_W, PUZZLE_HEIGHT);
+					g_ThornBlock[i].Position = D3DXVECTOR2(pos.x+PUZZLE_WIDHT/2, pos.y);
+					g_ThornBlock[i].Rotation = 0.0f;
+					g_ThornBlock[i].Size = D3DXVECTOR2(BLOCK_W, PUZZLE_HEIGHT);
 					(pPuzzle + pIndex)->blockIndex[0] = i;
 
-					g_block[i + 1].Position = D3DXVECTOR2(pos.x, pos.y);
-					g_block[i + 1].Rotation = 0.0f;
-					g_block[i + 1].Size = D3DXVECTOR2(PUZZLE_WIDHT/2, PUZZLE_HEIGHT - 60.0f);
-					g_block[i + 1].UseFlag = true;
+					g_ThornBlock[i + 1].Position = D3DXVECTOR2(pos.x, pos.y);
+					g_ThornBlock[i + 1].Rotation = 0.0f;
+					g_ThornBlock[i + 1].Size = D3DXVECTOR2(PUZZLE_WIDHT/2, PUZZLE_HEIGHT - 60.0f);
+					g_ThornBlock[i + 1].UseFlag = true;
 					(pPuzzle + pIndex)->blockIndex[1] = i + 1;
 
 					break;
@@ -378,28 +378,28 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 					(pPuzzle + pIndex)->WarpIndex[1] = SetWarp(D3DXVECTOR2(pos.x, pos.y + 30.0f), D3DXVECTOR2(20.0f, 20.0f));
 					(pPuzzle + pIndex)->CipIndex = SetPuzzleCip(D3DXVECTOR2(pos.x, pos.y + PUZZLE_HEIGHT / 3), D3DXVECTOR2(CIP_SIZE_X, CIP_SIZE_Y), ctype);
 
-					g_block[i].Position = D3DXVECTOR2(pos.x, pos.y);
-					g_block[i].Rotation = 0.0f;
-					g_block[i].Size = D3DXVECTOR2(PUZZLE_WIDHT, BLOCK_H);
+					g_ThornBlock[i].Position = D3DXVECTOR2(pos.x, pos.y);
+					g_ThornBlock[i].Rotation = 0.0f;
+					g_ThornBlock[i].Size = D3DXVECTOR2(PUZZLE_WIDHT, BLOCK_H);
 					(pPuzzle + pIndex)->blockIndex[0] = i;
 
-					g_block[i + 1].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - BLOCK_W / 2, pos.y );
-					g_block[i + 1].Rotation = 0.0f;
-					g_block[i + 1].Size = D3DXVECTOR2(BLOCK_W, PUZZLE_HEIGHT);
-					g_block[i + 1].UseFlag = true;
+					g_ThornBlock[i + 1].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - BLOCK_W / 2, pos.y );
+					g_ThornBlock[i + 1].Rotation = 0.0f;
+					g_ThornBlock[i + 1].Size = D3DXVECTOR2(BLOCK_W, PUZZLE_HEIGHT);
+					g_ThornBlock[i + 1].UseFlag = true;
 					(pPuzzle + pIndex)->blockIndex[1] = i + 1;
 
-					g_block[i + 2].Position = D3DXVECTOR2(pos.x, pos.y + PUZZLE_HEIGHT / 2 - BLOCK_H / 2);
-					g_block[i + 2].Rotation = 0.0f;
-					g_block[i + 2].Size = D3DXVECTOR2(PUZZLE_WIDHT, BLOCK_H);
-					g_block[i + 2].UseFlag = true;
+					g_ThornBlock[i + 2].Position = D3DXVECTOR2(pos.x, pos.y + PUZZLE_HEIGHT / 2 - BLOCK_H / 2);
+					g_ThornBlock[i + 2].Rotation = 0.0f;
+					g_ThornBlock[i + 2].Size = D3DXVECTOR2(PUZZLE_WIDHT, BLOCK_H);
+					g_ThornBlock[i + 2].UseFlag = true;
 
 					(pPuzzle + pIndex)->blockIndex[2] = i + 2;
 
-					g_block[i + 3].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2 + BLOCK_W / 2, pos.y + PUZZLE_HEIGHT / 4);
-					g_block[i + 3].Rotation = 0.0f;
-					g_block[i + 3].Size = D3DXVECTOR2(BLOCK_W, PUZZLE_HEIGHT/2);
-					g_block[i + 3].UseFlag = true;
+					g_ThornBlock[i + 3].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2 + BLOCK_W / 2, pos.y + PUZZLE_HEIGHT / 4);
+					g_ThornBlock[i + 3].Rotation = 0.0f;
+					g_ThornBlock[i + 3].Size = D3DXVECTOR2(BLOCK_W, PUZZLE_HEIGHT/2);
+					g_ThornBlock[i + 3].UseFlag = true;
 
 					(pPuzzle + pIndex)->blockIndex[3] = i + 3;
 
@@ -409,23 +409,23 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 					(pPuzzle + pIndex)->CipIndex = SetPuzzleCip(D3DXVECTOR2(pos.x, pos.y + PUZZLE_HEIGHT / 3), D3DXVECTOR2(CIP_SIZE_X, CIP_SIZE_Y), ctype);
 
 
-					g_block[i].Position = D3DXVECTOR2(pos.x, pos.y);
-					g_block[i].Rotation = 0.0f;
-					g_block[i].Size = D3DXVECTOR2(PUZZLE_WIDHT, BLOCK_H);
+					g_ThornBlock[i].Position = D3DXVECTOR2(pos.x, pos.y);
+					g_ThornBlock[i].Rotation = 0.0f;
+					g_ThornBlock[i].Size = D3DXVECTOR2(PUZZLE_WIDHT, BLOCK_H);
 					(pPuzzle + pIndex)->blockIndex[0] = i;
 
-					g_block[i + 1].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - BLOCK_W / 2, pos.y+ PUZZLE_HEIGHT/4);
-					g_block[i + 1].Rotation = 0.0f;
-					g_block[i + 1].Size = D3DXVECTOR2(BLOCK_W, PUZZLE_HEIGHT/2);
-					g_block[i + 1].UseFlag = true;
+					g_ThornBlock[i + 1].Position = D3DXVECTOR2(pos.x + PUZZLE_WIDHT / 2 - BLOCK_W / 2, pos.y+ PUZZLE_HEIGHT/4);
+					g_ThornBlock[i + 1].Rotation = 0.0f;
+					g_ThornBlock[i + 1].Size = D3DXVECTOR2(BLOCK_W, PUZZLE_HEIGHT/2);
+					g_ThornBlock[i + 1].UseFlag = true;
 					(pPuzzle + pIndex)->blockIndex[1] = i + 1;
 
 
 
-					g_block[i + 2].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2 + BLOCK_W / 2, pos.y + PUZZLE_HEIGHT /4);
-					g_block[i + 2].Rotation = 0.0f;
-					g_block[i + 2].Size = D3DXVECTOR2(BLOCK_W, PUZZLE_HEIGHT/2);
-					g_block[i + 2].UseFlag = true;
+					g_ThornBlock[i + 2].Position = D3DXVECTOR2(pos.x - PUZZLE_WIDHT / 2 + BLOCK_W / 2, pos.y + PUZZLE_HEIGHT /4);
+					g_ThornBlock[i + 2].Rotation = 0.0f;
+					g_ThornBlock[i + 2].Size = D3DXVECTOR2(BLOCK_W, PUZZLE_HEIGHT/2);
+					g_ThornBlock[i + 2].UseFlag = true;
 
 					(pPuzzle + pIndex)->blockIndex[2] = i + 2;
 
@@ -434,7 +434,7 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 				}
 			}
 
-			g_block[i].UseFlag = true;
+			g_ThornBlock[i].UseFlag = true;
 			break;
 
 		}
@@ -444,5 +444,5 @@ void SetBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, GRAND_TYPE type, BLOCK_TYPE bty
 
 BLOCK * GetBlock()
 {
-	return &g_block[0];
+	return &g_ThornBlock[0];
 }

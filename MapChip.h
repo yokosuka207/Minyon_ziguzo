@@ -35,13 +35,16 @@ enum class MAPCHIP_TYPE{
 	TYPE_BLANK = 0,	// 0	ŠO‘¤‚Ì‹ó”’
 	TYPE_PUSH,		// 1	“Ê
 	TYPE_PULL,		// 2	‰š
-	TYPE_NONE,		// 3
-	TYPE_BLOCK,		// 4
-	TYPE_CHIP,		// 5
-	TYPE_WARP,		// 6
-	TYPE_GOAL,		// 7
-	TYPE_JUMP,		// 8
-	TYPE_SPIKE,		// 9
+	TYPE_NONE,		// 3	block‚È‚µ
+	TYPE_BLOCK,		// 4	block
+	TYPE_CHIP,		// 5	puzzle
+	TYPE_WARP,		// 6	warp
+	TYPE_GOAL,		// 7	goal
+	TYPE_JUMP,		// 8	jumpstand
+	TYPE_SPIKE,		// 9	ƒgƒQ
+	TYPE_FALL,		//10	—Ž‚¿‚éblock
+	TYPE_KEY,		//11	key
+	TYPE_DOOR,		//12	door
 
 	TYPE_NUM,		
 };

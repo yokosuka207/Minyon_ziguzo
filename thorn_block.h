@@ -14,7 +14,7 @@
 #include "main.h"
 #include "renderer.h"
 
-#define	THORN_BLOCK_MAX	64
+#define	THORN_BLOCK_MAX	(5)
 #define THORN_BLOCK_H		30	//ブロックの縦サイズ
 #define THORN_BLOCK_W		30	//ブロックの横サイズ
 
@@ -51,6 +51,7 @@ typedef struct
 	D3DXCOLOR		Col;	//色
 	float			texno;	//テクスチャインデックス
 	float			Rotation;	//角度
+	int				PieceNo;	
 	bool			UseFlag;	//使用フラグ
 
 }THORN_BLOCK;
@@ -60,6 +61,7 @@ void UninitThornBlock();
 void UpdateThornBlock();
 void DrawThornBlock();
 
+void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo);
 void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, THORN_GRAND_TYPE type, THORN_BLOCK_TYPE btype, int pIndex);
 THORN_BLOCK* GetThornBlock();
 

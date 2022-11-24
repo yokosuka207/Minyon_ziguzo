@@ -41,6 +41,7 @@ HRESULT InitFallBlock()
 		g_FallBlock[i].Size = D3DXVECTOR2(FALLBLOCK_W,FALLBLOCK_H);
 		g_FallBlock[i].col = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
 		g_FallBlock[i].texno = LoadTexture(g_TextureNameBroken);
+		g_FallBlock[i].PieceIndex = -1;
 		g_FallBlock[i].UseFlag = false;
 
 	}
@@ -77,9 +78,6 @@ void DrawFallBlock()
 				g_FallBlock[i].rot, g_FallBlock[i].col, 0, 1.0f, 1.0f, 1);
 
 		}
-
-		
-
 	}
 }
 
@@ -88,20 +86,17 @@ FALLBLOCK * GetFallBlock()
 	return g_FallBlock;
 }
 
-int SetFallBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size)
+void SetFallBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size,int PieceNo)
 {
 	for (int i = 0; i < FALLBLOCK_MAX; i++)
 	{
 		if (!g_FallBlock[i].UseFlag)
 		{
-
 			g_FallBlock[i].Position = pos;
 			g_FallBlock[i].Size = size;
+			g_FallBlock[i].PieceIndex = PieceNo;
 			g_FallBlock[i].UseFlag = true;
-			return i;
-
+			break;
 		}
-
-
 	}
 }

@@ -21,20 +21,21 @@
 typedef struct
 {
 
-	bool UseFlag;//構造体利用中フラグ
-	D3DXVECTOR2 Size;//BOXサイズ
-	D3DXVECTOR2 Position;//表示座標(中心座標)
-	D3DXVECTOR2 oldpos;//1フレーム前の座標
+	bool UseFlag;	//構造体利用中フラグ
+	D3DXVECTOR2 Size;	//BOXサイズ
+	D3DXVECTOR2 Position;	//表示座標(中心座標)
+	D3DXVECTOR2 oldpos;	//1フレーム前の座標
 	D3DXVECTOR2 sp;
-	float rot;//回転角度
-	float texno;//テクスチャインデックス
-	D3DXCOLOR col;//色
-	float PaternNo;//パターン番号
-	float uv_w;//横サイズ
-	float uv_h;//縦サイズ
+	int PieceIndex;
+	float rot;	//回転角度
+	float texno;	//テクスチャインデックス
+	D3DXCOLOR col;	//色
+	float PaternNo;	//パターン番号
+	float uv_w;	//横サイズ
+	float uv_h;	//縦サイズ
 	//bool fall; //落下
 	//bool getfall;//落下の開始
-	int NumPatern;//横枚数
+	int NumPatern;	//横枚数
 
 	int FrameWait;
 }FALLBLOCK;
@@ -49,5 +50,5 @@ void UpdateFallBlock();
 void DrawFallBlock();
 
 FALLBLOCK*GetFallBlock();
-int SetFallBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size);
+void SetFallBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size ,int PieceNo);
 
