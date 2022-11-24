@@ -140,7 +140,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no) {
 				SetJumpStand(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9
-				SetThornBlock(position, DrawSize,no);
+				SetThornBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL) :	//10
 				SetFallBlock(position, DrawSize, no);

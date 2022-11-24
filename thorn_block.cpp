@@ -52,6 +52,7 @@ HRESULT InitThornBlock()
 		g_ThornBlock[i].Size = D3DXVECTOR2(THORN_BLOCK_W, THORN_BLOCK_H);
 		g_ThornBlock[i].texno = LoadTexture(g_TextureNameThornBlock);
 		g_ThornBlock[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);;
+		g_ThornBlock[i].PieceIndex = -1;
 		g_ThornBlock[i].UseFlag = false;
 	}
 	return S_OK;
@@ -73,11 +74,8 @@ void UninitThornBlock()
 //=============================================================================
 void UpdateThornBlock()
 {
-	PLAYER* pPlayer = GetPlayer();
 	for (int i = 0; i < THORN_BLOCK_MAX; i++) {
-		if (CollisionBB(pPlayer->Position, g_ThornBlock[i].Position, pPlayer->size, g_ThornBlock[i].Size)) {
-			ResetGame();
-		}
+
 	}
 }
 
@@ -102,6 +100,19 @@ void DrawThornBlock()
 		}
 	}
 }
+void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
+	for (int i = 0; i < THORN_BLOCK_MAX; i++) {
+		if (!g_ThornBlock[i].UseFlag) {
+			g_ThornBlock[i].Postion = pos;
+			g_ThornBlock[i].Size = size;
+			g_ThornBlock[i].PieceIndex = PieceNo;
+			g_ThornBlock[i].UseFlag = true;
+			break;
+		}
+	}
+
+}
+
 
 int SetThornBlock(D3DXVECTOR2 Pos, D3DXVECTOR2 s)
 {
