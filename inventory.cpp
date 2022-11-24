@@ -77,10 +77,10 @@ HRESULT InitInventory()
 	}
 
 	// デバッグ用
-	SetInventory(0);
-	SetInventory(1);
-	SetInventory(2);
-	SetInventory(3);
+	//SetInventory(0);
+	//SetInventory(1);
+	//SetInventory(2);
+	//SetInventory(3);
 
 	return S_OK;
 }
@@ -164,8 +164,8 @@ void UpdateInventory()
 			if (g_Inventory[i].pos.x > bgmax_x) {
 				// 外に出たよ
 				// ピースを出す
-				//SetPieceMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo);
-				//DeleteInventory(g_Inventory[i].PieNo);
+				SetPieceMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo);
+				DeleteInventory(g_Inventory[i].PieNo);
 			}
 		}
 	}

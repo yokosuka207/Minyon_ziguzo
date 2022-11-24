@@ -10,7 +10,7 @@
 #include "MapChip.h"
 #include "SplitStage.h"
 
-
+#include"inventory.h"
 PUZZLE_CIP	g_PuzzleCip[CIP_MAX];
 //----------マップチップ用配列----------
 // 22/11/02
@@ -74,7 +74,8 @@ void UpdatePuzzleCip()
 							&& g_ChipPuzzleChip[i].Position.y + g_ChipPuzzleChip[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2
 							&& g_ChipPuzzleChip[i].Position.y - g_ChipPuzzleChip[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2)
 						{
-							SetPieceMapChip(pSplitStage->Split3[2][2], g_ChipPuzzleChip[i].NextPieceIndex);
+							//SetPieceMapChip(pSplitStage->Split3[2][2], g_ChipPuzzleChip[i].NextPieceIndex);
+							SetInventory(g_ChipPuzzleChip[i].NextPieceIndex);
 							g_ChipPuzzleChip[i].GetFlag = true;
 
 							g_ChipPuzzleChip[i].UseFlag = false;
