@@ -330,9 +330,9 @@ void UpdatePlayer()
 						g_Player.Position.y + g_Player.size.y / 2 > (broken + i)->Postion.y - (broken + i)->Size.y / 2 &&
 						g_Player.oldpos.y + g_Player.size.y / 2 <= (broken + i)->Postion.y - (broken + i)->Size.y / 2)
 					{
-						g_Player.Position.y = (broken + i)->Postion.y - (broken + i)->Size.y / 2 - g_Player.size.y / 2;
+						/*g_Player.Position.y = (broken + i)->Postion.y - (broken + i)->Size.y / 2 - g_Player.size.y / 2;
 						g_Player.jump = false;
-						g_Player.fall = false;
+						g_Player.fall = false;*/
 						g_Player.frame = 0;
 					}
 					//プレイヤー下・壊れるブロック上,壊れる
@@ -341,10 +341,10 @@ void UpdatePlayer()
 						g_Player.Position.y - g_Player.size.y / 2 < (broken + i)->Postion.y + (broken + i)->Size.y / 2 &&
 						g_Player.oldpos.y - g_Player.size.y / 2 >= (broken + i)->Postion.y + (broken + i)->Size.y / 2)
 					{
-						(broken + i)->UseFlag = false;
+						/*(broken + i)->UseFlag = false;
 						g_Player.fall = true;
 						g_Player.getfall = true;
-						g_Player.frame = 50;
+						g_Player.frame = 50;*/
 					}
 				}
 			}

@@ -35,6 +35,7 @@ HRESULT InitPuzzleCip()
 		g_ChipPuzzleChip[i].Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_ChipPuzzleChip[i].Rotation = 0.0f;
 		g_ChipPuzzleChip[i].NextPieceIndex = -1;
+		g_ChipPuzzleChip[i].PieceIndex = -1;
 		g_ChipPuzzleChip[i].GoalFlag = false;
 		g_ChipPuzzleChip[i].UseFlag = false;
 	}
@@ -118,8 +119,24 @@ void SetChipPuzzuleChip(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index) {
 		if (!g_ChipPuzzleChip[i].UseFlag) {
 			g_ChipPuzzleChip[i].Position = pos;
 			g_ChipPuzzleChip[i].Size = size;
-			g_ChipPuzzleChip->UseFlag = true;
+			g_ChipPuzzleChip[i].NextPieceIndex = index;
+			g_ChipPuzzleChip[i].PieceIndex = index-1;
+			g_ChipPuzzleChip[i].UseFlag = true;
 			break;
+		}
+	}
+}
+
+void DeleteChipPiece(int index)
+{
+	for (int i = 0; i < PUZZLE_MAX; i++)
+	{
+		if (g_ChipPuzzleChip[i].UseFlag) 
+		{
+			if (index == g_ChipPuzzleChip[i].PieceIndex)
+			{
+				g_ChipPuzzleChip[i].UseFlag = false;
+			}
 		}
 	}
 }

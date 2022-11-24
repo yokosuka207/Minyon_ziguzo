@@ -48,6 +48,7 @@ typedef struct
 	float			Rotation;	//角度
 
 	int				NextPieceIndex;	//作るピースの番号
+	int				PieceIndex;//表示ピース番号
 	CIP_TYPE	Type;	//チップの種類
 	CREATE_CIP_TYPE		Num_type;//今のタイプ
 	int houkou[4];	//方向パズル出っ張ているかひっこんでいるか
@@ -62,6 +63,8 @@ void UninitPuzzleCip();
 void UpdatePuzzleCip();
 void DrawPuzzleCip();
 void SetChipPuzzuleChip(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index);
+
+void DeleteChipPiece(int index);
 
 int SetPuzzleCip(D3DXVECTOR2 pos,D3DXVECTOR2 size,CIP_TYPE type);
 PUZZLE_CIP* GetPuzzleCip();

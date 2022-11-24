@@ -64,11 +64,11 @@ HRESULT InitMapChip() {
 
 	SplitStage* pSplitStage = GetSplitStage();
 
-	FileLoad(0);	//あとでnoに変更する？fusegi
+	FileLoad(1);	//あとでnoに変更する？fusegi
 	RotateChipData();
 	SetPieceMapChip(pSplitStage->Split3[0][1], 0);
-	SetPieceMapChip(pSplitStage->Split3[1][0], 1);
-	SetPieceMapChip(pSplitStage->Split3[2][1], 2);
+	//SetPieceMapChip(pSplitStage->Split3[1][0], 1);
+	//SetPieceMapChip(pSplitStage->Split3[2][1], 2);
 
 	return S_OK;
 }
@@ -152,7 +152,7 @@ void FileLoad(int StageNo) {
 		filename = "MapData/map0.txt";
 		break;
 	case 1:
-		filename = "MapData/map1.txt";
+		filename = "MapData/map.txt"; 
 		break;
 	}
 	FILE* fp;
@@ -242,6 +242,7 @@ void DeleteMapChip(int PieceNo) {
 	deleteBlock(PieceNo);
 	DeleteJoint(PieceNo);
 	DeleteJumpStand(PieceNo);
+	DeleteChipPiece(PieceNo);
 	//DeleteSpike(PieceNo);
 }
 
