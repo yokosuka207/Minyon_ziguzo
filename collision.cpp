@@ -11,6 +11,7 @@
 #include "MapChip.h"
 #include "goal.h"
 #include "thorn_block.h"
+#include "jump_stand.h"
 #include "game.h"
 /*==============================================================================
 
