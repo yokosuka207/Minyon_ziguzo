@@ -71,7 +71,7 @@ HRESULT InitMapChip() {
 
 	FileLoad(1);	//‚ ‚Æ‚Åno‚É•ÏX‚·‚éHfusegi	yeah
 	RotateChipData();
-	SetPieceMapChip(pSplitStage->Split3[0][1], 0);
+	SetPieceMapChip(pSplitStage->Split3[1][0], 0);
 	//SetPieceMapChip(pSplitStage->Split3[1][0], 1);
 	//SetPieceMapChip(pSplitStage->Split3[2][1], 2);
 

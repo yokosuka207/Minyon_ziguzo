@@ -35,7 +35,6 @@ void InitGame()
 	InitGameMouse();
 	InitGoal();
 	InitBroken();
-	InitPlayer();
 	InitWarp();
 	InitJumpStand();
 	InitPuzzleCip();
@@ -45,6 +44,8 @@ void InitGame()
 	InitCursor();				// カーソルの初期化
 	InitThornBlock();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
+	InitPlayer();
+
 }
 
 void UninitGame()
@@ -97,6 +98,8 @@ void UpdateGame()
 void DrawGame()
 {
 	BgDraw();
+	DrawSplitStage();			// 区切り枠の描画
+
 	DrawPolygon();		//ポリゴンの描画
 	DrawPuzzle();
 	DrawMapChip();
@@ -110,7 +113,6 @@ void DrawGame()
 	DrawGoal();
 	DrawBroken();
 
-	DrawSplitStage();			// 区切り枠の描画
 	DrawThornBlock();
 	DrawInventory();			// インベントリの描画
 	//DrawCursor();				// カーソルの描画
