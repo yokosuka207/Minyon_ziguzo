@@ -116,10 +116,10 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK) :	//0				
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//1
-				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_BUMP);
+				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_BUMP,Pin);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_PULL) :	//2
-				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_DIP);
+				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_DIP,Pin);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_NONE) :	//3
 				break;

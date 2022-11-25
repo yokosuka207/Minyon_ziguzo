@@ -114,7 +114,11 @@ void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 void DeleteThornBlock(int PieceNo) {
 	for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 		if (g_ThornBlock[i].UseFlag) {
-			g_ThornBlock[i].UseFlag = false;
+			if (g_ThornBlock[i].PieceIndex == PieceNo)
+			{
+				g_ThornBlock[i].UseFlag = false;
+
+			}
 		}
 	}
 }
