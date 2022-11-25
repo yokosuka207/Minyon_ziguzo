@@ -92,7 +92,7 @@ void UpdateJumpStand()
 					g_JumpStand[i].sp = p_Player->sp;
 					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
 				}
-				else
+				
 				{
 					g_JumpStand[i].pos.y++;
 
@@ -185,7 +185,7 @@ void DrawJumpStand()
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TextureNo));
 
 			SpriteDrawColorRotation(g_JumpStand[i].pos.x, g_JumpStand[i].pos.y,
-				g_JumpStand[i].size.x, g_JumpStand[i].size.y, 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+				g_JumpStand[i].size.x, g_JumpStand[i].size.y, 0.0f, D3DXCOLOR(3.0f, 0.0f, 0.0f, 1.0f),
 				0, 1.0f, 1.0f, 1);
 		}
 	}

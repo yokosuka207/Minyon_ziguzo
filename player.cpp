@@ -118,7 +118,7 @@ void UpdatePlayer()
 			JUMPSTAND* p_JumpStand = GetJumpStand();
 			if (GetKeyboardPress(DIK_B))
 			{
-				if (CollisionBB(g_Player.Position, p_JumpStand->pos, g_Player.size, p_JumpStand->size * 2)) {
+				if (CollisionBB(g_Player.Position, p_JumpStand->pos, g_Player.size, p_JumpStand->size)) {
 					g_Player.GetJumpStand = true;
 				}
 			}
@@ -180,10 +180,6 @@ void UpdatePlayer()
 			//			//g_Player.sp.y = 0;//停止
 			//		}
 			//	}
-
-
-
-
 			//	//落下
 			//	if (g_Player.fall == false && g_Player.Position.y > g_Player.oldpos.y)
 			//	{
@@ -205,26 +201,13 @@ void UpdatePlayer()
 			//		{
 			//			g_Player.sp.y = 8;//最大落下速度
 			//		}
-
 			//		g_Player.jump = true;
 			//	}
 			//}
 
-
-
-
-
-
-
 			//反映
 			g_Player.oldpos = g_Player.Position;
 			g_Player.Position += g_Player.sp;
-
-
-
-
-
-
 
 
 			{
@@ -385,44 +368,44 @@ void UpdatePlayer()
 				THORNBLOCK* thornblock = GetThornBlock();
 				if ((thornblock + i)->UseFlag == true)
 				{
-					////プレイヤー左・トゲブロック右
-					//if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
-					//	g_Player.oldpos.x + g_Player.size.x / 2 <= (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
-					//	g_Player.Position.y + g_Player.size.y / 2 > (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 &&
-					//	g_Player.Position.y - g_Player.size.y / 2 < (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2)
-					//{
-					//	g_Player.Position.x = (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 - g_Player.size.x / 2;
-					//	//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
-					//}
-					////プレイヤー右・トゲブロック左
-					//if (g_Player.Position.x - g_Player.size.x / 2 < (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
-					//	g_Player.oldpos.x - g_Player.size.x / 2 >= (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
-					//	g_Player.Position.y + g_Player.size.y / 2 > (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 &&
-					//	g_Player.Position.y - g_Player.size.y / 2 < (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2)
-					//{
-					//	g_Player.Position.x = (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 + g_Player.size.x / 2;
-					//	//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
-					//}
+					//プレイヤー左・トゲブロック右
+					if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
+						g_Player.oldpos.x + g_Player.size.x / 2 <= (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 < (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2)
+					{
+						g_Player.Position.x = (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 - g_Player.size.x / 2;
+						//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
+					}
+					//プレイヤー右・トゲブロック左
+					if (g_Player.Position.x - g_Player.size.x / 2 < (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
+						g_Player.oldpos.x - g_Player.size.x / 2 >= (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 < (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2)
+					{
+						g_Player.Position.x = (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 + g_Player.size.x / 2;
+						//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
+					}
 
-					////プレイヤー上・トゲブロック下
-					//if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
-					//	g_Player.Position.x - g_Player.size.x / 2 < (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
-					//	g_Player.Position.y + g_Player.size.y / 2 > (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 &&
-					//	g_Player.oldpos.y + g_Player.size.y / 2 <= (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2)
-					//{
-					//	g_Player.Position.y = (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 - g_Player.size.y / 2;
-					//	g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
-					//	SetScene(SCENE_RESULT);
-					//}
-					////プレイヤー下・トゲブロック上,
-					//if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
-					//	g_Player.Position.x - g_Player.size.x / 2 < (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
-					//	g_Player.Position.y - g_Player.size.y / 2 < (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2 &&
-					//	g_Player.oldpos.y - g_Player.size.y / 2 >= (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2)
-					//{
-					//	g_Player.Position.y = (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2 + g_Player.size.y / 2;
-					//	//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
-					//}
+					//プレイヤー上・トゲブロック下
+					if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
+						g_Player.Position.x - g_Player.size.x / 2 < (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 &&
+						g_Player.oldpos.y + g_Player.size.y / 2 <= (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2)
+					{
+						g_Player.Position.y = (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 - g_Player.size.y / 2;
+						//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
+						//SetScene(SCENE_RESULT);
+					}
+					//プレイヤー下・トゲブロック上,
+					if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
+						g_Player.Position.x - g_Player.size.x / 2 < (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 < (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2 &&
+						g_Player.oldpos.y - g_Player.size.y / 2 >= (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2)
+					{
+						g_Player.Position.y = (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2 + g_Player.size.y / 2;
+						//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
+					}
 				}
 			}
 
