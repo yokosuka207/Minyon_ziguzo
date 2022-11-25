@@ -159,7 +159,7 @@ void UpdateGameMouse()
 						Mouse.RotIndex = 0;
 
 						oneFlag = true;
-						MouseIndex = i;
+						MouseIndex = pPiece[i].no;
 						pPiece[i].OldMovePos = pPiece[i].pos;
 
 					}

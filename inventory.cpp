@@ -17,7 +17,7 @@ Update:
 #include "input.h"
 #include "puzzle.h"
 #include "MapChip.h"
-
+#include"mouse.h"
 //**************************************************
 // マクロ定義
 //**************************************************
@@ -100,7 +100,7 @@ void UninitInventory()
 void UpdateInventory()
 {
 	D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
-
+	MOUSE* pMouse = GetMouse();
 	for (int i = 0; i < INVENTORY_MAX; i++) {
 		if (g_Inventory[i].IsUse) {
 			// 当たり判定用座標
@@ -165,8 +165,10 @@ void UpdateInventory()
 			if (g_Inventory[i].pos.x > bgmax_x) {
 				// 外に出たよ
 				// ピースを出す
+				//pMouse->UseFlag = true;
 				SetPieceMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo);
 				DeleteInventory(g_Inventory[i].PieNo);
+
 			}
 		}
 	}
@@ -204,17 +206,19 @@ void DrawInventory()
 //==================================================
 void SetInventory(int PieNo)
 {
-	// 保持するパズル配列の中を確認
-	for (int i = 0; i < INVENTORY_MAX; i++) {
-		// 使っていなかったら
-		if (!g_Inventory[i].IsUse) {
-			g_Inventory[i].PieNo = PieNo;
-			
-			g_Inventory[i].pos = D3DXVECTOR2(INVENTORY_POS_X, i * INVENTORY_POS_Y);
-			
-			g_Inventory[i].IsUse = true;
+	{
+		// 保持するパズル配列の中を確認
+		for (int i = 0; i < INVENTORY_MAX; i++) {
+			// 使っていなかったら
+			if (!g_Inventory[i].IsUse) {
+				g_Inventory[i].PieNo = PieNo;
 
-			break;
+				g_Inventory[i].pos = D3DXVECTOR2(INVENTORY_POS_X, i * INVENTORY_POS_Y);
+
+				g_Inventory[i].IsUse = true;
+
+				break;
+			}
 		}
 	}
 }
