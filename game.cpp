@@ -21,6 +21,7 @@
 #include"SplitStage.h"
 
 #include "jump_stand.h"
+#include"thorn_block.h"
 
 void InitGame()
 {
@@ -42,7 +43,7 @@ void InitGame()
 	InitInventory();			// インベントリの初期化
 	InitMapChip();
 	InitCursor();				// カーソルの初期化
-
+	InitThornBlock();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 }
 
@@ -63,6 +64,7 @@ void UninitGame()
 	UninitInventory();			// インベントリの終了
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了
+	UninitThornBlock();
 }
 
 void UpdateGame()
@@ -85,10 +87,10 @@ void UpdateGame()
 	UpdateBroken();
 	UpdateWarp();
 	UpdateJumpStand();
-
+	UpdateThornBlock();
 	UpdateInventory();			// インベントリの更新
 	UpdateMapChip();
-
+	
 	UpdateCursor();				// カーソルの更新
 }	
 
@@ -108,7 +110,7 @@ void DrawGame()
 	DrawBroken();
 
 	DrawSplitStage();			// 区切り枠の描画
-
+	DrawThornBlock();
 	DrawInventory();			// インベントリの描画
 	//DrawCursor();				// カーソルの描画
 }
