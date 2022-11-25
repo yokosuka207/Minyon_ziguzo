@@ -13,6 +13,8 @@
 #include "thorn_block.h"
 #include "jump_stand.h"
 #include "game.h"
+#include "result.h"
+#include "scene.h"
 /*==============================================================================
 
    当たり判定管理 [collsion.cpp]
@@ -46,6 +48,10 @@ void UpdateCollision()
 
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	MOUSE* pMouse = GetMouse();
+
+	RESULT* pResult = GetResult();
+	SCENE* pScene;
+
 	//プレーヤー　対　敵キャラ	四角
 
 
@@ -56,8 +62,11 @@ void UpdateCollision()
 		//プレイヤーとトゲブロックの判定
 		for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 			if (pThornBlock[i].UseFlag) {
-				if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
-					ResetGame();
+				if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)/* ||
+					pPlayer->Position.y - pPlayer->size.y < SCREEN_HEIGHT*/) {
+					pResult[0].type = LOSE;
+					SetScene(SCENE::SCENE_RESULT);
+					//ResetGame();
 				}
 			}
 		}
