@@ -138,17 +138,19 @@ void UpdateJumpStand()
 				{
 					g_JumpStand[i].JumpStandFlag = true;
 
-					g_JumpStand[i].JumpPower = 17.0f;
+					g_JumpStand[i].JumpPower = 13.0f;
+					//p_Player->sp.y = 5.0f;
 					g_JumpStand[i].JumpGravity = 0.2f;
 				}
 
 				if (g_JumpStand[i].JumpStandFlag)
 				{
-					if (g_JumpStand[i].JumpPower > -10.0f)
+					if (g_JumpStand[i].JumpPower > 0.0f)
 					{
 						g_JumpStand[i].JumpPower -= g_JumpStand[i].JumpGravity;
 					}
 					p_Player->Position.y -= g_JumpStand[i].JumpPower;
+					//p_Player->Position.y -= p_Player->sp.y;
 
 					for (int j = 0; j < BLOCK_CHIP_MAX; j++)
 					{
@@ -161,9 +163,11 @@ void UpdateJumpStand()
 								p_Player->Position.y + p_Player->size.y / 2 >= (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2 &&
 								p_Player->oldpos.y + p_Player->size.y / 2 <= (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2)
 							{
+								g_JumpStand[i].JumpPower = 0.0f;
+								//p_Player->sp.y = 0.0f;
+								g_JumpStand[i].JumpGravity = 0.0f;
 								p_Player->Position.y = (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2 - p_Player->size.y / 2;
 								g_JumpStand[i].JumpStandFlag = false;
-								g_JumpStand[i].JumpPower = 0.0f;
 							}
 						}
 					}
