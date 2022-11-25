@@ -17,7 +17,7 @@ static ID3D11ShaderResourceView	*g_texture;	//画像一枚で一つの変数が必要
 static char *g_textureName = (char*)"data\\texture\\runningman003.png";	//テクスチャファイルパス
 
 static ID3D11ShaderResourceView	*g_texture_under;	//画像一枚で一つの変数が必要
-static char *g_texture_under_Name = (char*)"data\\texture\\BG.png";	//テクスチャファイルパス
+static char *g_texture_under_Name = (char*)"data\\texture\\gray.jpg";	//テクスチャファイルパス
 static int g_TextureNoBG = 0;
 
 BG *Bg;	//背景構造体のポインタ変数

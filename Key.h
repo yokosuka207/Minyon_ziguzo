@@ -19,6 +19,7 @@
 //=============================================================================
 #define KEY_W (5)
 #define KEY_H (5)
+#define KEY_MAX (1)
 
 typedef struct {
 
@@ -46,5 +47,6 @@ void UpdateKey();
 void DrawKey();
 
 void SetKey(D3DXVECTOR2 pos, D3DXVECTOR2 size);
+void DeleteKey(int PieceNo);
 
 KEY *GetKey();

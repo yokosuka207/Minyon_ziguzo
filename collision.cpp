@@ -110,7 +110,7 @@ void PieceCollision()
 				}
 				for (int j = 0; j < JOINT_MAX; j++)
 				{
-					if (pJoint[j].pieNo == i)	//動き終わったピースの中にあったら
+					if (pJoint[j].pieNo == pPiece[i].no)	//動き終わったピースの中にあったら
 					{
 						for (int k = 0; k < JOINT_MAX; k++)
 						{
@@ -132,22 +132,24 @@ void PieceCollision()
 										//ジョイントが右だったら
 										if (pPiece[i].pos.x + pPiece[i].size.x / 3 < pJoint[j].pos.x)
 										{
-											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].pieNo].pos.y) - pPiece[i].pos;
 
-											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].pieNo].pos.y);
+
+											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
+
+											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
 
 											if (fourPieceCollision(pPiece[i], i))
 											{
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].OldMovePos = pPiece[i].pos;
 
 											}
 											else
 											{
-												Rotreturn(i);						
+												Rotreturn(pPiece[i].no);
 												colFlag2 = true;
 												temp = pPiece[i].OldMovePos - pPiece[i].pos;
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].pos = pPiece[i].OldMovePos;
 												if (pFlag)
 												{
@@ -161,22 +163,22 @@ void PieceCollision()
 										//ジョイントが左だったら
 										else if (pPiece[i].pos.x - pPiece[i].size.x / 3 > pJoint[j].pos.x)
 										{
-											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].pieNo].pos.y) - pPiece[i].pos;
+											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
 
-											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].pieNo].pos.y);
+											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
 
 											if (fourPieceCollision(pPiece[i], i))
 											{
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].OldMovePos = pPiece[i].pos;
 
 											}
 											else
 											{
-												Rotreturn(i);
+												Rotreturn(pPiece[i].no);
 												colFlag2 = true;
 												temp = pPiece[i].OldMovePos - pPiece[i].pos;
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 
 												pPiece[i].pos = pPiece[i].OldMovePos;
 												if (pFlag)
@@ -190,22 +192,22 @@ void PieceCollision()
 										//ジョイントが上だったら
 										else if (pPiece[i].pos.y - pPiece[i].size.y / 3 > pJoint[j].pos.y)
 										{
-											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x, pPiece[pJoint[k].pieNo].pos.y + PUZZLE_HEIGHT) - pPiece[i].pos;
+											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT) - pPiece[i].pos;
 
-											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x, pPiece[pJoint[k].pieNo].pos.y + PUZZLE_HEIGHT);
+											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT);
 
 											if (fourPieceCollision(pPiece[i], i))
 											{
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].OldMovePos = pPiece[i].pos;
 
 											}
 											else
 											{
-												Rotreturn(i);
+												Rotreturn(pPiece[i].no);
 												colFlag2 = true;
 												temp = pPiece[i].OldMovePos - pPiece[i].OldPos;
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 
 												pPiece[i].pos = pPiece[i].OldMovePos;
 												if (pFlag)
@@ -219,22 +221,22 @@ void PieceCollision()
 										//ジョイントが下だったら
 										else if (pPiece[i].pos.y + pPiece[i].size.y / 3 < pJoint[j].pos.y)
 										{
-											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x, pPiece[pJoint[k].pieNo].pos.y - PUZZLE_HEIGHT) - pPiece[i].pos;
+											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT) - pPiece[i].pos;
 
-											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x, pPiece[pJoint[k].pieNo].pos.y - PUZZLE_HEIGHT);
+											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT);
 
 											if (fourPieceCollision(pPiece[i], i))
 											{
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].OldMovePos = pPiece[i].pos;
 
 											}
 											else
 											{
-												Rotreturn(i);
+												Rotreturn(pPiece[i].no);
 												colFlag2 = true;
 												temp = pPiece[i].OldMovePos - pPiece[i].pos;
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 
 												pPiece[i].pos = pPiece[i].OldMovePos;
 												if (pFlag)
@@ -267,11 +269,11 @@ void PieceCollision()
 					}
 					else
 					{
-						Rotreturn(i);
+						Rotreturn(pPiece[i].no);
 
 						colFlag2 = true;
 						D3DXVECTOR2 temp = pPiece[i].OldMovePos - pPiece[i].pos;
-						PositionPlas(temp, i);
+						PositionPlas(temp, pPiece[i].no);
 						pPiece[i].pos = pPiece[i].OldMovePos;
 						pPiece[i].OldPos = pPiece[i].pos;
 						if (pFlag)
@@ -300,16 +302,16 @@ void PieceCollision()
 									{
 										D3DXVECTOR2 temp = pPiece[i].pos - pPiece[i].OldPos;
 
-										PositionPlas(temp, i);
+										PositionPlas(temp, pPiece[i].no);
 
 									}
 									else
 									{
 										colFlag2 = true;
 										D3DXVECTOR2 temp = pPiece[i].OldMovePos - pPiece[i].OldPos;
-										PositionPlas(temp, i);
+										PositionPlas(temp, pPiece[i].no);
 										pPiece[i].pos = pPiece[i].OldMovePos;
-										Rotreturn(i);
+										Rotreturn(pPiece[i].no);
 										if (pFlag)
 										{
 											pPlayer->Position = pPlayer->OneOldpos;
@@ -1382,14 +1384,14 @@ bool fourPieceCollision(Piece piece, int index)
 	{
 		for (int i = 0; i < JOINT_MAX; i++)
 		{
-			if (pJoint[i].pieNo == index)	//元のピースのジョイントだったら
+			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
 				if (piece.pos.x + piece.size.x / 3 < pJoint[i].pos.x)	//ジョイントがピースの右だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
-						if (pJoint[j].pieNo ==punum)
+						if (pJoint[j].pieNo ==pPiece[punum].no)
 						{
 							if (pPiece[punum].pos.x - pPiece[punum].size.x / 3 > pJoint[j].pos.x)
 							{
@@ -1435,14 +1437,14 @@ bool fourPieceCollision(Piece piece, int index)
 		//パズルのチップの左と右が有っているか
 		for (int i = 0; i < JOINT_MAX; i++)
 		{
-			if (pJoint[i].pieNo == index)	//元のピースのジョイントだったら
+			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
 				if (piece.pos.x - piece.size.x / 3 > pJoint[i].pos.x)	//ジョイントがピースの右だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
-						if (pJoint[j].pieNo == punum)
+						if (pJoint[j].pieNo == pPiece[punum].no)
 						{
 							if (pPiece[punum].pos.x + pPiece[punum].size.x / 3 < pJoint[j].pos.x)
 							{
@@ -1486,14 +1488,14 @@ bool fourPieceCollision(Piece piece, int index)
 
 		for (int i = 0; i < JOINT_MAX; i++)
 		{
-			if (pJoint[i].pieNo == index)	//元のピースのジョイントだったら
+			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
 				if (piece.pos.y - piece.size.y / 3 > pJoint[i].pos.y)	//ジョイントがピースの上だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
-						if (pJoint[j].pieNo == punum)
+						if (pJoint[j].pieNo == pPiece[punum].no)
 						{
 
 							if (pPiece[punum].pos.y + pPiece[punum].size.y / 3 < pJoint[j].pos.y)	//下
@@ -1543,14 +1545,14 @@ bool fourPieceCollision(Piece piece, int index)
 
 		for (int i = 0; i < JOINT_MAX; i++)
 		{
-			if (pJoint[i].pieNo == index)	//元のピースのジョイントだったら
+			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
 				if (piece.pos.y + piece.size.y / 3 < pJoint[i].pos.y)	//ジョイントがピースの上だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
-						if (pJoint[j].pieNo == punum)
+						if (pJoint[j].pieNo == pPiece[punum].no)
 						{
 							if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 > pJoint[j].pos.y)	//下
 							{
@@ -1703,7 +1705,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 	{
 		for (int j = 0; j < JOINT_MAX; j++)
 		{
-			if (pJoint[j].pieNo == index)
+			if (pJoint[j].pieNo ==  piece.no)
 			{
 				if (pJoint[j].pos.x>piece.pos.x+piece.size.x/3)
 				{
@@ -1714,7 +1716,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 
 		for (int i = 0; i < JOINT_MAX; i++)
 		{
-			if (pJoint[i].pieNo == punum)	//元のピースのジョイントだったら
+			if (pJoint[i].pieNo == pPiece[punum].no)	//元のピースのジョイントだったら
 			{
 				//ジョイントがなかったら
 				if (pPiece[punum].pos.x - pPiece[punum].size.x / 3 > pJoint[i].pos.x)
@@ -1734,7 +1736,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 	{
 		for (int j = 0; j < JOINT_MAX; j++)
 		{
-			if (pJoint[j].pieNo == index)
+			if (pJoint[j].pieNo == piece.no)
 			{
 				if (pJoint[j].pos.x < piece.pos.x - piece.size.x / 3)
 				{
@@ -1746,7 +1748,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 		//パズルのチップの左と右が有っているか
 		for (int i = 0; i < JOINT_MAX; i++)
 		{
-			if (pJoint[i].pieNo == punum)
+			if (pJoint[i].pieNo == pPiece[punum].no)
 			{				//ジョイントがなかったら
 
 				if (pPiece[punum].pos.x + pPiece[punum].size.x / 3 < pJoint[i].pos.x)
@@ -1765,7 +1767,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 	{	//上が開いていなかったら
 		for (int j = 0; j < JOINT_MAX; j++)
 		{
-			if (pJoint[j].pieNo == index)
+			if (pJoint[j].pieNo == piece.no)
 			{
 				if (pJoint[j].pos.y < piece.pos.y - piece.size.y / 3)
 				{
@@ -1776,7 +1778,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 
 		for (int i = 0; i < JOINT_MAX; i++)
 		{
-			if (pJoint[i].pieNo == punum)
+			if (pJoint[i].pieNo == pPiece[punum].no)
 			{
 				//ジョイントがなかったら
 
@@ -1805,7 +1807,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 	{
 		for (int j = 0; j < JOINT_MAX; j++)
 		{
-			if (pJoint[j].pieNo == index)
+			if (pJoint[j].pieNo == piece.no)
 			{
 				if (pJoint[j].pos.y > piece.pos.y + piece.size.y / 3)
 				{
@@ -1818,7 +1820,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 
 		for (int i = 0; i < JOINT_MAX; i++)
 		{
-			if (pJoint[i].pieNo == punum)
+			if (pJoint[i].pieNo == pPiece[punum].no)
 			{
 				//ジョイントがなかったら
 				if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 > pJoint[i].pos.y)	//下

@@ -25,7 +25,7 @@
 //=============================================================================
 //グローバル変数
 //=============================================================================
-static KEY g_Key;
+static KEY g_Key[KEY_MAX];
 static ID3D11ShaderResourceView	*g_textureKey;	//画像一枚で一つの変数が必要
 
 static char* g_TextureNameKey = (char*)"data\\texture\\key-1.png";
@@ -34,17 +34,24 @@ static char* g_TextureNameKey = (char*)"data\\texture\\key-1.png";
 
 HRESULT InitKey()
 {
-	g_Key.Size = D3DXVECTOR2(KEY_W, KEY_H);
-	g_Key.Position = D3DXVECTOR2(200, 200);
-	g_Key.texno = LoadTexture(g_TextureNameKey);
-	g_Key.col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	g_Key.GetKey = true;
-	//g_Key.OpenKey = false;
-	return S_OK;
+	for (int i = 0; i < KEY_MAX; i++) {
+		g_Key[i].Size = D3DXVECTOR2(KEY_W, KEY_H);
+		g_Key[i].Position = D3DXVECTOR2(200, 200);
+		g_Key[i].texno = LoadTexture(g_TextureNameKey);
+		g_Key[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_Key[i].GetKey = false;
+		//g_Key.OpenKey = false;
+		return S_OK;
+	}
+
 }
 
 void UninitKey()
 {
+	for (int i = 0; i < KEY_MAX; i++)
+	{
+
+	}
 }
 
 void UpdateKey()
@@ -54,34 +61,46 @@ void UpdateKey()
 
 void DrawKey()
 {
-	if (g_Key.GetKey)
-	{
-		SetWorldViewProjection2D();
+	for (int i = 0; i < KEY_MAX; i++){
+		if (g_Key[i].GetKey)
+		{
+			SetWorldViewProjection2D();
 
-		//テクスチャの設定
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Key.texno));
-		//スプライトを表示
-		D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		SpriteDrawColorRotation(g_Key.Position.x, g_Key.Position.y, g_Key.Size.x, g_Key.Size.y,
-			g_Key.rot, g_Key.col, 0, 1.0f, 1.0f, 1);
+			//テクスチャの設定
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Key[i].texno));
+			//スプライトを表示
+			D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			SpriteDrawColorRotation(g_Key[i].Position.x, g_Key[i].Position.y, g_Key[i].Size.x, g_Key[i].Size.y,
+				g_Key[i].rot, g_Key[i].col, 0, 1.0f, 1.0f, 1);
 
+		}
 	}
+	
 }
 
 void SetKey(D3DXVECTOR2 pos, D3DXVECTOR2 size)
 {
-	if(!g_Key.GetKey)
-	{
 
-		g_Key.Position = pos;
-		g_Key.Size = size;
-		g_Key.GetKey = false;
+	for (int i = 0; i < KEY_MAX; i++) {
+		if (!g_Key[i].GetKey)
+		{
+			g_Key[i].Position = pos;
+			g_Key[i].Size = size;
+			g_Key[i].GetKey = true;
+		}
+	}
 	
+}
 
+void DeleteKey(int PieceNo) {
+	for (int i = 0; i < KEY_MAX; i++) {
+		if (g_Key[i].GetKey) {
+			g_Key[i].GetKey = false;
+		}
 	}
 }
 
 KEY *GetKey()
 {
-	return &g_Key;
+	return g_Key;
 }

@@ -77,8 +77,8 @@ void UpdateMapChip();
 void DrawMapChip();
 
 //-----enum別にセット-----
-void SetMapChip(D3DXVECTOR2 pos, int no);
-//-----ファイル一括管理-----
+void SetMapChip(D3DXVECTOR2 pos, int no,int Pin);
+//-----ファイル一括管理----
 void FileLoad(int StageNo);
 
 //-----ピースの回転------

@@ -42,7 +42,7 @@ static KEEP_PUZZLE_BG	g_InventoryBG;
 static KEEP_PUZZLE		g_Inventory[INVENTORY_MAX];
 
 // テクスチャの名前
-static char* g_InventoryBGTextureName = (char*)"data\\texture\\JumpStand.jpg";
+static char* g_InventoryBGTextureName = (char*)"data\\texture\\Ground.png";
 //static char* g_InventoryBGTextureName = (char*)"data\\texture\\white.jpg";
 static char* g_InventoryTextureName = (char*)"data\\texture\\blue.png";
 
@@ -65,7 +65,7 @@ HRESULT InitInventory()
 
 	// インベントリ内のパズルの初期化
 	for (int i = 0; i < INVENTORY_MAX; i++) {
-		g_Inventory[i].PieNo = 0.0f;
+		g_Inventory[i].PieNo = -1;
 
 		g_Inventory[i].pos = D3DXVECTOR2(0.0f, INVENTORY_POS_Y);
 		g_Inventory[i].size = D3DXVECTOR2(INVENTORY_SIZE_X, INVENTORY_SIZE_Y);
@@ -165,7 +165,7 @@ void UpdateInventory()
 			if (g_Inventory[i].pos.x > bgmax_x) {
 				// 外に出たよ
 				// ピースを出す
-				//pMouse->UseFlag = true;
+				//DeleteMapChip(g_Inventory[i].PieNo);
 				SetPieceMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo);
 				DeleteInventory(g_Inventory[i].PieNo);
 
@@ -238,12 +238,15 @@ KEEP_PUZZLE * GetInventory()
 void DeleteInventory(int PieNo)
 {
 	for (int i = 0; i < INVENTORY_MAX; i++) {
-		if (g_Inventory[i].PieNo == PieNo) {
-			g_Inventory[i].IsCatch = false;
+		if (g_Inventory[i].IsUse)
+		{
+			if (g_Inventory[i].PieNo == PieNo) {
+				g_Inventory[i].IsCatch = false;
+				g_Inventory[i].PieNo = -1;
+				g_Inventory[i].IsUse = false;
 
-			g_Inventory[i].IsUse = false;
-
-			break;
+				break;
+			}
 		}
 	}
 }

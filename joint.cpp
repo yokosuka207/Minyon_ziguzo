@@ -43,7 +43,8 @@ void InitJoint()
 		g_Joint[i].pos = D3DXVECTOR2(0.0f, 0.0f);			
 		g_Joint[i].size = D3DXVECTOR2(0.0f, 0.0f);	
 		g_Joint[i].color = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
-		g_Joint[i].pieNo = -1;								
+		g_Joint[i].pieNo = -1;
+		g_Joint[i].indexno = -1;
 		g_Joint[i].type = JOINT_TYPE::TYPE_BUMP;	
 		g_Joint[i].texNo = texNo;
 
@@ -90,7 +91,7 @@ void DrawJoint()
 //==================================================
 // 凹凸セット関数
 //==================================================
-void SetJoint(D3DXVECTOR2 po, D3DXVECTOR2 si, int no, JOINT_TYPE ty)
+void SetJoint(D3DXVECTOR2 po, D3DXVECTOR2 si, int no, JOINT_TYPE ty,int index)
 {
 	for (int i = 0; i < JOINT_MAX; i++) {
 		// 未使用なら引数の各値を代入
@@ -99,7 +100,7 @@ void SetJoint(D3DXVECTOR2 po, D3DXVECTOR2 si, int no, JOINT_TYPE ty)
 			g_Joint[i].size = si;
 			g_Joint[i].pieNo = no;
 			g_Joint[i].type = ty;
-
+			g_Joint[i].indexno = index;
 			g_Joint[i].useFlag = true;
 
 			break;

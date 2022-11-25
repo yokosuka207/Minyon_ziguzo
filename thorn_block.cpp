@@ -114,32 +114,37 @@ void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 void DeleteThornBlock(int PieceNo) {
 	for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 		if (g_ThornBlock[i].UseFlag) {
-			g_ThornBlock[i].UseFlag = false;
+			if (g_ThornBlock[i].PieceIndex == PieceNo)
+			{
+				g_ThornBlock[i].UseFlag = false;
+
+			}
 		}
 	}
 }
 
- 
-int SetThornBlock(D3DXVECTOR2 Pos, D3DXVECTOR2 s)
-{
-	//PUZZLE* pPuzzle = GetPuzzle();
+ //なんか二つあったのでコメントアウトしておきます
+ // 
+//int SetThornBlock(D3DXVECTOR2 Pos, D3DXVECTOR2 s)
+//{
+//	//PUZZLE* pPuzzle = GetPuzzle();
+//
+//	for (int i = 0; i < THORN_BLOCK_MAX; i++)
+//	{
+//		if (!g_ThornBlock[i].UseFlag)
+//		{
+//
+//			g_ThornBlock[i].Postion = Pos;
+//			g_ThornBlock[i].Size = s;
+//			g_ThornBlock[i].UseFlag = true;
+//			return i;
+//
+//		}
+//
+//
+//	}
 
-	for (int i = 0; i < THORN_BLOCK_MAX; i++)
-	{
-		if (!g_ThornBlock[i].UseFlag)
-		{
-
-			g_ThornBlock[i].Postion = Pos;
-			g_ThornBlock[i].Size = s;
-			g_ThornBlock[i].UseFlag = true;
-			return i;
-
-		}
-
-
-	}
-
-}
+//}
 
 //=============================================================================
 //ゲット関数

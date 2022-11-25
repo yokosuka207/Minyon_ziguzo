@@ -38,6 +38,7 @@ typedef struct
 	D3DXVECTOR2 size;			// サイズ
 	D3DXCOLOR	color;			// 色
 	int pieNo;					// ピース番号
+	int indexno;	//添え字格納
 	JOINT_TYPE type;			// ジョイントタイプ
 	float texNo;				// テクスチャ番号
 	
@@ -57,7 +58,7 @@ void DrawJoint();
 
 //----------ジョイントセット関数----------
 // 引数：座標, サイズ, ピース番号, ジョイントタイプ
-void SetJoint(D3DXVECTOR2 po, D3DXVECTOR2 si, int no, JOINT_TYPE ty);
+void SetJoint(D3DXVECTOR2 po, D3DXVECTOR2 si, int no, JOINT_TYPE ty,int index);
 
 
 //----------ジョイントゲット関数----------
