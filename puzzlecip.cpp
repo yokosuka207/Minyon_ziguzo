@@ -118,16 +118,34 @@ void DrawPuzzleCip()
 
 }
 void SetChipPuzzuleChip(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index) {
-	for (int i = 0; i < PUZZLE_MAX; i++) {
-		if (!g_ChipPuzzleChip[i].UseFlag) {
-			g_ChipPuzzleChip[i].Position = pos;
-			g_ChipPuzzleChip[i].Size = size;
-			g_ChipPuzzleChip[i].NextPieceIndex = index;
-			g_ChipPuzzleChip[i].PieceIndex = index-1;
-			g_ChipPuzzleChip[i].UseFlag = true;
-			break;
+	if (!g_ChipPuzzleChip[index - 1].UseFlag) {
+		if (PUZZLE_MAX && !g_ChipPuzzleChip[index - 1].GetFlag) {
+			g_ChipPuzzleChip[index - 1].Position = pos;
+			g_ChipPuzzleChip[index - 1].Size = size;
+			g_ChipPuzzleChip[index - 1].NextPieceIndex = index;
+			g_ChipPuzzleChip[index - 1].PieceIndex = index - 1;
+			g_ChipPuzzleChip[index - 1].UseFlag = true;
 		}
 	}
+
+	//for (int i = 0; i < PUZZLE_MAX; i++) {
+	//	if (!g_ChipPuzzleChip[i].UseFlag) {
+	//		int temp = 0;
+	//		for (int j = 0; j < PUZZLE_MAX; j++) {
+	//			if (g_ChipPuzzleChip[i].NextPieceIndex == index) {
+	//				break;
+	//			}
+	//			temp++;
+	//		}
+	//		if (temp == PUZZLE_MAX) {
+	//			g_ChipPuzzleChip[i].Position = pos;
+	//			g_ChipPuzzleChip[i].Size = size;
+	//			g_ChipPuzzleChip[i].NextPieceIndex = index;
+	//			g_ChipPuzzleChip[i].PieceIndex = index - 1;
+	//			g_ChipPuzzleChip[i].UseFlag = true;
+	//			break;
+	//		}
+	//	}
 }
 
 void DeleteChipPiece(int index)

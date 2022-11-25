@@ -1,9 +1,10 @@
 #include "scene.h"
 #include "main.h"
-#include"renderer.h"
-#include"game.h"
-#include"Title.h"
-#include"result.h"
+#include "renderer.h"
+#include "game.h"
+#include "Title.h"
+#include "result.h"
+#include "StageSelect.h"
 
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
@@ -16,6 +17,10 @@ void InitScene(SCENE no)
 	{
 
 	case SCENE::SCENE_NONE:
+		break;
+	case SCENE::SCENE_STAGESELECT:
+		InitStageSelect();
+		SetStageSelect();
 		break;
 	case SCENE::SCENE_TITLE:
 		InitTitle();
@@ -44,6 +49,9 @@ void UninitScene()
 	case SCENE::SCENE_TITLE:
 		UninitTitle();
 		break;
+	case SCENE::SCENE_STAGESELECT:
+		UninitStageSelect();
+		break;
 	case SCENE::SCENE_GAME:
 		UninitGame();
 		break;
@@ -68,6 +76,9 @@ void UpdateScene()
 	case SCENE::SCENE_TITLE:
 		UpdateTitle();
 		break;
+	case SCENE::SCENE_STAGESELECT:
+		UpdateStageSelect();
+		break;
 	case SCENE::SCENE_GAME:
 		UpdateGame();
 		break;
@@ -91,6 +102,9 @@ void DrawScene()
 		break;
 	case SCENE::SCENE_TITLE:
 		DrawTitle();
+		break;
+	case SCENE::SCENE_STAGESELECT:
+		DrawStageSelect();
 		break;
 	case SCENE::SCENE_GAME:
 		DrawGame();

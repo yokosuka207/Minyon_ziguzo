@@ -18,6 +18,7 @@
 //=============================================================================
 #define OPEN_KEY_W (500)
 #define OPEN_KEY_H (700)
+#define OPEN_KEY_MAX (1)
 
 
 typedef struct {
@@ -41,8 +42,9 @@ HRESULT InitOpenKey();
 void UninitOpenKey();
 void UpdateOpenKey();
 void DrawOpenKey();
-OPENKEY *OpenKey();
+OPENKEY *GetOpenKey();
 void SetOpenKey(D3DXVECTOR2 size, D3DXVECTOR2 pos);
+void DeleteOpenKey(int PieceNo);
 
 
 //=============================================================================

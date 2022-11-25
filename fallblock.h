@@ -11,7 +11,7 @@
 #include "time.h"
 #include "scene.h"
 #include"puzzle.h"
-
+#include "main.h"
 //=============================================================================
 //É}ÉNÉçíËã`
 //=============================================================================
@@ -51,4 +51,5 @@ void DrawFallBlock();
 
 FALLBLOCK*GetFallBlock();
 void SetFallBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size ,int PieceNo);
+void DeleteFallBlock(int PieceNo);
 

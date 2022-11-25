@@ -54,7 +54,7 @@ typedef struct
 	int houkou[4];	//方向パズル出っ張ているかひっこんでいるか
 	//CREATE_CIP_TYPE		Next_Type;//次のチップのタイプ
 	bool GoalFlag;	//ゴールのチップか
-	bool UseFlag;		//使用フラグ
+	bool UseFlag;	//使用フラグ
 	bool GetFlag;	//取られたかどうか
 
 }PUZZLE_CIP;

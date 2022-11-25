@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{6AC03ABA-9A04-421D-8043-CCE42B5FD915}</ProjectGuid>
     <RootNamespace>sample</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
     <ProjectName>DX21_06_20</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -161,6 +161,7 @@
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="SplitStage.cpp" />
+    <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="thorn_block.cpp" />
     <ClCompile Include="Title.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="scene.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="SplitStage.h" />
+    <ClInclude Include="StageSelect.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="thorn_block.h" />
     <ClInclude Include="Title.h" />
