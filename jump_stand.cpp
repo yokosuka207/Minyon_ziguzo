@@ -265,7 +265,11 @@ void DeleteJumpStand(int PieceNo) {
 	//今消したいのは PieceNo番目 のピースに存在するジャンプ台のみ
 	for (int i = 0; i < JUMPSTAND_MAX; i++) {
 		if (g_JumpStand[i].UseJumpStand) {
-			g_JumpStand[i].UseJumpStand = false;
+			if (g_JumpStand[i].PieceIndex == PieceNo)
+			{
+				g_JumpStand[i].UseJumpStand = false;
+
+			}
 		}
 	}
 }
