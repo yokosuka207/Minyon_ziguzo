@@ -9,6 +9,7 @@
 #include"joint.h"
 #include"puzzlecip.h"
 #include"goal.h"
+#include"thorn_block.h"
 //#include"puzzlecip.h"
 
 MOUSE Mouse;
@@ -46,6 +47,7 @@ void UpdateGameMouse()
 	JOINT* pJoint = GetJoint();
 	PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
 	GOAL* pGoal = GetGoal();
+	THORNBLOCK* pThornBlock = GetThornBlock();
 	Mouse.oldPosX = GetMousePosX();
 	Mouse.oldPosY = GetMousePosY();
 
@@ -169,7 +171,7 @@ void UpdateGameMouse()
 						D3DXVECTOR2 temp = (pPiece[MouseIndex].pos - pPiece[MouseIndex].OldPos);
 
 						for (int i = 0; i < BLOCK_CHIP_MAX; i++)
-						{
+						{//ブロック動かす
 							if (pCipBlock[i].UseFlag)
 							{
 								if (pCipBlock[i].PieceIndex == MouseIndex)
@@ -181,7 +183,7 @@ void UpdateGameMouse()
 
 						}
 						for (int i = 0; i < JOINT_MAX; i++)
-						{
+						{//凹凸
 							if (pJoint[i].useFlag)
 							{
 								if (pJoint[i].pieNo == MouseIndex)
@@ -192,7 +194,7 @@ void UpdateGameMouse()
 							}
 						}
 						for (int i = 0; i < PUZZLE_MAX; i++)
-						{
+						{//ピースチップ
 							if (pPuzzleCip[i].UseFlag)
 							{
 								if (pPuzzleCip[i].PieceIndex == MouseIndex)
@@ -202,11 +204,22 @@ void UpdateGameMouse()
 							}
 						}
 						if (pGoal->UseFlag)
-						{
+						{//ゴール
 							if (pGoal->pieceIndex == MouseIndex)
 							{
 								pGoal->Pos += temp;
 							}
+						}
+						for (int i = 0; i < THORN_BLOCK_MAX; i++)
+						{//とげ
+							if (pThornBlock[i].UseFlag)
+							{
+								if (pThornBlock[i].PieceIndex == MouseIndex)
+								{
+									pThornBlock[i].Postion += temp;
+								}
+							}
+
 						}
 						if (!Mouse.pFlag)
 						{
