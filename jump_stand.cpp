@@ -75,6 +75,7 @@ void UpdateJumpStand()
 				{
 					g_JumpStand[i].sp = p_Player->sp;
 					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
+
 				}
 				//プレイヤー右・壊れるブロック左
 				if (p_Player->Position.x - p_Player->size.x / 2 < g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 &&
@@ -109,6 +110,21 @@ void UpdateJumpStand()
 								g_JumpStand[i].pos.y = g_JumpStand[i].oldpos.y;
 
 							}
+							if (g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 > (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
+								g_JumpStand[i].oldpos.x + g_JumpStand[i].size.x / 2 <= (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
+								g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2 > (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2 &&
+								g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 < (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2)
+							{
+								g_JumpStand[i].pos.x = g_JumpStand[i].oldpos.x;
+							}
+							if (g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 < (p_Block + j)->Position.x + (p_Block + j)->Size.x / 2 &&
+								g_JumpStand[i].oldpos.x - g_JumpStand[i].size.x / 2 >= (p_Block + j)->Position.x + (p_Block + j)->Size.x / 2 &&
+								g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2 > (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2 &&
+								g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 < (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2)
+							{
+								g_JumpStand[i].pos.x = g_JumpStand[i].oldpos.x;
+							}
+
 
 						}
 					}
@@ -178,7 +194,7 @@ void SetJumpStand(D3DXVECTOR2 p)
 		if (!g_JumpStand[i].UseJumpStand)
 		{
 			g_JumpStand[i].pos = p;
-			g_JumpStand[i].size = D3DXVECTOR2(JUMPSTAND_SIZE, JUMPSTAND_SIZE);
+			g_JumpStand[i].size = D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE);
 
 			g_JumpStand[i].UseJumpStand = true;
 			g_JumpStand[i].JumpStandFlag = false;
