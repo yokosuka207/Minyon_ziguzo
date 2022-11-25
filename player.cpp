@@ -128,6 +128,24 @@ void UpdatePlayer()
 			}
 
 
+			BLOCK* block = GetChipBlock();
+			for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
+				// プレイヤーの下にブロックがあったら
+				if ((g_Player.Position.y + g_Player.size.y / 2 + 0.05f > block[i].Position.y - block[i].Size.y / 2) &&
+					(g_Player.Position.y - g_Player.size.y / 2 < block[i].Position.y + block[i].Size.y / 2) &&
+					(g_Player.Position.x + g_Player.size.x / 2 > block[i].Position.x - block[i].Size.x / 2) &&
+					(g_Player.Position.x - g_Player.size.x / 2 < block[i].Position.x + block[i].Size.x / 2)) 
+				{	// 着地中にする
+					if (!g_Player.isGround) {
+						g_Player.sp.y = 0.0f;
+						g_Player.isGround = true;
+						break;
+					}
+				}
+				else {
+					g_Player.isGround = false;
+				}
+			}
 			// ジャンプ
 			if (g_Player.isGround && GetKeyboardPress(DIK_SPACE)) {
 				g_Player.sp.y = -2.0f;			// スピードのyをマイナスにする
@@ -136,22 +154,6 @@ void UpdatePlayer()
 			// 空中
 			if (!g_Player.isGround) {
 				g_Player.sp.y += 0.1f;			// スピードのyを増やす
-			}
-			BLOCK* block = GetChipBlock();
-			for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
-				// プレイヤーの下にブロックがあったら
-				if ((g_Player.Position.y + g_Player.size.y / 2 + 0.1f > block[i].Position.y - block[i].Size.y / 2) &&
-					(g_Player.Position.y - g_Player.size.y / 2 < block[i].Position.y + block[i].Size.y / 2) &&
-					(g_Player.Position.x + g_Player.size.x / 2 > block[i].Position.x - block[i].Size.x / 2) &&
-					(g_Player.Position.x - g_Player.size.x / 2 < block[i].Position.x + block[i].Size.x / 2)) 
-				{	// 着地中にする
-					g_Player.isGround = true;
-					break;
-				}
-				else {
-					g_Player.isGround = false;
-				}
-
 			}
 
 			//{
