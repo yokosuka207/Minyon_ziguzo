@@ -110,10 +110,16 @@ void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 			break;
 		}
 	}
-
+ }
+void DeleteThornBlock(int PieceNo) {
+	for (int i = 0; i < THORN_BLOCK_MAX; i++) {
+		if (g_ThornBlock[i].UseFlag) {
+			g_ThornBlock[i].UseFlag = false;
+		}
+	}
 }
 
-
+ 
 int SetThornBlock(D3DXVECTOR2 Pos, D3DXVECTOR2 s)
 {
 	//PUZZLE* pPuzzle = GetPuzzle();

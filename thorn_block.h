@@ -50,6 +50,7 @@ void DrawThornBlock();
 
 int SetThornBlock(D3DXVECTOR2 Pos, D3DXVECTOR2 s);
 void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo);
+void DeleteThornBlock(int PieceNo);
 
 THORNBLOCK* GetThornBlock();
 

@@ -257,7 +257,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteJoint(PieceNo);
 	DeleteJumpStand(PieceNo);
 	DeleteChipPiece(PieceNo);
-	//DeleteSpike(PieceNo);
+	DeleteThornBlock(PieceNo);
 }
 
 
