@@ -48,8 +48,10 @@ static char* g_TextureNameBroken = (char*)"data\\texture\\waking_alpha.png";
 //=============================================================================
 HRESULT InitPlayer()
 {
+	Piece* pPiece = GetPiece();
+
 	//ƒvƒŒƒCƒ„[‚Ì‰Šú‰»
-	g_Player.Position = D3DXVECTOR2(300.0f, 300.0f);
+	g_Player.Position = pPiece->pos;
 	g_Player.OneOldpos = g_Player.oldpos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	g_Player.sp = D3DXVECTOR2(0,8);
 	g_Player.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
