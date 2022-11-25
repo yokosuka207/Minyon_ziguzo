@@ -87,7 +87,7 @@ void	UpdateTitle()
 	{
 		if (TitleNum == 1)
 		{
-			SetScene(SCENE::SCENE_GAME);
+			SetScene(SCENE::SCENE_STAGESELECT);
 
 		}
 		if (TitleNum == 0)
