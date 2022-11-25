@@ -101,7 +101,7 @@ void PieceCollision()
 				}
 				for (int j = 0; j < JOINT_MAX; j++)
 				{
-					if (pJoint[j].pieNo == i)	//動き終わったピースの中にあったら
+					if (pJoint[j].pieNo == pPiece[i].no)	//動き終わったピースの中にあったら
 					{
 						for (int k = 0; k < JOINT_MAX; k++)
 						{
@@ -127,18 +127,18 @@ void PieceCollision()
 
 											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].pieNo].pos.y);
 
-											if (fourPieceCollision(pPiece[i], i))
+											if (fourPieceCollision(pPiece[i], pPiece[i].no))
 											{
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].OldMovePos = pPiece[i].pos;
 
 											}
 											else
 											{
-												Rotreturn(i);						
+												Rotreturn(pPiece[i].no);
 												colFlag2 = true;
 												temp = pPiece[i].OldMovePos - pPiece[i].pos;
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].pos = pPiece[i].OldMovePos;
 												if (pFlag)
 												{
@@ -156,18 +156,18 @@ void PieceCollision()
 
 											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].pieNo].pos.y);
 
-											if (fourPieceCollision(pPiece[i], i))
+											if (fourPieceCollision(pPiece[i], pPiece[i].no))
 											{
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].OldMovePos = pPiece[i].pos;
 
 											}
 											else
 											{
-												Rotreturn(i);
+												Rotreturn(pPiece[i].no);
 												colFlag2 = true;
 												temp = pPiece[i].OldMovePos - pPiece[i].pos;
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 
 												pPiece[i].pos = pPiece[i].OldMovePos;
 												if (pFlag)
@@ -185,18 +185,18 @@ void PieceCollision()
 
 											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x, pPiece[pJoint[k].pieNo].pos.y + PUZZLE_HEIGHT);
 
-											if (fourPieceCollision(pPiece[i], i))
+											if (fourPieceCollision(pPiece[i], pPiece[i].no))
 											{
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].OldMovePos = pPiece[i].pos;
 
 											}
 											else
 											{
-												Rotreturn(i);
+												Rotreturn(pPiece[i].no);
 												colFlag2 = true;
 												temp = pPiece[i].OldMovePos - pPiece[i].OldPos;
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 
 												pPiece[i].pos = pPiece[i].OldMovePos;
 												if (pFlag)
@@ -214,18 +214,18 @@ void PieceCollision()
 
 											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].pieNo].pos.x, pPiece[pJoint[k].pieNo].pos.y - PUZZLE_HEIGHT);
 
-											if (fourPieceCollision(pPiece[i], i))
+											if (fourPieceCollision(pPiece[i], pPiece[i].no))
 											{
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].OldMovePos = pPiece[i].pos;
 
 											}
 											else
 											{
-												Rotreturn(i);
+												Rotreturn(pPiece[i].no);
 												colFlag2 = true;
 												temp = pPiece[i].OldMovePos - pPiece[i].pos;
-												PositionPlas(temp, i);
+												PositionPlas(temp, pPiece[i].no);
 
 												pPiece[i].pos = pPiece[i].OldMovePos;
 												if (pFlag)
@@ -258,11 +258,11 @@ void PieceCollision()
 					}
 					else
 					{
-						Rotreturn(i);
+						Rotreturn(pPiece[i].no);
 
 						colFlag2 = true;
 						D3DXVECTOR2 temp = pPiece[i].OldMovePos - pPiece[i].pos;
-						PositionPlas(temp, i);
+						PositionPlas(temp, pPiece[i].no);
 						pPiece[i].pos = pPiece[i].OldMovePos;
 						pPiece[i].OldPos = pPiece[i].pos;
 						if (pFlag)
@@ -291,16 +291,16 @@ void PieceCollision()
 									{
 										D3DXVECTOR2 temp = pPiece[i].pos - pPiece[i].OldPos;
 
-										PositionPlas(temp, i);
+										PositionPlas(temp, pPiece[i].no);
 
 									}
 									else
 									{
 										colFlag2 = true;
 										D3DXVECTOR2 temp = pPiece[i].OldMovePos - pPiece[i].OldPos;
-										PositionPlas(temp, i);
+										PositionPlas(temp, pPiece[i].no);
 										pPiece[i].pos = pPiece[i].OldMovePos;
-										Rotreturn(i);
+										Rotreturn(pPiece[i].no);
 										if (pFlag)
 										{
 											pPlayer->Position = pPlayer->OneOldpos;

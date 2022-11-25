@@ -16,6 +16,7 @@
 MOUSE Mouse;
 bool oneFlag = false;	//マウスでパズルを一つ持っているか
 int MouseIndex = -1;	//マウスの掴んだパズルの番号入れ
+int NoIndex = -1;	//マウスで掴んだピース番号
 //bool MouseFlag = false;	//マウスをクリックしているか
 
 long y,x;
@@ -23,7 +24,8 @@ long y,x;
 HRESULT InitGameMouse()
 {
 	bool oneFlag = false;
-	int MouseIndex = -1;
+	 MouseIndex = -1;
+	 NoIndex = -1;
 	Mouse.PosX = GetMousePosX();
 	Mouse.PosY = GetMousePosY();
 	Mouse.oldPosX = GetMousePosX();
@@ -159,7 +161,8 @@ void UpdateGameMouse()
 						Mouse.RotIndex = 0;
 
 						oneFlag = true;
-						MouseIndex = pPiece[i].no;
+						MouseIndex = i;
+						NoIndex = pPiece[i].no;
 						pPiece[i].OldMovePos = pPiece[i].pos;
 
 					}
@@ -176,7 +179,7 @@ void UpdateGameMouse()
 						{//ブロック動かす
 							if (pCipBlock[i].UseFlag)
 							{
-								if (pCipBlock[i].PieceIndex == MouseIndex)
+								if (pCipBlock[i].PieceIndex == NoIndex)
 								{
 									pCipBlock[i].Position += temp;
 								}
@@ -188,7 +191,7 @@ void UpdateGameMouse()
 						{//凹凸
 							if (pJoint[i].useFlag)
 							{
-								if (pJoint[i].pieNo == MouseIndex)
+								if (pJoint[i].pieNo == NoIndex)
 								{
 									pJoint[i].pos += temp;
 								}
@@ -199,7 +202,7 @@ void UpdateGameMouse()
 						{//ピースチップ
 							if (pPuzzleCip[i].UseFlag)
 							{
-								if (pPuzzleCip[i].PieceIndex == MouseIndex)
+								if (pPuzzleCip[i].PieceIndex == NoIndex)
 								{
 									pPuzzleCip[i].Position += temp;
 								}
@@ -207,7 +210,7 @@ void UpdateGameMouse()
 						}
 						if (pGoal->UseFlag)
 						{//ゴール
-							if (pGoal->pieceIndex == MouseIndex)
+							if (pGoal->pieceIndex == NoIndex)
 							{
 								pGoal->Pos += temp;
 							}
@@ -216,7 +219,7 @@ void UpdateGameMouse()
 						{//とげ
 							if (pThornBlock[i].UseFlag)
 							{
-								if (pThornBlock[i].PieceIndex == MouseIndex)
+								if (pThornBlock[i].PieceIndex == NoIndex)
 								{
 									pThornBlock[i].Postion += temp;
 								}
@@ -227,7 +230,7 @@ void UpdateGameMouse()
 						{//ジャンプスタンド
 							if (pJumpStand[i].UseJumpStand)
 							{
-								if (pJumpStand[i].PieceIndex == MouseIndex)
+								if (pJumpStand[i].PieceIndex == NoIndex)
 								{
 									pJumpStand[i].pos += temp;
 								}
@@ -237,7 +240,7 @@ void UpdateGameMouse()
 						{
 							if (GetKeyboardTrigger(DIK_A))	//aキーが押されたら
 							{
-								RotateMapChipR(MouseIndex);
+								RotateMapChipR(NoIndex);
 								Mouse.RotIndex += 1;
 
 							}
@@ -270,6 +273,7 @@ void UpdateGameMouse()
 
 		oneFlag = false;
 		MouseIndex = -1;
+		NoIndex = -1;
 	}
 
 }
