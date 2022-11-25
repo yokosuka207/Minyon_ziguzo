@@ -52,7 +52,6 @@ void	InitResult()
 	{//読み込みエラー
 		exit(999);	//強制終了
 	}
-
 	ResultButtonTextureNo = LoadTexture(g_ResultButtonTextureName);
 	if (ResultButtonTextureNo == -1)
 	{//読み込みエラー
@@ -63,7 +62,6 @@ void	InitResult()
 	{//読み込みエラー
 		exit(999);	//強制終了
 	}
-
 
 	ResultObject[0].Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
 	ResultObject[0].Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -172,7 +170,6 @@ void	DrawResult()
 	if (ResultObject[0].type == LOSE)
 	{
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultGameEndTextureNo));
-
 		//スプライトの描画
 		SpriteDrawColorRotation
 		(
@@ -189,7 +186,6 @@ void	DrawResult()
 		);
 
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultButtonTextureNo));
-
 		SpriteDrawColorRotation
 		(//countinuButton
 			ResultObject[1].Position.x,
