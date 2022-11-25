@@ -48,12 +48,14 @@ static char* g_TextureNameBroken = (char*)"data\\texture\\waking_alpha.png";
 //=============================================================================
 HRESULT InitPlayer()
 {
+	Piece* pPiece = GetPiece();
+
 	//プレイヤーの初期化
-	g_Player.Position = D3DXVECTOR2(300.0f, 300.0f);
+	g_Player.Position = pPiece->pos;
 	g_Player.OneOldpos = g_Player.oldpos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	g_Player.sp = D3DXVECTOR2(0,8);
 	g_Player.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
-	g_Player.col = D3DXCOLOR(0.0f, 1.0f, 0.0, 1.0f);
+	g_Player.col = D3DXCOLOR(1.0f, 1.0f, 1.0, 1.0f);
 	g_Player.rot = 0.0f;
 	g_Player.UseFlag = true;
 	g_Player.jump = false;
@@ -62,6 +64,7 @@ HRESULT InitPlayer()
 	g_Player.fall = false;
 	g_Player.getfall = false;
 	g_Player.WarpFlag = false;
+	g_Player.isGround = true;
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
 	g_Player.PaternNo = 0;//パターン番号
@@ -92,24 +95,17 @@ void UpdatePlayer()
 	MOUSE* pMouse = GetMouse();
 	if (!pMouse->UseFlag)
 	{
-
-
 		if (g_Player.UseFlag == true)
 		{
-
-
-
-
-
 			//移動
 			if (GetKeyboardPress(DIK_RIGHT))//右キー
 			{//押されているときの処理
-				g_Player.sp.x = 3.0f;
+				g_Player.sp.x = 1.0f;
 				g_Player.PaternNo += 0.25f;
 			}
 			else if (GetKeyboardPress(DIK_LEFT))//左キー
 			{//押されているときの処理
-				g_Player.sp.x = -3.0f;
+				g_Player.sp.x = -1.0f;
 				g_Player.PaternNo += 0.25f;
 			}
 			else
@@ -122,7 +118,7 @@ void UpdatePlayer()
 			JUMPSTAND* p_JumpStand = GetJumpStand();
 			if (GetKeyboardPress(DIK_B))
 			{
-				if (CollisionBB(g_Player.Position, p_JumpStand->pos, g_Player.size, p_JumpStand->size * 2)) {
+				if (CollisionBB(g_Player.Position, p_JumpStand->pos, g_Player.size, p_JumpStand->size)) {
 					g_Player.GetJumpStand = true;
 				}
 			}
@@ -132,75 +128,86 @@ void UpdatePlayer()
 			}
 
 
-
-			//ジャンプ
-			g_Player.frame++;
-			if (g_Player.jump == false && GetKeyboardPress(DIK_SPACE))
-			{
-				g_Player.jump = true;
-				g_Player.getjump = true;
-			}
-			if (g_Player.jump == true && g_Player.frame < 50)
-			{
-				if (g_Player.getjump == true)//押した瞬間
-				{
-					g_Player.sp.y = -4.2f;
-					g_Player.getjump = false;
+			BLOCK* block = GetChipBlock();
+			for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
+				// プレイヤーの下にブロックがあったら
+				if ((g_Player.Position.y + g_Player.size.y / 2 + 0.05f > block[i].Position.y - block[i].Size.y / 2) &&
+					(g_Player.Position.y - g_Player.size.y / 2 < block[i].Position.y + block[i].Size.y / 2) &&
+					(g_Player.Position.x + g_Player.size.x / 2 > block[i].Position.x - block[i].Size.x / 2) &&
+					(g_Player.Position.x - g_Player.size.x / 2 < block[i].Position.x + block[i].Size.x / 2)) 
+				{	// 着地中にする
+					if (!g_Player.isGround) {
+						g_Player.sp.y = 0.0f;
+						g_Player.isGround = true;
+						break;
+					}
 				}
-				else if (g_Player.sp.y <= 0)//減速
-				{
-					g_Player.sp.y += 0.1f;
-				}
-				else
-				{
-					//g_Player.sp.y = 0;//停止
+				else {
+					g_Player.isGround = false;
 				}
 			}
-
-
-
-
-			//落下
-			if (g_Player.fall == false && g_Player.Position.y > g_Player.oldpos.y)
-			{
-				g_Player.fall = true;
-				g_Player.getfall = true;
+			// ジャンプ
+			if (g_Player.isGround && GetKeyboardPress(DIK_SPACE)) {
+				g_Player.sp.y = -2.0f;			// スピードのyをマイナスにする
+				g_Player.isGround = false;			// フラグをジャンプ中にする
 			}
-			if (g_Player.fall == true)
-			{
-				if (g_Player.getfall == true)//落ちた瞬間
-				{
-					g_Player.sp.y = 0;
-					g_Player.getfall = false;
-				}
-				else if (g_Player.sp.y <= 8)//落下,ジャンプした場合は50フレーム後から落下
-				{
-					g_Player.sp.y += 0.2;//加速
-				}
-				else
-				{
-					g_Player.sp.y = 8;//最大落下速度
-				}
-
-				g_Player.jump = true;
+			// 空中
+			if (!g_Player.isGround) {
+				g_Player.sp.y += 0.1f;			// スピードのyを増やす
 			}
 
-
-
-
-
-
-
+			//{
+			//	//ジャンプ
+			//	g_Player.frame++;
+			//	if (g_Player.jump == false && GetKeyboardPress(DIK_SPACE))
+			//	{
+			//		g_Player.jump = true;
+			//		g_Player.getjump = true;
+			//	}
+			//	if (g_Player.jump == true && g_Player.frame < 50)
+			//	{
+			//		if (g_Player.getjump == true)//押した瞬間
+			//		{
+			//			g_Player.sp.y = -2.0f;
+			//			g_Player.getjump = false;
+			//		}
+			//		else if (g_Player.sp.y <= 0)//減速
+			//		{
+			//			g_Player.sp.y += 0.1f;
+			//		}
+			//		else
+			//		{
+			//			//g_Player.sp.y = 0;//停止
+			//		}
+			//	}
+			//	//落下
+			//	if (g_Player.fall == false && g_Player.Position.y > g_Player.oldpos.y)
+			//	{
+			//		g_Player.fall = true;
+			//		g_Player.getfall = true;
+			//	}
+			//	if (g_Player.fall == true)
+			//	{
+			//		if (g_Player.getfall == true)//落ちた瞬間
+			//		{
+			//			g_Player.sp.y = 0;
+			//			g_Player.getfall = false;
+			//		}
+			//		else if (g_Player.sp.y <= 8)//落下,ジャンプした場合は50フレーム後から落下
+			//		{
+			//			g_Player.sp.y += 0.2;//加速
+			//		}
+			//		else
+			//		{
+			//			g_Player.sp.y = 8;//最大落下速度
+			//		}
+			//		g_Player.jump = true;
+			//	}
+			//}
 
 			//反映
 			g_Player.oldpos = g_Player.Position;
 			g_Player.Position += g_Player.sp;
-
-
-
-
-
-
 
 
 			{
@@ -354,7 +361,7 @@ void UpdatePlayer()
 				}
 			}
 
-
+			//ColisionBBに移植しました
 			//プレイヤー・トゲブロック　当たり判定
 			for (int i = 0; i < THORN_BLOCK_MAX; i++)
 			{
@@ -387,8 +394,8 @@ void UpdatePlayer()
 						g_Player.oldpos.y + g_Player.size.y / 2 <= (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2)
 					{
 						g_Player.Position.y = (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 - g_Player.size.y / 2;
-						g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
-						SetScene(SCENE_RESULT);
+						//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
+						//SetScene(SCENE_RESULT);
 					}
 					//プレイヤー下・トゲブロック上,
 					if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&

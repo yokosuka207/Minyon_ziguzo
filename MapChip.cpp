@@ -26,6 +26,7 @@
 #include "OpenKey.h"
 #include "fallblock.h"
 #include "thorn_block.h"
+#include "StageSelect.h"
 
 //**************************************************
 //　マクロ定義
@@ -36,16 +37,10 @@
 //**************************************************
 Piece g_PieceMapChip[PUZZLE_MAX];
 //**************************************************
-// プロトタイプ宣言
-//**************************************************
-
-//**************************************************
 // グローバル変数:
 //**************************************************
-
-static	ID3D11Buffer* g_MapChipVertexBuffer = NULL;	//ポリゴン用
+static ID3D11Buffer* g_MapChipVertexBuffer = NULL;	//ポリゴン用
 static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
-
 static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
 
 HRESULT InitMapChip() {
@@ -67,11 +62,13 @@ HRESULT InitMapChip() {
 		}
 	}
 
-	SplitStage* pSplitStage = GetSplitStage();
+	STAGESELECT* pStageSelect = GetSelect();
+	FileLoad(pStageSelect->StagePieceIndex);	//あとでnoに変更する？fusegi	yeah
 
-	FileLoad(1);	//あとでnoに変更する？fusegi	yeah
 	RotateChipData();
-	SetPieceMapChip(pSplitStage->Split3[0][1], 0);
+
+	SplitStage* pSplitStage = GetSplitStage();
+	SetPieceMapChip(pSplitStage->Split3[1][0], 0);
 	//SetPieceMapChip(pSplitStage->Split3[1][0], 1);
 	//SetPieceMapChip(pSplitStage->Split3[2][1], 2);
 

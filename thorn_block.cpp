@@ -75,7 +75,7 @@ void UninitThornBlock()
 void UpdateThornBlock()
 {
 	for (int i = 0; i < THORN_BLOCK_MAX; i++) {
-
+		
 	}
 }
 
