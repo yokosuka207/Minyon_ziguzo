@@ -46,28 +46,28 @@ void	InitResult()
 		exit(999);	//強制終了
 	}
 	ResultGameEndTextureNo = LoadTexture(g_ResultGameEndTextureName);
-	//if (ResultGameEndTextureNo == -1)
-	//{//読み込みエラー
-	//	exit(999);	//強制終了
-	//}
+	if (ResultGameEndTextureNo == -1)
+	{//読み込みエラー
+		exit(999);	//強制終了
+	}
 
 	ResultButtonTextureNo = LoadTexture(g_ResultButtonTextureName);
-	//if (ResultButtonTextureNo == -1)
-	//{//読み込みエラー
-	//	exit(999);	//強制終了
-	//}
+	if (ResultButtonTextureNo == -1)
+	{//読み込みエラー
+		exit(999);	//強制終了
+	}
 	ResultButtonTextureNo2 = LoadTexture(g_ResultButtonTextureName2);
-	//if (ResultButtonTextureNo2 == -1)
-	//{//読み込みエラー
-	//	exit(999);	//強制終了
-	//}
+	if (ResultButtonTextureNo2 == -1)
+	{//読み込みエラー
+		exit(999);	//強制終了
+	}
 
 
 	ResultObject[0].Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
 	ResultObject[0].Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	ResultObject[0].Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	ResultObject[0].Rotate = 0.0f;
-	ResultObject[0].type = WIN;
+	ResultObject[0].type = LOSE;
 
 	ResultObject[1].Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, 0);
 	ResultObject[1].Size = D3DXVECTOR2(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 8);
@@ -91,23 +91,23 @@ void	UninitResult()
 		g_ResultTexture = NULL;
 	}
 
-	if (g_ResultGameEndTexture)
-	{
-		g_ResultGameEndTexture->Release();//使い終わったので解放する
-		g_ResultGameEndTexture = NULL;
-	}
+	//if (g_ResultGameEndTexture)
+	//{
+	//	g_ResultGameEndTexture->Release();//使い終わったので解放する
+	//	g_ResultGameEndTexture = NULL;
+	//}
 
-	if (g_ResultTextureButton)
-	{
-		g_ResultTextureButton->Release();//使い終わったので解放する
-		g_ResultTextureButton = NULL;
-	}
+	//if (g_ResultTextureButton)
+	//{
+	//	g_ResultTextureButton->Release();//使い終わったので解放する
+	//	g_ResultTextureButton = NULL;
+	//}
 
-	if (g_ResultTextureButton2)
-	{
-		g_ResultTextureButton2->Release();//使い終わったので解放する
-		g_ResultTextureButton2 = NULL;
-	}
+	//if (g_ResultTextureButton2)
+	//{
+	//	g_ResultTextureButton2->Release();//使い終わったので解放する
+	//	g_ResultTextureButton2 = NULL;
+	//}
 
 }
 
@@ -129,7 +129,7 @@ void	UpdateResult()
 		MOUSE* pMouse = GetMouse();
 		D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
 
-					// 当たり判定用座標
+		// 当たり判定用座標
 		D3DXVECTOR2 min, max, min2, max2;		// min左上, max右下
 		min = D3DXVECTOR2(ResultObject[1].Position.x - ResultObject[1].Size.x / 2, ResultObject[1].Position.y - ResultObject[1].Size.y / 2);
 		max = D3DXVECTOR2(ResultObject[1].Position.x + ResultObject[1].Size.x / 2, ResultObject[1].Position.y + ResultObject[1].Size.y / 2);
@@ -170,8 +170,6 @@ void	DrawResult()
 	if (ResultObject[0].type == LOSE)
 	{
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultGameEndTextureNo));
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultButtonTextureNo));
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultButtonTextureNo2));
 
 		//スプライトの描画
 		SpriteDrawColorRotation
@@ -187,6 +185,9 @@ void	DrawResult()
 			1.0f,
 			1
 		);
+
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultButtonTextureNo));
+
 		SpriteDrawColorRotation
 		(//countinuButton
 			ResultObject[1].Position.x,
@@ -200,6 +201,8 @@ void	DrawResult()
 			1.0f,
 			1
 		);
+
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultButtonTextureNo2));
 		SpriteDrawColorRotation
 		(//endButton
 			ResultObject[2].Position.x,
