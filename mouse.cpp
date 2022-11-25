@@ -11,6 +11,7 @@
 #include"goal.h"
 #include"thorn_block.h"
 //#include"puzzlecip.h"
+#include"jump_stand.h"
 
 MOUSE Mouse;
 bool oneFlag = false;	//マウスでパズルを一つ持っているか
@@ -48,6 +49,7 @@ void UpdateGameMouse()
 	PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
 	GOAL* pGoal = GetGoal();
 	THORNBLOCK* pThornBlock = GetThornBlock();
+	JUMPSTAND* pJumpStand = GetJumpStand();
 	Mouse.oldPosX = GetMousePosX();
 	Mouse.oldPosY = GetMousePosY();
 
@@ -220,6 +222,16 @@ void UpdateGameMouse()
 								}
 							}
 
+						}
+						for (int i = 0; i < JUMPSTAND_MAX; i++)
+						{//ジャンプスタンド
+							if (pJumpStand[i].UseJumpStand)
+							{
+								if (pJumpStand[i].PieceIndex == MouseIndex)
+								{
+									pJumpStand[i].pos += temp;
+								}
+							}
 						}
 						if (!Mouse.pFlag)
 						{

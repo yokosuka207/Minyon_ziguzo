@@ -11,6 +11,7 @@
 #include "MapChip.h"
 #include"goal.h"
 #include"thorn_block.h"
+#include"jump_stand.h"
 /*==============================================================================
 
    ìñÇΩÇËîªíËä«óù [collsion.cpp]
@@ -1160,6 +1161,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
 	GOAL* pGoal = GetGoal();
 	THORNBLOCK* pThornBlock = GetThornBlock();
+	JUMPSTAND* pJumpStand = GetJumpStand();
 
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
@@ -1215,6 +1217,16 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 			}
 		}
 
+	}
+	for (int i = 0; i < JUMPSTAND_MAX; i++)
+	{
+		if (pJumpStand[i].UseJumpStand)
+		{
+			if (pJumpStand[i].PieceIndex == pinNo)
+			{
+				pJumpStand[i].pos += num;
+			}
+		}
 	}
 
 }
