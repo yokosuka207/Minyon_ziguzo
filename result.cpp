@@ -93,23 +93,23 @@ void	UninitResult()
 		g_ResultTexture = NULL;
 	}
 
-	//if (g_ResultGameEndTexture)
-	//{
-	//	g_ResultGameEndTexture->Release();//使い終わったので解放する
-	//	g_ResultGameEndTexture = NULL;
-	//}
+	if (g_ResultGameEndTexture)
+	{
+		g_ResultGameEndTexture->Release();//使い終わったので解放する
+		g_ResultGameEndTexture = NULL;
+	}
 
-	//if (g_ResultTextureButton)
-	//{
-	//	g_ResultTextureButton->Release();//使い終わったので解放する
-	//	g_ResultTextureButton = NULL;
-	//}
+	if (g_ResultTextureButton)
+	{
+		g_ResultTextureButton->Release();//使い終わったので解放する
+		g_ResultTextureButton = NULL;
+	}
 
-	//if (g_ResultTextureButton2)
-	//{
-	//	g_ResultTextureButton2->Release();//使い終わったので解放する
-	//	g_ResultTextureButton2 = NULL;
-	//}
+	if (g_ResultTextureButton2)
+	{
+		g_ResultTextureButton2->Release();//使い終わったので解放する
+		g_ResultTextureButton2 = NULL;
+	}
 
 }
 

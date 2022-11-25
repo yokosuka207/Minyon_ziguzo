@@ -62,13 +62,18 @@ void UpdateCollision()
 		//プレイヤーとトゲブロックの判定
 		for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 			if (pThornBlock[i].UseFlag) {
-				if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)/* ||
-					pPlayer->Position.y - pPlayer->size.y < SCREEN_HEIGHT*/) {
+				if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
 					pResult[0].type = LOSE;
 					SetScene(SCENE::SCENE_RESULT);
-					//ResetGame();
 				}
 			}
+		}
+
+		//プレイヤーが落下死したら
+		if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT)
+		{
+			pResult[0].type = LOSE;
+			SetScene(SCENE::SCENE_RESULT);
 		}
 	}
 
