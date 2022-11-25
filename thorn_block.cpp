@@ -33,10 +33,10 @@ static ID3D11ShaderResourceView* g_textureThornBlock;	//âÊëúàÍñáÇ≈àÍÇ¬ÇÃïœêîÇ™ïK
 
 static char* g_TextureNameThornBlock = (char*)"data\\texture\\thorn_block.png";
 
-THORNBLOCK InitData[] =
-{
-	{true,D3DXVECTOR2(THORN_BLOCK_W,THORN_BLOCK_H),D3DXVECTOR2(400,100),D3DXVECTOR2(0,2),0,0,D3DXCOLOR(1,0,0,1),1,8,16,8,60 * 0},
-};
+//THORNBLOCK InitData[] =
+//{
+//	{true,D3DXVECTOR2(THORN_BLOCK_W,THORN_BLOCK_H),D3DXVECTOR2(400,100),D3DXVECTOR2(0,2),0,0,D3DXCOLOR(1,0,0,1),1,8,16,8,60 * 0},
+//};
 
 
 //=============================================================================
