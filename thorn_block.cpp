@@ -31,7 +31,7 @@
 static THORNBLOCK g_ThornBlock[THORN_BLOCK_MAX];
 static ID3D11ShaderResourceView* g_textureThornBlock;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
 
-static char* g_TextureNameThornBlock = (char*)"data\\texture\\thorn_block.png";
+static char* g_TextureNameThornBlock = (char*)"data\\texture\\Spikes.png";
 
 //THORNBLOCK InitData[] =
 //{

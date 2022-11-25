@@ -18,8 +18,8 @@
 #include "inventory.h"
 #include "joint.h"
 #include "cursor.h"
-#include"SplitStage.h"
-
+#include "SplitStage.h"
+#include "thorn_block.h"
 #include "jump_stand.h"
 
 void InitGame()
@@ -42,6 +42,7 @@ void InitGame()
 	InitInventory();			// インベントリの初期化
 	InitMapChip();
 	InitCursor();				// カーソルの初期化
+	InitThornBlock();
 
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 }
@@ -63,6 +64,7 @@ void UninitGame()
 	UninitInventory();			// インベントリの終了
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了
+	UninitThornBlock();
 }
 
 void UpdateGame()
@@ -85,6 +87,7 @@ void UpdateGame()
 	UpdateBroken();
 	UpdateWarp();
 	UpdateJumpStand();
+	UpdateThornBlock();
 
 	UpdateInventory();			// インベントリの更新
 	UpdateMapChip();
@@ -104,6 +107,7 @@ void DrawGame()
 	DrawPlayer();
 	DrawWarp();
 	DrawJumpStand();
+	DrawThornBlock();
 	DrawGoal();
 	DrawBroken();
 
