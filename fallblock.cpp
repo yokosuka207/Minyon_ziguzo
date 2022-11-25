@@ -81,10 +81,6 @@ void DrawFallBlock()
 	}
 }
 
-FALLBLOCK * GetFallBlock()
-{
-	return g_FallBlock;
-}
 
 void SetFallBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size,int PieceNo)
 {
@@ -99,4 +95,18 @@ void SetFallBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size,int PieceNo)
 			break;
 		}
 	}
+}
+
+void DeleteFallBlock(int PieceNo) {
+	for (int i = 0; i < FALLBLOCK_MAX; i++) {
+		if (g_FallBlock[i].UseFlag) {
+			g_FallBlock[i].UseFlag = false;
+		}
+	}
+}
+
+
+FALLBLOCK* GetFallBlock()
+{
+	return g_FallBlock;
 }
