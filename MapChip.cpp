@@ -70,6 +70,7 @@ HRESULT InitMapChip() {
 	SplitStage* pSplitStage = GetSplitStage();
 
 	FileLoad(1);	//‚ ‚Æ‚Åno‚É•ÏX‚·‚éHfusegi	yeah
+
 	RotateChipData();
 	SetPieceMapChip(pSplitStage->Split3[1][0], 0);
 	//SetPieceMapChip(pSplitStage->Split3[1][0], 1);

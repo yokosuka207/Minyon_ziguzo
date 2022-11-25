@@ -118,7 +118,7 @@ void UpdatePlayer()
 			JUMPSTAND* p_JumpStand = GetJumpStand();
 			if (GetKeyboardPress(DIK_B))
 			{
-				if (CollisionBB(g_Player.Position, p_JumpStand->pos, g_Player.size, p_JumpStand->size * 2)) {
+				if (CollisionBB(g_Player.Position, p_JumpStand->pos, g_Player.size, p_JumpStand->size)) {
 					g_Player.GetJumpStand = true;
 				}
 			}
