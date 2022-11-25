@@ -26,7 +26,7 @@ static STAGESELECT g_StageSelect;
 
 static ID3D11Buffer* g_StageSelectVertexBuffer = NULL;	//ポリゴン用
 static ID3D11ShaderResourceView* g_StageSelectTexture;	//画像一枚で一つの変数が必要
-static char* g_StageSelectTextureName = (char*)"data\\texture\\Ground.png";	//テクスチャファイルパス
+static char* g_StageSelectTextureName = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
 
 //-----------------------------------------------------------------------------
 //	初期化
@@ -89,10 +89,10 @@ void DrawStageSelect() {
 			g_StageSelect.size.x, g_StageSelect.size.y,
 			0.0f,
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-			1,
+			g_StageSelect.StagePieceIndex,
+			1.0f / 10.0f,
 			1.0f / 1.0f,
-			1.0f / 1.0f,
-			1
+			10
 		);
 	}
 }
@@ -101,7 +101,8 @@ void DrawStageSelect() {
 //	ステージセット関数
 //-----------------------------------------------------------------------------
 void SetStageSelect() {
-
+	g_StageSelect.pos = D3DXVECTOR2(SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2);
+	g_StageSelect.size = D3DXVECTOR2(200.0f,200.0f);
 }
 //-----------------------------------------------------------------------------
 //	ステージセレクトを外部で値を変えれるようにする関数
