@@ -45,18 +45,20 @@ void UpdateCollision()
 	PLAYER* pPlayer = GetPlayer();
 
 	THORNBLOCK* pThornBlock = GetThornBlock();
-
+	MOUSE* pMouse = GetMouse();
 	//プレーヤー　対　敵キャラ	四角
 
 
 
 	//などの必要な判定をここで作る
-	
-	//プレイヤーとトゲブロックの判定
-	for (int i = 0; i < THORN_BLOCK_MAX; i++) {
-		if (pThornBlock[i].UseFlag) {
-			if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
-				ResetGame();
+	if (!pMouse->UseFlag)
+	{
+		//プレイヤーとトゲブロックの判定
+		for (int i = 0; i < THORN_BLOCK_MAX; i++) {
+			if (pThornBlock[i].UseFlag) {
+				if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
+					ResetGame();
+				}
 			}
 		}
 	}
@@ -65,8 +67,8 @@ void UpdateCollision()
 	for (int i = 0; i < PUZZLE_MAX; i++) {
 		// ピースをインベントリにしまう
 		if (pPiece[i].UseFlag && pPiece[i].pos.x < (INVENTORYBG_POS_X + INVENTORYBG_SIZE_X / 2)) {
-			SetInventory(pPiece[i].no);
 			DeleteMapChip(pPiece[i].no);
+			SetInventory(pPiece[i].no);
 		}
 	}
 }
