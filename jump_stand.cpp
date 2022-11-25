@@ -137,15 +137,15 @@ void UpdateJumpStand()
 				if (Collition_JumpStand())
 				{
 					g_JumpStand[i].JumpStandFlag = true;
-
-					g_JumpStand[i].JumpPower = 13.0f;
+					p_Player->sp.y = 0.0f;
+					g_JumpStand[i].JumpPower = 7.5f;
 					//p_Player->sp.y = 5.0f;
 					g_JumpStand[i].JumpGravity = 0.2f;
 				}
 
 				if (g_JumpStand[i].JumpStandFlag)
 				{
-					if (g_JumpStand[i].JumpPower > 0.0f)
+					if (g_JumpStand[i].JumpPower > -10.0f)
 					{
 						g_JumpStand[i].JumpPower -= g_JumpStand[i].JumpGravity;
 					}
@@ -165,7 +165,7 @@ void UpdateJumpStand()
 							{
 								g_JumpStand[i].JumpPower = 0.0f;
 								//p_Player->sp.y = 0.0f;
-								g_JumpStand[i].JumpGravity = 0.0f;
+								//g_JumpStand[i].JumpGravity = 0.0f;
 								p_Player->Position.y = (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2 - p_Player->size.y / 2;
 								g_JumpStand[i].JumpStandFlag = false;
 							}
