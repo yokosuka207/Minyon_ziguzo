@@ -138,9 +138,9 @@ void UpdateJumpStand()
 				{
 					g_JumpStand[i].JumpStandFlag = true;
 					p_Player->sp.y = 0.0f;
-					g_JumpStand[i].JumpPower = 7.5f;
+					g_JumpStand[i].JumpPower = 4.8f;
 					//p_Player->sp.y = 5.0f;
-					g_JumpStand[i].JumpGravity = 0.2f;
+					g_JumpStand[i].JumpGravity = 0.1f;
 				}
 
 				if (g_JumpStand[i].JumpStandFlag)
@@ -158,9 +158,9 @@ void UpdateJumpStand()
 						if ((p_Block + j)->UseFlag)
 						{
 							//ã
-							if (p_Player->Position.x + p_Player->size.x / 2 >= (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
-								p_Player->Position.x - p_Player->size.x / 2 <= (p_Block + j)->Position.x + (p_Block + j)->Size.x / 2 &&
-								p_Player->Position.y + p_Player->size.y / 2 >= (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2 &&
+							if (p_Player->Position.x + p_Player->size.x / 2 > (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
+								p_Player->Position.x - p_Player->size.x / 2 < (p_Block + j)->Position.x + (p_Block + j)->Size.x / 2 &&
+								p_Player->Position.y + p_Player->size.y / 2 > (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2 &&
 								p_Player->oldpos.y + p_Player->size.y / 2 <= (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2)
 							{
 								g_JumpStand[i].JumpPower = 0.0f;
@@ -202,6 +202,7 @@ void SetJumpStand(D3DXVECTOR2 p)
 
 			g_JumpStand[i].UseJumpStand = true;
 			g_JumpStand[i].JumpStandFlag = false;
+			break;
 		}
 	}
 }
