@@ -6,6 +6,7 @@
 #include"scene.h"
 #include"player.h"
 #include"mouse.h"
+#include"result.h"
 
 GOAL g_Goal;
 static ID3D11ShaderResourceView	*g_textureGoal;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
@@ -37,6 +38,7 @@ void UpdateGoal()
 	{
 		PLAYER* pPlayer = GetPlayer();
 		MOUSE* pMouse = GetMouse();
+		RESULT* pResult = GetResult();
 		if (!pMouse->UseFlag)
 		{
 
@@ -47,6 +49,7 @@ void UpdateGoal()
 			{
 
 				g_Goal.UseFlag = false;
+				pResult->type = WIN;
 				SetScene(SCENE_RESULT);
 			}
 		}
