@@ -1,17 +1,18 @@
 #include "collision.h"
-#include"main.h"
-
-#include"player.h"
-#include<math.h>
-#include"mouse.h"
-#include"block.h"
-#include"joint.h"
-#include"SplitStage.h"
+#include "main.h"
+		 
+#include "player.h"
+#include <math.h>
+#include "mouse.h"
+#include "block.h"
+#include "joint.h"
+#include "SplitStage.h"
 #include "inventory.h"
 #include "MapChip.h"
-#include"goal.h"
-#include"thorn_block.h"
-#include"jump_stand.h"
+#include "goal.h"
+#include "thorn_block.h"
+#include "jump_stand.h"
+#include "game.h"
 /*==============================================================================
 
    当たり判定管理 [collsion.cpp]
@@ -41,11 +42,24 @@ void UpdateCollision()
 {
 	// ゲット
 	Piece* pPiece = GetPiece();
+	PLAYER* pPlayer = GetPlayer();
+
+	THORNBLOCK* pThornBlock = GetThornBlock();
+
 	//プレーヤー　対　敵キャラ	四角
 
 
 
 	//などの必要な判定をここで作る
+	
+	//プレイヤーとトゲブロックの判定
+	for (int i = 0; i < THORN_BLOCK_MAX; i++) {
+		if (pThornBlock[i].UseFlag) {
+			if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
+				ResetGame();
+			}
+		}
+	}
 
 	// ピースとインベントリ範囲の当たり判定
 	for (int i = 0; i < PUZZLE_MAX; i++) {
@@ -846,11 +860,11 @@ bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECT
 	max2.y = pos2.y + size2.y / 2;
 
 	//衝突判定
+
 	if (max1.x < min2.x)//判定1
 	{
 		return false;
 	}
-
 	if (max2.x < min1.x)//判定2
 	{
 		return false;
@@ -863,8 +877,26 @@ bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECT
 	{
 		return false;
 	}
-
 	return true;
+
+
+	//if (max1.x > min2.x)//判定1
+	//{
+	//	return true;
+	//}
+	//if (max2.x > min1.x)//判定2
+	//{
+	//	return true;
+	//}
+	//if (max1.y > min2.y)//判定3
+	//{
+	//	return true;
+	//}
+	//if (max2.y > min1.y)//判定4
+	//{
+	//	return true;
+	//}
+	//return false;
 
 }
 //=================================================
