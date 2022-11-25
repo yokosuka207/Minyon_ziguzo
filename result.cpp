@@ -14,11 +14,13 @@
 //======================
 static	ID3D11ShaderResourceView* g_ResultTexture = NULL;//テクスチャ情報
 static	char* g_ResultTextureName = (char*)"data\\texture\\リザルト.jpg";
+
 static	ID3D11ShaderResourceView* g_ResultGameEndTexture = NULL;//テクスチャ情報
 static	char* g_ResultGameEndTextureName = (char*)"data\\texture\\GameEnd_haikei.jpg";
 
 static	ID3D11ShaderResourceView* g_ResultTextureButton = NULL;//テクスチャ情報
 static	char* g_ResultButtonTextureName = (char*)"data\\texture\\GameEnd_contie_button.jpg";
+
 static	ID3D11ShaderResourceView* g_ResultTextureButton2 = NULL;//テクスチャ情報
 static	char* g_ResultButtonTextureName2 = (char*)"data\\texture\\GameEnd_end_button.jpg";
 
@@ -26,8 +28,8 @@ static	char* g_ResultButtonTextureName2 = (char*)"data\\texture\\GameEnd_end_but
 RESULT	ResultObject[3];//タイトル画面オブジェクト	テクスチャ枚数分の配列
 
 int		ResultTextureNo;//テクスチャ番号
-int		ResultGameEndTextureNo;//テクスチャ番号
 
+int		ResultGameEndTextureNo;//テクスチャ番号
 int		ResultButtonTextureNo;//テクスチャ番号
 int		ResultButtonTextureNo2;//テクスチャ番号
 
