@@ -31,6 +31,7 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion);	//‚»‚Ì•ûŒü‚ÌƒpƒYƒ‹‚
 bool fourNomalPieceCollision(Piece piece, int index);
 void Rotreturn(int index);	//‰ñ“]‚ğ–ß‚·
 void SetPosition(Piece p,int i);
+bool SpritStageCollision(Piece p);
 
 int punum = 0;	//ƒpƒYƒ‹‚Ì”z—ñ‚Ì“Y‚¦š‚ÌŠi”[
 
@@ -81,7 +82,7 @@ void UpdateCollision()
 	for (int i = 0; i < PUZZLE_MAX; i++) {
 		// ƒs[ƒX‚ğƒCƒ“ƒxƒ“ƒgƒŠ‚É‚µ‚Ü‚¤
 		if (pPiece[i].UseFlag && pPiece[i].pos.x < (INVENTORYBG_POS_X + INVENTORYBG_SIZE_X / 2)) {
-			DeleteMapChip(pPiece[i].no);
+			DeleteMapChip(i);
 			SetInventory(pPiece[i].no);
 		}
 	}
@@ -104,7 +105,6 @@ void PieceCollision()
 			{
 				pPiece[i].MoveEndFlag = false;
 
-
 				if (pPiece[i].pos.y - pPiece[i].size.y / 2 < pPlayer->Position.y &&
 					pPiece[i].pos.y + pPiece[i].size.y / 2 > pPlayer->Position.y &&
 					pPiece[i].pos.x - pPiece[i].size.x / 2 < pPlayer->Position.x &&
@@ -113,6 +113,24 @@ void PieceCollision()
 				{
 					pFlag = true;
 				}
+
+				if (!SpritStageCollision(pPiece[i]))
+				{
+					//pPiece[i].pos = pPiece[i].OldMovePos;
+					Rotreturn(pPiece[i].no);
+					colFlag2 = true;
+					D3DXVECTOR2 temp = pPiece[i].OldMovePos - pPiece[i].pos;
+					PositionPlas(temp, pPiece[i].no);
+					pPiece[i].pos = pPiece[i].OldMovePos;
+					if (pFlag)
+					{
+						pPlayer->Position = pPlayer->OneOldpos;
+					}
+
+					break;
+				}
+
+
 				for (int j = 0; j < JOINT_MAX; j++)
 				{
 					if (pJoint[j].pieNo == pPiece[i].no)	//“®‚«I‚í‚Á‚½ƒs[ƒX‚Ì’†‚É‚ ‚Á‚½‚ç
@@ -1373,14 +1391,16 @@ bool fourPieceCollision(Piece piece, int index)
 	bool 	JointFlag = false;
 	for (int i = 0; i < PUZZLE_MAX; i++)
 	{
-		if (i != index)
+		if (pPiece[i].UseFlag)
 		{
-			if (piece.pos == pPiece[i].pos)
+			if (i != index)
 			{
-				return false;
+				if (piece.pos == pPiece[i].pos)
+				{
+					return false;
+				}
 			}
 		}
-
 	}
 
 	hitFlag = PieceOpen(piece, index, RIGHT);
@@ -1860,5 +1880,49 @@ void Rotreturn(int index)
 
 	}
 
+}
+//------------------------------
+//ƒXƒvƒŠƒbƒgƒXƒe[ƒW‚ÌŠO‚Éo‚Ä‚é‚©
+//
+//------------------------------
+bool SpritStageCollision(Piece p)
+{
+	SplitStage* pSprit = GetSplitStage();
+
+	D3DXVECTOR2 up = pSprit->Split3[0][0];
+	D3DXVECTOR2 down = pSprit->Split3[0][2];
+	D3DXVECTOR2 right = pSprit->Split3[2][0];
+	D3DXVECTOR2 left = pSprit->Split3[0][1];
+
+	float x = p.pos.x;
+
+	//ã‚Ì”»’è
+	if (p.pos.y < up.y - SPLIT_SIZE / 2)
+	{
+		return false;
+	}
+	//‰º
+	if (p.pos.y > down.y + SPLIT_SIZE / 2)
+	{
+		return false;
+	}
+	//‰E
+	if (p.pos.x > right.x + SPLIT_SIZE/2)
+	{
+		return false;
+	}
+	//¶
+
+
+	if (x < left.x - SPLIT_SIZE / 2);
+	{
+		if (p.pos.x < left.x - SPLIT_SIZE / 2)
+		{
+			return false;
+
+		}
+	}
+
+	return true;
 }
 

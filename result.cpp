@@ -67,7 +67,7 @@ void	InitResult()
 	ResultObject[0].Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	ResultObject[0].Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	ResultObject[0].Rotate = 0.0f;
-	ResultObject[0].type = LOSE;
+	//ResultObject[0].type = LOSE;
 
 	ResultObject[1].Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, 0);
 	ResultObject[1].Size = D3DXVECTOR2(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 8);
@@ -217,6 +217,7 @@ void	DrawResult()
 	}
 	else if (ResultObject[0].type == WIN)
 	{
+
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultTextureNo));
 
 		//スプライトの描画
