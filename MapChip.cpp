@@ -272,6 +272,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteJumpStand(g_PieceMapChip[PieceNo].no);
 	DeleteChipPiece(g_PieceMapChip[PieceNo].no);
 	DeleteThornBlock(g_PieceMapChip[PieceNo].no);
+	DeleteGoal(g_PieceMapChip[PieceNo].no);
 }
 
 

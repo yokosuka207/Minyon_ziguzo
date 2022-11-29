@@ -18,7 +18,7 @@ HRESULT InitGoal(){
 	g_Goal.Size = D3DXVECTOR2(GOAL_SIEZX, GOAL_SIZEY);
 	g_Goal.Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_Goal.Rotation = 0.0f;
-	
+	g_Goal.pieceIndex = -1;
 	g_Goal.UseFlag = false;
 	return S_OK;
 }
@@ -83,6 +83,15 @@ void SetGoal(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index)
 			g_Goal.UseFlag = true;
 		}
 	
+
+}
+
+void DeleteGoal(int index)
+{
+	if (g_Goal.pieceIndex == index)
+	{
+		g_Goal.UseFlag = false;
+	}
 
 }
 

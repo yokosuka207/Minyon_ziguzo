@@ -35,7 +35,7 @@ void UpdateGoal();
 void DrawGoal();
 
 void SetGoal(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index);
-
+void DeleteGoal(int index);
 GOAL* GetGoal();
 
 #endif // !GOAL_H_

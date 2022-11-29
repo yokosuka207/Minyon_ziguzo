@@ -103,8 +103,10 @@ void DrawGame()
 	DrawPolygon();		//ƒ|ƒŠƒSƒ“‚Ì•`‰æ
 	DrawPuzzle();
 	DrawMapChip();
-	DrawBlock();
+
 	DrawJoint();
+	DrawBlock();
+
 	DrawPuzzleCip();
 	DrawPlayer();
 	DrawWarp();
