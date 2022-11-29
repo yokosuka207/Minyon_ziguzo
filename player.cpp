@@ -27,6 +27,7 @@
 #include"jump_stand.h"		//ジャンプ台
 #include"MapChip.h"
 #include"thorn_block.h"
+#include "time.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -459,6 +460,17 @@ void UpdatePlayer()
 			{
 				ResetGame();
 			}
+
+			if (GetKeyboardTrigger(DIK_K)) {
+				Time pTime;
+				pTime.PuaseStartTime();
+			}
+			if (GetKeyboardTrigger(DIK_L)) {
+				Time pTime;
+				pTime.PuaseEndTime();
+			}
+
+
 
 			//プレイヤーとパズルの画面外判定
 

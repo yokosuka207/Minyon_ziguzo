@@ -27,12 +27,10 @@ class Time {
 private:
 	clock_t m_start;		//計測開始時間
 	clock_t m_end;			//計測終了時間
+	int		m_ElapsedTime;	//経過時間
 
-	clock_t m_puase;		//一時停止時間
 	clock_t m_PuaseStart;	//一時停止計測開始時間
 	clock_t m_PuaseEnd;		//一時停止計測終了時間
-
-	int m_ElapsedTime;		//経過時間
 public:
 	void InitTime();
 	void DrawGameTime();	//ゲーム中に表示される
@@ -40,14 +38,12 @@ public:
 	void StartTime();
 	int EndTime();
 	int ElapsedTime();
-	int PauseTime();
-	void PauseStartTime();
-	int PuaseEndTime();
+	void PuaseStartTime();
+	void PuaseEndTime();
 
 	void SetTime(D3DXVECTOR2 pos,D3DXVECTOR2 size);
 	int GetTime();
 	TimeParam* GetTimeParam();
 };
-
 
 #endif // !_TIME_H_
