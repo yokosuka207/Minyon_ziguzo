@@ -13,6 +13,11 @@
 #include "renderer.h"
 #include <time.h>
 
+typedef struct {
+	D3DXVECTOR2 pos;
+	D3DXVECTOR2 size;
+	D3DXCOLOR color;
+}TimeParam;
 
 class Time {
 private:
@@ -25,6 +30,7 @@ public:
 	void DrawResultTime();	//ƒŠƒUƒ‹ƒg‚Å•\Ž¦‚³‚ê‚é
 	void StartTime();
 	int EndTime();
+	int ElapsedTime();
 	int GetTime();
 };
 

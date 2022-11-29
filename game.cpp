@@ -22,6 +22,9 @@
 #include "thorn_block.h"
 #include "jump_stand.h"
 #include"thorn_block.h"
+#include "time.h"
+
+static Time g_time;
 
 void InitGame()
 {
@@ -45,7 +48,8 @@ void InitGame()
 	InitThornBlock();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 	InitPlayer();
-
+	g_time.InitTime();
+	g_time.StartTime();
 }
 
 void UninitGame()
@@ -66,6 +70,7 @@ void UninitGame()
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了
 	UninitThornBlock();
+	g_time.EndTime();
 }
 
 void UpdateGame()
@@ -117,6 +122,7 @@ void DrawGame()
 
 	DrawThornBlock();
 	DrawInventory();			// インベントリの描画
+	g_time.DrawGameTime();
 	//DrawCursor();				// カーソルの描画
 }
 
