@@ -49,6 +49,7 @@ void InitGame()
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 	InitPlayer();
 	g_time.InitTime();
+	g_time.SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
 	g_time.StartTime();
 }
 
