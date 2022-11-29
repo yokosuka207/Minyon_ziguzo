@@ -13,10 +13,11 @@ void InitSplitStage()
 
 	int texNo = LoadTexture(g_splitStageTextureName);			// テクスチャ読み込み
 
-	g_splitStage.pos = D3DXVECTOR2(SCREEN_WIDTH / 2+20.0f, SCREEN_HEIGHT / 2);
+	g_splitStage.pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	g_splitStage.size = D3DXVECTOR2(SPLIT_SIZE, SPLIT_SIZE);
 	g_splitStage.texNo = texNo;		// テクスチャ番号
 
+	//ステージの分割座標格納
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 3; j++)

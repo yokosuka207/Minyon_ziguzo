@@ -49,7 +49,7 @@ void UpdateGoal()
 			{
 
 				g_Goal.UseFlag = false;
-				pResult->type = WIN;
+				SetResultType(WIN);
 				SetScene(SCENE_RESULT);
 			}
 		}
