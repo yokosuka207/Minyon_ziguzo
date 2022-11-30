@@ -33,6 +33,9 @@ Button g_Data3;
 //==================================================
 void Save::Init()
 {
+	g_Data1.Init();
+	g_Data2.Init();
+	g_Data3.Init();
 
 	// テクスチャナンバーを格納
 	m_BGTexNo = LoadTexture(g_BGTextureFileName);
@@ -41,9 +44,9 @@ void Save::Init()
 	m_BGSize = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	m_BGColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-	g_Data1.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * 1), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), LoadTexture(g_TextureFileName1));
-	g_Data2.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * 2), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), LoadTexture(g_TextureFileName1));
-	g_Data3.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * 3), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), LoadTexture(g_TextureFileName1));
+	g_Data1.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * 1), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName1));
+	g_Data2.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * 2), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName1));
+	g_Data3.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * 3), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName1));
 }
 
 //==================================================
@@ -51,7 +54,9 @@ void Save::Init()
 //==================================================
 void Save::Uninit()
 {
-
+	g_Data1.Uninit();
+	g_Data2.Uninit();
+	g_Data3.Uninit();
 }
 
 //==================================================
@@ -62,6 +67,10 @@ void Save::Update()
 	if (GetKeyboardTrigger(DIK_A)) {
 		SetScene(SCENE_STAGESELECT);
 	}
+
+	g_Data1.Update();
+	g_Data2.Update();
+	g_Data3.Update();
 }
 
 //==================================================
