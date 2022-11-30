@@ -5,9 +5,12 @@
 #include "Title.h"
 #include "result.h"
 #include "StageSelect.h"
+#include "save.h"
 
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
+
+Save g_SaveScene;				// セーブクラスのインスタンス
 
 void InitScene(SCENE no)
 {
@@ -18,12 +21,15 @@ void InitScene(SCENE no)
 
 	case SCENE::SCENE_NONE:
 		break;
+	case SCENE::SCENE_TITLE:
+		InitTitle();
+		break;
+	case SCENE::SCENE_DATASELECT:
+		g_SaveScene.Init();
+		break;
 	case SCENE::SCENE_STAGESELECT:
 		InitStageSelect();
 		SetStageSelect();
-		break;
-	case SCENE::SCENE_TITLE:
-		InitTitle();
 		break;
 	case SCENE::SCENE_GAME :
 		InitGame();
@@ -48,6 +54,9 @@ void UninitScene()
 		break;
 	case SCENE::SCENE_TITLE:
 		UninitTitle();
+		break;
+	case SCENE::SCENE_DATASELECT:
+		g_SaveScene.Uninit();
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UninitStageSelect();
@@ -76,6 +85,9 @@ void UpdateScene()
 	case SCENE::SCENE_TITLE:
 		UpdateTitle();
 		break;
+	case SCENE::SCENE_DATASELECT:
+		g_SaveScene.Update();
+		break;
 	case SCENE::SCENE_STAGESELECT:
 		UpdateStageSelect();
 		break;
@@ -102,6 +114,9 @@ void DrawScene()
 		break;
 	case SCENE::SCENE_TITLE:
 		DrawTitle();
+		break;
+	case SCENE::SCENE_DATASELECT:
+		g_SaveScene.Draw();
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		DrawStageSelect();
