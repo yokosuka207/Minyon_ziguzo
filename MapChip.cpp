@@ -161,10 +161,10 @@ void FileLoad(int StageNo) {
 	switch (StageNo)
 	{
 	case 0:
-		filename = "MapData/map0.txt";
+		filename = "data/MapData/map0.txt";
 		break;
 	case 1:
-		filename = "MapData/map.txt"; 
+		filename = "data/MapData/map.txt"; 
 		break;
 	}
 	FILE* fp;

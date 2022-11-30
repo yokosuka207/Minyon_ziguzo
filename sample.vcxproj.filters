@@ -33,6 +33,8 @@
     <ClCompile Include="thorn_block.cpp" />
     <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="time.cpp" />
+    <ClCompile Include="save.cpp" />
+    <ClCompile Include="button.cpp" />
     <ClCompile Include="score.cpp" />
   </ItemGroup>
   <ItemGroup>

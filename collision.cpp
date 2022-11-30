@@ -15,6 +15,8 @@
 #include "game.h"
 #include "result.h"
 #include "scene.h"
+
+#include "button.h"
 /*==============================================================================
 
    “–‚½‚è”»’èŠÇ— [collsion.cpp]

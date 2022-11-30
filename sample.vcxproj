@@ -138,6 +138,7 @@
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="broken.cpp" />
+    <ClCompile Include="button.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="cursor.cpp" />
     <ClCompile Include="fallblock.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="puzzlecip.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
+    <ClCompile Include="save.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="sprite.cpp" />
@@ -173,6 +175,7 @@
     <ClInclude Include="bg.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="broken.h" />
+    <ClInclude Include="button.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="cursor.h" />
     <ClInclude Include="fallblock.h" />
@@ -193,6 +196,7 @@
     <ClInclude Include="puzzlecip.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
+    <ClInclude Include="save.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="sprite.h" />
