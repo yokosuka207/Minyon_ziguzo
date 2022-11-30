@@ -35,6 +35,7 @@
     <ClCompile Include="time.cpp" />
     <ClCompile Include="save.cpp" />
     <ClCompile Include="button.cpp" />
+    <ClCompile Include="score.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -68,5 +69,7 @@
     <ClInclude Include="Key.h" />
     <ClInclude Include="thorn_block.h" />
     <ClInclude Include="StageSelect.h" />
+    <ClInclude Include="time.h" />
+    <ClInclude Include="score.h" />
   </ItemGroup>
 </Project>

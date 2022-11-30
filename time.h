@@ -33,6 +33,7 @@ private:
 	clock_t m_PuaseEnd;		//一時停止計測終了時間
 public:
 	void InitTime();
+	void UninitTime();
 	void DrawGameTime();	//ゲーム中に表示される
 	void DrawResultTime();	//リザルトで表示される
 	void StartTime();

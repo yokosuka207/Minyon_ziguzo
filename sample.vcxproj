@@ -161,6 +161,7 @@
     <ClCompile Include="result.cpp" />
     <ClCompile Include="save.cpp" />
     <ClCompile Include="scene.cpp" />
+    <ClCompile Include="score.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="SplitStage.cpp" />
     <ClCompile Include="StageSelect.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="result.h" />
     <ClInclude Include="save.h" />
     <ClInclude Include="scene.h" />
+    <ClInclude Include="score.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="SplitStage.h" />
     <ClInclude Include="StageSelect.h" />

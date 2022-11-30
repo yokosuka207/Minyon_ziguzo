@@ -23,8 +23,10 @@
 #include "jump_stand.h"
 #include"thorn_block.h"
 #include "time.h"
+#include "score.h"
 
 static Time g_time;
+static Score g_score;
 
 void InitGame()
 {
@@ -48,6 +50,7 @@ void InitGame()
 	InitThornBlock();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 	InitPlayer();
+	g_score.InitScore();
 	g_time.InitTime();
 	g_time.SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
 	g_time.StartTime();
@@ -71,7 +74,9 @@ void UninitGame()
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了
 	UninitThornBlock();
+	g_score.UninitScore();
 	g_time.EndTime();
+	g_time.UninitTime();
 }
 
 void UpdateGame()

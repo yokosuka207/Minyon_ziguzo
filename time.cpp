@@ -31,7 +31,7 @@ static TimeParam g_TimeParam;
 
 void Time::InitTime() {
 	g_TimeTextureNo = LoadTexture(g_TimeTextureName);
-	g_TimeParam.pos = D3DXVECTOR2(0.0f,0.0f);
+	g_TimeParam.pos = D3DXVECTOR2(0.0f, 0.0f);
 	g_TimeParam.size = D3DXVECTOR2(0.0f, 0.0f);
 	g_TimeParam.color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 	g_TimeParam.UseFlag = false;
@@ -41,6 +41,12 @@ void Time::InitTime() {
 	m_PuaseStart = 0;
 	m_PuaseStart = 0;
 	m_ElapsedTime = 0;
+}
+void Time::UninitTime() {
+	if (g_TimeTexture) {
+		g_TimeTexture->Release();
+		g_TimeTexture = NULL;
+	}
 }
 void Time:: DrawGameTime() {
 	
@@ -241,6 +247,8 @@ void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 	}
 }
 int Time::GetTime() {
+	m_ElapsedTime /= CLOCKS_PER_SEC;
+	m_ElapsedTime %= 60;
 	return m_ElapsedTime;
 }
 TimeParam* Time::GetTimeParam() {
