@@ -29,6 +29,7 @@ struct PLAYER
 	bool WarpFlag;//ワープしたか
 	bool GetJumpStand;
 	bool isGround;	// 地に足をつけている
+	int	HaveKey; //鍵所持数
 
 	D3DXVECTOR2 size;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
