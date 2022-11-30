@@ -6,6 +6,7 @@
 #include	"scene.h"
 #include	"result.h"
 #include	"mouse.h"
+#include	"time.h"
 //======================
 //マクロ定義
 //=======================
@@ -35,6 +36,8 @@ int		ResultButtonTextureNo2;//テクスチャ番号
 
 int ResultSoundNo;	//タイトルサウンド番号
 int ResultSoundNo2;	//タイトルサウンド番号
+
+Time	g_Time;
 
 //======================
 //初期化
@@ -67,7 +70,7 @@ void	InitResult()
 	ResultObject[0].Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	ResultObject[0].Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	ResultObject[0].Rotate = 0.0f;
-	ResultObject[0].type = LOSE;
+	//ResultObject[0].type = LOSE;
 
 	ResultObject[1].Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, 0);
 	ResultObject[1].Size = D3DXVECTOR2(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 8);
@@ -79,6 +82,7 @@ void	InitResult()
 	ResultObject[2].Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	ResultObject[2].Rotate = 0.0f;
 
+	g_Time.SetTime(D3DXVECTOR2(SCREEN_WIDTH / 2,SCREEN_HEIGHT / 2),D3DXVECTOR2(200.0f,200.0f));
 }
 //======================
 //終了処理
@@ -217,6 +221,7 @@ void	DrawResult()
 	}
 	else if (ResultObject[0].type == WIN)
 	{
+
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultTextureNo));
 
 		//スプライトの描画
@@ -234,7 +239,7 @@ void	DrawResult()
 			1
 		);
 	}
-
+	g_Time.DrawResultTime();
 }
 
 void SetResultType(RESULT_TYPE ty)

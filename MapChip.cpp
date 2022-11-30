@@ -39,7 +39,6 @@ Piece g_PieceMapChip[PUZZLE_MAX];
 //**************************************************
 // グローバル変数:
 //**************************************************
-static ID3D11Buffer* g_MapChipVertexBuffer = NULL;	//ポリゴン用
 static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
 static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
 
@@ -264,6 +263,8 @@ void RotateMapChipL(int PieceNo) {
 //ピースの回転やインベントリから取り出すときに使うピースを消す関数
 //==================================================
 void DeleteMapChip(int PieceNo) {
+
+
 	if (g_PieceMapChip[PieceNo].UseFlag) {
 		g_PieceMapChip[PieceNo].UseFlag = false;
 	}
