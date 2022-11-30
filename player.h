@@ -18,6 +18,13 @@
 
 #define PLAYER_COOLTIME	(120)
 
+enum class PLAYER_DIRECTION
+{
+	UP = 0,
+	DOWN,
+	RIGHT,
+	LEFT
+};
 
 struct PLAYER
 {
@@ -47,6 +54,7 @@ struct PLAYER
 	int hp;
 	int frame;
 	int CoolTime;//クールタイム
+	PLAYER_DIRECTION dir;			// プレイヤーの向き
 
 };
 

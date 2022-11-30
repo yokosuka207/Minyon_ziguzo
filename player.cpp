@@ -34,6 +34,8 @@
 //=============================================================================
 //マクロ定義
 //=============================================================================
+#define PLAYER_UV_W (1.0f / 4)
+#define PLAYER_UV_H (1.0f / 4)
 
 //=============================================================================
 //プロトタイプ宣言
@@ -72,8 +74,8 @@ HRESULT InitPlayer()
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
 	g_Player.PaternNo = 0;//パターン番号
-	g_Player.uv_w = 1.0f / 4;//横サイズ
-	g_Player.uv_h = 1.0f / 4;//縦サイズ
+	g_Player.uv_w = PLAYER_UV_W;//横サイズ
+	g_Player.uv_h = PLAYER_UV_H;//縦サイズ
 	g_Player.NumPatern = 4;//横枚数
 
 	g_Player.hp = 30;
@@ -106,17 +108,29 @@ void UpdatePlayer()
 			{//押されているときの処理
 				g_Player.sp.x = 1.0f;
 				g_Player.PaternNo += 0.25f;
+
+				// 向きを変える
+				g_Player.dir = PLAYER_DIRECTION::RIGHT;
+				g_Player.uv_w = PLAYER_UV_W;
 			}
 			else if (GetKeyboardPress(DIK_LEFT))//左キー
 			{//押されているときの処理
 				g_Player.sp.x = -1.0f;
-				g_Player.PaternNo += 0.25f;
+				g_Player.PaternNo -= 0.25f;
+
+				// 向きを変える
+				g_Player.dir = PLAYER_DIRECTION::LEFT;
+				g_Player.uv_w = -PLAYER_UV_W;
 			}
 			else
 			{
 				g_Player.sp.x = 0;
 
 			}
+
+			// アニメーションパターン番号を0～15の範囲内にする
+			if (g_Player.PaternNo > 15) { g_Player.PaternNo -= 15; }
+			if (g_Player.PaternNo < 0) { g_Player.PaternNo += 15; }
 
 			//ジャンプ台処理
 			JUMPSTAND* p_JumpStand = GetJumpStand();
@@ -629,7 +643,7 @@ void UpdatePlayer()
 
 
 
-			if (GetKeyboardTrigger(DIK_R))	//aキーが押されたら
+			if (GetKeyboardTrigger(DIK_R))	//Rキーが押されたら
 			{
 				ResetGame();
 			}

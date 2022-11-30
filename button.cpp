@@ -19,7 +19,7 @@ Update:
 //==================================================
 void Button::Init()
 {
-
+	m_type = BUTTON_TYPE::TYPE_NORMAL;
 }
 
 
