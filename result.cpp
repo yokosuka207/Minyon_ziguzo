@@ -7,6 +7,7 @@
 #include	"result.h"
 #include	"mouse.h"
 #include	"time.h"
+#include	"score.h"
 //======================
 //マクロ定義
 //=======================
@@ -37,7 +38,8 @@ int		ResultButtonTextureNo2;//テクスチャ番号
 int ResultSoundNo;	//タイトルサウンド番号
 int ResultSoundNo2;	//タイトルサウンド番号
 
-Time	g_Time;
+static Time		g_Time;
+static Score	g_Score;
 
 //======================
 //初期化
@@ -82,7 +84,8 @@ void	InitResult()
 	ResultObject[2].Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	ResultObject[2].Rotate = 0.0f;
 
-	g_Time.SetTime(D3DXVECTOR2(SCREEN_WIDTH / 2,SCREEN_HEIGHT / 2),D3DXVECTOR2(200.0f,200.0f));
+	g_Time.SetTime(D3DXVECTOR2(SCREEN_WIDTH / 2,SCREEN_HEIGHT / 2 - 50),D3DXVECTOR2(200.0f,200.0f));
+	g_Score.SetScore(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50), D3DXVECTOR2(50.0f, 50.0f));
 }
 //======================
 //終了処理
@@ -240,6 +243,7 @@ void	DrawResult()
 		);
 	}
 	g_Time.DrawResultTime();
+	g_Score.DrawScore();
 }
 
 void SetResultType(RESULT_TYPE ty)

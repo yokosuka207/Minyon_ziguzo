@@ -33,6 +33,7 @@
     <ClCompile Include="thorn_block.cpp" />
     <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="time.cpp" />
+    <ClCompile Include="score.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -67,5 +68,6 @@
     <ClInclude Include="thorn_block.h" />
     <ClInclude Include="StageSelect.h" />
     <ClInclude Include="time.h" />
+    <ClInclude Include="score.h" />
   </ItemGroup>
 </Project>
