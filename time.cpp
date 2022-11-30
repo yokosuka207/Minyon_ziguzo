@@ -35,7 +35,7 @@ void Time::InitTime() {
 	g_TimeParam.size = D3DXVECTOR2(0.0f, 0.0f);
 	g_TimeParam.color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 	g_TimeParam.UseFlag = false;
-	g_TimeParam.PauseFlag = false;
+	g_TimeParam.EndFlag = false;
 	m_start = 0;
 	m_end = 0;
 	m_PuaseStart = 0;
@@ -126,23 +126,90 @@ void Time:: DrawGameTime() {
 }
 void Time::DrawResultTime() {
 	//22/11/30Ç…Ç‚ÇÈ
-	//SetWorldViewProjection2D();
+	SetWorldViewProjection2D();
 
-	//GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TimeTextureNo));
+	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TimeTextureNo));
 
-	//SpriteDrawColorRotation(
-	//	g_TimeParam.pos.x,
-	//	g_TimeParam.pos.y,
-	//	g_TimeParam.size.x,
-	//	g_TimeParam.size.y,
-	//	0.0f,
-	//	g_TimeParam.color,
-	//	EndTime(),
-	//	1.0f / 10.0f,
-	//	1.0f / 1.0f,
-	//	10
-	//);
+	g_TimeParam.pos.x = SCREEN_WIDTH / 2 + 70;
+	g_TimeParam.pos.y = SCREEN_HEIGHT / 2;
+	g_TimeParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
+	if (!g_TimeParam.EndFlag) {
+		m_ElapsedTime = EndTime();
+		g_TimeParam.EndFlag = true;
+	}
+	g_Time = m_ElapsedTime / CLOCKS_PER_SEC;//ïbï\é¶
+	g_SecondTime = g_Time % 60;	//ïb
+	g_MintueTime = g_Time / 60;	//ï™
+
+	if (g_TimeParam.UseFlag) {
+		//1ÇÃà (ïb)
+		{
+			SpriteDrawColorRotation(
+				g_TimeParam.pos.x,
+				g_TimeParam.pos.y,
+				g_TimeParam.size.x,
+				g_TimeParam.size.y,
+				0.0f,
+				g_TimeParam.color,
+				(g_SecondTime) % 10,
+				1.0f / 10.0f,
+				1.0f / 1.0f,
+				10
+			);
+			g_TimeParam.pos.x -= 30;
+			g_SecondTime /= 10;
+		}
+		//10ÇÃà (ïb)
+		{
+			SpriteDrawColorRotation(
+				g_TimeParam.pos.x,
+				g_TimeParam.pos.y,
+				g_TimeParam.size.x,
+				g_TimeParam.size.y,
+				0.0f,
+				g_TimeParam.color,
+				(g_SecondTime) % 10,
+				1.0f / 10.0f,
+				1.0f / 1.0f,
+				10
+			);
+			g_TimeParam.pos.x -= 30;
+		}
+		//1ÇÃà (ï™)
+		{
+			SpriteDrawColorRotation(
+				g_TimeParam.pos.x - 5,
+				g_TimeParam.pos.y,
+				g_TimeParam.size.x,
+				g_TimeParam.size.y,
+				0.0f,
+				g_TimeParam.color,
+				(g_MintueTime) % 10,
+				1.0f / 10.0f,
+				1.0f / 1.0f,
+				10
+			);
+			g_TimeParam.pos.x -= 30;
+			g_MintueTime /= 10;
+		}
+		//10ÇÃà (ï™)
+		{
+			SpriteDrawColorRotation(
+				g_TimeParam.pos.x - 5,
+				g_TimeParam.pos.y,
+				g_TimeParam.size.x,
+				g_TimeParam.size.y,
+				0.0f,
+				g_TimeParam.color,
+				(g_MintueTime) % 10,
+				1.0f / 10.0f,
+				1.0f / 1.0f,
+				10
+			);
+			g_TimeParam.pos.x -= 30;
+		}
+	}
 }
 void Time::StartTime() {
 	m_start = clock();
@@ -156,10 +223,6 @@ int Time::ElapsedTime() {
 	m_ElapsedTime = clock() - m_start;
 	
 	return m_ElapsedTime;
-	//if(!g_TimeParam.PauseFlag) {
-	//	m_ElapsedTime = clock();
-	//}
-	//return m_ElapsedTime - m_start;
 }
 //É|Å[ÉYÇÃäJénéûä‘
 void Time::PuaseStartTime() {

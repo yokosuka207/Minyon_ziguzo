@@ -20,7 +20,7 @@ typedef struct {
 	D3DXVECTOR2 size;
 	D3DXCOLOR	color;
 	bool		UseFlag;
-	bool		PauseFlag;
+	bool		EndFlag;
 }TimeParam;
 
 class Time {
