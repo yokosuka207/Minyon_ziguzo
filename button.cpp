@@ -37,19 +37,12 @@ void Button::Uninit()
 //==================================================
 void Button::Update()
 {
-	// ボタンとマウスの当たり判定
-	// 当たり判定用
-	D3DXVECTOR2 min, max;
-	min = D3DXVECTOR2(m_pos.x - m_size.x / 2, m_pos.y - m_size.y / 2);
-	max = D3DXVECTOR2(m_pos.x + m_size.x / 2, m_pos.y + m_size.y / 2);
-	D3DXVECTOR2 mousePos;
-	mousePos.x = (float)GetMousePosX();
-	mousePos.y = (float)GetMousePosY();
-	if (IsMouseLeftPressed() && (min.x < mousePos.x && max.x > mousePos.x && min.y < mousePos.y && max.y > mousePos.y)) {					// 当たっている状態で押している
+	// 当たっている状態でマウスを押したら
+	if (IsMouseLeftPressed() && CollisionMouse()) {
 		ChangeType(BUTTON_TYPE::TYPE_PRESSED);
-		
+
 	}
-	else {			// 当たっていないし押されていない
+	else {			// 当たっていないし押されてもいない
 		ChangeType(BUTTON_TYPE::TYPE_NORMAL);
 	}
 }
@@ -84,3 +77,27 @@ void Button::SetButton(D3DXVECTOR2 po, D3DXVECTOR2 si,D3DXCOLOR co , float no)
 	m_color = co;
 	m_texNo = no;
 }
+
+
+//==================================================
+// 当たり判定
+//==================================================
+bool Button::CollisionMouse()
+{
+	// ボタンの左上, 右下
+	D3DXVECTOR2 min, max;		
+	min = D3DXVECTOR2(m_pos.x - m_size.x / 2, m_pos.y - m_size.y / 2);
+	max = D3DXVECTOR2(m_pos.x + m_size.x / 2, m_pos.y + m_size.y / 2);
+	// マウスの座標
+	D3DXVECTOR2 mousePos;
+	mousePos.x = (float)GetMousePosX();
+	mousePos.y = (float)GetMousePosY();
+
+	// 当たり判定
+	if (min.x < mousePos.x && max.x > mousePos.x && min.y < mousePos.y && max.y > mousePos.y) {
+		return true;
+	}
+
+	return false;
+}
+
