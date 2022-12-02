@@ -24,18 +24,18 @@ char* g_TextureFileName2 = (char*)"data/texture/GameEnd_haikei.jpg";			// データ
 char* g_TextureFileName3 = (char*)"data/texture/GameEnd_haikei.jpg";			// データ３
 
 // 各データのボタンを作る
-Button g_Data1;
-Button g_Data2;
-Button g_Data3;
+Button g_DataButton1;
+Button g_DataButton2;
+Button g_DataButton3;
 
 //==================================================
 // 初期化
 //==================================================
 void Save::Init()
 {
-	g_Data1.Init();
-	g_Data2.Init();
-	g_Data3.Init();
+	g_DataButton1.Init();
+	g_DataButton2.Init();
+	g_DataButton3.Init();
 
 	// テクスチャナンバーを格納
 	m_BGTexNo = LoadTexture(g_BGTextureFileName);
@@ -44,9 +44,9 @@ void Save::Init()
 	m_BGSize = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	m_BGColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-	g_Data1.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * 1), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName1));
-	g_Data2.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * 2), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName1));
-	g_Data3.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * 3), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName1));
+	g_DataButton1.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * 1), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName1));
+	g_DataButton2.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * 2), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName1));
+	g_DataButton3.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * 3), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName1));
 }
 
 //==================================================
@@ -54,9 +54,9 @@ void Save::Init()
 //==================================================
 void Save::Uninit()
 {
-	g_Data1.Uninit();
-	g_Data2.Uninit();
-	g_Data3.Uninit();
+	g_DataButton1.Uninit();
+	g_DataButton2.Uninit();
+	g_DataButton3.Uninit();
 }
 
 //==================================================
@@ -68,9 +68,9 @@ void Save::Update()
 		SetScene(SCENE_STAGESELECT);
 	}
 
-	g_Data1.Update();
-	g_Data2.Update();
-	g_Data3.Update();
+	g_DataButton1.Update();
+	g_DataButton2.Update();
+	g_DataButton3.Update();
 }
 
 //==================================================
@@ -86,9 +86,9 @@ void Save::Draw()
 	//----------背景の表示----------]
 
 	// 各ボタンの描画
-	g_Data1.Draw();
-	g_Data2.Draw();
-	g_Data3.Draw();
+	g_DataButton1.Draw();
+	g_DataButton2.Draw();
+	g_DataButton3.Draw();
 }
 
 //==================================================

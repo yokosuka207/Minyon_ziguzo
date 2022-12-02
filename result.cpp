@@ -148,6 +148,7 @@ void	UpdateResult()
 		{
 			if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y) 
 			{
+				g_Time.StartTime();
 				SetScene(SCENE::SCENE_GAME);
 			}
 		}

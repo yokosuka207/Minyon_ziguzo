@@ -6,9 +6,13 @@
 #include "result.h"
 #include "StageSelect.h"
 #include "save.h"
+#include "time.h"
 
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
+
+static Time g_Time;
+static int ElapsedTime;
 
 Save g_SaveScene;				// セーブクラスのインスタンス
 
@@ -35,6 +39,7 @@ void InitScene(SCENE no)
 		InitGame();
 		break;
 	case SCENE::SCENE_RESULT:
+		g_Time.SetElapsedTime(ElapsedTime);
 		InitResult();
 		break;
 
@@ -62,6 +67,7 @@ void UninitScene()
 		UninitStageSelect();
 		break;
 	case SCENE::SCENE_GAME:
+		ElapsedTime = g_Time.GetTime();
 		UninitGame();
 		break;
 	case SCENE::SCENE_RESULT:
