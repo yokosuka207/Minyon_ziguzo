@@ -49,6 +49,9 @@ public:
 	// 引数：ポジション, サイズ, テクスチャ番号
 	void SetButton(D3DXVECTOR2 po, D3DXVECTOR2 si, D3DXCOLOR co, float no);
 
+	// マウスとの当たり判定
+	bool CollisionMouse();
+private:
 	// タイプ変更
 	void ChangeType(BUTTON_TYPE type) { m_type = type; }
 };
