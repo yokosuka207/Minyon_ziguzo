@@ -43,7 +43,7 @@ void Time::InitTime() {
 	m_ElapsedTime = 0;
 }
 void Time::UninitTime() {
-	if (g_TimeTexture) {
+	if (g_TimeTexture != NULL) {
 		g_TimeTexture->Release();
 		g_TimeTexture = NULL;
 	}
@@ -248,9 +248,12 @@ void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 }
 int Time::GetTime() {
 	m_ElapsedTime /= CLOCKS_PER_SEC;
-	m_ElapsedTime %= 60;
 	return m_ElapsedTime;
 }
+void Time::SetElapsedTime(int elapsedtime) {
+	m_ElapsedTime = elapsedtime;
+}
+
 TimeParam* Time::GetTimeParam() {
 	return &g_TimeParam;
 }

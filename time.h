@@ -44,6 +44,7 @@ public:
 
 	void SetTime(D3DXVECTOR2 pos,D3DXVECTOR2 size);
 	int GetTime();
+	void SetElapsedTime(int elapsedtime);
 	TimeParam* GetTimeParam();
 };
 

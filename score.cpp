@@ -21,6 +21,8 @@ static SCORE g_Score;	//ç\ë¢ëÃ
 static int distance = SCORE_POS_X;
 static int score = 0;
 
+static 	Time g_Time;
+
 void Score::InitScore() {
 	g_ScoreTextureNo = LoadTexture(g_ScoreTextureName);
 	g_Score.pos = D3DXVECTOR2(0.0f, 0.0f);
@@ -67,7 +69,6 @@ void Score::DrawScore() {
 	}
 }
 int Score::CulcScore() {
-	Time g_Time;
 	m_TimeScore = g_Time.GetTime();
 	
 	if (m_TimeScore < 60) {

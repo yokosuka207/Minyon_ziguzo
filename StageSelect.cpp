@@ -69,7 +69,7 @@ void UpdateStageSelect() {
 		}
 	}
 
-	if (GetKeyboardTrigger(DIK_F5)) {
+	if (GetKeyboardTrigger(DIK_A)) {
 		SetScene(SCENE::SCENE_GAME);
 	}
 }
