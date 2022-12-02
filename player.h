@@ -36,6 +36,8 @@ struct PLAYER
 	bool WarpFlag;//ワープしたか
 	bool GetJumpStand;
 	bool isGround;	// 地に足をつけている
+	bool isSheerFloors;
+	bool isSheerFloorsUse;
 	int	HaveKey; //鍵所持数
 
 	D3DXVECTOR2 size;//BOXサイズ

@@ -24,6 +24,7 @@
 #include"thorn_block.h"
 #include "time.h"
 #include "score.h"
+#include "SheerFloors.h"
 
 static Time g_time;
 static Score g_score;
@@ -42,6 +43,7 @@ void InitGame()
 	InitBroken();
 	InitWarp();
 	InitJumpStand();
+	InitSheerFloors();
 	InitPuzzleCip();
 	InitPuzzle();
 	InitInventory();			// インベントリの初期化
@@ -70,6 +72,7 @@ void UninitGame()
 	UninitPlayer();
 	UninitWarp();
 	UninitJumpStand();
+	UninitSheerFloors();
 	UninitInventory();			// インベントリの終了
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了
@@ -99,6 +102,7 @@ void UpdateGame()
 	UpdateBroken();
 	UpdateWarp();
 	UpdateJumpStand();
+	UpdateSheerFloors();
 	UpdateThornBlock();
 	UpdateInventory();			// インベントリの更新
 	UpdateMapChip();
@@ -122,6 +126,7 @@ void DrawGame()
 	DrawPlayer();
 	DrawWarp();
 	DrawJumpStand();
+	DrawSheerFloors();
 	DrawThornBlock();
 	DrawGoal();
 	DrawBroken();

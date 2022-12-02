@@ -31,6 +31,7 @@
 #include "OpenKey.h"
 #include "Key.h"
 #include "fallblock.h"
+#include "SheerFloors.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -71,6 +72,8 @@ HRESULT InitPlayer()
 	g_Player.getfall = false;
 	g_Player.WarpFlag = false;
 	g_Player.isGround = true;
+	g_Player.isSheerFloors = true;
+	g_Player.isSheerFloorsUse = true;
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
 	g_Player.PaternNo = 0;//パターン番号
@@ -145,6 +148,66 @@ void UpdatePlayer()
 				g_Player.GetJumpStand = false;
 			}
 
+			//透ける床処理
+			SHEERFLOORS* pSheerFloors = GetSheerFloors();
+			for (int i = 0; i < SHEERFLOORS_NUM; i++) {
+				if (pSheerFloors[i].use)
+				{
+					//プレイヤー右・ブロック左
+					if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
+						g_Player.oldpos.x + g_Player.size.x / 2 <= pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
+					{
+						g_Player.Position.x = pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 - g_Player.size.x / 2;
+					}
+					//プレイヤー左・ブロック右
+					if (g_Player.Position.x - g_Player.size.x / 2 > pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+						g_Player.oldpos.x - g_Player.size.x / 2 <= pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
+					{
+						g_Player.Position.x = pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 + g_Player.size.x / 2;
+					}
+
+					if (g_Player.isSheerFloors) {
+						//プレイヤー上・ブロック下
+						if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
+							g_Player.Position.x - g_Player.size.x / 2 <= pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+							g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2 &&
+							g_Player.oldpos.y + g_Player.size.y / 2 < pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2)
+						{
+
+						}
+					}
+					//プレイヤー下・ブロック上
+					if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
+						g_Player.Position.x - g_Player.size.x / 2 <= pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 > pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 &&
+						g_Player.oldpos.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
+					{
+
+					}
+
+					if (!GetKeyboardPress(DOWN)) {
+						// プレイヤーの下にブロックがあったら
+						if ((g_Player.Position.y + g_Player.size.y / 2 + 0.05f > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
+							(g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2) &&
+							(g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2) &&
+							(g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2))
+						{	// 着地中にする
+							if (!g_Player.isSheerFloors) {
+								g_Player.sp.y = 0.0f;
+								g_Player.isSheerFloors = true;
+								break;
+							}
+						}
+						else {
+							g_Player.isSheerFloors = false;
+						}
+					}
+				}
+			}
 
 			BLOCK* block = GetChipBlock();
 			for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
@@ -152,7 +215,7 @@ void UpdatePlayer()
 				if ((g_Player.Position.y + g_Player.size.y / 2 + 0.05f > block[i].Position.y - block[i].Size.y / 2) &&
 					(g_Player.Position.y - g_Player.size.y / 2 < block[i].Position.y + block[i].Size.y / 2) &&
 					(g_Player.Position.x + g_Player.size.x / 2 > block[i].Position.x - block[i].Size.x / 2) &&
-					(g_Player.Position.x - g_Player.size.x / 2 < block[i].Position.x + block[i].Size.x / 2)) 
+					(g_Player.Position.x - g_Player.size.x / 2 < block[i].Position.x + block[i].Size.x / 2))
 				{	// 着地中にする
 					if (!g_Player.isGround) {
 						g_Player.sp.y = 0.0f;
@@ -164,13 +227,17 @@ void UpdatePlayer()
 					g_Player.isGround = false;
 				}
 			}
+			if (GetKeyboardPress(DIK_DOWN)) {
+				g_Player.isSheerFloorsUse = true;
+			}
 			// ジャンプ
-			if (g_Player.isGround && GetKeyboardPress(DIK_SPACE)) {
+			if ((g_Player.isGround || g_Player.isSheerFloors) && GetKeyboardPress(DIK_SPACE)) {
 				g_Player.sp.y = -2.0f;			// スピードのyをマイナスにする
 				g_Player.isGround = false;			// フラグをジャンプ中にする
+				g_Player.isSheerFloors = false;
 			}
 			// 空中
-			if (!g_Player.isGround) {
+			if (!g_Player.isGround && !g_Player.isSheerFloors) {
 				g_Player.sp.y += 0.1f;			// スピードのyを増やす
 			}
 
@@ -310,8 +377,8 @@ void UpdatePlayer()
 						g_Player.Position.y + g_Player.size.y / 2 > (cipblock + i)->Position.y - (cipblock + i)->Size.y / 2 &&
 						g_Player.oldpos.y + g_Player.size.y / 2 <= (cipblock + i)->Position.y - (cipblock + i)->Size.y / 2)
 					{
-						g_Player.Position.y = (cipblock + i)->Position.y - (cipblock + i)->Size.y / 2 - g_Player.size.y / 2-0.02f;
-						g_Player.jump = false; 
+						g_Player.Position.y = (cipblock + i)->Position.y - (cipblock + i)->Size.y / 2 - g_Player.size.y / 2 - 0.02f;
+						g_Player.jump = false;
 						g_Player.fall = false;
 						g_Player.WarpFlag = false;
 						g_Player.frame = 0;
@@ -693,7 +760,7 @@ void UpdatePlayer()
 
 							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, RIGHT);
 
-  							if (!hitflag2)
+							if (!hitflag2)
 							{
 								//g_Player.sp.y += 0.2;//加速
 							}
@@ -714,7 +781,7 @@ void UpdatePlayer()
 							}
 							else
 							{
- 								g_Player.Position.x = g_Player.oldpos.x;
+								g_Player.Position.x = g_Player.oldpos.x;
 							}
 
 

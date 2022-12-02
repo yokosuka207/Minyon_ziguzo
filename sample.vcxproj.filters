@@ -36,6 +36,7 @@
     <ClCompile Include="save.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="score.cpp" />
+    <ClCompile Include="SheerFloors.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -71,5 +72,8 @@
     <ClInclude Include="StageSelect.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="score.h" />
+    <ClInclude Include="button.h" />
+    <ClInclude Include="save.h" />
+    <ClInclude Include="SheerFloors.h" />
   </ItemGroup>
 </Project>
