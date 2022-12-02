@@ -141,7 +141,7 @@ void Time::DrawResultTime() {
 	g_TimeParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 	if (!g_TimeParam.EndFlag) {
-		m_ElapsedTime = EndTime();
+		m_ElapsedTime = ElapsedTime();
 		g_TimeParam.EndFlag = true;
 	}
 	g_Time = m_ElapsedTime / CLOCKS_PER_SEC;//•b•\Ž¦
