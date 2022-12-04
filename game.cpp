@@ -25,6 +25,7 @@
 #include "time.h"
 #include "score.h"
 #include "SheerFloors.h"
+#include "high_broken.h"
 
 static Time g_time;
 static Score g_score;
@@ -50,6 +51,7 @@ void InitGame()
 	InitMapChip();
 	InitCursor();				// カーソルの初期化
 	InitThornBlock();
+	InitHigh();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 	InitPlayer();
 	g_score.InitScore();
@@ -77,6 +79,7 @@ void UninitGame()
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了
 	UninitThornBlock();
+	UninitHigh();
 	g_score.UninitScore();
 	g_time.EndTime();
 	g_time.UninitTime();
@@ -104,6 +107,7 @@ void UpdateGame()
 	UpdateJumpStand();
 	UpdateSheerFloors();
 	UpdateThornBlock();
+	UpdateHigh();
 	UpdateInventory();			// インベントリの更新
 	UpdateMapChip();
 	
@@ -128,6 +132,7 @@ void DrawGame()
 	DrawJumpStand();
 	DrawSheerFloors();
 	DrawThornBlock();
+	DrawHigh();
 	DrawGoal();
 	DrawBroken();
 

@@ -32,6 +32,7 @@
 #include "Key.h"
 #include "fallblock.h"
 #include "SheerFloors.h"
+#include "high_broken.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -490,6 +491,56 @@ void UpdatePlayer()
 					{
 						g_Player.Position.y = (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2 + g_Player.size.y / 2;
 						//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
+					}
+				}
+			}
+
+			//プレイヤー・高いところから落ちたら壊れるブロック(以下たかこわ)　当たり判定
+			for (int i = 0; i < HIGH_MAX; i++)
+			{
+				HIGH* high = GetHigh();
+				if ((high + i)->UseFlag == true)
+				{
+					//プレイヤー左・たかこわ右
+					if (g_Player.Position.x + g_Player.size.x / 2 > (high + i)->Postion.x - (high + i)->Size.x / 2 &&
+						g_Player.oldpos.x + g_Player.size.x / 2 <= (high + i)->Postion.x - (high + i)->Size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > (high + i)->Postion.y - (high + i)->Size.y / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 < (high + i)->Postion.y + (high + i)->Size.y / 2)
+					{
+						g_Player.Position.x = (high + i)->Postion.x - (high + i)->Size.x / 2 - g_Player.size.x / 2;
+					}
+					//プレイヤー右・たかこわ左
+					if (g_Player.Position.x - g_Player.size.x / 2 < (high + i)->Postion.x + (high + i)->Size.x / 2 &&
+						g_Player.oldpos.x - g_Player.size.x / 2 >= (high + i)->Postion.x + (high + i)->Size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > (high + i)->Postion.y - (high + i)->Size.y / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 < (high + i)->Postion.y + (high + i)->Size.y / 2)
+					{
+						g_Player.Position.x = (high + i)->Postion.x + (high + i)->Size.x / 2 + g_Player.size.x / 2;
+					}
+
+					//プレイヤー上・たかこわ下
+					if (g_Player.Position.x + g_Player.size.x / 2 > (high + i)->Postion.x - (high + i)->Size.x / 2 &&
+						g_Player.Position.x - g_Player.size.x / 2 < (high + i)->Postion.x + (high + i)->Size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > (high + i)->Postion.y - (high + i)->Size.y / 2 &&
+						g_Player.oldpos.y + g_Player.size.y / 2 <= (high + i)->Postion.y - (high + i)->Size.y / 2)
+					{
+						if (g_Player.sp.y >= 100.0f)
+						{
+							(high + i)->UseFlag = false;
+							g_Player.frame = 50;
+						}
+						else
+						{
+							g_Player.Position.y = (high + i)->Postion.y - (high + i)->Size.y / 2 - g_Player.size.y / 2;
+						}
+					}
+					//プレイヤー下・たかこわ上,
+					if (g_Player.Position.x + g_Player.size.x / 2 > (high + i)->Postion.x - (high + i)->Size.x / 2 &&
+						g_Player.Position.x - g_Player.size.x / 2 < (high + i)->Postion.x + (high + i)->Size.x / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 < (high + i)->Postion.y + (high + i)->Size.y / 2 &&
+						g_Player.oldpos.y - g_Player.size.y / 2 >= (high + i)->Postion.y + high + i)->Size.y / 2)
+					{
+						g_Player.Position.y = (high + i)->Postion.y + (high + i)->Size.y / 2 + g_Player.size.y / 2;
 					}
 				}
 			}
