@@ -138,6 +138,7 @@
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="broken.cpp" />
+    <ClCompile Include="button.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="cursor.cpp" />
     <ClCompile Include="fallblock.cpp" />
@@ -159,12 +160,16 @@
     <ClCompile Include="puzzlecip.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
+    <ClCompile Include="save.cpp" />
     <ClCompile Include="scene.cpp" />
+    <ClCompile Include="score.cpp" />
+    <ClCompile Include="SheerFloors.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="SplitStage.cpp" />
     <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="thorn_block.cpp" />
+    <ClCompile Include="time.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="warp.cpp" />
   </ItemGroup>
@@ -172,6 +177,7 @@
     <ClInclude Include="bg.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="broken.h" />
+    <ClInclude Include="button.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="cursor.h" />
     <ClInclude Include="fallblock.h" />
@@ -193,12 +199,16 @@
     <ClInclude Include="puzzlecip.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
+    <ClInclude Include="save.h" />
     <ClInclude Include="scene.h" />
+    <ClInclude Include="score.h" />
+    <ClInclude Include="SheerFloors.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="SplitStage.h" />
     <ClInclude Include="StageSelect.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="thorn_block.h" />
+    <ClInclude Include="time.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="warp.h" />
   </ItemGroup>

@@ -22,6 +22,12 @@
 #include "thorn_block.h"
 #include "jump_stand.h"
 #include"thorn_block.h"
+#include "time.h"
+#include "score.h"
+#include "SheerFloors.h"
+
+static Time g_time;
+static Score g_score;
 
 void InitGame()
 {
@@ -37,6 +43,7 @@ void InitGame()
 	InitBroken();
 	InitWarp();
 	InitJumpStand();
+	InitSheerFloors();
 	InitPuzzleCip();
 	InitPuzzle();
 	InitInventory();			// インベントリの初期化
@@ -45,7 +52,10 @@ void InitGame()
 	InitThornBlock();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 	InitPlayer();
-
+	g_score.InitScore();
+	g_time.InitTime();
+	g_time.SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
+	g_time.StartTime();
 }
 
 void UninitGame()
@@ -62,10 +72,14 @@ void UninitGame()
 	UninitPlayer();
 	UninitWarp();
 	UninitJumpStand();
+	UninitSheerFloors();
 	UninitInventory();			// インベントリの終了
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了
 	UninitThornBlock();
+	g_score.UninitScore();
+	g_time.EndTime();
+	g_time.UninitTime();
 }
 
 void UpdateGame()
@@ -88,6 +102,7 @@ void UpdateGame()
 	UpdateBroken();
 	UpdateWarp();
 	UpdateJumpStand();
+	UpdateSheerFloors();
 	UpdateThornBlock();
 	UpdateInventory();			// インベントリの更新
 	UpdateMapChip();
@@ -111,12 +126,14 @@ void DrawGame()
 	DrawPlayer();
 	DrawWarp();
 	DrawJumpStand();
+	DrawSheerFloors();
 	DrawThornBlock();
 	DrawGoal();
 	DrawBroken();
 
 	DrawThornBlock();
 	DrawInventory();			// インベントリの描画
+	g_time.DrawGameTime();
 	//DrawCursor();				// カーソルの描画
 }
 

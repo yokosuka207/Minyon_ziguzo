@@ -24,7 +24,6 @@
 //*****************************************************************************
 static STAGESELECT g_StageSelect;
 
-static ID3D11Buffer* g_StageSelectVertexBuffer = NULL;	//ポリゴン用
 static ID3D11ShaderResourceView* g_StageSelectTexture;	//画像一枚で一つの変数が必要
 static char* g_StageSelectTextureName = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
 
@@ -70,7 +69,7 @@ void UpdateStageSelect() {
 		}
 	}
 
-	if (GetKeyboardTrigger(DIK_F5)) {
+	if (GetKeyboardTrigger(DIK_A)) {
 		SetScene(SCENE::SCENE_GAME);
 	}
 }

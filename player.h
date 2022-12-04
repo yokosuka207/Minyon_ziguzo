@@ -18,6 +18,13 @@
 
 #define PLAYER_COOLTIME	(120)
 
+enum class PLAYER_DIRECTION
+{
+	UP = 0,
+	DOWN,
+	RIGHT,
+	LEFT
+};
 
 struct PLAYER
 {
@@ -29,6 +36,9 @@ struct PLAYER
 	bool WarpFlag;//ワープしたか
 	bool GetJumpStand;
 	bool isGround;	// 地に足をつけている
+	bool isSheerFloors;
+	bool isSheerFloorsUse;
+	int	HaveKey; //鍵所持数
 
 	D3DXVECTOR2 size;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
@@ -46,6 +56,7 @@ struct PLAYER
 	int hp;
 	int frame;
 	int CoolTime;//クールタイム
+	PLAYER_DIRECTION dir;			// プレイヤーの向き
 
 };
 

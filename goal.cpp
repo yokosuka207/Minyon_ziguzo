@@ -1,12 +1,13 @@
 #include "goal.h"
-#include"texture.h"
-#include"sprite.h"
-#include"input.h"
-#include"puzzle.h"
-#include"scene.h"
-#include"player.h"
-#include"mouse.h"
-#include"result.h"
+#include "texture.h"
+#include "sprite.h"
+#include "input.h"
+#include "puzzle.h"
+#include "scene.h"
+#include "player.h"
+#include "mouse.h"
+#include "result.h"
+#include "time.h"
 
 GOAL g_Goal;
 static ID3D11ShaderResourceView	*g_textureGoal;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
@@ -49,8 +50,11 @@ void UpdateGoal()
 			{
 
 				g_Goal.UseFlag = false;
-				pResult->type = WIN;
+				SetResultType(WIN);
 				SetScene(SCENE_RESULT);
+				
+				Time g_Time;
+				g_Time.EndTime();
 			}
 		}
 	}

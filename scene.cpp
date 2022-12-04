@@ -5,9 +5,16 @@
 #include "Title.h"
 #include "result.h"
 #include "StageSelect.h"
+#include "save.h"
+#include "time.h"
 
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
+
+static Time g_Time;
+static int ElapsedTime;
+
+Save g_SaveScene;				// セーブクラスのインスタンス
 
 void InitScene(SCENE no)
 {
@@ -18,17 +25,21 @@ void InitScene(SCENE no)
 
 	case SCENE::SCENE_NONE:
 		break;
+	case SCENE::SCENE_TITLE:
+		InitTitle();
+		break;
+	case SCENE::SCENE_DATASELECT:
+		g_SaveScene.Init();
+		break;
 	case SCENE::SCENE_STAGESELECT:
 		InitStageSelect();
 		SetStageSelect();
-		break;
-	case SCENE::SCENE_TITLE:
-		InitTitle();
 		break;
 	case SCENE::SCENE_GAME :
 		InitGame();
 		break;
 	case SCENE::SCENE_RESULT:
+		g_Time.SetElapsedTime(ElapsedTime);
 		InitResult();
 		break;
 
@@ -49,10 +60,14 @@ void UninitScene()
 	case SCENE::SCENE_TITLE:
 		UninitTitle();
 		break;
+	case SCENE::SCENE_DATASELECT:
+		g_SaveScene.Uninit();
+		break;
 	case SCENE::SCENE_STAGESELECT:
 		UninitStageSelect();
 		break;
 	case SCENE::SCENE_GAME:
+		ElapsedTime = g_Time.GetTime();
 		UninitGame();
 		break;
 	case SCENE::SCENE_RESULT:
@@ -75,6 +90,9 @@ void UpdateScene()
 		break;
 	case SCENE::SCENE_TITLE:
 		UpdateTitle();
+		break;
+	case SCENE::SCENE_DATASELECT:
+		g_SaveScene.Update();
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UpdateStageSelect();
@@ -102,6 +120,9 @@ void DrawScene()
 		break;
 	case SCENE::SCENE_TITLE:
 		DrawTitle();
+		break;
+	case SCENE::SCENE_DATASELECT:
+		g_SaveScene.Draw();
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		DrawStageSelect();

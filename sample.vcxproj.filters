@@ -32,7 +32,11 @@
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="thorn_block.cpp" />
     <ClCompile Include="StageSelect.cpp" />
-    <ClCompile Include="high_broken.cpp" />
+    <ClCompile Include="time.cpp" />
+    <ClCompile Include="save.cpp" />
+    <ClCompile Include="button.cpp" />
+    <ClCompile Include="score.cpp" />
+    <ClCompile Include="SheerFloors.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -66,6 +70,10 @@
     <ClInclude Include="Key.h" />
     <ClInclude Include="thorn_block.h" />
     <ClInclude Include="StageSelect.h" />
-    <ClInclude Include="high_broken.h" />
+    <ClInclude Include="time.h" />
+    <ClInclude Include="score.h" />
+    <ClInclude Include="button.h" />
+    <ClInclude Include="save.h" />
+    <ClInclude Include="SheerFloors.h" />
   </ItemGroup>
 </Project>
