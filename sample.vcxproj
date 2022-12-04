@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{6AC03ABA-9A04-421D-8043-CCE42B5FD915}</ProjectGuid>
     <RootNamespace>sample</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <ProjectName>DX21_06_20</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -143,6 +143,7 @@
     <ClCompile Include="fallblock.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="goal.cpp" />
+    <ClCompile Include="high_broken.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="joint.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="fallblock.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="goal.h" />
+    <ClInclude Include="high_broken.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="inventory.h" />
     <ClInclude Include="joint.h" />

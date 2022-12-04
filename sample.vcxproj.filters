@@ -32,6 +32,7 @@
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="thorn_block.cpp" />
     <ClCompile Include="StageSelect.cpp" />
+    <ClCompile Include="high_broken.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -65,5 +66,6 @@
     <ClInclude Include="Key.h" />
     <ClInclude Include="thorn_block.h" />
     <ClInclude Include="StageSelect.h" />
+    <ClInclude Include="high_broken.h" />
   </ItemGroup>
 </Project>
