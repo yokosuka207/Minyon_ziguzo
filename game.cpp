@@ -28,6 +28,7 @@
 #include "high_broken.h"
 #include "switch.h"
 #include "SwitchWall.h"
+
 static Time g_time;
 static Score g_score;
 

@@ -78,6 +78,10 @@ void UpdateCollision()
 				{
 					pSwitch[i].PressFlag = true;//‰Ÿ‚³‚ê‚½‚ç
 				}
+				else {
+					pSwitch[i].PressFlag = false;
+				}
+
 				if (pSwitch[i].PressFlag) {
 					if (pSwitch[i].SwitchIndex == pSwitchWall[i].SwitchIndex) {
 						pSwitchWall[i].UseFlag = false;//‰Ÿ‚³‚ê‚½‚ç•Ç‚ª‚È‚­‚È‚é
