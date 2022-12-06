@@ -128,7 +128,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP) :	//5
-				SetChipPuzzuleChip(position, DrawSize,no+1);
+				SetChipPuzzuleChip(position, DrawSize, no + 1);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//6
 				SetWarp(position, DrawSize);
