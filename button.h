@@ -51,6 +51,8 @@ public:
 
 	// マウスとの当たり判定
 	bool CollisionMouse();
+	// ボタンが離された
+	bool ReleaseButton();
 private:
 	// タイプ変更
 	void ChangeType(BUTTON_TYPE type) { m_type = type; }
