@@ -74,7 +74,7 @@ HRESULT InitPlayer()
 	g_Player.WarpFlag = false;
 	g_Player.isGround = true;
 	g_Player.isSheerFloors = true;
-	g_Player.isSheerFloorsUse = true;
+	g_Player.isSheerFloorsUse = false;
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
 	g_Player.PaternNo = 0;//パターン番号
@@ -171,16 +171,15 @@ void UpdatePlayer()
 						g_Player.Position.x = pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 + g_Player.size.x / 2;
 					}
 
-					if (g_Player.isSheerFloors) {
-						//プレイヤー上・ブロック下
-						if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
-							g_Player.Position.x - g_Player.size.x / 2 <= pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
-							g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2 &&
-							g_Player.oldpos.y + g_Player.size.y / 2 < pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2)
-						{
-
-						}
+					//プレイヤー上・ブロック下
+					if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
+						g_Player.Position.x - g_Player.size.x / 2 <= pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2 &&
+						g_Player.oldpos.y + g_Player.size.y / 2 < pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2)
+					{
+						//g_Player.isSheerFloorsUse = false;
 					}
+					
 					//プレイヤー下・ブロック上
 					if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
 						g_Player.Position.x - g_Player.size.x / 2 <= pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
@@ -190,7 +189,8 @@ void UpdatePlayer()
 
 					}
 
-					if (!GetKeyboardPress(DOWN)) {
+					
+					if (!g_Player.isSheerFloorsUse) {
 						// プレイヤーの下にブロックがあったら
 						if ((g_Player.Position.y + g_Player.size.y / 2 + 0.05f > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
 							(g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2) &&
@@ -235,10 +235,10 @@ void UpdatePlayer()
 			if ((g_Player.isGround || g_Player.isSheerFloors) && GetKeyboardPress(DIK_SPACE)) {
 				g_Player.sp.y = -2.0f;			// スピードのyをマイナスにする
 				g_Player.isGround = false;			// フラグをジャンプ中にする
-				g_Player.isSheerFloors = false;
+				g_Player.isSheerFloorsUse = true;
 			}
 			// 空中
-			if (!g_Player.isGround && !g_Player.isSheerFloors) {
+			if ((!g_Player.isGround && !g_Player.isSheerFloors) || g_Player.isSheerFloorsUse) {
 				g_Player.sp.y += 0.1f;			// スピードのyを増やす
 			}
 
