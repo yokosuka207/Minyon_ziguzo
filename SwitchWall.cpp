@@ -12,6 +12,10 @@
 #include "sprite.h"
 #include "renderer.h"
 
+#define SWITCHWALL_UV_W (1.0f / 1.0f)
+#define SWITCHWALL_UV_H (1.0f / 1.0f)
+#define SWITCHWALL_NUMPATERN (1)
+
 static SWITCHWALL g_SwitchWall[SWITCHWALL_MAX];
 
 static ID3D11ShaderResourceView* g_SwitchWallTexture;	//âÊëúàÍñáÇ≈àÍÇ¬ÇÃïœêîÇ™ïKóv
@@ -23,6 +27,7 @@ HRESULT InitSwitchWall() {
 		g_SwitchWall[i].size = D3DXVECTOR2(0.0f, 0.0f);
 		g_SwitchWall[i].sp = D3DXVECTOR2(0.0f, 0.0f);
 		g_SwitchWall[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_SwitchWall[i].PaternNo = 0;
 		g_SwitchWall[i].PieceIndex = -1;
 		g_SwitchWall[i].SwitchIndex = -1;
 		g_SwitchWall[i].UseFlag = false;
@@ -37,11 +42,7 @@ void UninitSwitchWall(){
 	}
 }
 void UpdateSwitchWall() {
-	for (int i = 0; i < SWITCHWALL_MAX; i++) {
-		if (g_SwitchWall[i].UseFlag) {
 
-		}
-	}
 }
 void DrawSwitchwall() {
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
@@ -56,10 +57,10 @@ void DrawSwitchwall() {
 					g_SwitchWall[i].size.y,
 					0.0f,
 					g_SwitchWall[i].color,
-					0.0f,
-					1.0f / 1.0f,
-					1.0f / 1.0f,
-					1
+					g_SwitchWall[i].PaternNo,
+					SWITCHWALL_UV_W,
+					SWITCHWALL_UV_H,
+					SWITCHWALL_NUMPATERN
 				);
 			}
 		}

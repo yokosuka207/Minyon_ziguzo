@@ -12,6 +12,11 @@
 #include "renderer.h"
 #include "texture.h"
 #include "sprite.h"
+#include "player.h"
+
+#define SWITCH_UV_W (1.0f / 1.0f)
+#define SWITCH_UV_H (1.0f / 1.0f)
+#define SWITCH_NUMPATERN (1)
 
 SWITCH g_Switch[SWITCH_MAX];
 
@@ -26,6 +31,7 @@ HRESULT InitSwitch() {
 		g_Switch[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_Switch[i].PieceIndex = -1;
 		g_Switch[i].SwitchIndex = -1;
+		g_Switch[i].PaternNo = 0;
 		g_Switch[i].PressFlag = false;
 		g_Switch[i].UseFlag = false;
 	}
@@ -39,11 +45,7 @@ void UninitSwitch() {
 	}
 }
 void UpdateSwitch() {
-	for (int i = 0; i < SWITCH_MAX; i++) {
-		if (g_Switch[i].UseFlag) {
 
-		}
-	}
 }
 void DrawSwitch() {
 	for (int i = 0; i < SWITCH_MAX; i++) {
@@ -57,10 +59,10 @@ void DrawSwitch() {
 				g_Switch[i].size.y,
 				0.0f,
 				g_Switch[i].color,
-				0.0f,
-				1.0f / 1.0f,
-				1.0f / 1.0f,
-				1
+				g_Switch[i].PaternNo,
+				SWITCH_UV_W,
+				SWITCH_UV_H,
+				SWITCH_NUMPATERN
 			);
 		}
 	}

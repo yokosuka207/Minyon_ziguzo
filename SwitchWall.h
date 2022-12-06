@@ -21,6 +21,7 @@ typedef struct {
 	D3DXCOLOR	color;
 	int			PieceIndex;
 	int			SwitchIndex;
+	int			PaternNo;
 	bool		UseFlag;
 }SWITCHWALL;
 

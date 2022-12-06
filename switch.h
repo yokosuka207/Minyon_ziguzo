@@ -22,6 +22,9 @@ typedef struct {
 	int			SwitchIndex;
 	bool		PressFlag;
 	bool		UseFlag;
+
+	int			PaternNo;
+
 }SWITCH;
 
 HRESULT InitSwitch();
