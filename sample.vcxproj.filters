@@ -39,6 +39,8 @@
     <ClCompile Include="SheerFloors.cpp" />
     <ClCompile Include="high_broken.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="switch.cpp" />
+    <ClCompile Include="SwitchWall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -79,5 +81,7 @@
     <ClInclude Include="SheerFloors.h" />
     <ClInclude Include="high_broken.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="switch.h" />
+    <ClInclude Include="SwitchWall.h" />
   </ItemGroup>
 </Project>

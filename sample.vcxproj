@@ -168,6 +168,8 @@
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="SplitStage.cpp" />
     <ClCompile Include="StageSelect.cpp" />
+    <ClCompile Include="switch.cpp" />
+    <ClCompile Include="SwitchWall.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="thorn_block.cpp" />
     <ClCompile Include="time.cpp" />
@@ -208,6 +210,8 @@
     <ClInclude Include="sprite.h" />
     <ClInclude Include="SplitStage.h" />
     <ClInclude Include="StageSelect.h" />
+    <ClInclude Include="switch.h" />
+    <ClInclude Include="SwitchWall.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="thorn_block.h" />
     <ClInclude Include="time.h" />
