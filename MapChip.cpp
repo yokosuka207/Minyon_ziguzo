@@ -26,6 +26,8 @@
 #include "OpenKey.h"
 #include "fallblock.h"
 #include "thorn_block.h"
+#include "switch.h"
+#include "SwitchWall.h"
 #include "StageSelect.h"
 
 //**************************************************
@@ -148,6 +150,12 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12
 				//Set
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13
+				SetSwitch(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL):	//14
+				SetSwitchWall(position, DrawSize, no);
 				break;
 			default:
 				break;

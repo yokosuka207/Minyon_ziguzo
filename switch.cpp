@@ -67,13 +67,13 @@ void DrawSwitch() {
 		}
 	}
 }
-void SetSwitch(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo, int SwitchIndex) {
+void SetSwitch(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 	for (int i = 0; i < SWITCH_MAX; i++) {
 		if (!g_Switch[i].UseFlag) {
 			g_Switch[i].pos = pos;
 			g_Switch[i].size = size;
 			g_Switch[i].PieceIndex = PieceNo;
-			g_Switch[i].SwitchIndex = SwitchIndex;
+			g_Switch[i].SwitchIndex = i;
 			g_Switch[i].UseFlag = true;
 			break;
 		}

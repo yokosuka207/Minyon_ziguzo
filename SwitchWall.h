@@ -29,7 +29,7 @@ HRESULT InitSwitchWall();
 void UninitSwitchWall();
 void UpdateSwitchWall();
 void DrawSwitchwall();
-void SetSwitchWall(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo, int SwitchIndex);
+void SetSwitchWall(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo);
 SWITCHWALL* GetSwitchWall();
 void DeleteSwitchWall(int PieceNo);
 

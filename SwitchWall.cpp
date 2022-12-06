@@ -66,13 +66,13 @@ void DrawSwitchwall() {
 		}
 	}
 }
-void SetSwitchWall(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo, int SwitchIndex) {
+void SetSwitchWall(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
 		if (!g_SwitchWall[i].UseFlag) {
 			g_SwitchWall[i].pos = pos;
 			g_SwitchWall[i].size = size;
 			g_SwitchWall[i].PieceIndex = PieceNo;
-			g_SwitchWall[i].SwitchIndex = SwitchIndex;
+			g_SwitchWall[i].SwitchIndex = i;
 			g_SwitchWall[i].UseFlag = false;
 			break;
 		}
