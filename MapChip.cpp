@@ -76,7 +76,7 @@ HRESULT InitMapChip() {
 	return S_OK;
 }
 void UninitMapChip() {
-	if (g_MapChipTexture) {
+	if (g_MapChipTexture != NULL) {
 		g_MapChipTexture->Release();
 		g_MapChipTexture = NULL;
 	}
