@@ -12,8 +12,6 @@
 #include "sprite.h"
 #include "renderer.h"
 
-#define SWITCHWALL_UV_W (1.0f / 1.0f)
-#define SWITCHWALL_UV_H (1.0f / 1.0f)
 #define SWITCHWALL_NUMPATERN (1)
 
 static SWITCHWALL g_SwitchWall[SWITCHWALL_MAX];
@@ -28,6 +26,8 @@ HRESULT InitSwitchWall() {
 		g_SwitchWall[i].sp = D3DXVECTOR2(0.0f, 0.0f);
 		g_SwitchWall[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_SwitchWall[i].PaternNo = 0;
+		g_SwitchWall[i].uv_w = 0.0f;
+		g_SwitchWall[i].uv_h = 0.0f;
 		g_SwitchWall[i].PieceIndex = -1;
 		g_SwitchWall[i].SwitchIndex = -1;
 		g_SwitchWall[i].UseFlag = false;
@@ -58,26 +58,30 @@ void DrawSwitchwall() {
 					0.0f,
 					g_SwitchWall[i].color,
 					g_SwitchWall[i].PaternNo,
-					SWITCHWALL_UV_W,
-					SWITCHWALL_UV_H,
+					g_SwitchWall[i].uv_w,
+					g_SwitchWall[i].uv_h,
 					SWITCHWALL_NUMPATERN
 				);
 			}
 		}
 	}
 }
-void SetSwitchWall(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
+
+void SetSwitchWall(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo,int WallMax) {
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
 		if (!g_SwitchWall[i].UseFlag) {
-			g_SwitchWall[i].pos = pos;
-			g_SwitchWall[i].size = size;
-			g_SwitchWall[i].PieceIndex = PieceNo;
-			g_SwitchWall[i].SwitchIndex = i;
-			g_SwitchWall[i].UseFlag = false;
+			for (int j = 0; j < WallMax; j++) {
+				g_SwitchWall[j].pos = D3DXVECTOR2(pos.x, pos.y + j * size.y);
+				g_SwitchWall[j].size = size;
+				g_SwitchWall[j].PieceIndex = PieceNo;
+				g_SwitchWall[j].SwitchIndex = i;
+				g_SwitchWall[j].UseFlag = true;
+			}
 			break;
 		}
 	}
 }
+
 SWITCHWALL* GetSwitchWall() {
 	return g_SwitchWall;
 }

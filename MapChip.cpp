@@ -154,8 +154,11 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13
 				SetSwitch(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL):	//14
-				SetSwitchWall(position, DrawSize, no);
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14
+				SetSwitchWall(position, DrawSize, no, 3);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15
+				SetSwitchWall(position, DrawSize, no, 4);
 				break;
 			default:
 				break;
@@ -281,6 +284,8 @@ void DeleteMapChip(int PieceNo) {
 	DeleteJumpStand(g_PieceMapChip[PieceNo].no);
 	DeleteChipPiece(g_PieceMapChip[PieceNo].no);
 	DeleteThornBlock(g_PieceMapChip[PieceNo].no);
+	DeleteSwitch(g_PieceMapChip[PieceNo].no);
+	DeleteSwitchWall(g_PieceMapChip[PieceNo].no);
 	DeleteGoal(g_PieceMapChip[PieceNo].no);
 }
 

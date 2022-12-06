@@ -46,7 +46,8 @@ enum class MAPCHIP_TYPE{
 	TYPE_KEY,		//11	key
 	TYPE_DOOR,		//12	door
 	TYPE_SWITCH,	//13	switch
-	TYPE_SWITCHWALL,//14	SwitchWall
+	TYPE_SWITCHWALL3,//14	SwitchWall
+	TYPE_SWITCHWALL4,//15
 
 	TYPE_NUM,		
 };
