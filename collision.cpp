@@ -12,6 +12,8 @@
 #include "goal.h"
 #include "thorn_block.h"
 #include "jump_stand.h"
+#include "switch.h"
+#include "SwitchWall.h"
 #include "game.h"
 #include "result.h"
 #include "scene.h"
@@ -53,11 +55,44 @@ void UpdateCollision()
 	MOUSE* pMouse = GetMouse();
 
 	RESULT* pResult = GetResult();
-	SCENE* pScene;
 
 	//プレーヤー　対　敵キャラ	四角
+	{
 
+	}
+	//プレーヤーとスイッチ
+	SWITCH* pSwitch = GetSwitch();
+	SWITCHWALL* pSwitchWall = GetSwitchWall();
+	{
+		for (int i = 0; i < SWITCH_MAX; i++) {
+			if (pSwitch[i].UseFlag) {
+				//スイッチの左がプレイヤーの右よりも左にあるとき、
+				//スイッチの右がプレイヤーの左よりも右にあるとき
+				//スイッチの上が
+				if (
+					pSwitch[i].pos.x - pSwitch[i].size.x < pPlayer->Position.x + pPlayer->size.x &&
+					pSwitch[i].pos.x + pSwitch[i].size.x > pPlayer->Position.x - pPlayer->size.x &&
+					pSwitch[i].pos.y - pSwitch[i].size.y > pPlayer->Position.y + pPlayer->size.y &&
+					pSwitch[i].pos.y + pSwitch[i].size.y < pPlayer->Position.y - pPlayer->size.y
+					)
+				{
+					pSwitch[i].PressFlag = true;//押されたら
+				}
+				else {
+					pSwitch[i].PressFlag = false;
+				}
 
+				if (pSwitch[i].PressFlag) {
+					if (pSwitch[i].SwitchIndex == pSwitchWall[i].SwitchIndex) {
+						pSwitchWall[i].UseFlag = false;//押されたら壁がなくなる
+					}
+				}
+				else {
+					pSwitchWall[i].UseFlag = true;//壁出現
+				}
+			}
+		}
+	}
 
 	//などの必要な判定をここで作る
 	if (!pMouse->UseFlag)

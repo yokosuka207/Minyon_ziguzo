@@ -141,6 +141,7 @@
     <ClCompile Include="button.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="cursor.cpp" />
+    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="fallblock.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="goal.cpp" />
@@ -167,6 +168,8 @@
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="SplitStage.cpp" />
     <ClCompile Include="StageSelect.cpp" />
+    <ClCompile Include="switch.cpp" />
+    <ClCompile Include="SwitchWall.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="thorn_block.cpp" />
     <ClCompile Include="time.cpp" />
@@ -180,6 +183,7 @@
     <ClInclude Include="button.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="cursor.h" />
+    <ClInclude Include="enemy.h" />
     <ClInclude Include="fallblock.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="goal.h" />
@@ -206,6 +210,8 @@
     <ClInclude Include="sprite.h" />
     <ClInclude Include="SplitStage.h" />
     <ClInclude Include="StageSelect.h" />
+    <ClInclude Include="switch.h" />
+    <ClInclude Include="SwitchWall.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="thorn_block.h" />
     <ClInclude Include="time.h" />

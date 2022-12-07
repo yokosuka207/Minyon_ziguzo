@@ -97,7 +97,29 @@ bool Button::CollisionMouse()
 	if (min.x < mousePos.x && max.x > mousePos.x && min.y < mousePos.y && max.y > mousePos.y) {
 		return true;
 	}
+	return false;
+}
 
+//==================================================
+// ‰Ÿ‚³‚ê‚½”»’è
+//==================================================
+bool Button::ReleaseButton()
+{
+	// ‰¼‚ÌboolŒ^
+	static bool bPress = false;
+
+	// “–‚½‚è”»’è
+	if (CollisionMouse()) {
+		if (IsMouseLeftPressed()) {
+			bPress = true;
+		}
+		else {
+			if (bPress) {
+				bPress = false;
+				return true;
+			}
+		}
+	}
 	return false;
 }
 

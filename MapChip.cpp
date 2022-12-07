@@ -26,6 +26,8 @@
 #include "OpenKey.h"
 #include "fallblock.h"
 #include "thorn_block.h"
+#include "switch.h"
+#include "SwitchWall.h"
 #include "StageSelect.h"
 
 //**************************************************
@@ -76,7 +78,7 @@ HRESULT InitMapChip() {
 	return S_OK;
 }
 void UninitMapChip() {
-	if (g_MapChipTexture) {
+	if (g_MapChipTexture != NULL) {
 		g_MapChipTexture->Release();
 		g_MapChipTexture = NULL;
 	}
@@ -126,7 +128,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP) :	//5
-				SetChipPuzzuleChip(position, DrawSize,no+1);
+				SetChipPuzzuleChip(position, DrawSize, no + 1);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//6
 				SetWarp(position, DrawSize);
@@ -148,6 +150,15 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12
 				//Set
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13
+				SetSwitch(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14
+				SetSwitchWall(position, DrawSize, no, 3);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15
+				SetSwitchWall(position, DrawSize, no, 4);
 				break;
 			default:
 				break;
@@ -273,6 +284,8 @@ void DeleteMapChip(int PieceNo) {
 	DeleteJumpStand(g_PieceMapChip[PieceNo].no);
 	DeleteChipPiece(g_PieceMapChip[PieceNo].no);
 	DeleteThornBlock(g_PieceMapChip[PieceNo].no);
+	DeleteSwitch(g_PieceMapChip[PieceNo].no);
+	DeleteSwitchWall(g_PieceMapChip[PieceNo].no);
 	DeleteGoal(g_PieceMapChip[PieceNo].no);
 }
 

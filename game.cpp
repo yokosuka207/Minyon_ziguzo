@@ -21,11 +21,13 @@
 #include "SplitStage.h"
 #include "thorn_block.h"
 #include "jump_stand.h"
-#include"thorn_block.h"
+#include "thorn_block.h"
 #include "time.h"
 #include "score.h"
 #include "SheerFloors.h"
 #include "high_broken.h"
+#include "switch.h"
+#include "SwitchWall.h"
 
 static Time g_time;
 static Score g_score;
@@ -52,6 +54,8 @@ void InitGame()
 	InitCursor();				// カーソルの初期化
 	InitThornBlock();
 	InitHigh();
+	InitSwitch();
+	InitSwitchWall();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 	InitPlayer();
 	g_score.InitScore();
@@ -80,6 +84,8 @@ void UninitGame()
 	UninitCursor();				// カーソルの終了
 	UninitThornBlock();
 	UninitHigh();
+	UninitSwitch();
+	UninitSwitchWall();
 	g_score.UninitScore();
 	g_time.EndTime();
 	g_time.UninitTime();
@@ -108,6 +114,8 @@ void UpdateGame()
 	UpdateSheerFloors();
 	UpdateThornBlock();
 	UpdateHigh();
+	UpdateSwitch();
+	UpdateSwitchWall();
 	UpdateInventory();			// インベントリの更新
 	UpdateMapChip();
 	
@@ -133,6 +141,8 @@ void DrawGame()
 	DrawSheerFloors();
 	DrawThornBlock();
 	DrawHigh();
+	DrawSwitch();
+	DrawSwitchwall();
 	DrawGoal();
 	DrawBroken();
 

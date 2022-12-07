@@ -22,7 +22,7 @@ HRESULT InitSheerFloors()
 {
 	for (int i = 0; i < SHEERFLOORS_NUM; i++)
 	{
-		gSheerFloors[i].pos = D3DXVECTOR2(SCREEN_HEIGHT / 2 + 120, SCREEN_HEIGHT / 2);
+		gSheerFloors[i].pos = D3DXVECTOR2(SCREEN_HEIGHT / 2 + 50, SCREEN_HEIGHT / 2);
 		gSheerFloors[i].size = D3DXVECTOR2(SHEERFLOORS_SIZE_X, SHEERFLOORS_SIZE_Y);
 
 		gSheerFloors[i].use = true;
