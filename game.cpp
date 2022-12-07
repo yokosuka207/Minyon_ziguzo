@@ -50,12 +50,13 @@ void InitGame()
 	InitPuzzleCip();
 	InitPuzzle();
 	InitInventory();			// インベントリの初期化
-	InitMapChip();
 	InitCursor();				// カーソルの初期化
 	InitThornBlock();
 	InitHigh();
 	InitSwitch();
 	InitSwitchWall();
+
+	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 	InitPlayer();
 	g_score.InitScore();
