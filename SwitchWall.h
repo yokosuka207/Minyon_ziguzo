@@ -20,7 +20,8 @@ typedef struct {
 	D3DXVECTOR2 sp;
 	D3DXCOLOR	color;
 	int			PieceIndex;
-	int			SwitchIndex;
+	int			SwitchIndex;//スイッチの番号が壁と同じなら処理が可能
+	int			WallMax;	//壁の個数（引数で変化）
 	int			PaternNo;
 	float		uv_w;
 	float		uv_h;
