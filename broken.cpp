@@ -48,7 +48,7 @@ HRESULT InitBroken()
 
 	for (int i = 0; i < BROKEN_MAX; i++)
 	{
-		g_Broken[i].Postion = D3DXVECTOR2(0.0f, 0.0f);
+		g_Broken[i].Postion = D3DXVECTOR2(SCREEN_WIDTH / 2 - 50.0f, 600.0f);
 		g_Broken[i].Size = D3DXVECTOR2(BROKEN_SIZE_W, BROKEN_SIZE_H);
 		g_Broken[i].texno = LoadTexture(g_TextureNameBroken);
 		g_Broken[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);;

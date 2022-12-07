@@ -38,6 +38,7 @@ struct PLAYER
 	bool isGround;	// 地に足をつけている
 	bool isSheerFloors;
 	bool isSheerFloorsUse;
+	bool isHigh;
 	int	HaveKey; //鍵所持数
 
 	D3DXVECTOR2 size;//BOXサイズ
