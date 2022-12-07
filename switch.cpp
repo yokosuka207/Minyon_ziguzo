@@ -21,7 +21,7 @@
 SWITCH g_Switch[SWITCH_MAX];
 
 static ID3D11ShaderResourceView* g_SwitchTexture;	//画像一枚で一つの変数が必要
-static char* g_SwitchTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
+static char* g_SwitchTextureName = (char*)"data\\texture\\yello.jpg";	//テクスチャファイルパス
 static int g_SwitchTextureNo = 0;
 
 HRESULT InitSwitch() {
@@ -48,10 +48,11 @@ void UpdateSwitch() {
 
 }
 void DrawSwitch() {
+	SetWorldViewProjection2D();
+	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SwitchTextureNo));
+
 	for (int i = 0; i < SWITCH_MAX; i++) {
 		if (g_Switch[i].UseFlag) {
-			SetWorldViewProjection2D();
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SwitchTextureNo));
 			SpriteDrawColorRotation(
 				g_Switch[i].pos.x,
 				g_Switch[i].pos.y,
@@ -72,6 +73,7 @@ void SetSwitch(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 		if (!g_Switch[i].UseFlag) {
 			g_Switch[i].pos = pos;
 			g_Switch[i].size = size;
+			g_Switch[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 			g_Switch[i].PieceIndex = PieceNo;
 			g_Switch[i].SwitchIndex = i;
 			g_Switch[i].UseFlag = true;

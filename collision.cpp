@@ -70,10 +70,10 @@ void UpdateCollision()
 				//スイッチの右がプレイヤーの左よりも右にあるとき
 				//スイッチの上が
 				if (
-					pSwitch[i].pos.x - pSwitch[i].size.x < pPlayer->Position.x + pPlayer->size.x &&
-					pSwitch[i].pos.x + pSwitch[i].size.x > pPlayer->Position.x - pPlayer->size.x &&
-					pSwitch[i].pos.y - pSwitch[i].size.y > pPlayer->Position.y + pPlayer->size.y &&
-					pSwitch[i].pos.y + pSwitch[i].size.y < pPlayer->Position.y - pPlayer->size.y
+					pSwitch[i].pos.x - pSwitch[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+					pSwitch[i].pos.x + pSwitch[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pSwitch[i].pos.y - pSwitch[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pSwitch[i].pos.y + pSwitch[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2
 					)
 				{
 					pSwitch[i].PressFlag = true;//押されたら
@@ -83,14 +83,22 @@ void UpdateCollision()
 				}
 
 				if (pSwitch[i].PressFlag) {
-					if (pSwitch[i].SwitchIndex == pSwitchWall[i].SwitchIndex) {
-						pSwitchWall[i].UseFlag = false;//押されたら壁がなくなる
+					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
+						if (pSwitch[i].SwitchIndex == pSwitchWall[j].SwitchIndex) {
+							pSwitchWall[j].UseFlag = false;//押されたら壁がなくなる
+						}
 					}
 				}
 				else {
-					pSwitchWall[i].UseFlag = true;//壁出現
+					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
+						pSwitchWall[j].UseFlag = true;//壁出現
+					}
 				}
 			}
+		}
+		//プレーヤーと壁の判定
+		for (int i = 0; i < SWITCHWALL_MAX; i++) {
+
 		}
 	}
 

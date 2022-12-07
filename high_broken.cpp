@@ -51,7 +51,7 @@ HRESULT InitHigh()
 		g_High[i].Postion = D3DXVECTOR2(0.0f, 0.0f);
 		g_High[i].Size = D3DXVECTOR2(HIGH_SIZE_W, HIGH_SIZE_H);
 		g_High[i].texno = LoadTexture(g_TextureNameHigh);
-		g_High[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);;
+		g_High[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_High[i].UseFlag = false;
 	}
 	return S_OK;

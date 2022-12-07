@@ -6,7 +6,7 @@
 												 Date : 2022/11/29
 ----------------------------------------------------------------------------------
 Update:
-	
+	2022/12/07	SaitoReito
 ================================================================================*/
 #pragma once
 #ifndef _BUTTON_H_
@@ -48,6 +48,7 @@ public:
 	// セッター
 	// 引数：ポジション, サイズ, テクスチャ番号
 	void SetButton(D3DXVECTOR2 po, D3DXVECTOR2 si, D3DXCOLOR co, float no);
+	void SetButtonTexNo(float no) { m_texNo = no; }			// テクスチャ切り替え
 
 	// マウスとの当たり判定
 	bool CollisionMouse();

@@ -74,7 +74,8 @@ HRESULT InitPlayer()
 	g_Player.WarpFlag = false;
 	g_Player.isGround = true;
 	g_Player.isSheerFloors = true;
-	g_Player.isSheerFloorsUse = false;
+	g_Player.isSheerFloorsUse = true;
+	g_Player.isHigh = true;
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
 	g_Player.PaternNo = 0;//パターン番号
@@ -206,13 +207,16 @@ void UpdatePlayer()
 				g_Player.isSheerFloorsUse = true;
 			}
 			// ジャンプ
-			if ((g_Player.isGround || g_Player.isSheerFloors) && GetKeyboardPress(DIK_SPACE)) {
+			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh) && GetKeyboardPress(DIK_SPACE)) {
 				g_Player.sp.y = -2.0f;			// スピードのyをマイナスにする
 				g_Player.isGround = false;			// フラグをジャンプ中にする
 				g_Player.isSheerFloors = false;
+				g_Player.isSheerFloorsUse = true;
+				g_Player.isSheerFloors = false;
+				g_Player.isHigh = false;
 			}
 			// 空中
-			if ((!g_Player.isGround) && (!g_Player.isSheerFloors)) {
+			if (!g_Player.isGround || !g_Player.isSheerFloors || !g_Player.isHigh) {
 				g_Player.sp.y += 0.1f;			// スピードのyを増やす
 			}
 
@@ -497,16 +501,24 @@ void UpdatePlayer()
 						g_Player.Position.y + g_Player.size.y / 2 > (high + i)->Postion.y - (high + i)->Size.y / 2 &&
 						g_Player.oldpos.y + g_Player.size.y / 2 <= (high + i)->Postion.y - (high + i)->Size.y / 2)
 					{
-						if (g_Player.sp.y >= 100.0f)
+						if (g_Player.sp.y >= 10.0f)
 						{
+							//g_Player.isHigh = false;
 							(high + i)->UseFlag = false;
 							g_Player.frame = 50;
 						}
 						else
 						{
+							//g_Player.isHigh = true;
+							g_Player.sp.y = 0.0f;
 							g_Player.Position.y = (high + i)->Postion.y - (high + i)->Size.y / 2 - g_Player.size.y / 2;
 						}
-					}
+						
+					}/*
+					else
+					{
+						g_Player.isHigh = false;
+					}*/
 					//プレイヤー下・たかこわ上,
 					if (g_Player.Position.x + g_Player.size.x / 2 > (high + i)->Postion.x - (high + i)->Size.x / 2 &&
 						g_Player.Position.x - g_Player.size.x / 2 < (high + i)->Postion.x + (high + i)->Size.x / 2 &&
@@ -514,6 +526,22 @@ void UpdatePlayer()
 						g_Player.oldpos.y - g_Player.size.y / 2 >= (high + i)->Postion.y + (high + i)->Size.y / 2)
 					{
 						g_Player.Position.y = (high + i)->Postion.y + (high + i)->Size.y / 2 + g_Player.size.y / 2;
+					}
+
+					// プレイヤーの下にブロックがあったら
+					if ((g_Player.Position.y + g_Player.size.y / 2 + 0.05f > (high + i)->Postion.y - (high + i)->Size.y / 2) &&
+						(g_Player.Position.y - g_Player.size.y / 2 < (high + i)->Postion.y + (high + i)->Size.y / 2) &&
+						(g_Player.Position.x + g_Player.size.x / 2 > (high + i)->Postion.x - (high + i)->Size.x / 2) &&
+						(g_Player.Position.x - g_Player.size.x / 2 < (high + i)->Postion.x + (high + i)->Size.x / 2))
+					{	// 着地中にする
+						if (!g_Player.isHigh) {
+							g_Player.sp.y = 0.0f;
+							g_Player.isHigh = true;
+							break;
+						}
+					}
+					else {
+						g_Player.isHigh = false;
 					}
 				}
 			}
