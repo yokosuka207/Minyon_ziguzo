@@ -6,7 +6,7 @@
 												 Date : 2022/11/29
 ----------------------------------------------------------------------------------
 Update:
-	
+	2022/12/07	SaitoReito
 ================================================================================*/
 #pragma once
 #ifndef _SAVE_H_
@@ -14,6 +14,11 @@ Update:
 
 
 #include "button.h"
+
+struct SaveData
+{
+	int clearStageNum = 0;
+};
 
 class Save
 {
@@ -24,8 +29,13 @@ private:
 	D3DXVECTOR2 m_BGSize;
 	D3DXCOLOR m_BGColor;
 
+	int m_dataNo;			// セーブデータの番号
+
+	SaveData m_saveData;		// セーブするデータ
+
 public:
 	Save() {}
+	Save(int no) :m_dataNo(no){}
 	~Save() {}
 
 	// 基本関数
@@ -35,9 +45,20 @@ public:
 	void Draw();
 
 	// セーブ
-	void Saved(int no);
+	void DataSave();
 	// セーブデータの削除
-	void DeleteSaveData(int no);
+	void DeleteSaveData();
+	// ロード
+	void DataLoad();
+
+	// ゲッター
+	int GetDataNo()const { return m_dataNo; }		// データ番号
+	// セッター
+	void SetDataNo(int no) { if (0 < no && no < 4) { m_dataNo = no; } }		// データ番号(1～3)
+
+private:
+	// ファイルの有無チェック
+	bool ExistFile(char* fileName);
 };
 
 #endif // !_SAVE_H_
