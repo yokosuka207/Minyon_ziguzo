@@ -98,7 +98,17 @@ void UpdateCollision()
 		}
 		//ÉvÉåÅ[ÉÑÅ[Ç∆ï«ÇÃîªíË
 		for (int i = 0; i < SWITCHWALL_MAX; i++) {
-
+			if (pSwitchWall[i].UseFlag) {
+				if (
+					pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2
+					)
+				{
+					pPlayer->Position = pPlayer->oldpos;
+				}
+			}
 		}
 	}
 
