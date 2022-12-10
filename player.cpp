@@ -18,6 +18,7 @@
 #include "broken.h"
 #include "warp.h"
 #include "scene.h"
+#include "pause.h"
 //#include "piece.h"
 #include"puzzlecip.h"
 #include"game.h"
@@ -33,6 +34,7 @@
 #include "fallblock.h"
 #include "SheerFloors.h"
 #include "high_broken.h"
+#include "time.h"
 //=============================================================================
 //É}ÉNÉçíËã`
 //=============================================================================
@@ -49,7 +51,7 @@
 static PLAYER g_Player;
 static char* g_TextureNameBroken = (char*)"data\\texture\\waking_alpha.png";
 
-
+static Time		g_Time;
 
 //=============================================================================
 //èâä˙âªèàóù
@@ -148,6 +150,12 @@ void UpdatePlayer()
 			else
 			{
 				g_Player.GetJumpStand = false;
+			}
+
+			if (GetKeyboardTrigger(DIK_TAB))
+			{
+				//g_Time.PuaseStartTime();
+				SetScene(SCENE::SCENE_PAUSE);
 			}
 
 			//ìßÇØÇÈè∞èàóù
