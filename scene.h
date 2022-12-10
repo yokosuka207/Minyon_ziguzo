@@ -21,3 +21,5 @@ void DrawScene();
 
 void SetScene(SCENE no);	//シーン切り替えのリクエスト
 void CheckScene();	//しーん切り替え処理
+
+SCENE* GetScene();

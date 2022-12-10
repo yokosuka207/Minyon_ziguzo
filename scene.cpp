@@ -162,3 +162,8 @@ void CheckScene()
 		InitScene(g_sceneNextIndex);
 	}
 }
+
+SCENE* GetScene()
+{
+	return &g_sceneIndex;
+}

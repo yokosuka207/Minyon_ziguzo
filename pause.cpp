@@ -52,10 +52,9 @@ void	InitPause()
 	PauseObject[0].Rotate = 0.0;
 
 	PauseObject[1].Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
-	PauseObject[1].Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
+	PauseObject[1].Size = D3DXVECTOR2(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4);
 	PauseObject[1].Color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
 	PauseObject[1].Rotate = 0.0;
-
 
 }
 //======================
@@ -133,12 +132,12 @@ void	DrawPause()
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseEndTextureNo));
 	SpriteDrawColorRotation
 	(
-		PauseObject[0].Position.x,
-		PauseObject[0].Position.y,
-		PauseObject[0].Size.x,
-		PauseObject[0].Size.y,
-		PauseObject[0].Rotate,
-		PauseObject[0].Color,
+		PauseObject[1].Position.x,
+		PauseObject[1].Position.y,
+		PauseObject[1].Size.x,
+		PauseObject[1].Size.y,
+		PauseObject[1].Rotate,
+		PauseObject[1].Color,
 		0,
 		1.0f,
 		1.0f,
