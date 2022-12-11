@@ -135,6 +135,8 @@ void Save::Update()
 		// もし押されたら
 		if (b.ReleaseButton()) {
 			SetDataNo(dataNo);			// データ番号をセット
+			// ロード
+			//DataSave();					// セーブ
 			DataLoad();					// ロード
 
 			// ボタンのテクスチャを変える
@@ -198,11 +200,13 @@ void Save::DataSave()
 		break;
 	}
 
-	// 書き込む
-	fwrite(&m_saveData, sizeof(SaveData), 1, fp);
+	if (fp != NULL) {
+		// 書き込む
+		fwrite(&m_saveData, sizeof(SaveData), 1, fp);
 
-	// ファイルを閉じる
-	fclose(fp);
+		// ファイルを閉じる
+		fclose(fp);
+	}
 }
 
 //==================================================
@@ -263,10 +267,12 @@ void Save::DataLoad()
 	}
 
 	// データ読み込む
-	fread(&m_saveData, sizeof(SaveData), 1, fp);
+	if (fp != NULL) {
+		fread(&m_saveData, sizeof(SaveData), 1, fp);
 
-	// ファイルを閉じる
-	fclose(fp);
+		// ファイルを閉じる
+		fclose(fp);
+	}
 
 	//[----ここでロードした各データを各々の場所に入れたい----
 	//
