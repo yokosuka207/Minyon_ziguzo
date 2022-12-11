@@ -135,7 +135,6 @@ void Save::Update()
 		// もし押されたら
 		if (b.ReleaseButton()) {
 			SetDataNo(dataNo);			// データ番号をセット
-			// ロード
 			//DataSave();					// セーブ
 			DataLoad();					// ロード
 
