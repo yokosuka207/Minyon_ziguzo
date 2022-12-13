@@ -43,9 +43,6 @@ void InitScene(SCENE no)
 		g_Time.SetElapsedTime(ElapsedTime);
 		InitResult();
 		break;
-	case SCENE::SCENE_PAUSE:
-		InitPause();
-		break;
 	default:
 		break;
 	}
@@ -75,10 +72,6 @@ void UninitScene()
 	case SCENE::SCENE_RESULT:
 		UninitResult();
 		break;
-	case SCENE::SCENE_PAUSE:
-		UninitPause();
-		break;
-
 	default:
 		break;
 	}
@@ -107,10 +100,6 @@ void UpdateScene()
 	case SCENE::SCENE_RESULT:
 		UpdateResult();
 		break;
-	case SCENE::SCENE_PAUSE:
-		UpdatePause();
-		break;
-
 	default:
 		break;
 	}
@@ -138,9 +127,6 @@ void DrawScene()
 		break;
 	case SCENE::SCENE_RESULT:
 		DrawResult();
-		break;
-	case SCENE::SCENE_PAUSE:
-		DrawPause();
 		break;
 	default:
 		break;

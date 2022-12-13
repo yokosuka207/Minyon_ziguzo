@@ -26,7 +26,7 @@ static int g_TimeTextureNo = 0;
 static int g_Time = 0;
 static int g_SecondTime = 0;
 static int g_MintueTime = 0;
-static int distance = (TIME_POS_X);
+static int g_TimeDistance = (TIME_POS_X);
 static TimeParam g_TimeParam;
 
 void Time::InitTime() {
@@ -37,10 +37,10 @@ void Time::InitTime() {
 	g_TimeParam.UseFlag = false;
 	g_TimeParam.EndFlag = false;
 	m_start = 0;
-	m_end = 0;
 	m_PuaseStart = 0;
 	m_PuaseStart = 0;
 	m_ElapsedTime = 0;
+	m_PauseElapsed = 0;
 }
 void Time::UninitTime() {
 	if (g_TimeTexture != NULL) {
@@ -59,7 +59,7 @@ void Time:: DrawGameTime() {
 	g_Time = m_ElapsedTime / CLOCKS_PER_SEC;//秒表示
 	g_SecondTime = g_Time % 60;	//秒
 	g_MintueTime = g_Time / 60;	//分
-	g_TimeParam.pos.x = distance;
+	g_TimeParam.pos.x = g_TimeDistance;
 
 	if (g_TimeParam.UseFlag) {
 		//1の位(秒)
@@ -131,7 +131,6 @@ void Time:: DrawGameTime() {
 	}
 }
 void Time::DrawResultTime() {
-	//22/11/30にやる
 	SetWorldViewProjection2D();
 
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TimeTextureNo));
@@ -139,9 +138,8 @@ void Time::DrawResultTime() {
 	g_TimeParam.pos.x = SCREEN_WIDTH / 2 + 70;
 	g_TimeParam.pos.y = SCREEN_HEIGHT / 2;
 	g_TimeParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
 	if (!g_TimeParam.EndFlag) {
-		m_ElapsedTime = ElapsedTime();
+		m_ElapsedTime = GetTime();
 		g_TimeParam.EndFlag = true;
 	}
 	g_Time = m_ElapsedTime / CLOCKS_PER_SEC;//秒表示
@@ -220,15 +218,11 @@ void Time::DrawResultTime() {
 void Time::StartTime() {
 	m_start = clock();
 }
-int Time:: EndTime() {
-	m_end = clock();
-	return m_end  - m_start;
-}
 int Time::ElapsedTime() {
 	
 	m_ElapsedTime = clock() - m_start;
 	
-	return m_ElapsedTime;
+	return m_ElapsedTime - m_PauseElapsed;
 }
 //ポーズの開始時間
 void Time::PuaseStartTime() {
@@ -237,7 +231,7 @@ void Time::PuaseStartTime() {
 //ポーズの終了時間
 void Time::PuaseEndTime() {
 	m_PuaseEnd = clock();
-	m_ElapsedTime -= m_PuaseEnd - m_PuaseStart;
+	m_PauseElapsed += m_PuaseEnd - m_PuaseStart;
 }
 void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 	if (!g_TimeParam.UseFlag) {
