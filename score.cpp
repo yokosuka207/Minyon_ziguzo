@@ -18,7 +18,7 @@ static int g_ScoreTextureNo = 0;
 
 static SCORE g_Score;	//\‘¢‘Ì
 
-static int distance = SCORE_POS_X;
+static int g_TimeDistance = SCORE_POS_X;
 static int score = 0;
 
 static 	Time g_Time;
@@ -45,7 +45,7 @@ void Score::DrawScore() {
 
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreTextureNo));
 
-		g_Score.pos.x = distance;
+		g_Score.pos.x = g_TimeDistance;
 		score = CulcScore();
 
 		for (int i = 0; i < SCORE_MAX; i++) {

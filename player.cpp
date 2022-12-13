@@ -35,7 +35,6 @@
 #include "SheerFloors.h"
 #include "high_broken.h"
 #include "time.h"
-#include "pause.h"
 //=============================================================================
 //É}ÉNÉçíËã`
 //=============================================================================
@@ -179,11 +178,6 @@ void UpdatePlayer()
 				}
 			}
 
-			if (GetKeyboardTrigger(DIK_TAB))
-			{
-				//g_Time.PuaseStartTime();
-				SetScene(SCENE::SCENE_PAUSE);
-			}
 
 			//ìßÇØÇÈè∞èàóù
 			SHEERFLOORS* pSheerFloors = GetSheerFloors();

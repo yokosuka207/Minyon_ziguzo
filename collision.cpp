@@ -110,6 +110,12 @@ void UpdateCollision()
 				}
 			}
 		}
+		//スイッチと木箱の判定
+		for (int i = 0; i < SWITCHWALL_MAX; i++) {
+			if (pSwitchWall[i].UseFlag) {
+
+			}
+		}
 	}
 
 	//などの必要な判定をここで作る
