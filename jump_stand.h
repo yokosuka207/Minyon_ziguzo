@@ -1,7 +1,7 @@
 #pragma once
 
 #define JUMPSTAND_SIZE	(20)
-#define JUMPSTAND_MAX (1)
+#define JUMPSTAND_MAX (5)
 typedef struct 
 {
 	D3DXVECTOR2 pos;	//ï\é¶ç¿ïW

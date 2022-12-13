@@ -52,7 +52,7 @@ void InitGame()
 		InitBroken();
 		InitWarp();
 		InitJumpStand();
-		InitSheerFloors();
+		//InitSheerFloors();
 		InitPuzzleCip();
 		InitPuzzle();
 		InitInventory();			// インベントリの初期化
@@ -86,7 +86,7 @@ void UninitGame()
 	UninitPlayer();
 	UninitWarp();
 	UninitJumpStand();
-	UninitSheerFloors();
+	//UninitSheerFloors();
 	UninitInventory();			// インベントリの終了
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了
@@ -119,7 +119,7 @@ void UpdateGame()
 	UpdateBroken();
 	UpdateWarp();
 	UpdateJumpStand();
-	UpdateSheerFloors();
+	//UpdateSheerFloors();
 	UpdateThornBlock();
 	UpdateHigh();
 	UpdateSwitch();
@@ -146,7 +146,7 @@ void DrawGame()
 	DrawPlayer();
 	DrawWarp();
 	DrawJumpStand();
-	DrawSheerFloors();
+	//DrawSheerFloors();
 	DrawThornBlock();
 	DrawHigh();
 	DrawSwitch();
