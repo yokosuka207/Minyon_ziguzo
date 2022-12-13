@@ -17,6 +17,8 @@ typedef struct
 	bool UseJumpStand;	//ジャンプスタンドフラグ
 	bool JumpStandFlag;		//ジャンプスタンドのジャンプ中フラグ
 
+	bool GetJumpStand;
+
 }JUMPSTAND;
 
 HRESULT InitJumpStand();

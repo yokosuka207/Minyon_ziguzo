@@ -142,15 +142,20 @@ void UpdatePlayer()
 
 			//ジャンプ台処理
 			JUMPSTAND* p_JumpStand = GetJumpStand();
-			if (GetKeyboardPress(DIK_B))
-			{
-				if (CollisionBB(g_Player.Position, p_JumpStand->pos, g_Player.size, p_JumpStand->size)) {
-					g_Player.GetJumpStand = true;
+
+			for (int i = 0; i < JUMPSTAND_MAX; i++) {
+				if (p_JumpStand[i].UseJumpStand) {
+					if (GetKeyboardPress(DIK_B))
+					{
+						if (CollisionBB(g_Player.Position, p_JumpStand[i].pos, g_Player.size, p_JumpStand[i].size)) {
+							p_JumpStand[i].GetJumpStand = true;
+						}
+					}
+					else
+					{
+						p_JumpStand[i].GetJumpStand = false;
+					}
 				}
-			}
-			else
-			{
-				g_Player.GetJumpStand = false;
 			}
 
 
@@ -181,85 +186,85 @@ void UpdatePlayer()
 			}
 
 			//透ける床処理
-			//SHEERFLOORS* pSheerFloors = GetSheerFloors();
-			//for (int i = 0; i < SHEERFLOORS_NUM; i++)
-			//{
-			//	if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
-			//		g_Player.oldpos.x + g_Player.size.x / 2 <= pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
-			//		g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2 &&
-			//		g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
-			//	{
-			//		//g_Player.Position.x = pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 - g_Player.size.x / 2;
-			//	}
-			//	//プレイヤー右・ブロック左
-			//	if (g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
-			//		g_Player.oldpos.x - g_Player.size.x / 2 >= pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
-			//		g_Player.Position.y + g_Player.size.y / 3 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 3 &&
-			//		g_Player.Position.y - g_Player.size.y / 3 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 3)
-			//	{
-			//		//g_Player.Position.x = pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 + g_Player.size.x / 2;
-			//	}
+			SHEERFLOORS* pSheerFloors = GetSheerFloors();
+			for (int i = 0; i < SHEERFLOORS_NUM; i++)
+			{
+				if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
+					g_Player.oldpos.x + g_Player.size.x / 2 <= pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
+					g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2 &&
+					g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
+				{
+					//g_Player.Position.x = pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 - g_Player.size.x / 2;
+				}
+				//プレイヤー右・ブロック左
+				if (g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+					g_Player.oldpos.x - g_Player.size.x / 2 >= pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+					g_Player.Position.y + g_Player.size.y / 3 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 3 &&
+					g_Player.Position.y - g_Player.size.y / 3 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 3)
+				{
+					//g_Player.Position.x = pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 + g_Player.size.x / 2;
+				}
 
-			//	//プレイヤー上・ブロック下,着地する
-			//	if (!GetKeyboardPress(DIK_DOWN)) 
-			//	{
-			//		if ((g_Player.oldpos.y + g_Player.size.y / 2 < pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
-			//			CollisionBB(g_Player.Position, pSheerFloors[i].pos, g_Player.size, pSheerFloors[i].size))
-			//		{
-			//			g_Player.Position.y = pSheerFloors[i].pos.y - (pSheerFloors[i].size.y / 2 + g_Player.size.y / 2);
-			//			g_Player.sp.y = 0.0f;
-			//			p_JumpStand->JumpStandFlag = false;
+				//プレイヤー上・ブロック下,着地する
+				if (!GetKeyboardPress(DIK_DOWN))
+				{
+					if ((g_Player.oldpos.y + g_Player.size.y / 2 < pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
+						CollisionBB(g_Player.Position, pSheerFloors[i].pos, g_Player.size, pSheerFloors[i].size))
+					{
+						g_Player.Position.y = pSheerFloors[i].pos.y - (pSheerFloors[i].size.y / 2 + g_Player.size.y / 2);
+						g_Player.sp.y = 0.0f;
+						p_JumpStand->JumpStandFlag = false;
 
-			//			g_Player.isSheerFloors = true;
-			//			g_Player.sp.y = 0.0f;
-
-
-			//		}
+						g_Player.isSheerFloors = true;
+						g_Player.sp.y = 0.0f;
 
 
-			//	}
-			//	//プレイヤー下・ブロック上,落下する
-			//	if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
-			//		g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
-			//		g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 &&
-			//		g_Player.oldpos.y - g_Player.size.y / 2 >= pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
-			//	{
+					}
 
-			//	}
-			//}
 
-			////for (int i = 0; i < SHEERFLOORS_NUM; i++)
-			////{
-			////	if (!GetKeyboardPress(DIK_DOWN)){
-			////		// プレイヤーの下にブロックがあったら
-			////		if ((g_Player.Position.y + g_Player.size.y / 2 + 0.05f > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
-			////			(g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2) &&
-			////			(g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2) &&
-			////			(g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2))
-			////		{	// 着地中にする
-			////			//g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 - g_Player.size.y / 2 - 0.02f;
-			////			
-			////			if (!g_Player.isSheerFloors) {
-			////				g_Player.sp.y = 0.0f;
-			////				g_Player.isSheerFloors = true;
-			////				break;
-			////			}
-			////		}
-			////		else {
-			////			g_Player.isSheerFloors = false;
-			////		}
-			////	}
-			////}
+				}
+				//プレイヤー下・ブロック上,落下する
+				if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
+					g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+					g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 &&
+					g_Player.oldpos.y - g_Player.size.y / 2 >= pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
+				{
 
-			//if (GetKeyboardTrigger(DIK_DOWN)) {
-			//	g_Player.isSheerFloors = false;
-			//}
+				}
+			}
+
+			for (int i = 0; i < SHEERFLOORS_NUM; i++)
+			{
+				if (!GetKeyboardPress(DIK_DOWN)) {
+					// プレイヤーの下にブロックがあったら
+					if ((g_Player.Position.y + g_Player.size.y / 2 + 0.05f > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
+						(g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2) &&
+						(g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2) &&
+						(g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2))
+					{	// 着地中にする
+						//g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 - g_Player.size.y / 2 - 0.02f;
+
+						if (!g_Player.isSheerFloors) {
+							g_Player.sp.y = 0.0f;
+							g_Player.isSheerFloors = true;
+							break;
+						}
+					}
+					else {
+						g_Player.isSheerFloors = false;
+					}
+				}
+			}
+
+			if (GetKeyboardTrigger(DIK_DOWN)) {
+				g_Player.isSheerFloors = false;
+			}
 
 			// ジャンプ
-			if ((g_Player.isGround || g_Player.isSheerFloors  || g_Player.isHigh) && GetKeyboardPress(DIK_SPACE))
+			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh) && GetKeyboardPress(DIK_SPACE))
 			{
 				g_Player.sp.y = -2.5f;			// スピードのyをマイナスにする
-				
+
 				if (g_Player.isGround) {
 					g_Player.isGround = false;			// フラグをジャンプ中にする
 				}
@@ -383,7 +388,7 @@ void UpdatePlayer()
 
 			//透ける床処理
 			//SHEERFLOORS* pSheerFloors = GetSheerFloors();
-			
+
 
 			//チップのブロックの当たり判定
 			for (int i = 0; i < BLOCK_MAX; i++)
@@ -573,7 +578,7 @@ void UpdatePlayer()
 							g_Player.sp.y = 0.0f;
 							g_Player.Position.y = (high + i)->Postion.y - (high + i)->Size.y / 2 - g_Player.size.y / 2;
 						}
-						
+
 					}/*
 					else
 					{
@@ -907,9 +912,9 @@ void UpdatePlayer()
 
 
 		}
+
 	}
 }
-
 //=============================================================================
 //描画処理
 //=============================================================================
