@@ -226,7 +226,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	SpriteInit();
 
 	//InitGame();
-	InitScene(SCENE_TITLE);
+	InitScene(SCENE::SCENE_TITLE);
 	//InitScene(SCENE_RESULT);
 
 	return S_OK;
