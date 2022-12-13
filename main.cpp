@@ -227,7 +227,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	SpriteInit();
 
 	//InitGame();
-	InitScene(SCENE_TITLE);
+	InitScene(SCENE::SCENE_TITLE);
 	//InitScene(SCENE_RESULT);
 
 		// ”w–Êƒ|ƒŠƒSƒ“‚ðƒJƒŠƒ“ƒO

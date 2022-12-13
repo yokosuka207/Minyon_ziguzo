@@ -30,35 +30,40 @@
 #include "SwitchWall.h"
 #include"player3D.h"
 #include"camera.h"
+#include "scene.h"
 
 static Time g_time;
 static Score g_score;
 static PLAYER3D g_Player3D;
+static SCENE* p_Scene;
 
 void InitGame()
 {
-	InitCamera();
-	//----------げーむ
-	//InitPolygon();//ポリゴンの初期化
-	//-----------------------
-	InitSplitStage();
-	BgInit();
-	InitBlock();
-	InitJoint();
-	InitGameMouse();
-	InitGoal();
-	InitBroken();
-	InitWarp();
-	InitJumpStand();
-	InitSheerFloors();
-	InitPuzzleCip();
-	InitPuzzle();
-	InitInventory();			// インベントリの初期化
-	InitCursor();				// カーソルの初期化
-	InitThornBlock();
-	InitHigh();
-	InitSwitch();
-	InitSwitchWall();
+	p_Scene = GetScene();
+
+	if ((int)p_Scene != SCENE_GAME) 
+	{
+		//----------げーむ
+		//InitPolygon();//ポリゴンの初期化
+		//-----------------------
+		InitSplitStage();
+		BgInit();
+		InitBlock();
+		InitJoint();
+		InitGameMouse();
+		InitGoal();
+		InitBroken();
+		InitWarp();
+		InitJumpStand();
+		InitSheerFloors();
+		InitPuzzleCip();
+		InitPuzzle();
+		InitInventory();			// インベントリの初期化
+		InitCursor();				// カーソルの初期化
+		InitThornBlock();
+		InitHigh();
+		InitSwitch();
+		InitSwitchWall();
 
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
