@@ -31,7 +31,7 @@ void Score::InitScore() {
 	g_Score.UseFlag = false;
 	g_Score.CalcFlag = false;
 	m_score = 0;
-	m_TimeScore = 0;
+	m_pTimeScore = 0;
 }
 void Score::UninitScore() {
 	if (g_ScoreTexture) {
@@ -69,13 +69,13 @@ void Score::DrawScore() {
 	}
 }
 int Score::CulcScore() {
-	m_TimeScore = g_Time.GetTime();
+	m_pTimeScore = g_Time.GetTime();
 	
-	if (m_TimeScore < 60) {
-		m_score = m_TimeScore;
+	if (*m_pTimeScore < 60) {
+		m_score = *m_pTimeScore;
 	}
 	else {
-		m_score = m_TimeScore * 0.5;
+		m_score = *m_pTimeScore * 0.5;
 	}
 
 	return m_score;

@@ -49,13 +49,10 @@ void Time::UninitTime() {
 	}
 }
 void Time:: DrawGameTime() {
-	
 	SetWorldViewProjection2D();
-
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TimeTextureNo));
 
 	m_ElapsedTime = ElapsedTime();
-
 	g_Time = m_ElapsedTime / CLOCKS_PER_SEC;//秒表示
 	g_SecondTime = g_Time % 60;	//秒
 	g_MintueTime = g_Time / 60;	//分
@@ -130,16 +127,17 @@ void Time:: DrawGameTime() {
 		}
 	}
 }
+
+//ポーズ時間をどうにかしないと
 void Time::DrawResultTime() {
 	SetWorldViewProjection2D();
-
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TimeTextureNo));
 
 	g_TimeParam.pos.x = SCREEN_WIDTH / 2 + 70;
 	g_TimeParam.pos.y = SCREEN_HEIGHT / 2;
 	g_TimeParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	if (!g_TimeParam.EndFlag) {
-		m_ElapsedTime = GetTime();
+		m_ElapsedTime = ElapsedTime();
 		g_TimeParam.EndFlag = true;
 	}
 	g_Time = m_ElapsedTime / CLOCKS_PER_SEC;//秒表示
@@ -219,10 +217,8 @@ void Time::StartTime() {
 	m_start = clock();
 }
 int Time::ElapsedTime() {
-	
 	m_ElapsedTime = clock() - m_start;
-	
-	return m_ElapsedTime - m_PauseElapsed;
+	return m_ElapsedTime;
 }
 //ポーズの開始時間
 void Time::PuaseStartTime() {
@@ -231,7 +227,8 @@ void Time::PuaseStartTime() {
 //ポーズの終了時間
 void Time::PuaseEndTime() {
 	m_PuaseEnd = clock();
-	m_PauseElapsed += m_PuaseEnd - m_PuaseStart;
+	//m_PauseElapsed += m_PuaseEnd - m_PuaseStart;
+	m_ElapsedTime -= m_PuaseEnd - m_PuaseStart;
 }
 void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 	if (!g_TimeParam.UseFlag) {
@@ -240,10 +237,10 @@ void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 		g_TimeParam.UseFlag = true;
 	}
 }
-int Time::GetTime() {
-	m_ElapsedTime /= CLOCKS_PER_SEC;
-	return m_ElapsedTime;
+int* Time::GetTime() {
+	return &m_ElapsedTime;
 }
+
 void Time::SetElapsedTime(int elapsedtime) {
 	m_ElapsedTime = elapsedtime;
 }

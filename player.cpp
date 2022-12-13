@@ -821,17 +821,6 @@ void UpdatePlayer()
 				ResetGame();
 			}
 
-			if (GetKeyboardTrigger(DIK_K)) {
-				Time pTime;
-				pTime.PuaseStartTime();
-			}
-			if (GetKeyboardTrigger(DIK_L)) {
-				Time pTime;
-				pTime.PuaseEndTime();
-			}
-
-
-
 			//プレイヤーとパズルの画面外判定
 
 			Piece* pPiece = GetPiece();
