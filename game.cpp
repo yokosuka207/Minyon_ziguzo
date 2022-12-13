@@ -82,7 +82,7 @@ void UninitGame()
 	UninitPlayer();
 	UninitWarp();
 	UninitJumpStand();
-	UninitSheerFloors();
+	//UninitSheerFloors();
 	UninitInventory();			// インベントリの終了
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了

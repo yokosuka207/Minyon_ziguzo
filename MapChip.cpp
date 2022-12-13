@@ -29,6 +29,7 @@
 #include "switch.h"
 #include "SwitchWall.h"
 #include "StageSelect.h"
+#include "SheerFloors.h"
 
 //**************************************************
 //　マクロ定義
@@ -160,6 +161,9 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15
 				SetSwitchWall(position, DrawSize, no, 4);
 				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16
+				SetSheerFloors(position, DrawSize);
+				break;
 			default:
 				break;
 			}
@@ -175,7 +179,7 @@ void FileLoad(int StageNo) {
 		filename = "data/MapData/map0.txt";
 		break;
 	case 1:
-		filename = "data/MapData/map.txt"; 
+		filename = "data/MapData/Stage04.txt"; 
 		break;
 	}
 	FILE* fp;
@@ -286,6 +290,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteThornBlock(g_PieceMapChip[PieceNo].no);
 	DeleteSwitch(g_PieceMapChip[PieceNo].no);
 	DeleteSwitchWall(g_PieceMapChip[PieceNo].no);
+	DeleteSheet();
 	DeleteGoal(g_PieceMapChip[PieceNo].no);
 }
 
