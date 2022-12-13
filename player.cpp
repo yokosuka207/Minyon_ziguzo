@@ -85,7 +85,7 @@ HRESULT InitPlayer()
 	g_Player.uv_h = PLAYER_UV_H;//ècÉTÉCÉY
 	g_Player.NumPatern = 4;//â°ñáêî
 
-	g_Player.hp = 30;
+	g_Player.hp = 3;
 	g_Player.frame = 0;
 	g_Player.CoolTime = PLAYER_COOLTIME;
 
@@ -152,7 +152,7 @@ void UpdatePlayer()
 				g_Player.GetJumpStand = false;
 			}
 
-
+			
 
 			BLOCK* block = GetChipBlock();
 			for (int i = 0; i < BLOCK_CHIP_MAX; i++) {

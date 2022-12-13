@@ -18,6 +18,8 @@
 
 #define PLAYER_COOLTIME	(120)
 
+#define PLAYER_HP (3)
+
 enum class PLAYER_DIRECTION
 {
 	UP = 0,
@@ -40,6 +42,7 @@ struct PLAYER
 	bool isSheerFloorsUse;
 	bool isHigh;
 	int	HaveKey; //鍵所持数
+	//int Hp;
 
 	D3DXVECTOR2 size;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
