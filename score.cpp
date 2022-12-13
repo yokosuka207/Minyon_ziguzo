@@ -54,6 +54,7 @@ void Score::DrawScore() {
 			(
 				g_Score.pos.x,
 				g_Score.pos.y,
+				0.0f,
 				g_Score.size.x,
 				g_Score.size.y,
 				0.0f,

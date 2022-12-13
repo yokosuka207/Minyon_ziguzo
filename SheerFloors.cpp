@@ -46,7 +46,7 @@ void UpdateSheerFloors()
 }
 void DrawSheerFloors()
 {
-	SetWorldViewProjection2D();
+	//SetWorldViewProjection2D();
 
 	for (int i = 0; i < SHEERFLOORS_NUM; i++)
 	{
@@ -55,7 +55,7 @@ void DrawSheerFloors()
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(gSheerFloorsNo));
 
 			SpriteDrawColorRotation(
-				gSheerFloors[i].pos.x, gSheerFloors[i].pos.y,
+				gSheerFloors[i].pos.x, gSheerFloors[i].pos.y,-0.1f,
 				gSheerFloors[i].size.x, gSheerFloors[i].size.y,
 				0.0f,
 				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),

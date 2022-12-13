@@ -84,7 +84,7 @@ void DrawStageSelect() {
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelect.texno));
 
 		SpriteDrawColorRotation(
-			g_StageSelect.pos.x, g_StageSelect.pos.y,
+			g_StageSelect.pos.x, g_StageSelect.pos.y,0.0f,
 			g_StageSelect.size.x, g_StageSelect.size.y,
 			0.0f,
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),

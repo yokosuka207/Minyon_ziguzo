@@ -94,7 +94,7 @@ void UpdateJumpStand()
 				}
 				
 				{
-					g_JumpStand[i].pos.y++;
+					g_JumpStand[i].pos.y--;
 
 					p_Block = GetChipBlock();
 
@@ -104,8 +104,8 @@ void UpdateJumpStand()
 						{
 							if (g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 > (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
 								g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 < (p_Block + j)->Position.x + (p_Block + j)->Size.x / 2 &&
-								g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2 > (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2 &&
-								g_JumpStand[i].oldpos.y + g_JumpStand[i].size.y / 2 <= (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2)
+								g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 < (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2 &&
+								g_JumpStand[i].oldpos.y - g_JumpStand[i].size.y / 2 >= (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2)
 							{
 								g_JumpStand[i].pos.y = g_JumpStand[i].oldpos.y;
 
@@ -133,21 +133,20 @@ void UpdateJumpStand()
 
 			if (g_JumpStand[i].UseJumpStand)
 			{
-
-				if (Collition_JumpStand())
-				{
-					g_JumpStand[i].JumpStandFlag = true;
-					p_Player->sp.y = 0.0f;
-					g_JumpStand[i].JumpPower = 4.8f;
-					//p_Player->sp.y = 5.0f;
-					g_JumpStand[i].JumpGravity = 0.1f;
-				}
-
+					if (Collition_JumpStand())
+					{
+						g_JumpStand[i].JumpStandFlag = true;
+						p_Player->sp.y = 0.0f;
+						g_JumpStand[i].JumpPower = -4.8f;
+						//p_Player->sp.y = 5.0f;
+						g_JumpStand[i].JumpGravity = 0.1f;
+					}
+				
 				if (g_JumpStand[i].JumpStandFlag)
 				{
-					if (g_JumpStand[i].JumpPower > -10.0f)
+					if (g_JumpStand[i].JumpPower < 10.0f)
 					{
-						g_JumpStand[i].JumpPower -= g_JumpStand[i].JumpGravity;
+						g_JumpStand[i].JumpPower += g_JumpStand[i].JumpGravity;
 					}
 					p_Player->Position.y -= g_JumpStand[i].JumpPower;
 					//p_Player->Position.y -= p_Player->sp.y;
@@ -160,13 +159,13 @@ void UpdateJumpStand()
 							//上
 							if (p_Player->Position.x + p_Player->size.x / 2 > (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
 								p_Player->Position.x - p_Player->size.x / 2 < (p_Block + j)->Position.x + (p_Block + j)->Size.x / 2 &&
-								p_Player->Position.y + p_Player->size.y / 2 > (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2 &&
-								p_Player->oldpos.y + p_Player->size.y / 2 <= (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2)
+								p_Player->Position.y - p_Player->size.y / 2 < (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2 &&
+								p_Player->oldpos.y - p_Player->size.y / 2 >= (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2)
 							{
 								g_JumpStand[i].JumpPower = 0.0f;
 								//p_Player->sp.y = 0.0f;
 								//g_JumpStand[i].JumpGravity = 0.0f;
-								p_Player->Position.y = (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2 - p_Player->size.y / 2;
+								p_Player->Position.y = (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2 + p_Player->size.y / 2;
 								g_JumpStand[i].JumpStandFlag = false;
 							}
 						}
@@ -184,7 +183,7 @@ void DrawJumpStand()
 		{
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TextureNo));
 
-			SpriteDrawColorRotation(g_JumpStand[i].pos.x, g_JumpStand[i].pos.y,
+			SpriteDrawColorRotation(g_JumpStand[i].pos.x, g_JumpStand[i].pos.y,-0.1f,
 				g_JumpStand[i].size.x, g_JumpStand[i].size.y, 0.0f, D3DXCOLOR(3.0f, 0.0f, 0.0f, 1.0f),
 				0, 1.0f, 1.0f, 1);
 		}
@@ -238,8 +237,8 @@ bool Collition_JumpStand()
 		//プレイヤー下・壊れるブロック上
 		if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
 			p_Player->Position.x - p_Player->size.x / 2 < g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 &&
-			p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
-			p_Player->oldpos.y + p_Player->size.y / 2 <= g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2)
+			p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2 &&
+			p_Player->oldpos.y - p_Player->size.y / 2 >= g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2)
 		{
 			return true;
 		}

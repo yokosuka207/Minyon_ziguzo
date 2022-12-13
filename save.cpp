@@ -165,7 +165,7 @@ void Save::Draw()
 	// テクスチャの設定
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(m_BGTexNo));
 	// 四角形の描画
-	SpriteDrawColorRotation(m_BGPos.x, m_BGPos.y, m_BGSize.x, m_BGSize.y, 0.0f, m_BGColor, 0.0f, 1.0f, 1.0f, 1);
+	SpriteDrawColorRotation(m_BGPos.x, m_BGPos.y,0.0f, m_BGSize.x, m_BGSize.y, 0.0f, m_BGColor, 0.0f, 1.0f, 1.0f, 1);
 	//----------背景の表示----------]
 
 	// 各ボタンの描画

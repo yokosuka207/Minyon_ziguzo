@@ -28,12 +28,16 @@
 #include "high_broken.h"
 #include "switch.h"
 #include "SwitchWall.h"
+#include"player3D.h"
+#include"camera.h"
 
 static Time g_time;
 static Score g_score;
+static PLAYER3D g_Player3D;
 
 void InitGame()
 {
+	InitCamera();
 	//----------げーむ
 	//InitPolygon();//ポリゴンの初期化
 	//-----------------------
@@ -63,10 +67,13 @@ void InitGame()
 	g_time.InitTime();
 	g_time.SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
 	g_time.StartTime();
+	g_Player3D.Init();
+
 }
 
 void UninitGame()
 {
+	UninitCamera();
 	//UninitPolygon();	//ポリゴンの終了
 	BgUninit();
 	UninitBlock();
@@ -90,6 +97,7 @@ void UninitGame()
 	g_score.UninitScore();
 	g_time.EndTime();
 	g_time.UninitTime();
+	g_Player3D.Uninit();
 }
 
 void UpdateGame()
@@ -121,6 +129,8 @@ void UpdateGame()
 	UpdateMapChip();
 	
 	UpdateCursor();				// カーソルの更新
+	g_Player3D.Update();
+	UpdateCamera();
 }	
 
 void DrawGame()
@@ -151,6 +161,8 @@ void DrawGame()
 	DrawInventory();			// インベントリの描画
 	g_time.DrawGameTime();
 	//DrawCursor();				// カーソルの描画
+	g_Player3D.Draw();
+	SetCamera();
 }
 
 void ResetGame()

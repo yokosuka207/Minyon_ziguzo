@@ -136,7 +136,7 @@ void UpdateCollision()
 	// ピースとインベントリ範囲の当たり判定
 	for (int i = 0; i < PUZZLE_MAX; i++) {
 		// ピースをインベントリにしまう
-		if (pPiece[i].UseFlag && pPiece[i].pos.x < (INVENTORYBG_POS_X + INVENTORYBG_SIZE_X / 2)) {
+		if (pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X)) {
 			DeleteMapChip(i);
 			SetInventory(pPiece[i].no);
 		}
@@ -158,6 +158,7 @@ void PieceCollision()
 		{
 			if (pPiece[i].MoveEndFlag)	//動き終わったら
 			{
+
 				pPiece[i].MoveEndFlag = false;
 
 				if (pPiece[i].pos.y - pPiece[i].size.y / 2 < pPlayer->Position.y &&
@@ -369,10 +370,11 @@ void PieceCollision()
 
 							for (int n = 0; n < 3; n++)
 							{
-								if (pSplitStage->pos.y + SPLIT_SIZE * (m - 1) - pSplitStage->size.y / 2 < pPiece[i].pos.y &&
-									pSplitStage->pos.y + SPLIT_SIZE * (m - 1) + pSplitStage->size.y / 2 > pPiece[i].pos.y &&
-									pSplitStage->pos.x + SPLIT_SIZE * (n - 1) - pSplitStage->size.x / 2 < pPiece[i].pos.x &&
-									pSplitStage->pos.x + SPLIT_SIZE * (n - 1) + pSplitStage->size.x / 2 > pPiece[i].pos.x)
+
+								if (pSplitStage->pos.y + SPLIT_SIZE - (m * SPLIT_SIZE) - pSplitStage->size.y / 2 < pPiece[i].pos.y &&
+									pSplitStage->pos.y + SPLIT_SIZE - (m * SPLIT_SIZE) + pSplitStage->size.y / 2 > pPiece[i].pos.y &&
+									pSplitStage->pos.x - SPLIT_SIZE + (n * SPLIT_SIZE) - pSplitStage->size.x / 2 < pPiece[i].pos.x &&
+									pSplitStage->pos.x - SPLIT_SIZE + (n * SPLIT_SIZE) + pSplitStage->size.x / 2 > pPiece[i].pos.x)
 								{
 									pPiece[i].pos = pSplitStage->Split3[n][m];
 
@@ -1768,11 +1770,16 @@ bool fourNomalPieceCollision(Piece piece, int index)
 	bool 	JointFlag = false;
 	for (int i = 0; i < PUZZLE_MAX; i++)
 	{
-		if (i != index)
+		if (pPiece[i].UseFlag)
 		{
-			if (piece.pos == pPiece[i].pos)
+
+
+			if (i != index)
 			{
-				return false;
+				if (piece.pos == pPiece[i].pos)
+				{
+					return false;
+				}
 			}
 		}
 
@@ -1952,12 +1959,12 @@ bool SpritStageCollision(Piece p)
 	float x = p.pos.x;
 
 	//上の判定
-	if (p.pos.y < up.y - SPLIT_SIZE / 2)
+	if (p.pos.y > up.y + SPLIT_SIZE / 2)
 	{
 		return false;
 	}
 	//下
-	if (p.pos.y > down.y + SPLIT_SIZE / 2)
+	if (p.pos.y < down.y - SPLIT_SIZE / 2)
 	{
 		return false;
 	}

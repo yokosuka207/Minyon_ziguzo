@@ -46,7 +46,7 @@ void UpdateSwitchWall() {
 
 }
 void DrawSwitchwall() {
-	SetWorldViewProjection2D();
+	//SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SwitchWallTextureNo));
 
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
@@ -55,6 +55,7 @@ void DrawSwitchwall() {
 				SpriteDrawColorRotation(
 					g_SwitchWall[i].pos.x,
 					g_SwitchWall[i].pos.y,
+					0.0f,
 					g_SwitchWall[i].size.x,
 					g_SwitchWall[i].size.y,
 					0.0f,

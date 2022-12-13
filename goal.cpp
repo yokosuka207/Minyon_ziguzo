@@ -18,7 +18,7 @@ HRESULT InitGoal(){
 	g_Goal.Pos = D3DXVECTOR2(0.0f, 0.0f);
 	g_Goal.Size = D3DXVECTOR2(GOAL_SIEZX, GOAL_SIZEY);
 	g_Goal.Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	g_Goal.Rotation = 0.0f;
+	g_Goal.Rotation = 180.0f;
 	g_Goal.pieceIndex = -1;
 	g_Goal.UseFlag = false;
 	return S_OK;
@@ -63,14 +63,14 @@ void UpdateGoal()
 void DrawGoal()
 {
 	if (g_Goal.UseFlag){
-		SetWorldViewProjection2D();
+		//SetWorldViewProjection2D();
 
 
 		//ŽlŠpŒ`‚Ì•`‰æ
 		//D3DXCOLOR	col = D3DXCOLOR(1.0f, 0.8f, 0.8f, 0.5f);
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Goal.texno));
 
-		SpriteDrawColorRotation(g_Goal.Pos.x, g_Goal.Pos.y,
+		SpriteDrawColorRotation(g_Goal.Pos.x, g_Goal.Pos.y,-0.5f,
 			g_Goal.Size.x, g_Goal.Size.y, g_Goal.Rotation, g_Goal.Col,
 			0, 1.0f, 1.0f, 1);
 	}

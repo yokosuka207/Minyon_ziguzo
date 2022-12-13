@@ -41,6 +41,8 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="switch.cpp" />
     <ClCompile Include="SwitchWall.cpp" />
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="player3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -83,5 +85,7 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="switch.h" />
     <ClInclude Include="SwitchWall.h" />
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="player3D.h" />
   </ItemGroup>
 </Project>

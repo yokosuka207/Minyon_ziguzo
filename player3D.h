@@ -18,7 +18,7 @@
 //--------------------
 //構造体宣言
 //--------------------
-typedef struct
+struct PLAYER3D
 {
 	bool UseFlag;//使用中フラグ
 
@@ -57,7 +57,7 @@ typedef struct
 
 	void SetUse(bool use) { UseFlag = use; };
 	bool GetUseFlag() { return UseFlag; };//使用中かどうか
-}PLAYER3D;
+};
 
 
 //--------------------
