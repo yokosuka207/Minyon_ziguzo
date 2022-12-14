@@ -34,6 +34,7 @@
 #include "fallblock.h"
 #include "SheerFloors.h"
 #include "high_broken.h"
+#include "MoveBlock.h"
 #include "time.h"
 //=============================================================================
 //É}ÉNÉçíËã`
@@ -157,6 +158,23 @@ void UpdatePlayer()
 				}
 			}
 
+			//ìÆÇ≠ë‰
+			MOVEBLOCK* pMoveBlock = GetMoveBlock();
+
+			for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
+				if (pMoveBlock[i].bUse) {
+					if (GetKeyboardPress(DIK_N))
+					{
+						if (CollisionBB(g_Player.Position, pMoveBlock[i].pos, g_Player.size, pMoveBlock[i].size)) {
+							pMoveBlock[i].GetMoveBlock = true;
+						}
+						else
+						{
+							pMoveBlock[i].GetMoveBlock = false;
+						}
+					}
+				}
+			}
 			
 
 			BLOCK* block = GetChipBlock();
