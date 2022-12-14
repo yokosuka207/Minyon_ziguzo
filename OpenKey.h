@@ -29,6 +29,7 @@ typedef struct {
 	float rot;//回転角度
 	float texno;//テクスチャインデックス
 	D3DXCOLOR col;//色
+	int		index;
 	float PaternNo;//パターン番号
 	float uv_w;//横サイズ
 	float uv_h;//縦サイズ
@@ -43,7 +44,7 @@ void UninitOpenKey();
 void UpdateOpenKey();
 void DrawOpenKey();
 OPENKEY *GetOpenKey();
-void SetOpenKey(D3DXVECTOR2 size, D3DXVECTOR2 pos);
+void SetOpenKey(D3DXVECTOR2 size, D3DXVECTOR2 pos, int index);
 void DeleteOpenKey(int PieceNo);
 
 

@@ -77,9 +77,11 @@ void UpdateCollision()
 					)
 				{
 					pSwitch[i].PressFlag = true;//‰Ÿ‚³‚ê‚½‚ç
+					pSwitch[i].PaternNo += 0.25;
 				}
 				else {
 					pSwitch[i].PressFlag = false;
+					pSwitch[i].PaternNo = 0;
 				}
 
 				if (pSwitch[i].PressFlag) {

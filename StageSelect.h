@@ -12,7 +12,10 @@
 #include "main.h"
 #include "renderer.h"
 
-#define STAGE_MAX (2)
+//#define STAGE_MAX (28)
+#define STAGE_MAX (6)
+
+#define SELECT_MAX (2)//2Œ…
 
 typedef struct {
 	D3DXVECTOR2 pos;

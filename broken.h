@@ -25,6 +25,7 @@ struct BROKEN
 	D3DXVECTOR2 Postion;//表示座標(中心座標)
 	D3DXVECTOR2 sp;
 	float rot;//回転角度
+	int index;
 	float texno;//テクスチャインデックス
 	D3DXCOLOR col;//色
 	float PaternNo;//パターン番号
@@ -43,6 +44,6 @@ void UninitBroken();
 void UpdateBroken();
 void DrawBroken();
 
-int SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s);
-
+void SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index);
+void DeleteBroken(int PieceNo);
 BROKEN* GetBroken();//BROKEN構造体の先頭ポインタを取得
