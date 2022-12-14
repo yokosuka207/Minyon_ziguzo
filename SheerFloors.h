@@ -23,3 +23,5 @@ void DrawSheerFloors();
 
 void SetSheerFloors(D3DXVECTOR2 p, D3DXVECTOR2 s);
 SHEERFLOORS* GetSheerFloors();
+
+void DeleteSheet();

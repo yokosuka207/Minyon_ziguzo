@@ -35,7 +35,6 @@
 #include "SheerFloors.h"
 #include "high_broken.h"
 #include "time.h"
-#include "pause.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -86,7 +85,7 @@ HRESULT InitPlayer()
 	g_Player.uv_h = PLAYER_UV_H;//縦サイズ
 	g_Player.NumPatern = 4;//横枚数
 
-	g_Player.hp = 30;
+	g_Player.hp = 3;
 	g_Player.frame = 0;
 	g_Player.CoolTime = PLAYER_COOLTIME;
 
@@ -142,18 +141,23 @@ void UpdatePlayer()
 
 			//ジャンプ台処理
 			JUMPSTAND* p_JumpStand = GetJumpStand();
-			if (GetKeyboardPress(DIK_B))
-			{
-				if (CollisionBB(g_Player.Position, p_JumpStand->pos, g_Player.size, p_JumpStand->size)) {
-					g_Player.GetJumpStand = true;
+
+			for (int i = 0; i < JUMPSTAND_MAX; i++) {
+				if (p_JumpStand[i].UseJumpStand) {
+					if (GetKeyboardPress(DIK_B))
+					{
+						if (CollisionBB(g_Player.Position, p_JumpStand[i].pos, g_Player.size, p_JumpStand[i].size)) {
+							p_JumpStand[i].GetJumpStand = true;
+						}
+					}
+					else
+					{
+						p_JumpStand[i].GetJumpStand = false;
+					}
 				}
 			}
-			else
-			{
-				g_Player.GetJumpStand = false;
-			}
 
-
+			
 
 			BLOCK* block = GetChipBlock();
 			for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
@@ -177,11 +181,6 @@ void UpdatePlayer()
 				}
 			}
 
-			if (GetKeyboardTrigger(DIK_TAB))
-			{
-				//g_Time.PuaseStartTime();
-				SetScene(SCENE::SCENE_PAUSE);
-			}
 
 			//透ける床処理
 			SHEERFLOORS* pSheerFloors = GetSheerFloors();
@@ -204,7 +203,7 @@ void UpdatePlayer()
 				}
 
 				//プレイヤー上・ブロック下,着地する
-				if (!GetKeyboardPress(DIK_DOWN)) 
+				if (!GetKeyboardPress(DIK_DOWN))
 				{
 					if ((g_Player.oldpos.y + g_Player.size.y / 2 < pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
 						CollisionBB(g_Player.Position, pSheerFloors[i].pos, g_Player.size, pSheerFloors[i].size))
@@ -387,7 +386,7 @@ void UpdatePlayer()
 
 			//透ける床処理
 			//SHEERFLOORS* pSheerFloors = GetSheerFloors();
-			
+
 
 			//チップのブロックの当たり判定
 			for (int i = 0; i < BLOCK_MAX; i++)
@@ -579,7 +578,7 @@ void UpdatePlayer()
 							g_Player.sp.y = 0.0f;
 							g_Player.Position.y = (high + i)->Postion.y + (high + i)->Size.y / 2 + g_Player.size.y / 2;
 						}
-						
+
 					}/*
 					else
 					{
@@ -818,17 +817,6 @@ void UpdatePlayer()
 				ResetGame();
 			}
 
-			if (GetKeyboardTrigger(DIK_K)) {
-				Time pTime;
-				pTime.PuaseStartTime();
-			}
-			if (GetKeyboardTrigger(DIK_L)) {
-				Time pTime;
-				pTime.PuaseEndTime();
-			}
-
-
-
 			//プレイヤーとパズルの画面外判定
 
 			Piece* pPiece = GetPiece();
@@ -898,9 +886,9 @@ void UpdatePlayer()
 
 
 		}
+
 	}
 }
-
 //=============================================================================
 //描画処理
 //=============================================================================

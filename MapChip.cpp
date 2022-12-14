@@ -29,6 +29,9 @@
 #include "switch.h"
 #include "SwitchWall.h"
 #include "StageSelect.h"
+#include "SheerFloors.h"
+#include "broken.h"
+#include "high_broken.h"
 
 //**************************************************
 //　マクロ定義
@@ -147,10 +150,10 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetFallBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11
-				//Set
+				SetKey(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12
-				//Set
+				SetOpenKey(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13
 				SetSwitch(position, DrawSize, no);
@@ -161,6 +164,18 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15
 				SetSwitchWall(position, DrawSize, no, 4);
 				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16
+				SetSheerFloors(position, DrawSize);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17
+				SetBroken(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18
+				SetHigh(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_MIRROR):	//19
+				break;
+
 			default:
 				break;
 			}
@@ -177,6 +192,24 @@ void FileLoad(int StageNo) {
 		break;
 	case 1:
 		filename = "data/MapData/map.txt"; 
+		break;
+	case 2:
+		filename = "data/MapData/Stage01.txt";
+		break;
+	case 3:
+		filename = "data/MapData/Stage02.txt";
+		break;
+	case 4:
+		filename = "data/MapData/Stage03.txt";
+		break;
+	case 5:
+		filename = "data/MapData/Stage04.txt";
+		break;
+	case 6:
+		filename = "data/MapData/Stage05.txt";
+		break;
+	case 7:
+		filename = "data/MapData/Stage06.txt";
 		break;
 	}
 	FILE* fp;
@@ -287,6 +320,11 @@ void DeleteMapChip(int PieceNo) {
 	DeleteThornBlock(g_PieceMapChip[PieceNo].no);
 	DeleteSwitch(g_PieceMapChip[PieceNo].no);
 	DeleteSwitchWall(g_PieceMapChip[PieceNo].no);
+	DeleteKey(g_PieceMapChip[PieceNo].no);
+	DeleteOpenKey(g_PieceMapChip[PieceNo].no);
+	DeleteBroken(g_PieceMapChip[PieceNo].no);
+	DeleteHigh(g_PieceMapChip[PieceNo].no);
+	DeleteSheet();
 	DeleteGoal(g_PieceMapChip[PieceNo].no);
 }
 

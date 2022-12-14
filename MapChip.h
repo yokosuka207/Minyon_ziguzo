@@ -32,24 +32,28 @@
 // 構造体定義
 //**************************************************
 enum class MAPCHIP_TYPE{
-	TYPE_BLANK = 0,	// 0	外側の空白
-	TYPE_PUSH,		// 1	凸
-	TYPE_PULL,		// 2	凹
-	TYPE_NONE,		// 3	blockなし
-	TYPE_BLOCK,		// 4	block
-	TYPE_CHIP,		// 5	puzzle
-	TYPE_WARP,		// 6	warp
-	TYPE_GOAL,		// 7	goal
-	TYPE_JUMP,		// 8	jumpstand
-	TYPE_SPIKE,		// 9	トゲ
-	TYPE_FALL,		//10	落ちるblock
-	TYPE_KEY,		//11	key
-	TYPE_DOOR,		//12	door
-	TYPE_SWITCH,	//13	switch
-	TYPE_SWITCHWALL3,//14	SwitchWall
-	TYPE_SWITCHWALL4,//15
+	TYPE_BLANK = 0,		// 0	外側の空白
+	TYPE_PUSH,			// 1	凸
+	TYPE_PULL,			// 2	凹
+	TYPE_NONE,			// 3	blockなし
+	TYPE_BLOCK,			// 4	block
+	TYPE_CHIP,			// 5	puzzle
+	TYPE_WARP,			// 6	warp
+	TYPE_GOAL,			// 7	goal
+	TYPE_JUMP,			// 8	ジャンプ台
+	TYPE_SPIKE,			// 9	トゲ
+	TYPE_FALL,			//10	落ちるブロック
+	TYPE_KEY,			//11	鍵
+	TYPE_DOOR,			//12	鍵付きドア
+	TYPE_SWITCH,		//13	switch
+	TYPE_SWITCHWALL3,	//14	Switch壁3
+	TYPE_SWITCHWALL4,	//15	Switch壁4
+	TYPE_SHEET,			//16	透ける床
+	TYPE_BROKEN,		//17	壊れる床
+	TYPE_HIGHBROKEN,	//18	ジャンプで壊れる床
+	TYPE_MIRROR,		//19	鏡
 
-	TYPE_NUM,		
+	TYPE_NUM		
 };
 
 typedef struct {

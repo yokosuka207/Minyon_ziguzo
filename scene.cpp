@@ -13,17 +13,13 @@ static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
 
 static Time g_Time;
-static int ElapsedTime;
+static int *pElapsedTime;
 
-Save g_SaveScene;				// セーブクラスのインスタンス
+static Save g_SaveScene;				// セーブクラスのインスタンス
 
-void InitScene(SCENE no)
-{
+void InitScene(SCENE no){
 	g_sceneIndex = g_sceneNextIndex = no;
-
-	switch (g_sceneIndex)
-	{
-
+	switch (g_sceneIndex){
 	case SCENE::SCENE_NONE:
 		break;
 	case SCENE::SCENE_TITLE:
@@ -37,26 +33,20 @@ void InitScene(SCENE no)
 		SetStageSelect();
 		break;
 	case SCENE::SCENE_GAME :
+		g_Time.StartTime();
 		InitGame();
 		break;
 	case SCENE::SCENE_RESULT:
-		g_Time.SetElapsedTime(ElapsedTime);
+		g_Time.SetElapsedTime(*pElapsedTime);
 		InitResult();
-		break;
-	case SCENE::SCENE_PAUSE:
-		InitPause();
 		break;
 	default:
 		break;
 	}
-
 }
 
-void UninitScene()
-{
-	switch (g_sceneIndex)
-	{
-
+void UninitScene(){
+	switch (g_sceneIndex){
 	case SCENE::SCENE_NONE:
 		break;
 	case SCENE::SCENE_TITLE:
@@ -69,27 +59,20 @@ void UninitScene()
 		UninitStageSelect();
 		break;
 	case SCENE::SCENE_GAME:
-		ElapsedTime = g_Time.GetTime();
+		g_Time.EndTime();
+		pElapsedTime = g_Time.GetTime();
 		UninitGame();
 		break;
 	case SCENE::SCENE_RESULT:
 		UninitResult();
 		break;
-	case SCENE::SCENE_PAUSE:
-		UninitPause();
-		break;
-
 	default:
 		break;
 	}
-
 }
 
-void UpdateScene()
-{
-	switch (g_sceneIndex)
-	{
-
+void UpdateScene(){
+	switch (g_sceneIndex){
 	case SCENE::SCENE_NONE:
 		break;
 	case SCENE::SCENE_TITLE:
@@ -107,21 +90,13 @@ void UpdateScene()
 	case SCENE::SCENE_RESULT:
 		UpdateResult();
 		break;
-	case SCENE::SCENE_PAUSE:
-		UpdatePause();
-		break;
-
 	default:
 		break;
 	}
-
 }
 
-void DrawScene()
-{
-	switch (g_sceneIndex)
-	{
-
+void DrawScene(){
+	switch (g_sceneIndex){
 	case SCENE::SCENE_NONE:
 		break;
 	case SCENE::SCENE_TITLE:
@@ -139,31 +114,22 @@ void DrawScene()
 	case SCENE::SCENE_RESULT:
 		DrawResult();
 		break;
-	case SCENE::SCENE_PAUSE:
-		DrawPause();
-		break;
 	default:
 		break;
 	}
-
 }
 
-void SetScene(SCENE no)
-{
+void SetScene(SCENE no){
 	g_sceneNextIndex = no;
 }
 
-void CheckScene()
-{
-	if (g_sceneIndex != g_sceneNextIndex)
-	{
+void CheckScene(){
+	if (g_sceneIndex != g_sceneNextIndex){
 		UninitScene();
-
 		InitScene(g_sceneNextIndex);
 	}
 }
 
-SCENE* GetScene()
-{
+SCENE* GetScene(){
 	return &g_sceneIndex;
 }

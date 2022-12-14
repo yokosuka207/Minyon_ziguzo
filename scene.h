@@ -9,7 +9,6 @@ typedef enum
 	SCENE_STAGESELECT,
 	SCENE_GAME,
 	SCENE_RESULT,
-	SCENE_PAUSE,
 	SCENE_MAX
 
 }SCENE;
@@ -23,3 +22,5 @@ void SetScene(SCENE no);	//シーン切り替えのリクエスト
 void CheckScene();	//しーん切り替え処理
 
 SCENE* GetScene();
+
+int GetClearTimeScene();

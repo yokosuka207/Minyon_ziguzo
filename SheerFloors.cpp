@@ -24,9 +24,10 @@ HRESULT InitSheerFloors()
 	for (int i = 0; i < SHEERFLOORS_NUM; i++)
 	{
 		gSheerFloors[i].pos = D3DXVECTOR2(SCREEN_HEIGHT / 2 + 160, 220);
+
 		gSheerFloors[i].size = D3DXVECTOR2(SHEERFLOORS_SIZE_X, SHEERFLOORS_SIZE_Y);
 
-		gSheerFloors[i].use = true;
+		gSheerFloors[i].use = false;
 
 		gSheerFloorsNo = LoadTexture(gSheerFloorsTextureName);
 	}
@@ -75,7 +76,7 @@ void SetSheerFloors(D3DXVECTOR2 p, D3DXVECTOR2 s)
 		if (!gSheerFloors[i].use)
 		{
 			gSheerFloors[i].pos = p + D3DXVECTOR2(0.0f, BLOCK_CHIP_SIZE / 2);
-			gSheerFloors[i].size = s;
+			//gSheerFloors[i].size = s;
 			gSheerFloors[i].use = true;
 		}
 	}
@@ -86,3 +87,7 @@ SHEERFLOORS* GetSheerFloors()
 	return &gSheerFloors[0];
 }
 
+void DeleteSheet()
+{
+	gSheerFloors->use = false;
+}

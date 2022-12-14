@@ -13,7 +13,7 @@
 #include "renderer.h"
 #include <time.h>
 
-#define TIME_POS_X (SCREEN_WIDTH - 20.0f)
+#define TIME_POS_X (SCREEN_WIDTH - 20)
 
 typedef struct {
 	D3DXVECTOR2 pos;
@@ -31,6 +31,7 @@ private:
 
 	clock_t m_PuaseStart;	//一時停止計測開始時間
 	clock_t m_PuaseEnd;		//一時停止計測終了時間
+	clock_t m_PauseElapsed;	//一時停止時間合計
 public:
 	void InitTime();
 	void UninitTime();
@@ -38,12 +39,12 @@ public:
 	void DrawResultTime();	//リザルトで表示される
 	void StartTime();
 	int EndTime();
-	int ElapsedTime();
+	int	 ElapsedTime();
 	void PuaseStartTime();
 	void PuaseEndTime();
 
 	void SetTime(D3DXVECTOR2 pos,D3DXVECTOR2 size);
-	int GetTime();
+	int* GetTime();
 	void SetElapsedTime(int elapsedtime);
 	TimeParam* GetTimeParam();
 };

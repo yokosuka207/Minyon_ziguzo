@@ -18,7 +18,7 @@ static int g_ScoreTextureNo = 0;
 
 static SCORE g_Score;	//\‘¢‘Ì
 
-static int distance = SCORE_POS_X;
+static int g_TimeDistance = SCORE_POS_X;
 static int score = 0;
 
 static 	Time g_Time;
@@ -31,7 +31,7 @@ void Score::InitScore() {
 	g_Score.UseFlag = false;
 	g_Score.CalcFlag = false;
 	m_score = 0;
-	m_TimeScore = 0;
+	m_pTimeScore = 0;
 }
 void Score::UninitScore() {
 	if (g_ScoreTexture) {
@@ -45,7 +45,7 @@ void Score::DrawScore() {
 
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreTextureNo));
 
-		g_Score.pos.x = distance;
+		g_Score.pos.x = g_TimeDistance;
 		score = CulcScore();
 
 		for (int i = 0; i < SCORE_MAX; i++) {
@@ -70,13 +70,13 @@ void Score::DrawScore() {
 	}
 }
 int Score::CulcScore() {
-	m_TimeScore = g_Time.GetTime();
+	m_pTimeScore = g_Time.GetTime();
 	
-	if (m_TimeScore < 60) {
-		m_score = m_TimeScore;
+	if (*m_pTimeScore < 60) {
+		m_score = *m_pTimeScore;
 	}
 	else {
-		m_score = m_TimeScore * 0.5;
+		m_score = *m_pTimeScore * 0.5;
 	}
 
 	return m_score;

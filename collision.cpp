@@ -77,9 +77,11 @@ void UpdateCollision()
 					)
 				{
 					pSwitch[i].PressFlag = true;//押されたら
+					pSwitch[i].PaternNo += 0.25;
 				}
 				else {
 					pSwitch[i].PressFlag = false;
+					pSwitch[i].PaternNo = 0;
 				}
 
 				if (pSwitch[i].PressFlag) {
@@ -110,6 +112,12 @@ void UpdateCollision()
 				}
 			}
 		}
+		//スイッチと木箱の判定
+		for (int i = 0; i < SWITCHWALL_MAX; i++) {
+			if (pSwitchWall[i].UseFlag) {
+
+			}
+		}
 	}
 
 	//などの必要な判定をここで作る
@@ -118,9 +126,16 @@ void UpdateCollision()
 		//プレイヤーとトゲブロックの判定
 		for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 			if (pThornBlock[i].UseFlag) {
+				
 				if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
-					pResult[0].type = LOSE;
-					SetScene(SCENE::SCENE_RESULT);
+
+					pPlayer->hp--;
+
+					if (pPlayer->hp <= 0) {
+						SetResultType(LOSE);
+						SetScene(SCENE::SCENE_RESULT);
+					}
+					
 				}
 			}
 		}

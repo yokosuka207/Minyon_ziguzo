@@ -44,6 +44,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="player3D.cpp" />
     <ClCompile Include="pause.cpp" />
+    <ClCompile Include="MoveBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -89,5 +90,6 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="player3D.h" />
     <ClInclude Include="pause.h" />
+    <ClInclude Include="MoveBlock.h" />
   </ItemGroup>
 </Project>
