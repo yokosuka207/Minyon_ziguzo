@@ -9,6 +9,7 @@
 //#include "keyboard.h"
 #include "mouse.h"
 #include "camera.h"
+#include"player.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -50,7 +51,7 @@ void InitCamera(void)
 	vx = g_Camera.pos.x - g_Camera.at.x;
 	vz = g_Camera.pos.z - g_Camera.at.z;
 	g_Camera.len = sqrtf(vx * vx + vz * vz);
-	
+	g_Camera.zoomFlag = false;
 	g_Camera.fov = 45.0f;		// 視野角の初期化
 }
 
@@ -69,7 +70,7 @@ void UninitCamera(void)
 //=============================================================================
 void UpdateCamera(void)
 {
-
+	PLAYER* pPlayer = GetPlayer();
 	// カメラを初期に戻す
 	if (GetKeyboardTrigger(DIK_P))
 	{
@@ -86,6 +87,27 @@ void UpdateCamera(void)
 	{// 角度を小さくする
 		g_Camera.fov -= 1.0f;
 	}
+	if (GetKeyboardPress(DIK_UP))//W
+	{
+		g_Camera.fov -= 0.1f;
+		g_Camera.zoomFlag = true;
+
+	}
+	if (GetKeyboardPress(DIK_DOWN))//S
+	{
+		g_Camera.fov += 0.1f;
+
+	}
+	if (GetKeyboardPress(DIK_Z))
+	{
+
+	}
+	if (g_Camera.zoomFlag)
+	{
+		SetCameraAT(D3DXVECTOR3(pPlayer->Position.x, pPlayer->Position.y, 0.0f));	// カメラの注視点
+		g_Camera.pos.y = pPlayer->Position.y;
+	}
+
 
 }
 

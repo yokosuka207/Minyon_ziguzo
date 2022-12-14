@@ -48,7 +48,7 @@ void UpdateSwitch() {
 
 }
 void DrawSwitch() {
-	SetWorldViewProjection2D();
+	//SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SwitchTextureNo));
 
 	for (int i = 0; i < SWITCH_MAX; i++) {
@@ -56,7 +56,7 @@ void DrawSwitch() {
 			SpriteDrawColorRotation(
 				g_Switch[i].pos.x,
 				g_Switch[i].pos.y,
-				0.0f,
+				-0.1f,
 				g_Switch[i].size.x,
 				g_Switch[i].size.y,
 				0.0f,

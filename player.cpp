@@ -157,20 +157,23 @@ void UpdatePlayer()
 
 			BLOCK* block = GetChipBlock();
 			for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
-				// プレイヤーの下にブロックがあったら
-				if ((g_Player.Position.y + g_Player.size.y / 2 + 0.05f > block[i].Position.y - block[i].Size.y / 2) &&
-					(g_Player.Position.y - g_Player.size.y / 2 < block[i].Position.y + block[i].Size.y / 2) &&
-					(g_Player.Position.x + g_Player.size.x / 2 > block[i].Position.x - block[i].Size.x / 2) &&
-					(g_Player.Position.x - g_Player.size.x / 2 < block[i].Position.x + block[i].Size.x / 2))
-				{	// 着地中にする
-					if (!g_Player.isGround) {
-						g_Player.sp.y = 0.0f;
-						g_Player.isGround = true;
-						break;
+				if (block[i].UseFlag)
+				{
+					// プレイヤーの下にブロックがあったら
+					if ((g_Player.Position.y - g_Player.size.y / 2 - 0.05f < block[i].Position.y + block[i].Size.y / 2) &&
+						(g_Player.Position.y + g_Player.size.y / 2 > block[i].Position.y - block[i].Size.y / 2) &&
+						(g_Player.Position.x + g_Player.size.x / 2 > block[i].Position.x - block[i].Size.x / 2) &&
+						(g_Player.Position.x - g_Player.size.x / 2 < block[i].Position.x + block[i].Size.x / 2))
+					{	// 着地中にする
+						if (!g_Player.isGround) {
+							g_Player.sp.y = 0.0f;
+							g_Player.isGround = true;
+							break;
+						}
 					}
-				}
-				else {
-					g_Player.isGround = false;
+					else {
+						g_Player.isGround = false;
+					}
 				}
 			}
 
@@ -228,41 +231,42 @@ void UpdatePlayer()
 				}
 			}
 
-			//for (int i = 0; i < SHEERFLOORS_NUM; i++)
-			//{
-			//	if (!GetKeyboardPress(DIK_DOWN)){
-			//		// プレイヤーの下にブロックがあったら
-			//		if ((g_Player.Position.y + g_Player.size.y / 2 + 0.05f > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
-			//			(g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2) &&
-			//			(g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2) &&
-			//			(g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2))
-			//		{	// 着地中にする
-			//			//g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 - g_Player.size.y / 2 - 0.02f;
-			//			
-			//			if (!g_Player.isSheerFloors) {
-			//				g_Player.sp.y = 0.0f;
-			//				g_Player.isSheerFloors = true;
-			//				break;
-			//			}
-			//		}
-			//		else {
-			//			g_Player.isSheerFloors = false;
-			//		}
-			//	}
-			//}
+			for (int i = 0; i < SHEERFLOORS_NUM; i++)
+			{
+				if (!GetKeyboardPress(DIK_DOWN)){
+					// プレイヤーの下にブロックがあったら
+					if ((g_Player.Position.y - g_Player.size.y / 2 - 0.05f > pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2) &&
+						(g_Player.Position.y + g_Player.size.y / 2 < pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
+						(g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2) &&
+						(g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2))
+					{	// 着地中にする
+						//g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 - g_Player.size.y / 2 - 0.02f;
+						
+						if (!g_Player.isSheerFloors) {
+							g_Player.sp.y = 0.0f;
+							g_Player.isSheerFloors = true;
+							break;
+						}
+					}
+					else {
+						g_Player.isSheerFloors = false;
+					}
+				}
+			}
 
 			if (GetKeyboardTrigger(DIK_DOWN)) {
 				g_Player.isSheerFloors = false;
 			}
 
 			// ジャンプ
-			if ((g_Player.isGround || g_Player.isSheerFloors  || g_Player.isHigh) && GetKeyboardPress(DIK_SPACE))
+			if ((g_Player.isGround || g_Player.isSheerFloors  || g_Player.isHigh)&& g_Player.sp.y <= 0 && GetKeyboardPress(DIK_SPACE))
 			{
-				g_Player.sp.y = -2.0f;			// スピードのyをマイナスにする
+
+    				g_Player.sp.y = 2.0f;			// スピードのyをマイナスにする
 				
 				if (g_Player.isGround) {
 					g_Player.isGround = false;			// フラグをジャンプ中にする
-				}
+ 				}
 				if (g_Player.isSheerFloors) {
 					g_Player.isSheerFloors = false;			// フラグをジャンプ中にする
 				}
@@ -273,7 +277,7 @@ void UpdatePlayer()
 
 			// 空中
 			if (!g_Player.isGround && !g_Player.isHigh && !g_Player.isSheerFloors) {
-				g_Player.sp.y += 0.1f;			// スピードのyを増やす
+				g_Player.sp.y -= 0.1f;			// スピードのyを増やす
 			}
 
 			//{
@@ -397,7 +401,7 @@ void UpdatePlayer()
 					if (g_Player.Position.x + g_Player.size.x / 2 > (cipblock + i)->Position.x - (cipblock + i)->Size.x / 2 &&
 						g_Player.oldpos.x + g_Player.size.x / 2 <= (cipblock + i)->Position.x - (cipblock + i)->Size.x / 2 &&
 						g_Player.Position.y + g_Player.size.y / 2 > (cipblock + i)->Position.y - (cipblock + i)->Size.y / 2 &&
-						g_Player.Position.y - g_Player.size.y / 3 < (cipblock + i)->Position.y + (cipblock + i)->Size.y / 2)
+						g_Player.Position.y - g_Player.size.y / 2 < (cipblock + i)->Position.y + (cipblock + i)->Size.y / 2)
 					{
  						g_Player.Position.x = (cipblock + i)->Position.x - (cipblock + i)->Size.x / 2 - g_Player.size.x / 2;
 					}
@@ -418,9 +422,9 @@ void UpdatePlayer()
 					{
 						g_Player.Position.y = (cipblock + i)->Position.y + (cipblock + i)->Size.y / 2 + g_Player.size.y / 2 + 0.02f;
 						g_Player.jump = false;
-						g_Player.fall = false;
+ 						g_Player.fall = false;
 						g_Player.WarpFlag = false;
-						g_Player.isGround = true;
+						//g_Player.isGround = true;
 						g_Player.sp.y = 0;
 						g_Player.frame = 0;
 					}
@@ -464,8 +468,8 @@ void UpdatePlayer()
 					//プレイヤー上・壊れるブロック下
 					if (g_Player.Position.x + g_Player.size.x / 2 > (broken + i)->Postion.x - (broken + i)->Size.x / 2 &&
 						g_Player.Position.x - g_Player.size.x / 2 < (broken + i)->Postion.x + (broken + i)->Size.x / 2 &&
-						g_Player.Position.y - g_Player.size.y / 2 > (broken + i)->Postion.y + (broken + i)->Size.y / 2 &&
-						g_Player.oldpos.y - g_Player.size.y / 2 <= (broken + i)->Postion.y + (broken + i)->Size.y / 2)
+						g_Player.Position.y - g_Player.size.y / 2 < (broken + i)->Postion.y + (broken + i)->Size.y / 2 &&
+						g_Player.oldpos.y - g_Player.size.y / 2 >= (broken + i)->Postion.y + (broken + i)->Size.y / 2)
 					{
 						g_Player.Position.y = (broken + i)->Postion.y - (broken + i)->Size.y / 2 - g_Player.size.y / 2;
 						g_Player.jump = false;
@@ -584,15 +588,15 @@ void UpdatePlayer()
 					//プレイヤー下・たかこわ上,
 					if (g_Player.Position.x + g_Player.size.x / 2 > (high + i)->Postion.x - (high + i)->Size.x / 2 &&
 						g_Player.Position.x - g_Player.size.x / 2 < (high + i)->Postion.x + (high + i)->Size.x / 2 &&
-						g_Player.Position.y - g_Player.size.y / 2 < (high + i)->Postion.y + (high + i)->Size.y / 2 &&
-						g_Player.oldpos.y - g_Player.size.y / 2 >= (high + i)->Postion.y + (high + i)->Size.y / 2)
+						g_Player.Position.y + g_Player.size.y / 2 > (high + i)->Postion.y - (high + i)->Size.y / 2 &&
+						g_Player.oldpos.y + g_Player.size.y / 2 <= (high + i)->Postion.y - (high + i)->Size.y / 2)
 					{
 						g_Player.Position.y = (high + i)->Postion.y + (high + i)->Size.y / 2 + g_Player.size.y / 2;
 					}
 
 					// プレイヤーの下にブロックがあったら
-					if ((g_Player.Position.y + g_Player.size.y / 2 + 0.05f > (high + i)->Postion.y - (high + i)->Size.y / 2) &&
-						(g_Player.Position.y - g_Player.size.y / 2 < (high + i)->Postion.y + (high + i)->Size.y / 2) &&
+					if ((g_Player.Position.y - g_Player.size.y / 2 - 0.05f < (high + i)->Postion.y + (high + i)->Size.y / 2) &&
+						(g_Player.Position.y + g_Player.size.y / 2 > (high + i)->Postion.y - (high + i)->Size.y / 2) &&
 						(g_Player.Position.x + g_Player.size.x / 2 > (high + i)->Postion.x - (high + i)->Size.x / 2) &&
 						(g_Player.Position.x - g_Player.size.x / 2 < (high + i)->Postion.x + (high + i)->Size.x / 2))
 					{	// 着地中にする
@@ -619,11 +623,9 @@ void UpdatePlayer()
 			//			g_Player.oldpos.x + g_Player.size.x / 2 <= (FallBlock + i)->Position.x - (FallBlock + i)->Size.x / 2 &&
 			//			g_Player.Position.y + g_Player.size.y / 2 > (FallBlock + i)->Position.y - (FallBlock + i)->Size.y / 2 &&
 			//			g_Player.Position.y - g_Player.size.y / 2 < (FallBlock + i)->Position.y + (FallBlock + i)->Size.y / 2)
-
 			//		{
 			//			g_Player.Position.x = (FallBlock + i)->Position.x - (FallBlock + i)->Size.x / 2 - g_Player.size.x / 2;
 			//		}
-
 			//		//プレイヤー右・落ちるブロック左
 			//		if (g_Player.Position.x - g_Player.size.x / 2 < (FallBlock + i)->Position.x + (FallBlock + i)->Size.x / 2 &&
 			//			g_Player.oldpos.x - g_Player.size.x / 2 >= (FallBlock + i)->Position.x + (FallBlock + i)->Size.x / 2 &&
@@ -632,7 +634,6 @@ void UpdatePlayer()
 			//		{
 			//			g_Player.Position.x = (FallBlock + i)->Position.x + (FallBlock + i)->Size.x / 2 + g_Player.size.x / 2;
 			//		}
-
 			//		//プレイヤー上・落ちるブロック下
 			//		if (g_Player.Position.x + g_Player.size.x / 2 > (FallBlock + i)->Position.x - (FallBlock + i)->Size.x / 2 &&
 			//			g_Player.Position.x - g_Player.size.x / 2 < (FallBlock + i)->Position.x + (FallBlock + i)->Size.x / 2 &&
@@ -645,7 +646,6 @@ void UpdatePlayer()
 			//			g_Player.frame = 50;
 			//			(FallBlock + i)->Position.y++;
 			//		}
-
 			//		//プレイヤー下・落ちるブロック
 			//		if (g_Player.Position.x + g_Player.size.x / 2 > (FallBlock + i)->Position.x - (FallBlock + i)->Size.x / 2 &&
 			//			g_Player.Position.x - g_Player.size.x / 2 < (FallBlock + i)->Position.x + (FallBlock + i)->Size.x / 2 &&
@@ -655,9 +655,7 @@ void UpdatePlayer()
 			//			g_Player.Position.y = (FallBlock + i)->Position.y + (FallBlock + i)->Size.y / 2 - g_Player.size.y / 2;
 			//		}
 			//	}
-
 			//}
-
 			////鍵プレイヤー判定
 			//for (int i = 0; i < FALLBLOCK_MAX; i++)
 			//{
@@ -673,7 +671,6 @@ void UpdatePlayer()
 			//		{
 			//			g_Player.HaveKey++;
 			//			Key->GetKey = false;
-
 			//		}
 			//		//プレイヤー右・鍵取得　左側
 			//		if (g_Player.Position.x - g_Player.size.x / 2 < Key->Position.x + Key->Size.x / 2 &&
@@ -683,9 +680,7 @@ void UpdatePlayer()
 			//		{
 			//			g_Player.HaveKey++;
 			//			Key->GetKey = false;
-
 			//		}
-
 			//		//プレイヤー上・鍵取得　下
 			//		if (g_Player.Position.x + g_Player.size.x / 2 > Key->Position.x - Key->Size.x / 2 &&
 			//			g_Player.Position.x - g_Player.size.x / 2 < Key->Position.x + Key->Size.x / 2 &&
@@ -703,17 +698,13 @@ void UpdatePlayer()
 			//		{
 			//			g_Player.HaveKey++;
 			//			Key->GetKey = false;
-
 			//		}
 			//	}
 			//}
-
-
 			////鍵を取得したプレイヤーと鍵で開く扉　当たり判定
 			//for (int i = 0; i < OPEN_KEY_MAX; i++)
 			//{
 			//	OPENKEY* OpenKey = GetOpenKey();
-
 			//	if ((OpenKey + i)->UseFlag == true)
 			//	{
 			//		//プレイヤー左・開く扉右
@@ -726,7 +717,6 @@ void UpdatePlayer()
 			//				g_Player.Position.x = (OpenKey + i)->Position.x - (OpenKey + i)->Size.x / 2 - g_Player.size.x / 2;
 			//				(OpenKey + i)->UseFlag = false;
 			//			}
-
 			//			else {
 			//				g_Player.Position.x = (OpenKey + i)->Position.x - (OpenKey + i)->Size.x / 2 - g_Player.size.x / 2;
 			//			}
@@ -745,7 +735,6 @@ void UpdatePlayer()
 			//				g_Player.Position.x = (OpenKey + i)->Position.x + (OpenKey + i)->Size.x / 2 + g_Player.size.x / 2;
 			//			}
 			//		}
-
 			//		//プレイヤー上・開く扉下
 			//		if (g_Player.Position.x + g_Player.size.x / 2 > (OpenKey + i)->Position.x - (OpenKey + i)->Size.x / 2 &&
 			//			g_Player.Position.x - g_Player.size.x / 2 < (OpenKey + i)->Position.x + (OpenKey + i)->Size.x / 2 &&
@@ -858,7 +847,7 @@ void UpdatePlayer()
 
 							if (!hitflag2)
 							{
-								g_Player.sp.y += 0.2;//加速
+								g_Player.sp.y -= 0.2;//加速
 							}
 							else
 							{

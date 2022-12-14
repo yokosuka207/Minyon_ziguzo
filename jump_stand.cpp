@@ -29,7 +29,7 @@ HRESULT InitJumpStand()
 	for (int i = 0; i < JUMPSTAND_MAX; i++) {
 		g_TextureNo = LoadTexture(g_textureName_Block);
 
-		g_JumpStand[i].pos = D3DXVECTOR2(330.0f, 245.0f);
+		g_JumpStand[i].pos = D3DXVECTOR2(0.0f, 0.0f);
 		g_JumpStand[i].size = D3DXVECTOR2(JUMPSTAND_SIZE, JUMPSTAND_SIZE);
 
 		g_JumpStand[i].PieceIndex = -1;
@@ -135,20 +135,22 @@ void UpdateJumpStand()
 			{
 					if (Collition_JumpStand())
 					{
-						g_JumpStand[i].JumpStandFlag = true;
+ 						g_JumpStand[i].JumpStandFlag = true;
 						p_Player->sp.y = 0.0f;
-						g_JumpStand[i].JumpPower = -4.8f;
+						g_JumpStand[i].JumpPower = 4.8f;
 						//p_Player->sp.y = 5.0f;
 						g_JumpStand[i].JumpGravity = 0.1f;
 					}
 				
 				if (g_JumpStand[i].JumpStandFlag)
 				{
-					if (g_JumpStand[i].JumpPower < 10.0f)
+					//p_Player->sp.y = 0.0f;
+
+					if (g_JumpStand[i].JumpPower > -10.0f)
 					{
-						g_JumpStand[i].JumpPower += g_JumpStand[i].JumpGravity;
+						g_JumpStand[i].JumpPower -= g_JumpStand[i].JumpGravity;
 					}
-					p_Player->Position.y -= g_JumpStand[i].JumpPower;
+					p_Player->Position.y += g_JumpStand[i].JumpPower;
 					//p_Player->Position.y -= p_Player->sp.y;
 
 					for (int j = 0; j < BLOCK_CHIP_MAX; j++)
@@ -163,7 +165,18 @@ void UpdateJumpStand()
 								p_Player->oldpos.y - p_Player->size.y / 2 >= (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2)
 							{
 								g_JumpStand[i].JumpPower = 0.0f;
-								//p_Player->sp.y = 0.0f;
+								p_Player->sp.y = 0.0f;
+								//g_JumpStand[i].JumpGravity = 0.0f;
+								p_Player->Position.y = (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2 + p_Player->size.y / 2;
+								g_JumpStand[i].JumpStandFlag = false;
+							}
+							if (p_Player->Position.x + p_Player->size.x / 2 > (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
+								p_Player->Position.x - p_Player->size.x / 2 < (p_Block + j)->Position.x + (p_Block + j)->Size.x / 2 &&
+								p_Player->Position.y + p_Player->size.y / 2 > (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2 &&
+								p_Player->oldpos.y + p_Player->size.y / 2 <= (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2)
+							{
+								g_JumpStand[i].JumpPower = 0.0f;
+								p_Player->sp.y = 0.0f;
 								//g_JumpStand[i].JumpGravity = 0.0f;
 								p_Player->Position.y = (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2 + p_Player->size.y / 2;
 								g_JumpStand[i].JumpStandFlag = false;

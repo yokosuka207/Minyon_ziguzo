@@ -70,7 +70,7 @@ void DrawGoal()
 		//D3DXCOLOR	col = D3DXCOLOR(1.0f, 0.8f, 0.8f, 0.5f);
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Goal.texno));
 
-		SpriteDrawColorRotation(g_Goal.Pos.x, g_Goal.Pos.y,-0.5f,
+		SpriteDrawColorRotation(g_Goal.Pos.x, g_Goal.Pos.y,-0.2f,
 			g_Goal.Size.x, g_Goal.Size.y, g_Goal.Rotation, g_Goal.Col,
 			0, 1.0f, 1.0f, 1);
 	}

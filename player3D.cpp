@@ -84,15 +84,23 @@ void PLAYER3D::Update()
 			//MoveSpeed.x += MOVE_SPEED;
 		}
 
-		if (GetKeyboardPress(DIK_UP))//W
-		{
-			MoveSpeed.z = MOVE_SPEED;
-		}
-		if (GetKeyboardPress(DIK_DOWN))//S
-		{
+		//if (GetKeyboardPress(DIK_UP))//W
+		//{
+		//	MoveSpeed.z = MOVE_SPEED;
+		//	zoomFlag = true;
+		//}
+		//if (GetKeyboardPress(DIK_DOWN))//S
+		//{
 
-			MoveSpeed.z = -MOVE_SPEED;
-		}
+		//	MoveSpeed.z = -MOVE_SPEED;
+		//}
+		//if (GetKeyboardPress(DIK_Z))
+		//{
+		//	Position = D3DXVECTOR3(0.0f,0.0f,0.0f);
+		//	zoomFlag = false;
+
+		//}
+
 
 
 		Position += MoveSpeed;

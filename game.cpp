@@ -41,8 +41,9 @@ void InitGame()
 {
 	p_Scene = GetScene();
 
-	if ((int)p_Scene != SCENE_GAME) 
+	if ((int)p_Scene != SCENE_GAME)
 	{
+		InitCamera();
 		//----------Ç∞Å[Çﬁ
 		//InitPolygon();//É|ÉäÉSÉìÇÃèâä˙âª
 		//-----------------------
@@ -64,7 +65,7 @@ void InitGame()
 		InitHigh();
 		InitSwitch();
 		InitSwitchWall();
-
+	}
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 	InitPlayer();

@@ -21,7 +21,7 @@
 struct PLAYER3D
 {
 	bool UseFlag;//使用中フラグ
-
+	bool zoomFlag;
 	//DX11_MODEL Model;	//モデル構造体
 
 	//アップデートで更新させる

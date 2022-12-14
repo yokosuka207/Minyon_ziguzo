@@ -55,7 +55,7 @@ void DrawSwitchwall() {
 				SpriteDrawColorRotation(
 					g_SwitchWall[i].pos.x,
 					g_SwitchWall[i].pos.y,
-					0.0f,
+					-0.1f,
 					g_SwitchWall[i].size.x,
 					g_SwitchWall[i].size.y,
 					0.0f,

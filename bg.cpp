@@ -33,7 +33,7 @@ HRESULT BgInit()
 	}
 	Bg = new BG;	//動的インスタンス化
 	Bg->Position = D3DXVECTOR3(0.0f, 0.0f, 0);
-	Bg->Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
+	Bg->Size = D3DXVECTOR2(SCREEN_WIDTH*2, SCREEN_HEIGHT*2);
 	Bg->Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	Bg->Rotation = 0.0f;
 
