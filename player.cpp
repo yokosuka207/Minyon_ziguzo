@@ -79,6 +79,7 @@ HRESULT InitPlayer()
 	g_Player.isSheerFloors = false;
 	g_Player.isSheerFloorsUse = false;
 	g_Player.isHigh = true;
+	g_Player.isMoveBlock = false;
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
 	g_Player.PaternNo = 0;//パターン番号
@@ -147,7 +148,7 @@ void UpdatePlayer()
 				if (p_JumpStand[i].UseJumpStand) {
 					if (GetKeyboardPress(DIK_B))
 					{
-						if (CollisionBB(g_Player.Position, p_JumpStand[i].pos, g_Player.size, p_JumpStand[i].size)) {
+						if (CollisionBB(g_Player.Position, p_JumpStand[i].pos, g_Player.size, p_JumpStand[i].size + D3DXVECTOR2(10.0f,0.0f))) {
 							p_JumpStand[i].GetJumpStand = true;
 						}
 					}
@@ -165,13 +166,13 @@ void UpdatePlayer()
 				if (pMoveBlock[i].bUse) {
 					if (GetKeyboardPress(DIK_N))
 					{
-						if (CollisionBB(g_Player.Position, pMoveBlock[i].pos, g_Player.size, pMoveBlock[i].size)) {
+						if (CollisionBB(g_Player.Position, pMoveBlock[i].pos, g_Player.size, pMoveBlock[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
 							pMoveBlock[i].GetMoveBlock = true;
 						}
-						else
-						{
-							pMoveBlock[i].GetMoveBlock = false;
-						}
+					}
+					else
+					{
+						pMoveBlock[i].GetMoveBlock = false;
 					}
 				}
 			}
@@ -273,7 +274,7 @@ void UpdatePlayer()
 			}
 
 			// ジャンプ
-			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh) && GetKeyboardPress(DIK_SPACE))
+			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock) && GetKeyboardPress(DIK_SPACE))
 			{
 				g_Player.sp.y = -2.5f;			// スピードのyをマイナスにする
 
@@ -286,10 +287,13 @@ void UpdatePlayer()
 				if (g_Player.isHigh) {
 					g_Player.isHigh = false;			// フラグをジャンプ中にする
 				}
+				if (g_Player.isMoveBlock) {
+					g_Player.isMoveBlock = false;
+				}
 			}
 
 			// 空中
-			if (!g_Player.isGround && !g_Player.isHigh && !g_Player.isSheerFloors) {
+			if (!g_Player.isGround && !g_Player.isHigh && !g_Player.isSheerFloors && !g_Player.isMoveBlock) {
 				g_Player.sp.y += 0.1f;			// スピードのyを増やす
 			}
 
@@ -500,6 +504,59 @@ void UpdatePlayer()
 					}
 				}
 			}
+
+			//PlayerとMoveBlockの当たり判定
+			//プレイヤーとの当たり判定
+			pMoveBlock = GetMoveBlock();
+
+			for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
+				if (pMoveBlock[i].bUse)
+				{
+					if (g_Player.Position.x + g_Player.size.x / 2 > pMoveBlock[i].pos.x - pMoveBlock[i].size.x / 2 &&
+						g_Player.oldpos.x + g_Player.size.x / 2 <= pMoveBlock[i].pos.x - pMoveBlock[i].size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 < pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2)
+					{
+						pMoveBlock[i].sp = g_Player.sp;
+						pMoveBlock[i].pos.x += pMoveBlock[i].sp.x;
+
+					}
+					if (g_Player.Position.x - g_Player.size.x / 2 < pMoveBlock[i].pos.x + pMoveBlock[i].size.x / 2 &&
+						g_Player.oldpos.x - g_Player.size.x / 2 >= pMoveBlock[i].pos.x + pMoveBlock[i].size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 < pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2)
+					{
+						pMoveBlock[i].sp = g_Player.sp;
+						pMoveBlock[i].pos.x += pMoveBlock[i].sp.x;
+					}
+					if (g_Player.Position.x + g_Player.size.x / 2 > pMoveBlock[i].pos.x - pMoveBlock[i].size.x / 2 &&
+						g_Player.Position.x - g_Player.size.x / 2 < pMoveBlock[i].pos.x + pMoveBlock[i].size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
+						g_Player.oldpos.y + g_Player.size.y / 2 <= pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2)
+					{
+						g_Player.Position.y = pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 - g_Player.size.y / 2;
+						// 着地中にする
+						if (!g_Player.isMoveBlock) {
+							g_Player.sp.y = 0.0f;
+							g_Player.isMoveBlock = true;
+							break;
+						}
+					}
+					else {
+						g_Player.isMoveBlock = false;
+					}
+					//プレイヤー下・ブロック上,落下する
+					if (g_Player.Position.x + g_Player.size.x / 2 > pMoveBlock[i].pos.x - pMoveBlock[i].size.x / 2 &&
+						g_Player.Position.x - g_Player.size.x / 2 < pMoveBlock[i].pos.x + pMoveBlock[i].size.x / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 < pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2 &&
+						g_Player.oldpos.y - g_Player.size.y / 2 >= pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2)
+					{
+						pMoveBlock[i].sp = g_Player.sp;
+						pMoveBlock[i].pos.y += pMoveBlock[i].sp.x;
+					}
+				}
+			}
+
 
 			//ColisionBBに移植しました
 			//プレイヤー・トゲブロック　当たり判定
