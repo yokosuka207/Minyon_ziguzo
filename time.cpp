@@ -37,6 +37,7 @@ void Time::InitTime() {
 	g_TimeParam.UseFlag = false;
 	g_TimeParam.EndFlag = false;
 	m_start = 0;
+	m_end = 0;
 	m_PuaseStart = 0;
 	m_PuaseStart = 0;
 	m_ElapsedTime = 0;
@@ -216,6 +217,11 @@ void Time::DrawResultTime() {
 void Time::StartTime() {
 	m_start = clock();
 }
+int Time::EndTime() {
+	m_end = clock();
+	return m_end - m_start;
+}
+
 int Time::ElapsedTime() {
 	m_ElapsedTime = clock() - m_start;
 	return m_ElapsedTime;
@@ -230,6 +236,12 @@ void Time::PuaseEndTime() {
 	//m_PauseElapsed += m_PuaseEnd - m_PuaseStart;
 	m_ElapsedTime -= m_PuaseEnd - m_PuaseStart;
 }
+void Time::SetElapsedTime(int elapsedtime) {
+	m_ElapsedTime = elapsedtime;
+}
+TimeParam* Time::GetTimeParam() {
+	return &g_TimeParam;
+}
 void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 	if (!g_TimeParam.UseFlag) {
 		g_TimeParam.pos = pos;
@@ -240,12 +252,3 @@ void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 int* Time::GetTime() {
 	return &m_ElapsedTime;
 }
-
-void Time::SetElapsedTime(int elapsedtime) {
-	m_ElapsedTime = elapsedtime;
-}
-
-TimeParam* Time::GetTimeParam() {
-	return &g_TimeParam;
-}
-

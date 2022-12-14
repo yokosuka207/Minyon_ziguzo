@@ -59,6 +59,7 @@ void UninitScene(){
 		UninitStageSelect();
 		break;
 	case SCENE::SCENE_GAME:
+		g_Time.EndTime();
 		pElapsedTime = g_Time.GetTime();
 		UninitGame();
 		break;

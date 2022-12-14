@@ -16,7 +16,7 @@ static PLAYER* p_Player;
 static BLOCK* p_Block;
 
 static ID3D11ShaderResourceView* g_textureBlock;	//画像一枚で一つの変数が必要
-static char* g_textureName_Block = (char*)"data\\texture\\MoveBlock.jpga";	//テクスチャファイルパス
+static char* g_textureName_Block = (char*)"data\\texture\\MoveBlock.jpg";	//テクスチャファイルパス
 static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
 
 HRESULT InitMoveBlock()
