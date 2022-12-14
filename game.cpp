@@ -69,6 +69,9 @@ void InitGame()
 		InitHigh();
 		InitSwitch();
 		InitSwitchWall();
+		InitMoveBlock();
+		InitPause();
+
 	}
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
@@ -80,37 +83,7 @@ void InitGame()
 	g_Player3D.Init();
 
 }
-	//----------げーむ
-	//InitPolygon();//ポリゴンの初期化
-	//-----------------------
-	InitSplitStage();
-	BgInit();
-	InitBlock();
-	InitJoint();
-	InitGameMouse();
-	InitGoal();
-	InitBroken();
-	InitWarp();
-	InitJumpStand();
-	InitSheerFloors();
-	InitPuzzleCip();
-	InitPuzzle();
-	InitInventory();			// インベントリの初期化
-	InitCursor();				// カーソルの初期化
-	InitThornBlock();
-	InitMoveBlock();
-	InitHigh();
-	InitSwitch();
-	InitSwitchWall();
-	InitPause();
-	InitMapChip();
-	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
-	InitPlayer();
-	g_score.InitScore();
-	g_time.InitTime();
-	g_time.SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
-	//g_time.GetTime();
-}
+
 
 void UninitGame()
 {
@@ -185,6 +158,8 @@ void UpdateGame()
 		UpdateMapChip();
 		UpdateGameMouse();
 		UpdateCursor();				// カーソルの更新
+		g_Player3D.Update();
+		UpdateCamera();
 
 	}
 	else {
@@ -193,22 +168,7 @@ void UpdateGame()
 		UpdateCursor();				// カーソルの更新
 	}
 }	
-	UpdateGoal();
-	UpdateBroken();
-	UpdateWarp();
-	UpdateJumpStand();
-	UpdateSheerFloors();
-	UpdateThornBlock();
-	UpdateHigh();
-	UpdateSwitch();
-	UpdateSwitchWall();
-	UpdateInventory();			// インベントリの更新
-	UpdateMapChip();
-	
-	UpdateCursor();				// カーソルの更新
-	g_Player3D.Update();
-	UpdateCamera();
-}	
+
 
 void DrawGame()
 {
@@ -240,18 +200,15 @@ void DrawGame()
 		DrawInventory();			// インベントリの描画
 		g_time.DrawGameTime();
 		//DrawCursor();				// カーソルの描画
+		g_Player3D.Draw();
+		SetCamera();
+
 	}
 	else {
 		BgDraw();
 		//DrawCursor();				// カーソルの描画
 		DrawPause();
 	}
-	DrawThornBlock();
-	DrawInventory();			// インベントリの描画
-	g_time.DrawGameTime();
-	//DrawCursor();				// カーソルの描画
-	g_Player3D.Draw();
-	SetCamera();
 }
 
 void ResetGame()

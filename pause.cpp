@@ -116,39 +116,45 @@ void	DrawPause()
 
 
 	//スプライトの描画
-	//シーン画面
-	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseTextureNo));
-	SpriteDrawColorRotation
-	(
-		PauseObject[0].Position.x,
-		PauseObject[0].Position.y,
-		-0.0f,
-		PauseObject[0].Size.x,
-		PauseObject[0].Size.y,
-		PauseObject[0].Rotate,
-		PauseObject[0].Color,
-		0,
-		1.0f,
-		1.0f,
-		1
-	);
 	
-	//再開ボタン
-	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseEndTextureNo));
-	SpriteDrawColorRotation
-	(
-		PauseObject[1].Position.x,
-		PauseObject[1].Position.y,
-		0.0f,
-		PauseObject[1].Size.x,
-		PauseObject[1].Size.y,
-		PauseObject[1].Rotate,
-		PauseObject[1].Color,
-		0,
-		1.0f,
-		1.0f,
-		1
-	);
+	//シーン画面
+	if (PauseFlag)
+	{
+
+
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseTextureNo));
+		SpriteDrawColorRotation
+		(
+			PauseObject[0].Position.x,
+			PauseObject[0].Position.y,
+			-0.0f,
+			PauseObject[0].Size.x,
+			PauseObject[0].Size.y,
+			PauseObject[0].Rotate,
+			PauseObject[0].Color,
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
+
+		//再開ボタン
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseEndTextureNo));
+		SpriteDrawColorRotation
+		(
+			PauseObject[1].Position.x,
+			PauseObject[1].Position.y,
+			0.0f,
+			PauseObject[1].Size.x,
+			PauseObject[1].Size.y,
+			PauseObject[1].Rotate,
+			PauseObject[1].Color,
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
+	}
 }
 
 
