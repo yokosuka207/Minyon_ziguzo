@@ -26,6 +26,7 @@
 #include "score.h"
 #include "SheerFloors.h"
 #include "high_broken.h"
+#include "MoveBlock.h"
 #include "switch.h"
 #include "SwitchWall.h"
 #include "scene.h"
@@ -56,6 +57,7 @@ void InitGame()
 	InitInventory();			// インベントリの初期化
 	InitCursor();				// カーソルの初期化
 	InitThornBlock();
+	InitMoveBlock();
 	InitHigh();
 	InitSwitch();
 	InitSwitchWall();
@@ -88,6 +90,7 @@ void UninitGame()
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了
 	UninitThornBlock();
+	UninitMoveBlock();
 	UninitHigh();
 	UninitSwitch();
 	UninitSwitchWall();
@@ -131,6 +134,7 @@ void UpdateGame()
 		UpdateJumpStand();
 		UpdateSheerFloors();
 		UpdateThornBlock();
+		UpdateMoveBlock();
 		UpdateHigh();
 		UpdateSwitch();
 		UpdateSwitchWall();
@@ -166,6 +170,7 @@ void DrawGame()
 		DrawJumpStand();
 		DrawSheerFloors();
 		DrawThornBlock();
+		DrawMoveBlock();
 		DrawHigh();
 		DrawSwitch();
 		DrawSwitchwall();
