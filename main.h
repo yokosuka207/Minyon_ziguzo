@@ -31,8 +31,8 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define SCREEN_WIDTH	(960)				// ウインドウの幅
-#define SCREEN_HEIGHT	(700)				// ウインドウの高さ
+#define SCREEN_WIDTH	(1422)				// ウインドウの幅
+#define SCREEN_HEIGHT	(800)				// ウインドウの高さ
 
 #define SCREEN_LIMIT_UP	(0)	//上の限界
 #define SCREEN_LIMIT_DOWN	(SCREEN_HEIGHT)	//上の限界

@@ -116,13 +116,18 @@ void	DrawPause()
 
 
 	//スプライトの描画
+	
 	//シーン画面
-	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseTextureNo));
-	if (PauseFlag) {
+	if (PauseFlag)
+	{
+
+
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseTextureNo));
 		SpriteDrawColorRotation
 		(
 			PauseObject[0].Position.x,
 			PauseObject[0].Position.y,
+			-0.0f,
 			PauseObject[0].Size.x,
 			PauseObject[0].Size.y,
 			PauseObject[0].Rotate,
@@ -139,6 +144,7 @@ void	DrawPause()
 		(
 			PauseObject[1].Position.x,
 			PauseObject[1].Position.y,
+			0.0f,
 			PauseObject[1].Size.x,
 			PauseObject[1].Size.y,
 			PauseObject[1].Rotate,

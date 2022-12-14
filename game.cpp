@@ -29,50 +29,65 @@
 #include "MoveBlock.h"
 #include "switch.h"
 #include "SwitchWall.h"
+#include"player3D.h"
+#include"camera.h"
 #include "scene.h"
 #include "pause.h"
 
 static Time g_time;
 static Score g_score;
+static PLAYER3D g_Player3D;
+static SCENE* p_Scene;
 static bool* pause = GetPause();
 
 
 void InitGame()
 {
-	//----------げーむ
-	//InitPolygon();//ポリゴンの初期化
-	//-----------------------
-	InitSplitStage();
-	BgInit();
-	InitBlock();
-	InitJoint();
-	InitGameMouse();
-	InitGoal();
-	InitBroken();
-	InitWarp();
-	InitJumpStand();
-	InitSheerFloors();
-	InitPuzzleCip();
-	InitPuzzle();
-	InitInventory();			// インベントリの初期化
-	InitCursor();				// カーソルの初期化
-	InitThornBlock();
-	InitMoveBlock();
-	InitHigh();
-	InitSwitch();
-	InitSwitchWall();
-	InitPause();
+	p_Scene = GetScene();
+
+	if ((int)p_Scene != SCENE_GAME)
+	{
+		InitCamera();
+		//----------げーむ
+		//InitPolygon();//ポリゴンの初期化
+		//-----------------------
+		InitSplitStage();
+		BgInit();
+		InitBlock();
+		InitJoint();
+		InitGameMouse();
+		InitGoal();
+		InitBroken();
+		InitWarp();
+		InitJumpStand();
+		InitSheerFloors();
+		InitPuzzleCip();
+		InitPuzzle();
+		InitInventory();			// インベントリの初期化
+		InitCursor();				// カーソルの初期化
+		InitThornBlock();
+		InitHigh();
+		InitSwitch();
+		InitSwitchWall();
+		InitMoveBlock();
+		InitPause();
+
+	}
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 	InitPlayer();
 	g_score.InitScore();
 	g_time.InitTime();
 	g_time.SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
-	//g_time.GetTime();
+	g_time.StartTime();
+	g_Player3D.Init();
+
 }
+
 
 void UninitGame()
 {
+	UninitCamera();
 	//UninitPolygon();	//ポリゴンの終了
 	BgUninit();
 	UninitBlock();
@@ -97,6 +112,7 @@ void UninitGame()
 	UninitPause();
 	g_score.UninitScore();
 	g_time.UninitTime();
+	g_Player3D.Uninit();
 }
 
 void UpdateGame()
@@ -142,6 +158,8 @@ void UpdateGame()
 		UpdateMapChip();
 		UpdateGameMouse();
 		UpdateCursor();				// カーソルの更新
+		g_Player3D.Update();
+		UpdateCamera();
 
 	}
 	else {
@@ -150,6 +168,7 @@ void UpdateGame()
 		UpdateCursor();				// カーソルの更新
 	}
 }	
+
 
 void DrawGame()
 {
@@ -181,6 +200,9 @@ void DrawGame()
 		DrawInventory();			// インベントリの描画
 		g_time.DrawGameTime();
 		//DrawCursor();				// カーソルの描画
+		g_Player3D.Draw();
+		SetCamera();
+
 	}
 	else {
 		BgDraw();

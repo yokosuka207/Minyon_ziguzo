@@ -139,6 +139,7 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="broken.cpp" />
     <ClCompile Include="button.cpp" />
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="cursor.cpp" />
     <ClCompile Include="enemy.cpp" />
@@ -160,6 +161,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="player3D.cpp" />
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="puzzle.cpp" />
     <ClCompile Include="puzzlecip.cpp" />
@@ -185,6 +187,7 @@
     <ClInclude Include="block.h" />
     <ClInclude Include="broken.h" />
     <ClInclude Include="button.h" />
+    <ClInclude Include="camera.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="cursor.h" />
     <ClInclude Include="enemy.h" />
@@ -206,6 +209,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="player.h" />
+    <ClInclude Include="player3D.h" />
     <ClInclude Include="polygon.h" />
     <ClInclude Include="puzzle.h" />
     <ClInclude Include="puzzlecip.h" />

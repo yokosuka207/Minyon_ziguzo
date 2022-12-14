@@ -5,10 +5,11 @@
 //
 //=============================================================================
 #include "main.h"
-#include "inputx.h"
-#include "keyboard.h"
+#include "input.h"
+//#include "keyboard.h"
 #include "mouse.h"
 #include "camera.h"
+#include"player.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -18,7 +19,7 @@
 //#define	POS_Y_CAM		(200.0f)		// カメラの初期位置(Y座標)
 //#define	POS_Z_CAM		(-400.0f)		// カメラの初期位置(Z座標)
 #define	POS_Y_CAM		(5.0f)		// カメラの初期位置(Y座標)
-#define	POS_Z_CAM		(700.0f)		// カメラの初期位置(Z座標)
+#define	POS_Z_CAM		(-900.0f)		// カメラの初期位置(Z座標)
 
 // プロジェクション行列のパラメーター
 #define	VIEW_ANGLE		(D3DXToRadian(45.0f))							// ビュー平面の視野角
@@ -50,7 +51,7 @@ void InitCamera(void)
 	vx = g_Camera.pos.x - g_Camera.at.x;
 	vz = g_Camera.pos.z - g_Camera.at.z;
 	g_Camera.len = sqrtf(vx * vx + vz * vz);
-	
+	g_Camera.zoomFlag = false;
 	g_Camera.fov = 45.0f;		// 視野角の初期化
 }
 
@@ -69,110 +70,45 @@ void UninitCamera(void)
 //=============================================================================
 void UpdateCamera(void)
 {
-
+	PLAYER* pPlayer = GetPlayer();
 	// カメラを初期に戻す
-	if (Keyboard_IsKeyDown(KK_P))
+	if (GetKeyboardTrigger(DIK_P))
 	{
 		UninitCamera();
 		InitCamera();
 	}
 
 	// 視野角を変更する
-	if (Keyboard_IsKeyDown(KK_O))
+	if (GetKeyboardTrigger(DIK_O))
 	{// 角度を大きくする
 		g_Camera.fov += 1.0f;
 	}
-	else if (Keyboard_IsKeyDown(KK_L))
+	else if (GetKeyboardTrigger(DIK_L))
 	{// 角度を小さくする
 		g_Camera.fov -= 1.0f;
 	}
-	//----------Xinput----------]
+	if (GetKeyboardPress(DIK_UP))//W
+	{
+		g_Camera.fov -= 0.1f;
+		g_Camera.zoomFlag = true;
 
-	//[----------Dinput----------
-	//if (GetKeyboardPress(DIK_Z))
-	//{// 視点旋回「左」
-	//	g_Camera.rot.y += VALUE_ROTATE_CAMERA;
-	//	if (g_Camera.rot.y > D3DX_PI)
-	//	{
-	//		g_Camera.rot.y -= D3DX_PI * 2.0f;
-	//	}
-	//	g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
-	//	g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
-	//}
-	//if (GetKeyboardPress(DIK_C))
-	//{// 視点旋回「右」
-	//	g_Camera.rot.y -= VALUE_ROTATE_CAMERA;
-	//	if (g_Camera.rot.y < -D3DX_PI)
-	//	{
-	//		g_Camera.rot.y += D3DX_PI * 2.0f;
-	//	}
-	//	g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
-	//	g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
-	//}
-	//if (GetKeyboardPress(DIK_Y))
-	//{// 視点移動「上」
-	//	g_Camera.pos.y += VALUE_MOVE_CAMERA;
-	//}
-	//if (GetKeyboardPress(DIK_N))
-	//{// 視点移動「下」
-	//	g_Camera.pos.y -= VALUE_MOVE_CAMERA;
-	//}
-	//if (GetKeyboardPress(DIK_Q))
-	//{// 注視点旋回「左」
-	//	g_Camera.rot.y -= VALUE_ROTATE_CAMERA;
-	//	if (g_Camera.rot.y < -D3DX_PI)
-	//	{
-	//		g_Camera.rot.y += D3DX_PI * 2.0f;
-	//	}
-	//	g_Camera.at.x = g_Camera.pos.x + sinf(g_Camera.rot.y) * g_Camera.len;
-	//	g_Camera.at.z = g_Camera.pos.z + cosf(g_Camera.rot.y) * g_Camera.len;
-	//}
-	//if (GetKeyboardPress(DIK_E))
-	//{// 注視点旋回「右」
-	//	g_Camera.rot.y += VALUE_ROTATE_CAMERA;
-	//	if (g_Camera.rot.y > D3DX_PI)
-	//	{
-	//		g_Camera.rot.y -= D3DX_PI * 2.0f;
-	//	}
-	//	g_Camera.at.x = g_Camera.pos.x + sinf(g_Camera.rot.y) * g_Camera.len;
-	//	g_Camera.at.z = g_Camera.pos.z + cosf(g_Camera.rot.y) * g_Camera.len;
-	//}
-	//if (GetKeyboardPress(DIK_T))
-	//{// 注視点移動「上」
-	//	g_Camera.at.y += VALUE_MOVE_CAMERA;
-	//}
-	//if (GetKeyboardPress(DIK_B))
-	//{// 注視点移動「下」
-	//	g_Camera.at.y -= VALUE_MOVE_CAMERA;
-	//}
-	//if (GetKeyboardPress(DIK_U))
-	//{// 近づく
-	//	g_Camera.len -= VALUE_MOVE_CAMERA;
-	//	g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
-	//	g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
-	//}
-	//if (GetKeyboardPress(DIK_M))
-	//{// 離れる
-	//	g_Camera.len += VALUE_MOVE_CAMERA;
-	//	g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
-	//	g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
-	//}
-	//// カメラを初期に戻す
-	//if (GetKeyboardPress(DIK_P))
-	//{
-	//	UninitCamera();
-	//	InitCamera();
-	//}
-	//// 視野角を変更する
-	//if (GetKeyboardPress(DIK_O))
-	//{// 角度を大きくする
-	//	g_Camera.fov += 1.0f;
-	//}
-	//else if (GetKeyboardPress(DIK_L))
-	//{// 角度を小さくする
-	//	g_Camera.fov -= 1.0f;
-	//}
-	//----------Dinput----------]
+	}
+	if (GetKeyboardPress(DIK_DOWN))//S
+	{
+		g_Camera.fov += 0.1f;
+
+	}
+	if (GetKeyboardPress(DIK_Z))
+	{
+
+	}
+	if (g_Camera.zoomFlag)
+	{
+		SetCameraAT(D3DXVECTOR3(pPlayer->Position.x, pPlayer->Position.y, 0.0f));	// カメラの注視点
+		g_Camera.pos.y = pPlayer->Position.y;
+	}
+
+
 }
 
 

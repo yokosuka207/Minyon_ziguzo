@@ -12,9 +12,8 @@
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
 
-static Time g_Time;
-static int *pElapsedTime;
-
+static Time* pTime = new(Time);//getしたい
+static int Elapsedtime = 0;
 static Save g_SaveScene;				// セーブクラスのインスタンス
 
 void InitScene(SCENE no){
@@ -33,11 +32,11 @@ void InitScene(SCENE no){
 		SetStageSelect();
 		break;
 	case SCENE::SCENE_GAME :
-		g_Time.StartTime();
+		pTime->StartTime();
 		InitGame();
 		break;
 	case SCENE::SCENE_RESULT:
-		g_Time.SetElapsedTime(*pElapsedTime);
+		pTime->SetElapsedTime(Elapsedtime);
 		InitResult();
 		break;
 	default:
@@ -59,7 +58,8 @@ void UninitScene(){
 		UninitStageSelect();
 		break;
 	case SCENE::SCENE_GAME:
-		pElapsedTime = g_Time.GetTime();
+		pTime->EndTime();
+		Elapsedtime = pTime->GetTime();
 		UninitGame();
 		break;
 	case SCENE::SCENE_RESULT:

@@ -46,11 +46,12 @@ void UpdateEnemy() {
 void DrawEnemy() {
 	for (int i = 0; i < ENEMY_MAX; i++) {
 		if (g_Enemy[i].UseFlag) {
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Enemy[i].texno));
 			SpriteDrawColorRotation(
 				g_Enemy[i].pos.x,
 				g_Enemy[i].pos.y,
+				-0.1f,
 				g_Enemy[i].size.x,
 				g_Enemy[i].size.y,
 				0.0f,

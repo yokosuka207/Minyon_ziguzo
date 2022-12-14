@@ -22,8 +22,9 @@ Update:
 //**************************************************
 #define INVENTORYBG_SIZE_X		(100)
 #define INVENTORYBG_SIZE_Y		(SCREEN_HEIGHT)
-#define INVENTORYBG_POS_X		(INVENTORYBG_SIZE_X / 2)
+#define INVENTORYBG_POS_X_REVESE		((SCREEN_WIDTH/2) +INVENTORYBG_SIZE_X / 2)
 #define INVENTORYBG_POS_Y		(SCREEN_HEIGHT / 2)
+#define INVENTORYBG_POS_X		(INVENTORYBG_SIZE_X / 2)
 
 
 //**************************************************
@@ -42,6 +43,7 @@ typedef struct
 	int				PieNo;		// ピース番号
 
 	D3DXVECTOR2		pos;		// 表示座標
+	D3DXVECTOR2		scpos;		// 表示座標
 	D3DXVECTOR2		size;		// 表示サイズ
 	D3DXCOLOR		color;		// カラー
 	float			texno;		// テクスチャインデックス番号

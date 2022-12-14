@@ -14,14 +14,14 @@
 #include "sprite.h"
 #include "player.h"
 
-#define SWITCH_UV_W (1.0f / 1.0f)
-#define SWITCH_UV_H (1.0f / 1.0f)
-#define SWITCH_NUMPATERN (1)
+#define SWITCH_UV_W (1.0f / 4.0f)
+#define SWITCH_UV_H (1.0f / 4.0f)
+#define SWITCH_NUMPATERN (4)
 
 SWITCH g_Switch[SWITCH_MAX];
 
 static ID3D11ShaderResourceView* g_SwitchTexture;	//画像一枚で一つの変数が必要
-static char* g_SwitchTextureName = (char*)"data\\texture\\yello.jpg";	//テクスチャファイルパス
+static char* g_SwitchTextureName = (char*)"data\\texture\\button_press.png";	//テクスチャファイルパス
 static int g_SwitchTextureNo = 0;
 
 HRESULT InitSwitch() {
@@ -45,10 +45,16 @@ void UninitSwitch() {
 	}
 }
 void UpdateSwitch() {
-
+	for (int i = 0; i < SWITCH_MAX; i++) {
+		if (g_Switch[i].UseFlag) {
+			if (g_Switch[i].PaternNo > 15) {
+				g_Switch[i].PaternNo -= 15;
+			}
+		}
+	}
 }
 void DrawSwitch() {
-	SetWorldViewProjection2D();
+	//SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SwitchTextureNo));
 
 	for (int i = 0; i < SWITCH_MAX; i++) {
@@ -56,6 +62,7 @@ void DrawSwitch() {
 			SpriteDrawColorRotation(
 				g_Switch[i].pos.x,
 				g_Switch[i].pos.y,
+				-0.1f,
 				g_Switch[i].size.x,
 				g_Switch[i].size.y,
 				0.0f,

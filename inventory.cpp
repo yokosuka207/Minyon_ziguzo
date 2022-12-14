@@ -99,8 +99,9 @@ void UninitInventory()
 //==================================================
 void UpdateInventory()
 {
-	D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
 	MOUSE* pMouse = GetMouse();
+		D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
+
 	for (int i = 0; i < INVENTORY_MAX; i++) {
 		if (g_Inventory[i].IsUse) {
 			// 当たり判定用座標
@@ -166,7 +167,7 @@ void UpdateInventory()
 				// 外に出たよ
 				// ピースを出す
 				//DeleteMapChip(g_Inventory[i].PieNo);
-				SetPieceMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo);
+				SetPieceMapChip(D3DXVECTOR2(pMouse->PosX,-pMouse->PosY), g_Inventory[i].PieNo);
 				DeleteInventory(g_Inventory[i].PieNo);
 
 			}
@@ -179,13 +180,15 @@ void UpdateInventory()
 //==================================================
 void DrawInventory()
 {
+	SetWorldViewProjection2D();
+
 	// 背景の描画
 	// テクスチャの設定
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_InventoryBG.texno));
 	// ブレンド
 	SetBlendState(BLEND_MODE_SUBTRACT);
 	// 四角形の描画
-	SpriteDrawColorRotation(g_InventoryBG.pos.x, g_InventoryBG.pos.y, g_InventoryBG.size.x, g_InventoryBG.size.y, 0.0f, g_InventoryBG.color, 1.0f, 1.0f, 1.0f, 1);
+	SpriteDrawColorRotation(g_InventoryBG.pos.x, g_InventoryBG.pos.y,0.0f, g_InventoryBG.size.x, g_InventoryBG.size.y, 0.0f, g_InventoryBG.color, 1.0f, 1.0f, 1.0f, 1);
 	// ブレンドをデフォに戻す
 	SetBlendState(BLEND_MODE_ALPHABLEND);
 
@@ -196,7 +199,7 @@ void DrawInventory()
 			// テクスチャの設定
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Inventory[i].texno));
 			// 四角形の描画
-			SpriteDrawColorRotation(g_Inventory[i].pos.x, g_Inventory[i].pos.y, g_Inventory[i].size.x, g_Inventory[i].size.y, 0.0f, g_Inventory[i].color, 1.0f, 1.0f, 1.0f, 1);
+			SpriteDrawColorRotation(g_Inventory[i].pos.x, g_Inventory[i].pos.y,0.1f, g_Inventory[i].size.x, g_Inventory[i].size.y, 0.0f, g_Inventory[i].color, 1.0f, 1.0f, 1.0f, 1);
 		}
 	}
 }

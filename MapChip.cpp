@@ -30,6 +30,8 @@
 #include "SwitchWall.h"
 #include "StageSelect.h"
 #include "SheerFloors.h"
+#include "broken.h"
+#include "high_broken.h"
 
 //**************************************************
 //　マクロ定義
@@ -50,8 +52,8 @@ HRESULT InitMapChip() {
 		g_PieceMapChip[p].UseFlag = false;
 		g_PieceMapChip[p].no = -1;
 		g_PieceMapChip[p].TexNo = LoadTexture(g_MapChipTextureName);
-		g_PieceMapChip[p].direction = 0;
-		g_PieceMapChip[p].pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		g_PieceMapChip[p].direction = 2;
+		g_PieceMapChip[p].pos = D3DXVECTOR2(0.0f,0.0f);
 		g_PieceMapChip[p].OldMovePos = g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
 		g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);
 		g_PieceMapChip[p].MoveEndFlag = false;
@@ -70,7 +72,8 @@ HRESULT InitMapChip() {
 	RotateChipData();
 
 	SplitStage* pSplitStage = GetSplitStage();
-	SetPieceMapChip(pSplitStage->Split3[1][0], 0);
+	SetPieceMapChip(pSplitStage->Split3[0][0], 0);
+
 	//SetPieceMapChip(pSplitStage->Split3[1][2], 2);
 
 	//SetPieceMapChip(pSplitStage->Split3[1][0], 1);
@@ -90,12 +93,12 @@ void UpdateMapChip() {
 void DrawMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (g_PieceMapChip[p].UseFlag) {
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_PieceMapChip[p].TexNo));
 
 			SpriteDrawColorRotation(
-				g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,
+				g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,0.0f,
 				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, g_PieceMapChip[p].direction * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
 				1, 0.5f, 1.0f, 2
 			);
@@ -111,7 +114,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 		for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
 			// 中心座標変数
 			//D3DXVECTOR2 position = D3DXVECTOR2((pos.x - PUZZLE_SIZE / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
-			D3DXVECTOR2 position = D3DXVECTOR2((pos.x - PUZZLE_SIZE / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
+			D3DXVECTOR2 position = D3DXVECTOR2((pos.x + PUZZLE_SIZE / 2) - j * BLOCK_CHIP_SIZE - BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
 			D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
 
 			switch (g_PieceMapChip[no].chip[g_PieceMapChip[Pin].direction][i][j]) {
@@ -147,10 +150,10 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetFallBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11
-				//Set
+				SetKey(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12
-				//Set
+				SetOpenKey(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13
 				SetSwitch(position, DrawSize, no);
@@ -164,6 +167,15 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16
 				SetSheerFloors(position, DrawSize);
 				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17
+				SetBroken(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18
+				SetHigh(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_MIRROR):	//19
+				break;
+
 			default:
 				break;
 			}
@@ -182,7 +194,22 @@ void FileLoad(int StageNo) {
 		filename = "data/MapData/map.txt"; 
 		break;
 	case 2:
+		filename = "data/MapData/Stage01.txt";
+		break;
+	case 3:
+		filename = "data/MapData/Stage02.txt";
+		break;
+	case 4:
+		filename = "data/MapData/Stage03.txt";
+		break;
+	case 5:
 		filename = "data/MapData/Stage04.txt";
+		break;
+	case 6:
+		filename = "data/MapData/Stage05.txt";
+		break;
+	case 7:
+		filename = "data/MapData/Stage06.txt";
 		break;
 	}
 	FILE* fp;
@@ -293,6 +320,10 @@ void DeleteMapChip(int PieceNo) {
 	DeleteThornBlock(g_PieceMapChip[PieceNo].no);
 	DeleteSwitch(g_PieceMapChip[PieceNo].no);
 	DeleteSwitchWall(g_PieceMapChip[PieceNo].no);
+	DeleteKey(g_PieceMapChip[PieceNo].no);
+	DeleteOpenKey(g_PieceMapChip[PieceNo].no);
+	DeleteBroken(g_PieceMapChip[PieceNo].no);
+	DeleteHigh(g_PieceMapChip[PieceNo].no);
 	DeleteSheet();
 	DeleteGoal(g_PieceMapChip[PieceNo].no);
 }

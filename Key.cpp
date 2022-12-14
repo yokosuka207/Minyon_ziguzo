@@ -37,6 +37,7 @@ HRESULT InitKey()
 	for (int i = 0; i < KEY_MAX; i++) {
 		g_Key[i].Size = D3DXVECTOR2(KEY_W, KEY_H);
 		g_Key[i].Position = D3DXVECTOR2(200, 200);
+		g_Key[i].index = -1;
 		g_Key[i].texno = LoadTexture(g_TextureNameKey);
 		g_Key[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_Key[i].GetKey = false;
@@ -64,43 +65,41 @@ void DrawKey()
 	for (int i = 0; i < KEY_MAX; i++){
 		if (g_Key[i].GetKey)
 		{
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 
 			//テクスチャの設定
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Key[i].texno));
 			//スプライトを表示
 			D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			SpriteDrawColorRotation(g_Key[i].Position.x, g_Key[i].Position.y, g_Key[i].Size.x, g_Key[i].Size.y,
+			SpriteDrawColorRotation(g_Key[i].Position.x, g_Key[i].Position.y,-0.1f, g_Key[i].Size.x, g_Key[i].Size.y,
 				g_Key[i].rot, g_Key[i].col, 0, 1.0f, 1.0f, 1);
 
 		}
 	}
-	
 }
 
-void SetKey(D3DXVECTOR2 pos, D3DXVECTOR2 size)
-{
-
+void SetKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index){
 	for (int i = 0; i < KEY_MAX; i++) {
-		if (!g_Key[i].GetKey)
-		{
+		if (!g_Key[i].GetKey){
 			g_Key[i].Position = pos;
 			g_Key[i].Size = size;
+			g_Key[i].index = index;
 			g_Key[i].GetKey = true;
+			break;
 		}
 	}
-	
 }
 
 void DeleteKey(int PieceNo) {
 	for (int i = 0; i < KEY_MAX; i++) {
-		if (g_Key[i].GetKey) {
-			g_Key[i].GetKey = false;
+		if (g_Key[i].index == PieceNo) {
+			if (g_Key[i].GetKey) {
+				g_Key[i].GetKey = false;
+			}
 		}
 	}
 }
 
-KEY *GetKey()
-{
+KEY *GetKey(){
 	return g_Key;
 }
