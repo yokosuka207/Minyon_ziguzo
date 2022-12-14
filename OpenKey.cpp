@@ -57,13 +57,13 @@ void DrawOpenKey()
 	for (int i = 0; i < OPEN_KEY_MAX; i++) {
 		if (g_OpenKey[i].UseFlag)
 		{
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 
 			//テクスチャの設定
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_OpenKey[i].texno));
 			//スプライトを表示
 			D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			SpriteDrawColorRotation(g_OpenKey[i].Position.x, g_OpenKey[i].Position.y, g_OpenKey[i].Size.x, g_OpenKey[i].Size.y,
+			SpriteDrawColorRotation(g_OpenKey[i].Position.x, g_OpenKey[i].Position.y,-0.1f, g_OpenKey[i].Size.x, g_OpenKey[i].Size.y,
 				g_OpenKey[i].rot, g_OpenKey[i].col, 0, 1.0f, 1.0f, 1);
 
 		}

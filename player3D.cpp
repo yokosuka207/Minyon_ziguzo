@@ -3,13 +3,13 @@
 //--------------------------
 
 #include"main.h"
-#include"inputx.h"
-#include"keyboard.h"
+#include"input.h"
+//#include"keyboard.h"
 #include"camera.h"
 #include"texture.h"
 
 #include"player3D.h"
-
+#include"player.h"
 
 //--------------------
 //マクロ定義
@@ -62,58 +62,51 @@ void PLAYER3D::Uninit()
 
 void PLAYER3D::Update()
 {
+	PLAYER* pPlayer = GetPlayer();
+
 	{
 		//グローバル座標
 		MoveSpeed.x = MoveSpeed.y = MoveSpeed.z = 0.0f;
-		if (Keyboard_IsKeyDown(KK_W))//W
+		if (GetKeyboardPress(DIK_W))//W
 		{
-			MoveSpeed.y = MOVE_SPEED;
+			//MoveSpeed.y = -MOVE_SPEED;
 		}
-		if (Keyboard_IsKeyDown(KK_S))//S
+		if (GetKeyboardPress(DIK_S))//S
 		{
-			MoveSpeed.y = -MOVE_SPEED;
+			//MoveSpeed.y = MOVE_SPEED;
 		}
-		if (Keyboard_IsKeyDown(KK_A))//A
+		if (GetKeyboardPress(DIK_A))//A
 		{
-			MoveSpeed.x += -MOVE_SPEED;
+			//MoveSpeed.x += -MOVE_SPEED;
 		}
-		if (Keyboard_IsKeyDown(KK_D))//D
+		if (GetKeyboardPress(DIK_D))//D
 		{
-			MoveSpeed.x += MOVE_SPEED;
+			//MoveSpeed.x += MOVE_SPEED;
 		}
 
-		if (Keyboard_IsKeyDown(KK_UP))//W
-		{
-			MoveSpeed.z = MOVE_SPEED;
-		}
-		if (Keyboard_IsKeyDown(KK_DOWN))//S
-		{
-			MoveSpeed.z = -MOVE_SPEED;
-		}
+		//if (GetKeyboardPress(DIK_UP))//W
+		//{
+		//	MoveSpeed.z = MOVE_SPEED;
+		//	zoomFlag = true;
+		//}
+		//if (GetKeyboardPress(DIK_DOWN))//S
+		//{
+
+		//	MoveSpeed.z = -MOVE_SPEED;
+		//}
+		//if (GetKeyboardPress(DIK_Z))
+		//{
+		//	Position = D3DXVECTOR3(0.0f,0.0f,0.0f);
+		//	zoomFlag = false;
+
+		//}
+
 
 
 		Position += MoveSpeed;
 
 	}
 
-	//{//ローカル座標で動く
-	//	Rotation.x = Rotation.y = Rotation.z = 0.0f;
-
-	//	if (Keyboard_IsKeyDown(KK_A))//A
-	//	{
-	//		Rotation.y = D3DXToRadian(-ROTAION_SPEED);
-	//	}
-	//	if (Keyboard_IsKeyDown(KK_D))//D
-	//	{
-	//		Rotation.y = D3DXToRadian(ROTAION_SPEED);
-	//	}
-	//	MoveSpeed.x = MoveSpeed.y = MoveSpeed.z = 0.0f;
-
-	//	if (Keyboard_IsKeyDown(KK_W))//W
-	//	{
-	//		MoveSpeed.z = MOVE_SPEED;
-	//	}
-	//}
 
 }
 
@@ -121,21 +114,6 @@ void PLAYER3D::Draw()
 {
 
 
-	{	//ローカル座標で移動する
-			//スケーリング行列
-		//D3DXMatrixScaling(&ScalingMatrix, Scaling.x, Scaling.y, Scaling.z);
-		////回転行列作成
-		//D3DXMatrixRotationYawPitchRoll(&RotationMatrix, Rotation.y, Rotation.x, Rotation.z);
-		////平行移動行列
-		//D3DXMatrixTranslation(&TranslationMatrix, MoveSpeed.x, MoveSpeed.y, MoveSpeed.z);
-
-		//D3DXMATRIX	tempM;	//今回の動きを表すワールド行列
-
-		//D3DXMatrixMultiply(&tempM, &ScalingMatrix, &RotationMatrix);	//tempM = Scaling* Rotation
-		//D3DXMatrixMultiply(&tempM, &tempM, &TranslationMatrix);	//tempM = tempM* Translation
-
-		//D3DXMatrixMultiply(&WorldMatrix, &tempM, &WorldMatrix);
-	}
 	{//グローバル座標で移動する
 
 

@@ -26,6 +26,7 @@
 #include"scene.h"
 
 
+
 //*****************************************************************************
 // ライブラリのリンク
 //*****************************************************************************
@@ -228,6 +229,10 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//InitGame();
 	InitScene(SCENE::SCENE_TITLE);
 	//InitScene(SCENE_RESULT);
+
+		// 背面ポリゴンをカリング
+	SetCullingMode(CULL_MODE_NONE);
+
 
 	return S_OK;
 }

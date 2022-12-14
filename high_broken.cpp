@@ -85,13 +85,13 @@ void DrawHigh()
 	{
 		if (g_High[i].UseFlag)
 		{
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 
 			//テクスチャの設定
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_High[i].texno));
 			//スプライトを表示
 			D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			SpriteDrawColorRotation(g_High[i].Postion.x, g_High[i].Postion.y, g_High[i].Size.x, g_High[i].Size.y,
+			SpriteDrawColorRotation(g_High[i].Postion.x, g_High[i].Postion.y,-0.1f, g_High[i].Size.x, g_High[i].Size.y,
 				g_High[i].rot, g_High[i].col, 0, 1.0f, 1.0f, 1);
 
 		}

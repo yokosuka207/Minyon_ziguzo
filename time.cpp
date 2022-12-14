@@ -65,6 +65,7 @@ void Time:: DrawGameTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -82,6 +83,7 @@ void Time:: DrawGameTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -98,6 +100,7 @@ void Time:: DrawGameTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x - 5,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -115,6 +118,7 @@ void Time:: DrawGameTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x - 5,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -151,6 +155,7 @@ void Time::DrawResultTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -168,6 +173,7 @@ void Time::DrawResultTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -184,6 +190,7 @@ void Time::DrawResultTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x - 5,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -201,6 +208,7 @@ void Time::DrawResultTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x - 5,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,

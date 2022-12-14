@@ -85,13 +85,13 @@ void DrawBroken()
 	{
 		if (g_Broken[i].UseFlag)
 		{
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 
 				//テクスチャの設定
 				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Broken[i].texno));
 				//スプライトを表示
 				D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-				SpriteDrawColorRotation(g_Broken[i].Postion.x, g_Broken[i].Postion.y, g_Broken[i].Size.x, g_Broken[i].Size.y, 
+				SpriteDrawColorRotation(g_Broken[i].Postion.x, g_Broken[i].Postion.y,-0.1f, g_Broken[i].Size.x, g_Broken[i].Size.y, 
 					g_Broken[i].rot, g_Broken[i].col, 0, 1.0f, 1.0f, 1);
 				
 		}
