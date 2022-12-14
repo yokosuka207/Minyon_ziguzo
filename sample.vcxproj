@@ -154,6 +154,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapChip.cpp" />
     <ClCompile Include="mouse.cpp" />
+    <ClCompile Include="MoveBlock.cpp" />
     <ClCompile Include="OpenKey.cpp" />
     <ClCompile Include="pause.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -199,6 +200,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="MapChip.h" />
     <ClInclude Include="mouse.h" />
+    <ClInclude Include="MoveBlock.h" />
     <ClInclude Include="OpenKey.h" />
     <ClInclude Include="pause.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
