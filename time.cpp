@@ -249,6 +249,10 @@ void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 		g_TimeParam.UseFlag = true;
 	}
 }
-int* Time::GetTime() {
-	return &m_ElapsedTime;
+int Time::GetTime() {
+	m_ElapsedTime /= CLOCKS_PER_SEC;
+	return m_ElapsedTime;
+}
+Time* Time::GetTimeClass() {
+	return this;
 }

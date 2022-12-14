@@ -17,11 +17,11 @@ static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";	//テクスチ
 static int g_ScoreTextureNo = 0;
 
 static SCORE g_Score;	//構造体
+static Time* pTime = new(Time);
 
 static int g_TimeDistance = SCORE_POS_X;
 static int score = 0;
 
-static 	Time g_Time;
 
 void Score::InitScore() {
 	g_ScoreTextureNo = LoadTexture(g_ScoreTextureName);
@@ -31,7 +31,7 @@ void Score::InitScore() {
 	g_Score.UseFlag = false;
 	g_Score.CalcFlag = false;
 	m_score = 0;
-	m_pTimeScore = 0;
+	m_TimeScore = 0;
 }
 void Score::UninitScore() {
 	if (g_ScoreTexture) {
@@ -69,13 +69,12 @@ void Score::DrawScore() {
 	}
 }
 int Score::CulcScore() {
-	m_pTimeScore = g_Time.GetTime();
-	
-	if (*m_pTimeScore < 60) {
-		m_score = *m_pTimeScore;
+	m_TimeScore = pTime->GetTime();
+	if (m_TimeScore < 60) {
+		m_score = m_TimeScore;
 	}
 	else {
-		m_score = *m_pTimeScore * 0.5;
+		m_score = m_TimeScore * 0.5;
 	}
 
 	return m_score;
