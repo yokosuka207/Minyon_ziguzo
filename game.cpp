@@ -35,6 +35,7 @@ static Time g_time;
 static Score g_score;
 static bool* pause = GetPause();
 
+
 void InitGame()
 {
 	//----------Ç∞Å[Çﬁ
@@ -65,7 +66,7 @@ void InitGame()
 	g_score.InitScore();
 	g_time.InitTime();
 	g_time.SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
-	g_time.StartTime();
+	//g_time.GetTime();
 }
 
 void UninitGame()

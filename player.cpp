@@ -85,7 +85,7 @@ HRESULT InitPlayer()
 	g_Player.uv_h = PLAYER_UV_H;//縦サイズ
 	g_Player.NumPatern = 4;//横枚数
 
-	g_Player.hp = 30;
+	g_Player.hp = 3;
 	g_Player.frame = 0;
 	g_Player.CoolTime = PLAYER_COOLTIME;
 
@@ -157,7 +157,7 @@ void UpdatePlayer()
 				}
 			}
 
-
+			
 
 			BLOCK* block = GetChipBlock();
 			for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
@@ -825,17 +825,6 @@ void UpdatePlayer()
 			{
 				ResetGame();
 			}
-
-			if (GetKeyboardTrigger(DIK_K)) {
-				Time pTime;
-				pTime.PuaseStartTime();
-			}
-			if (GetKeyboardTrigger(DIK_L)) {
-				Time pTime;
-				pTime.PuaseEndTime();
-			}
-
-
 
 			//プレイヤーとパズルの画面外判定
 

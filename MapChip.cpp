@@ -179,7 +179,10 @@ void FileLoad(int StageNo) {
 		filename = "data/MapData/map0.txt";
 		break;
 	case 1:
-		filename = "data/MapData/Stage04.txt"; 
+		filename = "data/MapData/map.txt"; 
+		break;
+	case 2:
+		filename = "data/MapData/Stage04.txt";
 		break;
 	}
 	FILE* fp;
