@@ -255,6 +255,10 @@ void PieceCollision()
 											{
 												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].OldMovePos = pPiece[i].pos;
+												if (pFlag)
+												{
+													pPlayer->Position += temp;
+												}
 
 											}
 											else
@@ -284,6 +288,10 @@ void PieceCollision()
 											{
 												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].OldMovePos = pPiece[i].pos;
+												if (pFlag)
+												{
+													pPlayer->Position += temp;
+												}
 
 											}
 											else
@@ -313,6 +321,10 @@ void PieceCollision()
 											{
 												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].OldMovePos = pPiece[i].pos;
+												if (pFlag)
+												{
+													pPlayer->Position += temp;
+												}
 
 											}
 											else
@@ -342,6 +354,10 @@ void PieceCollision()
 											{
 												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].OldMovePos = pPiece[i].pos;
+												if (pFlag)
+												{
+													pPlayer->Position += temp;
+												}
 
 											}
 											else
@@ -417,6 +433,10 @@ void PieceCollision()
 										D3DXVECTOR2 temp = pPiece[i].pos - pPiece[i].OldPos;
 
 										PositionPlas(temp, pPiece[i].no);
+										if (pFlag)
+										{
+											pPlayer->Position += temp;
+										}
 
 									}
 									else
