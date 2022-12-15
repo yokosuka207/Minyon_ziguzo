@@ -95,8 +95,9 @@ void UpdateGameMouse()
 						}
 
 						Mouse.RotIndex = 0;
-
+						
 						oneFlag = true;
+						pPiece[i].MoveFlag = true;
 						MouseIndex = i;
 						NoIndex = pPiece[i].no;
 						pPiece[i].OldMovePos = pPiece[i].pos;
@@ -202,6 +203,8 @@ void UpdateGameMouse()
 			pPuzzle[MouseIndex].MoveFlag = false;
 			pPuzzle[MouseIndex].MoveEndFlag = true;
 			pPiece[MouseIndex].MoveEndFlag = true;
+			pPiece[MouseIndex].MoveFlag = false;
+
 			//Mouse.RotIndex = 0;
 			Mouse.pFlag = false;
 

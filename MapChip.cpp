@@ -57,6 +57,7 @@ HRESULT InitMapChip() {
 		g_PieceMapChip[p].OldMovePos = g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
 		g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);
 		g_PieceMapChip[p].MoveEndFlag = false;
+		g_PieceMapChip[p].MoveFlag = false;
 		for (int d = 0; d < BLOCK_CHIP_DIRECTION; d++) {
 			for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
 				for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {

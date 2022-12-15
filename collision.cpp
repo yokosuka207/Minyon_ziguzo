@@ -55,9 +55,26 @@ void UpdateCollision()
 	MOUSE* pMouse = GetMouse();
 
 	RESULT* pResult = GetResult();
-
-	//プレーヤー　対　敵キャラ	四角
+	bool pFlag =false;	//プレーヤーがピースの中にいるか
+	//プレーヤーが動いているピースの中にいるか
 	{
+		for (int i = 0; i < PUZZLE_MAX; i++) {
+			if (pPiece[i].MoveFlag)
+			{
+				if (pPiece[i].pos.y - pPiece[i].size.y / 2 < pPlayer->Position.y &&
+					pPiece[i].pos.y + pPiece[i].size.y / 2 > pPlayer->Position.y &&
+					pPiece[i].pos.x - pPiece[i].size.x / 2 < pPlayer->Position.x &&
+					pPiece[i].pos.x + pPiece[i].size.x / 2 > pPlayer->Position.x
+					)
+				{
+					//いたら
+					pFlag = true;
+					break;
+				}
+				break;
+			}
+
+		}
 
 	}
 	//プレーヤーとスイッチ
@@ -147,13 +164,15 @@ void UpdateCollision()
 			SetScene(SCENE::SCENE_RESULT);
 		}
 	}
-
-	// ピースとインベントリ範囲の当たり判定
-	for (int i = 0; i < PUZZLE_MAX; i++) {
-		// ピースをインベントリにしまう
-		if (pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X)) {
-			DeleteMapChip(i);
-			SetInventory(pPiece[i].no);
+	if (!pFlag)
+	{
+		// ピースとインベントリ範囲の当たり判定
+		for (int i = 0; i < PUZZLE_MAX; i++) {
+			// ピースをインベントリにしまう
+			if (pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X)) {
+				DeleteMapChip(i);
+				SetInventory(pPiece[i].no);
+			}
 		}
 	}
 }
