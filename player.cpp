@@ -116,7 +116,7 @@ void UpdatePlayer()
 			if (GetKeyboardPress(DIK_RIGHT))//右キー
 			{//押されているときの処理
 				g_Player.sp.x = 1.0f;
-				g_Player.PaternNo += 0.25f;
+				g_Player.PaternNo -= 0.25f;
 
 				// 向きを変える
 				g_Player.dir = PLAYER_DIRECTION::RIGHT;
@@ -125,7 +125,7 @@ void UpdatePlayer()
 			else if (GetKeyboardPress(DIK_LEFT))//左キー
 			{//押されているときの処理
 				g_Player.sp.x = -1.0f;
-				g_Player.PaternNo -= 0.25f;
+				g_Player.PaternNo += 0.25f;
 
 				// 向きを変える
 				g_Player.dir = PLAYER_DIRECTION::LEFT;
