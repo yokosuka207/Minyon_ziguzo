@@ -49,6 +49,8 @@ void Time::UninitTime() {
 		g_TimeTexture = NULL;
 	}
 }
+
+//—v‚ç‚È‚¢
 void Time:: DrawGameTime() {
 	SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TimeTextureNo));

@@ -34,7 +34,7 @@
 #include "scene.h"
 #include "pause.h"
 
-static Time g_time;
+static Time* pTime = new(Time);
 static Score g_score;
 static PLAYER3D g_Player3D;
 static SCENE* p_Scene;
@@ -77,9 +77,9 @@ void InitGame()
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 	InitPlayer();
 	g_score.InitScore();
-	g_time.InitTime();
-	g_time.SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
-	g_time.StartTime();
+	pTime->InitTime();
+	pTime->SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
+	pTime->StartTime();
 	g_Player3D.Init();
 
 }
@@ -111,7 +111,7 @@ void UninitGame()
 	UninitSwitchWall();
 	UninitPause();
 	g_score.UninitScore();
-	g_time.UninitTime();
+	pTime->UninitTime();
 	g_Player3D.Uninit();
 }
 
@@ -122,11 +122,11 @@ void UpdateGame()
 		//ポーズフラグがoff
 		if (!(*pause)) {
 			(*pause) = true;
-			g_time.PuaseStartTime();
+			pTime->PuaseStartTime();
 		}
 		else {
 			(*pause) = false;
-			g_time.PuaseEndTime();
+			pTime->PuaseEndTime();
 		}
 	}
 	
@@ -198,7 +198,7 @@ void DrawGame()
 
 		DrawThornBlock();
 		DrawInventory();			// インベントリの描画
-		g_time.DrawGameTime();
+		pTime->DrawGameTime();
 		//DrawCursor();				// カーソルの描画
 		g_Player3D.Draw();
 		SetCamera();
