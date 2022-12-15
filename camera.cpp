@@ -89,13 +89,26 @@ void UpdateCamera(void)
 	}
 	if (GetKeyboardPress(DIK_UP))//W
 	{
-		g_Camera.fov -= 0.1f;
+		g_Camera.fov -= 0.2f;
 		g_Camera.zoomFlag = true;
+		if (g_Camera.fov < 20.0f)
+		{
+			g_Camera.fov = 20.0f;
+
+		}
 
 	}
 	if (GetKeyboardPress(DIK_DOWN))//S
 	{
-		g_Camera.fov += 0.1f;
+		g_Camera.fov += 0.2f;
+		if (g_Camera.fov > 47.0f)
+		{
+			InitCamera();
+			g_Camera.fov = 45.0f;
+
+			g_Camera.zoomFlag = false;
+
+		}
 
 	}
 	if (GetKeyboardPress(DIK_Z))
