@@ -41,6 +41,7 @@ struct PLAYER
 	bool isSheerFloors;
 	bool isSheerFloorsUse;
 	bool isHigh;
+	bool isMoveBlock;
 	int	HaveKey; //Œ®Š”
 	//int Hp;
 
