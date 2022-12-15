@@ -105,7 +105,6 @@ void DrawMapChip() {
 		}
 	}
 }
-
 void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 	//p=ブロック最大数
 		//i=y方向
@@ -165,7 +164,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetSwitchWall(position, DrawSize, no, 4);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16
-				SetSheerFloors(position, DrawSize);
+				SetSheerFloors(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17
 				SetBroken(position, DrawSize, no);
@@ -174,15 +173,14 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetHigh(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_MIRROR):	//19
+				//Set
 				break;
-
 			default:
 				break;
 			}
 		}
 	}
 }
-
 void FileLoad(int StageNo) {
 	const char* filename;
 	switch (StageNo)
@@ -245,8 +243,6 @@ void RotateChipData() {
 		}
 	}
 }
-
-
 //==================================================
 // ピース回転（右）
 //==================================================
@@ -273,8 +269,6 @@ void RotateMapChipR(int PieceNo) {
 		}
 	}
 }
-
-
 //==================================================
 // ピース回転（左）
 //==================================================
@@ -302,8 +296,6 @@ void RotateMapChipL(int PieceNo) {
 		}
 	}
 }
-
-
 //==================================================
 //ピースの回転やインベントリから取り出すときに使うピースを消す関数
 //==================================================
@@ -324,16 +316,13 @@ void DeleteMapChip(int PieceNo) {
 	DeleteOpenKey(g_PieceMapChip[PieceNo].no);
 	DeleteBroken(g_PieceMapChip[PieceNo].no);
 	DeleteHigh(g_PieceMapChip[PieceNo].no);
-	DeleteSheet();
+	DeleteSheet(g_PieceMapChip[PieceNo].no);
 	DeleteGoal(g_PieceMapChip[PieceNo].no);
+	//Delete
 }
-
-
 Piece* GetPiece() {
 	return g_PieceMapChip;
 }
-
-
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (!g_PieceMapChip[p].UseFlag) {

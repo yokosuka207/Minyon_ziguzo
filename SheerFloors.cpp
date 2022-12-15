@@ -27,6 +27,8 @@ HRESULT InitSheerFloors()
 
 		gSheerFloors[i].size = D3DXVECTOR2(SHEERFLOORS_SIZE_X, SHEERFLOORS_SIZE_Y);
 
+		gSheerFloors[i].index = -1;
+
 		gSheerFloors[i].use = false;
 
 		gSheerFloorsNo = LoadTexture(gSheerFloorsTextureName);
@@ -70,14 +72,16 @@ void DrawSheerFloors()
 	}
 }
 
-void SetSheerFloors(D3DXVECTOR2 p, D3DXVECTOR2 s)
+void SetSheerFloors(D3DXVECTOR2 p, D3DXVECTOR2 s,int index)
 {
 	for (int i = 0; i < SHEERFLOORS_NUM; i++) {
 		if (!gSheerFloors[i].use)
 		{
 			gSheerFloors[i].pos = p + D3DXVECTOR2(0.0f, BLOCK_CHIP_SIZE / 2);
-			//gSheerFloors[i].size = s;
+			gSheerFloors[i].size = s;
+			gSheerFloors[i].index = index;
 			gSheerFloors[i].use = true;
+			break;
 		}
 	}
 }
@@ -87,7 +91,14 @@ SHEERFLOORS* GetSheerFloors()
 	return &gSheerFloors[0];
 }
 
-void DeleteSheet()
+void DeleteSheet(int PieceNo)
 {
-	gSheerFloors->use = false;
+	for (int i = 0; i < SHEERFLOORS_NUM; i++) {
+		if (gSheerFloors[i].index == PieceNo) {
+			if (gSheerFloors[i].use) {
+				gSheerFloors[i].use = false;
+			}
+		}
+	}
+
 }
