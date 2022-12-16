@@ -36,6 +36,7 @@
 #include "high_broken.h"
 #include "time.h"
 #include "pause.h"
+#include "goal_key.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -776,6 +777,52 @@ void UpdatePlayer()
 			//}
 			//
 
+
+			//ゴール用鍵とプレイヤー当たり判定
+			GKEY* GKey = GetGKey();
+			if (GKey->UseFlag == true)
+			{
+				//プレイヤー左・鍵取得　右側
+				if (g_Player.Position.x + g_Player.size.x / 2 > GKey->pos.x - GKey->size.x / 2 &&
+					g_Player.oldpos.x + g_Player.size.x / 2 <= GKey->pos.x - GKey->size.x / 2 &&
+					g_Player.Position.y + g_Player.size.y / 2 > GKey->pos.y - GKey->size.y / 2 &&
+					g_Player.Position.y - g_Player.size.y / 2 < GKey->pos.y + GKey->size.y / 2)
+				{
+					GKey->UseFlag = false;
+					GKey->GetGKey = true;
+				}
+				//プレイヤー右・鍵取得　左側
+				if (g_Player.Position.x - g_Player.size.x / 2 < GKey->pos.x + GKey->size.x / 2 &&
+					g_Player.oldpos.x - g_Player.size.x / 2 >= GKey->pos.x + GKey->size.x / 2 &&
+					g_Player.Position.y + g_Player.size.y / 2 > GKey->pos.y - GKey->size.y / 2 &&
+					g_Player.Position.y - g_Player.size.y / 2 < GKey->pos.y + GKey->size.y / 2)
+				{
+					GKey->UseFlag = false;
+					GKey->GetGKey = true;
+
+				}
+
+				//プレイヤー上・鍵取得　下
+				if (g_Player.Position.x + g_Player.size.x / 2 > GKey->pos.x - GKey->size.x / 2 &&
+					g_Player.Position.x - g_Player.size.x / 2 < GKey->pos.x + GKey->size.x / 2 &&
+					g_Player.Position.y + g_Player.size.y / 2 > GKey->pos.y - GKey->size.y / 2 &&
+					g_Player.oldpos.y + g_Player.size.y / 2 <= GKey->pos.y - GKey->size.y / 2)
+				{
+					GKey->UseFlag = false;
+					GKey->GetGKey = true;
+				}
+				//プレイヤー下・鍵取得　上
+				if (g_Player.Position.x + g_Player.size.x / 2 > GKey->pos.x - GKey->size.x / 2 &&
+					g_Player.Position.x - g_Player.size.x / 2 < GKey->pos.x + GKey->size.x / 2 &&
+					g_Player.Position.y - g_Player.size.y / 2 < GKey->pos.y + GKey->size.y / 2 &&
+					g_Player.oldpos.y - g_Player.size.y / 2 >= GKey->pos.y + GKey->size.y / 2)
+				{
+					GKey->UseFlag = false;
+					GKey->GetGKey = true;
+
+				}
+			}
+			
 
 			g_Player.CoolTime--;
 

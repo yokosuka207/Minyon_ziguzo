@@ -145,6 +145,7 @@
     <ClCompile Include="fallblock.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="goal.cpp" />
+    <ClCompile Include="goal_key.cpp" />
     <ClCompile Include="high_broken.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="inventory.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="fallblock.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="goal.h" />
+    <ClInclude Include="goal_key.h" />
     <ClInclude Include="high_broken.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="inventory.h" />

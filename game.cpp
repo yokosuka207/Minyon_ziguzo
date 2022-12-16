@@ -29,6 +29,7 @@
 #include "switch.h"
 #include "SwitchWall.h"
 #include "scene.h"
+#include "goal_key.h"
 
 static Time g_time;
 static Score g_score;
@@ -49,6 +50,7 @@ void InitGame()
 		InitJoint();
 		InitGameMouse();
 		InitGoal();
+		InitGKey();
 		InitBroken();
 		InitWarp();
 		InitJumpStand();
@@ -81,6 +83,7 @@ void UninitGame()
 	UninitPuzzle();
 	UninitGameMouse();
 	UninitGoal();
+	UninitGKey();
 	UninitPuzzleCip();
 	UninitBroken();
 	UninitPlayer();
@@ -116,6 +119,7 @@ void UpdateGame()
 	UpdatePuzzleCip();
 
 	UpdateGoal();
+	UpdateGKey();
 	UpdateBroken();
 	UpdateWarp();
 	UpdateJumpStand();
@@ -145,6 +149,7 @@ void DrawGame()
 	DrawPuzzleCip();
 	DrawPlayer();
 	DrawWarp();
+	DrawGKey();
 	DrawJumpStand();
 	DrawSheerFloors();
 	DrawThornBlock();
