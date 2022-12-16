@@ -11,7 +11,7 @@
 #include "time.h"
 
 GOAL g_Goal;
-GKEY g_GKey;
+GKey g_GKey;
 static ID3D11ShaderResourceView	*g_textureGoal;	//画像一枚で一つの変数が必要
 static char *g_textureName_Goal = (char*)"data\\texture\\yello.jpg";	//テクスチャファイルパス
 static Time g_Time;
@@ -42,7 +42,7 @@ void UpdateGoal()
 	if (g_Goal.UseFlag)
 	{
 		PLAYER* pPlayer = GetPlayer();
-		GKEY* pGKey = GetGKey();
+		GKey* pGKey = GetGKey();
 		MOUSE* pMouse = GetMouse();
 		RESULT* pResult = GetResult();
 		if (!pMouse->UseFlag && pGKey->GetGKey)
@@ -72,7 +72,6 @@ void DrawGoal()
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Goal.texno));
 
 		SpriteDrawColorRotation(g_Goal.Pos.x, g_Goal.Pos.y,-0.2f,
-		SpriteDrawColorRotation(g_Goal.Pos.x, g_Goal.Pos.y,
 			g_Goal.Size.x, g_Goal.Size.y, g_Goal.Rotation, g_Goal.Col,
 			0, 1.0f, 1.0f, 1);
 	}

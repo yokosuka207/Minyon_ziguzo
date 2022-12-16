@@ -846,7 +846,7 @@ void UpdatePlayer()
 
 
 			//ゴール用鍵とプレイヤー当たり判定
-			GKEY* GKey = GetGKey();
+			GKey* GKey = GetGKey();
 			if (GKey->UseFlag == true)
 			{
 				//プレイヤー左・鍵取得　右側

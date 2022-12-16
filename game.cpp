@@ -148,7 +148,7 @@ void UpdateGame()
 		UpdatePuzzleCip();
 
 		UpdateGoal();
-		UpdatGKey();
+		UpdateGKey();
 		UpdateBroken();
 		UpdateWarp();
 		UpdateJumpStand();

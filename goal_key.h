@@ -4,15 +4,9 @@
 //制作者/座間研佑　
 //=============================================================================
 
+#pragma once
+
 #include "main.h"
-#include "polygon.h"
-#include "sprite.h"
-#include "texture.h"
-#include "input.h"
-#include "player.h"
-#include "time.h"
-#include "scene.h"
-#include "puzzle.h"
 
 //==============================================================
 //マクロ定義
@@ -21,7 +15,7 @@
 #define GKEY_H		(15)
 #define GKEY_MAX	(1)
 
-typedef struct
+typedef struct 
 {
 	bool UseFlag;
 	bool GetGKey;
@@ -31,10 +25,8 @@ typedef struct
 	float rot;
 	float texno;
 	float PaternNo;
-	float uv_w;
-	float uv_h;
 	int NumPatern;
-}GKEY;
+}GKey;
 
 //==============================================================
 //プロトタイプ宣言
@@ -46,6 +38,4 @@ void UpdateGKey();
 void DrawGKey();
 
 void SetGKey(D3DXVECTOR2 pos, D3DXVECTOR2 size);
-void DeleteGKey(int PieceNo);
-
-GKEY* GetGKey();
+GKey* GetGKey();
