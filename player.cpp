@@ -39,6 +39,7 @@
 #include "goal_key.h"
 #include "pause.h"
 #include "goal_key.h"
+#include"spawnpoint.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -81,7 +82,7 @@ HRESULT InitPlayer()
 	g_Player.isGround = true;
 	g_Player.isSheerFloors = false;
 	g_Player.isSheerFloorsUse = false;
-	g_Player.isHigh = true;
+	g_Player.isHigh = false;
 	g_Player.isMoveBlock = false;
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
@@ -93,6 +94,7 @@ HRESULT InitPlayer()
 	g_Player.hp = 3;
 	g_Player.frame = 0;
 	g_Player.CoolTime = PLAYER_COOLTIME;
+	g_Player.PieceIndex = 0;
 
 	return S_OK;
 }
@@ -182,6 +184,7 @@ void UpdatePlayer()
 			
 
 			BLOCK* block = GetChipBlock();
+			SpawnPoint* pSpawnPoint = GetSpawnPoint();
 			for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
 				if (block[i].UseFlag)
 				{
@@ -194,6 +197,7 @@ void UpdatePlayer()
 						if (!g_Player.isGround) {
 							g_Player.sp.y = 0.0f;
 							g_Player.isGround = true;
+							g_Player.PieceIndex = block[i].PieceIndex;
 							break;
 						}
 					}
@@ -360,7 +364,8 @@ void UpdatePlayer()
 
 			{
 				//プレイヤー・ブロック　当たり判定
-				/*for (int i = 0; i < BLOCK_MAX; i++)
+				///*
+				for (int i = 0; i < BLOCK_MAX; i++)
 				{
 					BLOCK* block = GetBlock();
 
@@ -406,7 +411,7 @@ void UpdatePlayer()
 							g_Player.frame = 50;
 						}
 					}
-				}*/
+				}//*/
 			}
 
 			//透ける床処理
@@ -953,9 +958,9 @@ void UpdatePlayer()
 
 					if (hitflag)
 					{
-						if (g_Player.Position.y < pPiece[i].pos.y - PUZZLE_HEIGHT / 2)
+						if (g_Player.Position.y < pPiece[i].pos.y - PUZZLE_HEIGHT/2)
 						{
-							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, UP);
+							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, DOWN);
 
 							if (!hitflag2)
 							{
@@ -963,11 +968,20 @@ void UpdatePlayer()
 							}
 							else
 							{
-								g_Player.fall = true;
-								g_Player.sp.y = 0;
-								//g_Player.getfall = true;
-								g_Player.frame = 50;
-								//g_Player.sp.y += 0.2;//加速
+								for (int i = 0; i < SPAWN_POINT_MAX; i++)
+								{
+									if (pSpawnPoint[i].UseFlag)
+									{
+										if (g_Player.PieceIndex == pSpawnPoint[i].PieceIndex)
+										{
+											//g_Player.Position = pSpawnPoint[i].Position;
+
+										}
+
+
+									}
+								}
+
 							}
 						}
 						else if (g_Player.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
@@ -1001,7 +1015,25 @@ void UpdatePlayer()
 
 
 						}
+						else if (g_Player.Position.y >= pPiece[i].pos.y + PUZZLE_HEIGHT/2)
+						{
+							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, UP);
 
+							if (!hitflag2)
+							{
+								//g_Player.sp.y += 0.2;//加速
+							}
+							else
+							{
+
+								g_Player.fall = true;
+								g_Player.sp.y = 0;
+								//g_Player.getfall = true;
+								g_Player.frame = 50;
+								//g_Player.sp.y += 0.2;//加速
+							}
+
+						}
 					}
 				}
 

@@ -177,6 +177,9 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_MIRROR):	//19
 				//Set
 				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT)://20
+				SetSpawnPoint(position,DrawSize,no);
+					break;
 			default:
 				break;
 			}
@@ -320,6 +323,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteHigh(g_PieceMapChip[PieceNo].no);
 	DeleteSheet(g_PieceMapChip[PieceNo].no);
 	DeleteGoal(g_PieceMapChip[PieceNo].no);
+	DeleteSpawnPoint(g_PieceMapChip[PieceNo].no);
 	//Delete
 }
 Piece* GetPiece() {

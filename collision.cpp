@@ -19,6 +19,7 @@
 #include "scene.h"
 
 #include "button.h"
+#include"spawnpoint.h"
 /*==============================================================================
 
    ìñÇΩÇËîªíËä«óù [collsion.cpp]
@@ -1341,6 +1342,8 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	GOAL* pGoal = GetGoal();
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	JUMPSTAND* pJumpStand = GetJumpStand();
+	SpawnPoint* pSpawnPoint = GetSpawnPoint();
+
 
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
@@ -1406,6 +1409,20 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 				pJumpStand[i].pos += num;
 			}
 		}
+	}
+	for (int i = 0; i < SPAWN_POINT_MAX; i++)
+	{
+			if (pSpawnPoint[i].UseFlag)
+			{
+				if (pSpawnPoint[i].PieceIndex == pinNo)
+				{
+					pSpawnPoint[i].Position += num;
+				}
+
+			}
+
+		
+
 	}
 
 }
