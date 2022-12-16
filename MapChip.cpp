@@ -32,6 +32,7 @@
 #include "SheerFloors.h"
 #include "broken.h"
 #include "high_broken.h"
+#include"spawnpoint.h"
 
 //**************************************************
 //　マクロ定義

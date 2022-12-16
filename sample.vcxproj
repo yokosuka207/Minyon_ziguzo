@@ -171,6 +171,7 @@
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="SheerFloors.cpp" />
+    <ClCompile Include="spawnpoint.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="SplitStage.cpp" />
     <ClCompile Include="StageSelect.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="scene.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="SheerFloors.h" />
+    <ClInclude Include="spawnpoint.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="SplitStage.h" />
     <ClInclude Include="StageSelect.h" />
