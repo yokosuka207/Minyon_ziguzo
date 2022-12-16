@@ -33,6 +33,7 @@
 #include"camera.h"
 #include "scene.h"
 #include "pause.h"
+#include "goal_key.h"
 
 static Time* pTime = new(Time);
 static Score g_score;
@@ -57,6 +58,7 @@ void InitGame()
 		InitJoint();
 		InitGameMouse();
 		InitGoal();
+		InitGKey();
 		InitBroken();
 		InitWarp();
 		InitJumpStand();
@@ -95,6 +97,7 @@ void UninitGame()
 	UninitPuzzle();
 	UninitGameMouse();
 	UninitGoal();
+	UninitGKey();
 	UninitPuzzleCip();
 	UninitBroken();
 	UninitPlayer();
@@ -145,6 +148,7 @@ void UpdateGame()
 		UpdatePuzzleCip();
 
 		UpdateGoal();
+		UpdateGKey();
 		UpdateBroken();
 		UpdateWarp();
 		UpdateJumpStand();
@@ -185,6 +189,7 @@ void DrawGame()
 
 		DrawPuzzleCip();
 		DrawPlayer();
+		DrawGKey();
 		DrawWarp();
 		DrawJumpStand();
 		DrawSheerFloors();

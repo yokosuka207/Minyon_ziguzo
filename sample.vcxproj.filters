@@ -46,6 +46,7 @@
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="MoveBlock.cpp" />
     <ClCompile Include="spawnpoint.cpp" />
+    <ClCompile Include="goal_key.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -91,6 +92,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="player3D.h" />
     <ClInclude Include="pause.h" />
+    <ClInclude Include="goal_key.h" />
     <ClInclude Include="MoveBlock.h" />
     <ClInclude Include="spawnpoint.h" />
   </ItemGroup>

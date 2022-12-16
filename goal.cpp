@@ -1,4 +1,5 @@
 #include "goal.h"
+#include "goal_key.h"
 #include "texture.h"
 #include "sprite.h"
 #include "input.h"
@@ -10,11 +11,13 @@
 #include "time.h"
 
 GOAL g_Goal;
+GKey g_GKey;
 static ID3D11ShaderResourceView	*g_textureGoal;	//画像一枚で一つの変数が必要
 static char *g_textureName_Goal = (char*)"data\\texture\\yello.jpg";	//テクスチャファイルパス
 static Time g_Time;
 
-HRESULT InitGoal(){
+HRESULT InitGoal()
+{
 	g_Goal.texno = LoadTexture(g_textureName_Goal);
 	g_Goal.Pos = D3DXVECTOR2(0.0f, 0.0f);
 	g_Goal.Size = D3DXVECTOR2(GOAL_SIEZX, GOAL_SIZEY);
@@ -39,9 +42,10 @@ void UpdateGoal()
 	if (g_Goal.UseFlag)
 	{
 		PLAYER* pPlayer = GetPlayer();
+		GKey* pGKey = GetGKey();
 		MOUSE* pMouse = GetMouse();
 		RESULT* pResult = GetResult();
-		if (!pMouse->UseFlag)
+		if (!pMouse->UseFlag && pGKey->GetGKey)
 		{
 
 			if (g_Goal.Pos.x + g_Goal.Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2
