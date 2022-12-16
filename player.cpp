@@ -974,7 +974,7 @@ void UpdatePlayer()
 									{
 										if (g_Player.PieceIndex == pSpawnPoint[i].PieceIndex)
 										{
-											//g_Player.Position = pSpawnPoint[i].Position;
+											g_Player.Position = pSpawnPoint[i].Position;
 
 										}
 
