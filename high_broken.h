@@ -25,6 +25,7 @@ struct HIGH
 	D3DXVECTOR2 Postion;//表示座標(中心座標)
 	D3DXVECTOR2 sp;
 	float rot;//回転角度
+	int index;
 	float texno;//テクスチャインデックス
 	D3DXCOLOR col;//色
 	float PaternNo;//パターン番号
@@ -43,7 +44,8 @@ void UninitHigh();
 void UpdateHigh();
 void DrawHigh();
 
-int SetHigh(D3DXVECTOR2 Pos, D3DXVECTOR2 s);
+void SetHigh(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index);
+void DeleteHigh(int PieceNo);
 
 HIGH* GetHigh();//BROKEN構造体の先頭ポインタを取得
 

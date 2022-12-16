@@ -68,13 +68,13 @@ void DrawFallBlock()
 	{
 		if (g_FallBlock[i].UseFlag)
 		{
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 
 			//テクスチャの設定
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_FallBlock[i].texno));
 			//スプライトを表示
 			D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			SpriteDrawColorRotation(g_FallBlock[i].Position.x, g_FallBlock[i].Position.y, g_FallBlock[i].Size.x, g_FallBlock[i].Size.y,
+			SpriteDrawColorRotation(g_FallBlock[i].Position.x, g_FallBlock[i].Position.y,-0.1f, g_FallBlock[i].Size.x, g_FallBlock[i].Size.y,
 				g_FallBlock[i].rot, g_FallBlock[i].col, 0, 1.0f, 1.0f, 1);
 
 		}

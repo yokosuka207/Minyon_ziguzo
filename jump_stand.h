@@ -1,7 +1,7 @@
 #pragma once
 
 #define JUMPSTAND_SIZE	(20)
-#define JUMPSTAND_MAX (1)
+#define JUMPSTAND_MAX (5)
 typedef struct 
 {
 	D3DXVECTOR2 pos;	//表示座標
@@ -16,6 +16,8 @@ typedef struct
 
 	bool UseJumpStand;	//ジャンプスタンドフラグ
 	bool JumpStandFlag;		//ジャンプスタンドのジャンプ中フラグ
+
+	bool GetJumpStand;
 
 }JUMPSTAND;
 

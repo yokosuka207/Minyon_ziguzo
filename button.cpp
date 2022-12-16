@@ -58,11 +58,11 @@ void Button::Draw()
 	// éläpå`ÇÃï`âÊ
 	if (m_type == BUTTON_TYPE::TYPE_NORMAL) {			// ÉmÅ[É}ÉãèÛë‘
 		m_drawPos.y = m_pos.y;
-		SpriteDrawColorRotation(m_pos.x, m_drawPos.y, m_size.x, m_size.y, 0.0f, m_color, 0.0f, 1.0f, 1.0f, 1);
+		SpriteDrawColorRotation(m_pos.x, m_drawPos.y,0.0f, m_size.x, m_size.y, 0.0f, m_color, 0.0f, 1.0f, 1.0f, 1);
 	}
 	else {						// âüÇ≥ÇÍÇƒÇ¢ÇÈèÛë‘
 		m_drawPos.y = m_pos.y + 10.0f;
-		SpriteDrawColorRotation(m_pos.x, m_drawPos.y, m_size.x, m_size.y, 0.0f, D3DXCOLOR(m_color.r - 0.3f, m_color.g - 0.3f, m_color.b - 0.3f, m_color.a), 0.0f, 1.0f, 1.0f, 1);
+		SpriteDrawColorRotation(m_pos.x, m_drawPos.y,0.0f, m_size.x, m_size.y, 0.0f, D3DXCOLOR(m_color.r - 0.3f, m_color.g - 0.3f, m_color.b - 0.3f, m_color.a), 0.0f, 1.0f, 1.0f, 1);
 	}
 }
 

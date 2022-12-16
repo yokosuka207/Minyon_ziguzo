@@ -27,7 +27,7 @@ PAUSE	PauseObject[4];//タイトル画面オブジェクト
 int		PauseTextureNo = 0;//テクスチャ番号
 int		PauseEndTextureNo = 0;//テクスチャ番号
 
-
+static bool		PauseFlag;
 static Time		g_Time;
 //======================
 //初期化
@@ -56,6 +56,8 @@ void	InitPause()
 	PauseObject[1].Color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
 	PauseObject[1].Rotate = 0.0;
 
+
+	PauseFlag = false;
 }
 //======================
 //終了処理
@@ -82,24 +84,26 @@ void	UninitPause()
 //======================
 void	UpdatePause()
 {
-	MOUSE* pMouse = GetMouse();
-	D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
+	if (PauseFlag) {
+		MOUSE* pMouse = GetMouse();
+		D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
 
-	D3DXVECTOR2 min, max;		// min左上, max右下
-	min = D3DXVECTOR2(PauseObject[1].Position.x - PauseObject[1].Size.x / 2, PauseObject[1].Position.y - PauseObject[1].Size.y / 2);
-	max = D3DXVECTOR2(PauseObject[1].Position.x + PauseObject[1].Size.x / 2, PauseObject[1].Position.y + PauseObject[1].Size.y / 2);
+		D3DXVECTOR2 min, max;		// min左上, max右下
+		min = D3DXVECTOR2(PauseObject[1].Position.x - PauseObject[1].Size.x / 2, PauseObject[1].Position.y - PauseObject[1].Size.y / 2);
+		max = D3DXVECTOR2(PauseObject[1].Position.x + PauseObject[1].Size.x / 2, PauseObject[1].Position.y + PauseObject[1].Size.y / 2);
 
-	//キー入力のチェック
+		//キー入力のチェック
 
-	if (IsMouseLeftPressed())
-	{
-		if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y)
+		if (IsMouseLeftPressed())
 		{
-			//g_Time.PuaseEndTime();
-			SetScene(SCENE::SCENE_GAME);
+			if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y)
+			{
+				//g_Time.PuaseEndTime();
+				//SetScene(SCENE::SCENE_GAME);
+				PauseFlag = false;
+			}
 		}
 	}
-
 }
 //======================
 //描画処理
@@ -112,37 +116,45 @@ void	DrawPause()
 
 
 	//スプライトの描画
-	//シーン画面
-	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseTextureNo));
-	SpriteDrawColorRotation
-	(
-		PauseObject[0].Position.x,
-		PauseObject[0].Position.y,
-		PauseObject[0].Size.x,
-		PauseObject[0].Size.y,
-		PauseObject[0].Rotate,
-		PauseObject[0].Color,
-		0,
-		1.0f,
-		1.0f,
-		1
-	);
 	
-	//再開ボタン
-	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseEndTextureNo));
-	SpriteDrawColorRotation
-	(
-		PauseObject[1].Position.x,
-		PauseObject[1].Position.y,
-		PauseObject[1].Size.x,
-		PauseObject[1].Size.y,
-		PauseObject[1].Rotate,
-		PauseObject[1].Color,
-		0,
-		1.0f,
-		1.0f,
-		1
-	);
+	//シーン画面
+	if (PauseFlag)
+	{
+
+
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseTextureNo));
+		SpriteDrawColorRotation
+		(
+			PauseObject[0].Position.x,
+			PauseObject[0].Position.y,
+			-0.0f,
+			PauseObject[0].Size.x,
+			PauseObject[0].Size.y,
+			PauseObject[0].Rotate,
+			PauseObject[0].Color,
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
+
+		//再開ボタン
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseEndTextureNo));
+		SpriteDrawColorRotation
+		(
+			PauseObject[1].Position.x,
+			PauseObject[1].Position.y,
+			0.0f,
+			PauseObject[1].Size.x,
+			PauseObject[1].Size.y,
+			PauseObject[1].Rotate,
+			PauseObject[1].Color,
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
+	}
 }
 
 
@@ -158,3 +170,6 @@ void	DrawPause()
 //	PauseObject[1].Color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
 //	PauseObject[1].Rotate = 0.0;
 //}
+bool* GetPause() {
+	return &PauseFlag;
+}

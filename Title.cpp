@@ -120,6 +120,7 @@ void	DrawTitle()
 	(
 		TitleObject.Position.x,
 		TitleObject.Position.y,
+		0.0f,
 		TitleObject.Size.x,
 		TitleObject.Size.y,
 		TitleObject.Rotate,

@@ -183,6 +183,7 @@ void	DrawResult()
 		(
 			ResultObject[0].Position.x,
 			ResultObject[0].Position.y,
+			0.0f,
 			ResultObject[0].Size.x,
 			ResultObject[0].Size.y,
 			ResultObject[0].Rotate,
@@ -198,6 +199,7 @@ void	DrawResult()
 		(//countinuButton
 			ResultObject[1].Position.x,
 			ResultObject[1].Position.y,
+			0.0f,
 			ResultObject[1].Size.x,
 			ResultObject[1].Size.y,
 			ResultObject[1].Rotate,
@@ -213,6 +215,7 @@ void	DrawResult()
 		(//endButton
 			ResultObject[2].Position.x,
 			ResultObject[2].Position.y,
+			0.0f,
 			ResultObject[2].Size.x,
 			ResultObject[2].Size.y,
 			ResultObject[2].Rotate,
@@ -233,6 +236,7 @@ void	DrawResult()
 		(
 			ResultObject[0].Position.x,
 			ResultObject[0].Position.y,
+			0.0f,
 			ResultObject[0].Size.x,
 			ResultObject[0].Size.y,
 			ResultObject[0].Rotate,

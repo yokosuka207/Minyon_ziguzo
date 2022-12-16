@@ -93,12 +93,12 @@ void DrawPuzzleCip()
 
 		if (g_PuzzleCip[i].UseFlag)
 		{
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 
 
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_PuzzleCip[i].texno));
 
-			SpriteDrawColorRotation(g_PuzzleCip[i].Position.x, g_PuzzleCip[i].Position.y,
+			SpriteDrawColorRotation(g_PuzzleCip[i].Position.x, g_PuzzleCip[i].Position.y,-0.1f,
 				g_PuzzleCip[i].Size.x, g_PuzzleCip[i].Size.y, g_PuzzleCip[i].Rotation, g_PuzzleCip[i].Col,
 				0, 1.0f, 1.0f, 1);
 		}
@@ -106,11 +106,11 @@ void DrawPuzzleCip()
 	//マップチップ描写
 	for (int i = 0; i < PUZZLE_MAX; i++) {
 		if (g_ChipPuzzleChip[i].UseFlag) {
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ChipPuzzleChip[i].texno));
 
-			SpriteDrawColorRotation(g_ChipPuzzleChip[i].Position.x, g_ChipPuzzleChip[i].Position.y,
+			SpriteDrawColorRotation(g_ChipPuzzleChip[i].Position.x, g_ChipPuzzleChip[i].Position.y,-0.1f,
 				g_ChipPuzzleChip[i].Size.x, g_ChipPuzzleChip[i].Size.y, g_ChipPuzzleChip[i].Rotation, g_ChipPuzzleChip[i].Col,
 				0, 1.0f, 1.0f, 1);
 		}

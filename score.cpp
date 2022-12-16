@@ -17,11 +17,11 @@ static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";	//テクスチ
 static int g_ScoreTextureNo = 0;
 
 static SCORE g_Score;	//構造体
+static Time* pTime = new(Time);
 
-static int distance = SCORE_POS_X;
+static int g_TimeDistance = SCORE_POS_X;
 static int score = 0;
 
-static 	Time g_Time;
 
 void Score::InitScore() {
 	g_ScoreTextureNo = LoadTexture(g_ScoreTextureName);
@@ -45,7 +45,7 @@ void Score::DrawScore() {
 
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreTextureNo));
 
-		g_Score.pos.x = distance;
+		g_Score.pos.x = g_TimeDistance;
 		score = CulcScore();
 
 		for (int i = 0; i < SCORE_MAX; i++) {
@@ -54,6 +54,7 @@ void Score::DrawScore() {
 			(
 				g_Score.pos.x,
 				g_Score.pos.y,
+				0.0f,
 				g_Score.size.x,
 				g_Score.size.y,
 				0.0f,
@@ -69,8 +70,7 @@ void Score::DrawScore() {
 	}
 }
 int Score::CulcScore() {
-	m_TimeScore = g_Time.GetTime();
-	
+	m_TimeScore = pTime->GetTime();
 	if (m_TimeScore < 60) {
 		m_score = m_TimeScore;
 	}

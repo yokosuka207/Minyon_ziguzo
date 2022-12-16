@@ -26,7 +26,7 @@ static int g_TimeTextureNo = 0;
 static int g_Time = 0;
 static int g_SecondTime = 0;
 static int g_MintueTime = 0;
-static int distance = (TIME_POS_X);
+static int g_TimeDistance = (TIME_POS_X);
 static TimeParam g_TimeParam;
 
 void Time::InitTime() {
@@ -41,6 +41,7 @@ void Time::InitTime() {
 	m_PuaseStart = 0;
 	m_PuaseStart = 0;
 	m_ElapsedTime = 0;
+	m_PauseElapsed = 0;
 }
 void Time::UninitTime() {
 	if (g_TimeTexture != NULL) {
@@ -48,18 +49,17 @@ void Time::UninitTime() {
 		g_TimeTexture = NULL;
 	}
 }
-void Time:: DrawGameTime() {
-	
-	SetWorldViewProjection2D();
 
+//要らない
+void Time:: DrawGameTime() {
+	SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TimeTextureNo));
 
 	m_ElapsedTime = ElapsedTime();
-
 	g_Time = m_ElapsedTime / CLOCKS_PER_SEC;//秒表示
 	g_SecondTime = g_Time % 60;	//秒
 	g_MintueTime = g_Time / 60;	//分
-	g_TimeParam.pos.x = distance;
+	g_TimeParam.pos.x = g_TimeDistance;
 
 	if (g_TimeParam.UseFlag) {
 		//1の位(秒)
@@ -67,6 +67,7 @@ void Time:: DrawGameTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -84,6 +85,7 @@ void Time:: DrawGameTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -100,6 +102,7 @@ void Time:: DrawGameTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x - 5,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -117,6 +120,7 @@ void Time:: DrawGameTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x - 5,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -130,16 +134,15 @@ void Time:: DrawGameTime() {
 		}
 	}
 }
-void Time::DrawResultTime() {
-	//22/11/30にやる
-	SetWorldViewProjection2D();
 
+//ポーズ時間をどうにかしないと
+void Time::DrawResultTime() {
+	SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TimeTextureNo));
 
 	g_TimeParam.pos.x = SCREEN_WIDTH / 2 + 70;
 	g_TimeParam.pos.y = SCREEN_HEIGHT / 2;
 	g_TimeParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
 	if (!g_TimeParam.EndFlag) {
 		m_ElapsedTime = ElapsedTime();
 		g_TimeParam.EndFlag = true;
@@ -154,6 +157,7 @@ void Time::DrawResultTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -171,6 +175,7 @@ void Time::DrawResultTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -187,6 +192,7 @@ void Time::DrawResultTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x - 5,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -204,6 +210,7 @@ void Time::DrawResultTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x - 5,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -220,14 +227,13 @@ void Time::DrawResultTime() {
 void Time::StartTime() {
 	m_start = clock();
 }
-int Time:: EndTime() {
+int Time::EndTime() {
 	m_end = clock();
-	return m_end  - m_start;
+	return m_end - m_start;
 }
+
 int Time::ElapsedTime() {
-	
 	m_ElapsedTime = clock() - m_start;
-	
 	return m_ElapsedTime;
 }
 //ポーズの開始時間
@@ -237,7 +243,14 @@ void Time::PuaseStartTime() {
 //ポーズの終了時間
 void Time::PuaseEndTime() {
 	m_PuaseEnd = clock();
+	//m_PauseElapsed += m_PuaseEnd - m_PuaseStart;
 	m_ElapsedTime -= m_PuaseEnd - m_PuaseStart;
+}
+void Time::SetElapsedTime(int elapsedtime) {
+	m_ElapsedTime = elapsedtime;
+}
+TimeParam* Time::GetTimeParam() {
+	return &g_TimeParam;
 }
 void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 	if (!g_TimeParam.UseFlag) {
@@ -250,11 +263,6 @@ int Time::GetTime() {
 	m_ElapsedTime /= CLOCKS_PER_SEC;
 	return m_ElapsedTime;
 }
-void Time::SetElapsedTime(int elapsedtime) {
-	m_ElapsedTime = elapsedtime;
+Time* Time::GetTimeClass() {
+	return this;
 }
-
-TimeParam* Time::GetTimeParam() {
-	return &g_TimeParam;
-}
-

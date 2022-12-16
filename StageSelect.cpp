@@ -27,6 +27,8 @@ static STAGESELECT g_StageSelect;
 static ID3D11ShaderResourceView* g_StageSelectTexture;	//画像一枚で一つの変数が必要
 static char* g_StageSelectTextureName = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
 
+static int g_SelectDistance;
+static int g_select;
 //-----------------------------------------------------------------------------
 //	初期化
 //-----------------------------------------------------------------------------
@@ -37,6 +39,9 @@ HRESULT InitStageSelect() {
 	g_StageSelect.StagePieceIndex = 0;
 	g_StageSelect.StageUseFlag = false;
 	g_StageSelect.texno = LoadTexture(g_StageSelectTextureName);
+
+	g_SelectDistance = SCREEN_WIDTH / 2;
+	g_select = 0;
 	return S_OK;
 }
 
@@ -83,16 +88,23 @@ void DrawStageSelect() {
 
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelect.texno));
 
-		SpriteDrawColorRotation(
-			g_StageSelect.pos.x, g_StageSelect.pos.y,
-			g_StageSelect.size.x, g_StageSelect.size.y,
-			0.0f,
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-			g_StageSelect.StagePieceIndex,
-			1.0f / 10.0f,
-			1.0f / 1.0f,
-			10
-		);
+		g_StageSelect.pos.x = g_SelectDistance;
+		g_select = g_StageSelect.StagePieceIndex;
+
+		for (int i = 0; i < SELECT_MAX; i++) {
+			SpriteDrawColorRotation(
+				g_StageSelect.pos.x, g_StageSelect.pos.y,0.0f,
+				g_StageSelect.size.x, g_StageSelect.size.y,
+				0.0f,
+				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+				(g_select % 10),
+				1.0f / 10.0f,
+				1.0f / 1.0f,
+				10
+			);
+			g_select /= 10;
+			g_StageSelect.pos.x -= 30;
+		}
 	}
 }
 
@@ -100,8 +112,8 @@ void DrawStageSelect() {
 //	ステージセット関数
 //-----------------------------------------------------------------------------
 void SetStageSelect() {
-	g_StageSelect.pos = D3DXVECTOR2(SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2);
-	g_StageSelect.size = D3DXVECTOR2(200.0f,200.0f);
+	g_StageSelect.pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	g_StageSelect.size = D3DXVECTOR2(50.0f,50.0f);
 }
 //-----------------------------------------------------------------------------
 //	ステージセレクトを外部で値を変えれるようにする関数
