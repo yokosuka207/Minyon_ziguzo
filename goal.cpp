@@ -12,8 +12,8 @@
 GOAL g_Goal;
 static ID3D11ShaderResourceView	*g_textureGoal;	//画像一枚で一つの変数が必要
 static char *g_textureName_Goal = (char*)"data\\texture\\yello.jpg";	//テクスチャファイルパス
-static Time g_Time;
-
+static Time* pTime = new(Time);
+static TimeParam* pTimeParam = pTime->GetTimeParam();
 HRESULT InitGoal(){
 	g_Goal.texno = LoadTexture(g_textureName_Goal);
 	g_Goal.Pos = D3DXVECTOR2(0.0f, 0.0f);
@@ -51,7 +51,8 @@ void UpdateGoal()
 			{
 				g_Goal.UseFlag = false;
 				SetResultType(WIN);
-				SetScene(SCENE_RESULT);				
+				SetScene(SCENE_RESULT);	
+				pTimeParam->EndFlag = true;
 			}
 		}
 	}

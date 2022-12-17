@@ -10,6 +10,7 @@
 #include "time.h"
 #include "sprite.h"
 #include "texture.h"
+#include "pause.h"
 #include <iostream>
 #include <Windows.h>
 #include <vector>
@@ -28,6 +29,7 @@ static int g_SecondTime = 0;
 static int g_MintueTime = 0;
 static int g_TimeDistance = (TIME_POS_X);
 static TimeParam g_TimeParam;
+static bool* pause = GetPause();
 
 void Time::InitTime() {
 	g_TimeTextureNo = LoadTexture(g_TimeTextureName);
@@ -44,6 +46,8 @@ void Time::InitTime() {
 	m_PauseElapsed = 0;
 }
 void Time::UninitTime() {
+	g_TimeParam.UseFlag = false;
+	g_TimeParam.EndFlag = false;
 	if (g_TimeTexture != NULL) {
 		g_TimeTexture->Release();
 		g_TimeTexture = NULL;
@@ -56,6 +60,8 @@ void Time:: DrawGameTime() {
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TimeTextureNo));
 
 	m_ElapsedTime = ElapsedTime();
+	m_ElapsedTime -= m_PauseElapsed;
+	
 	g_Time = m_ElapsedTime / CLOCKS_PER_SEC;//ïbï\é¶
 	g_SecondTime = g_Time % 60;	//ïb
 	g_MintueTime = g_Time / 60;	//ï™
@@ -142,10 +148,12 @@ void Time::DrawResultTime() {
 
 	g_TimeParam.pos.x = SCREEN_WIDTH / 2 + 70;
 	g_TimeParam.pos.y = SCREEN_HEIGHT / 2;
+	g_TimeParam.size = D3DXVECTOR2(50.0f, 50.0f);
 	g_TimeParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	if (!g_TimeParam.EndFlag) {
+	if (g_TimeParam.EndFlag) {
 		m_ElapsedTime = ElapsedTime();
-		g_TimeParam.EndFlag = true;
+		m_ElapsedTime -= m_PauseElapsed;
+		g_TimeParam.EndFlag = false;
 	}
 	g_Time = m_ElapsedTime / CLOCKS_PER_SEC;//ïbï\é¶
 	g_SecondTime = g_Time % 60;	//ïb
@@ -229,7 +237,8 @@ void Time::StartTime() {
 }
 int Time::EndTime() {
 	m_end = clock();
-	return m_end - m_start;
+	m_ElapsedTime = m_end - m_start;
+	return m_ElapsedTime;
 }
 
 int Time::ElapsedTime() {
@@ -243,10 +252,9 @@ void Time::PuaseStartTime() {
 //É|Å[ÉYÇÃèIóπéûä‘
 void Time::PuaseEndTime() {
 	m_PuaseEnd = clock();
-	//m_PauseElapsed += m_PuaseEnd - m_PuaseStart;
-	m_ElapsedTime -= m_PuaseEnd - m_PuaseStart;
+	m_PauseElapsed += m_PuaseEnd - m_PuaseStart;
 }
-void Time::SetElapsedTime(int elapsedtime) {
+void Time::SetElapsedTime(clock_t elapsedtime) {
 	m_ElapsedTime = elapsedtime;
 }
 TimeParam* Time::GetTimeParam() {
@@ -259,7 +267,7 @@ void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 		g_TimeParam.UseFlag = true;
 	}
 }
-int Time::GetTime() {
+clock_t Time::GetTime() {
 	m_ElapsedTime /= CLOCKS_PER_SEC;
 	return m_ElapsedTime;
 }

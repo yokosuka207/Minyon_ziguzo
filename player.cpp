@@ -598,7 +598,7 @@ void UpdatePlayer()
 					{
 						g_Player.Position.y = (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 - g_Player.size.y / 2;
 						//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
-						//SetScene(SCENE_RESULT);
+						//(SCENE_RESULT);
 					}
 					//プレイヤー下・トゲブロック上,
 					if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
@@ -884,14 +884,6 @@ void UpdatePlayer()
 					}
 				}
 			}
-
-
-
-			if (GetKeyboardTrigger(DIK_R))	//Rキーが押されたら
-			{
-				ResetGame();
-			}
-
 			//プレイヤーとパズルの画面外判定
 
 			Piece* pPiece = GetPiece();

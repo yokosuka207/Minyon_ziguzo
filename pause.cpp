@@ -28,7 +28,7 @@ int		PauseTextureNo = 0;//テクスチャ番号
 int		PauseEndTextureNo = 0;//テクスチャ番号
 
 static bool		PauseFlag;
-static Time		g_Time;
+static Time*	pTime = new(Time);
 //======================
 //初期化
 //======================
@@ -98,9 +98,9 @@ void	UpdatePause()
 		{
 			if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y)
 			{
-				//g_Time.PuaseEndTime();
+				
 				//SetScene(SCENE::SCENE_GAME);
-				PauseFlag = false;
+				
 			}
 		}
 	}
