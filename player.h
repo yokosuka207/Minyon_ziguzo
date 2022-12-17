@@ -62,6 +62,7 @@ struct PLAYER
 	int frame;
 	int CoolTime;//クールタイム
 	PLAYER_DIRECTION dir;			// プレイヤーの向き
+	int PieceIndex;	//動いでいるピースの番号
 
 };
 
