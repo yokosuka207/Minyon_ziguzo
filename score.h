@@ -29,7 +29,6 @@ class Score{
 private:
 	int m_score = 0;	//ƒXƒRƒA‚ğ“ü‚ê‚é
 	int m_TimeScore = 0;
-
 public:
 	void InitScore();
 	void UninitScore();

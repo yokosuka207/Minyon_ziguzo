@@ -59,7 +59,7 @@ void UninitScene(){
 		break;
 	case SCENE::SCENE_GAME:
 		Elapsedtime = pTime->EndTime();
-		PauseElapsed = pTime->PuaseElapsedTime();
+		PauseElapsed = pTime->PauseElapsedTime();
 		UninitGame();
 		break;
 	case SCENE::SCENE_RESULT:

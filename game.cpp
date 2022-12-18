@@ -126,14 +126,14 @@ void UpdateGame()
 		//ポーズフラグがoff
 		if (!(*pause)) {
 			(*pause) = true;
-			pTime->PuaseStartTime();
+			pTime->PauseStartTime();
 		}
 	}	
 	if(GetKeyboardTrigger(DIK_Z)) {
 		if ((*pause)) {
 			(*pause) = false;
-			pTime->PuaseEndTime();
-			pTime->PuaseElapsedTime();
+			pTime->PauseEndTime();
+			pTime->PauseElapsedTime();
 		}
 	}
 	if (GetKeyboardTrigger(DIK_R)) {

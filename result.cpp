@@ -147,6 +147,7 @@ void	UpdateResult()
 		{
 			if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y) 
 			{
+				pTimeParam->UseFlag = false;
 				pTime->StartTime();
 				SetScene(SCENE::SCENE_GAME);
 			}
