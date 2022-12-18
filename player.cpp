@@ -36,6 +36,10 @@
 #include "high_broken.h"
 #include "MoveBlock.h"
 #include "time.h"
+#include "goal_key.h"
+#include "pause.h"
+#include "goal_key.h"
+#include"spawnpoint.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -78,7 +82,7 @@ HRESULT InitPlayer()
 	g_Player.isGround = true;
 	g_Player.isSheerFloors = false;
 	g_Player.isSheerFloorsUse = false;
-	g_Player.isHigh = true;
+	g_Player.isHigh = false;
 	g_Player.isMoveBlock = false;
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
@@ -90,6 +94,7 @@ HRESULT InitPlayer()
 	g_Player.hp = 3;
 	g_Player.frame = 0;
 	g_Player.CoolTime = PLAYER_COOLTIME;
+	g_Player.PieceIndex = 0;
 
 	return S_OK;
 }
@@ -179,6 +184,7 @@ void UpdatePlayer()
 			
 
 			BLOCK* block = GetChipBlock();
+			SpawnPoint* pSpawnPoint = GetSpawnPoint();
 			for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
 				if (block[i].UseFlag)
 				{
@@ -191,6 +197,7 @@ void UpdatePlayer()
 						if (!g_Player.isGround) {
 							g_Player.sp.y = 0.0f;
 							g_Player.isGround = true;
+							g_Player.PieceIndex = block[i].PieceIndex;
 							break;
 						}
 					}
@@ -357,7 +364,8 @@ void UpdatePlayer()
 
 			{
 				//プレイヤー・ブロック　当たり判定
-				/*for (int i = 0; i < BLOCK_MAX; i++)
+				///*
+				for (int i = 0; i < BLOCK_MAX; i++)
 				{
 					BLOCK* block = GetBlock();
 
@@ -403,7 +411,7 @@ void UpdatePlayer()
 							g_Player.frame = 50;
 						}
 					}
-				}*/
+				}//*/
 			}
 
 			//透ける床処理
@@ -598,7 +606,7 @@ void UpdatePlayer()
 					{
 						g_Player.Position.y = (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 - g_Player.size.y / 2;
 						//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
-						//SetScene(SCENE_RESULT);
+						//(SCENE_RESULT);
 					}
 					//プレイヤー下・トゲブロック上,
 					if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
@@ -842,6 +850,52 @@ void UpdatePlayer()
 			//
 
 
+			//ゴール用鍵とプレイヤー当たり判定
+			GKey* GKey = GetGKey();
+			if (GKey->UseFlag == true)
+			{
+				//プレイヤー左・鍵取得　右側
+				if (g_Player.Position.x + g_Player.size.x / 2 > GKey->pos.x - GKey->size.x / 2 &&
+					g_Player.oldpos.x + g_Player.size.x / 2 <= GKey->pos.x - GKey->size.x / 2 &&
+					g_Player.Position.y + g_Player.size.y / 2 > GKey->pos.y - GKey->size.y / 2 &&
+					g_Player.Position.y - g_Player.size.y / 2 < GKey->pos.y + GKey->size.y / 2)
+				{
+					GKey->UseFlag = false;
+					GKey->GetGKey = true;
+				}
+				//プレイヤー右・鍵取得　左側
+				if (g_Player.Position.x - g_Player.size.x / 2 < GKey->pos.x + GKey->size.x / 2 &&
+					g_Player.oldpos.x - g_Player.size.x / 2 >= GKey->pos.x + GKey->size.x / 2 &&
+					g_Player.Position.y + g_Player.size.y / 2 > GKey->pos.y - GKey->size.y / 2 &&
+					g_Player.Position.y - g_Player.size.y / 2 < GKey->pos.y + GKey->size.y / 2)
+				{
+					GKey->UseFlag = false;
+					GKey->GetGKey = true;
+
+				}
+
+				//プレイヤー上・鍵取得　下
+				if (g_Player.Position.x + g_Player.size.x / 2 > GKey->pos.x - GKey->size.x / 2 &&
+					g_Player.Position.x - g_Player.size.x / 2 < GKey->pos.x + GKey->size.x / 2 &&
+					g_Player.Position.y + g_Player.size.y / 2 > GKey->pos.y - GKey->size.y / 2 &&
+					g_Player.oldpos.y + g_Player.size.y / 2 <= GKey->pos.y - GKey->size.y / 2)
+				{
+					GKey->UseFlag = false;
+					GKey->GetGKey = true;
+				}
+				//プレイヤー下・鍵取得　上
+				if (g_Player.Position.x + g_Player.size.x / 2 > GKey->pos.x - GKey->size.x / 2 &&
+					g_Player.Position.x - g_Player.size.x / 2 < GKey->pos.x + GKey->size.x / 2 &&
+					g_Player.Position.y - g_Player.size.y / 2 < GKey->pos.y + GKey->size.y / 2 &&
+					g_Player.oldpos.y - g_Player.size.y / 2 >= GKey->pos.y + GKey->size.y / 2)
+				{
+					GKey->UseFlag = false;
+					GKey->GetGKey = true;
+
+				}
+			}
+			
+
 			g_Player.CoolTime--;
 
 			if (g_Player.CoolTime < 0)
@@ -884,14 +938,6 @@ void UpdatePlayer()
 					}
 				}
 			}
-
-
-
-			if (GetKeyboardTrigger(DIK_R))	//Rキーが押されたら
-			{
-				ResetGame();
-			}
-
 			//プレイヤーとパズルの画面外判定
 
 			Piece* pPiece = GetPiece();
@@ -904,9 +950,9 @@ void UpdatePlayer()
 
 					if (hitflag)
 					{
-						if (g_Player.Position.y < pPiece[i].pos.y - PUZZLE_HEIGHT / 2)
+						if (g_Player.Position.y < pPiece[i].pos.y - PUZZLE_HEIGHT/2)
 						{
-							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, UP);
+							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, DOWN);
 
 							if (!hitflag2)
 							{
@@ -914,11 +960,20 @@ void UpdatePlayer()
 							}
 							else
 							{
-								g_Player.fall = true;
-								g_Player.sp.y = 0;
-								//g_Player.getfall = true;
-								g_Player.frame = 50;
-								//g_Player.sp.y += 0.2;//加速
+								for (int i = 0; i < SPAWN_POINT_MAX; i++)
+								{
+									if (pSpawnPoint[i].UseFlag)
+									{
+										if (g_Player.PieceIndex == pSpawnPoint[i].PieceIndex)
+										{
+											g_Player.Position = pSpawnPoint[i].Position;
+
+										}
+
+
+									}
+								}
+
 							}
 						}
 						else if (g_Player.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
@@ -952,7 +1007,25 @@ void UpdatePlayer()
 
 
 						}
+						else if (g_Player.Position.y >= pPiece[i].pos.y + PUZZLE_HEIGHT/2)
+						{
+							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, UP);
 
+							if (!hitflag2)
+							{
+								//g_Player.sp.y += 0.2;//加速
+							}
+							else
+							{
+
+								g_Player.fall = true;
+								g_Player.sp.y = 0;
+								//g_Player.getfall = true;
+								g_Player.frame = 50;
+								//g_Player.sp.y += 0.2;//加速
+							}
+
+						}
 					}
 				}
 

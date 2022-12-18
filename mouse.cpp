@@ -12,6 +12,7 @@
 #include"thorn_block.h"
 //#include"puzzlecip.h"
 #include"jump_stand.h"
+#include"spawnpoint.h"
 
 MOUSE Mouse;
 bool oneFlag = false;	//マウスでパズルを一つ持っているか
@@ -52,6 +53,7 @@ void UpdateGameMouse()
 	GOAL* pGoal = GetGoal();
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	JUMPSTAND* pJumpStand = GetJumpStand();
+	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 	Mouse.oldPosX = GetMousePosX();
 	Mouse.oldPosY = GetMousePosY();
 
@@ -173,6 +175,19 @@ void UpdateGameMouse()
 								}
 							}
 						}
+						for (int i = 0; i < SPAWN_POINT_MAX; i++)
+						{//スポーンポイント
+							if (pSpawnPoint[i].UseFlag)
+							{
+								if (pSpawnPoint[i].PieceIndex == NoIndex)
+								{
+									pSpawnPoint[i].Position += temp;
+								}
+
+							}
+
+						}
+
 						if (!Mouse.pFlag)
 						{
 							if (GetKeyboardTrigger(DIK_A))	//aキーが押されたら

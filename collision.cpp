@@ -17,19 +17,9 @@
 #include "scene.h"
 #include "goal.h"
 
-#include "joint.h"
-#include "SplitStage.h"
-
-
-//ギミック系
-#include "block.h"			//基本ブロック
-#include "button.h"			//ボタン
-#include "thorn_block.h"	//トゲのブロック
-#include "broken.h"			//壊れるブロック
-#include "jump_stand.h"		//ジャンプスタンド
-#include "switch.h"			//スイッチ
-#include "SwitchWall.h"		//スイッチで開く壁
-
+#include "button.h"
+#include "time.h"
+#include"spawnpoint.h"
 /*==============================================================================
 
    当たり判定管理 [collsion.cpp]
@@ -50,7 +40,8 @@ bool SpritStageCollision(Piece p);
 
 int punum = 0;	//パズルの配列の添え字の格納
 
-
+static Time* pTime = new(Time);
+static TimeParam* pTimeParam = pTime->GetTimeParam();
 DIRECSION Direcsion = NUM;	//方向の確認
 //===============================
 //当たり判定処理
@@ -165,6 +156,7 @@ void UpdateCollision()
 					if (pPlayer->hp <= 0) {
 						SetResultType(LOSE);
 						SetScene(SCENE::SCENE_RESULT);
+						pTimeParam->EndFlag = true;
 					}
 					
 				}
@@ -175,6 +167,7 @@ void UpdateCollision()
 		if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT)
 		{
 			pResult[0].type = LOSE;
+			
 			SetScene(SCENE::SCENE_RESULT);
 		}
 	}
@@ -1410,6 +1403,8 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	GOAL* pGoal = GetGoal();
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	JUMPSTAND* pJumpStand = GetJumpStand();
+	SpawnPoint* pSpawnPoint = GetSpawnPoint();
+
 
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
@@ -1475,6 +1470,20 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 				pJumpStand[i].pos += num;
 			}
 		}
+	}
+	for (int i = 0; i < SPAWN_POINT_MAX; i++)
+	{
+			if (pSpawnPoint[i].UseFlag)
+			{
+				if (pSpawnPoint[i].PieceIndex == pinNo)
+				{
+					pSpawnPoint[i].Position += num;
+				}
+
+			}
+
+		
+
 	}
 
 }

@@ -33,13 +33,14 @@
 #include"camera.h"
 #include "scene.h"
 #include "pause.h"
+#include "goal_key.h"
 
 static Time* pTime = new(Time);
 static Score g_score;
 static PLAYER3D g_Player3D;
 static SCENE* p_Scene;
 static bool* pause = GetPause();
-
+static TimeParam* pTimeParam = pTime->GetTimeParam();
 
 void InitGame()
 {
@@ -57,6 +58,7 @@ void InitGame()
 		InitJoint();
 		InitGameMouse();
 		InitGoal();
+		InitGKey();
 		InitBroken();
 		InitWarp();
 		InitJumpStand();
@@ -77,11 +79,12 @@ void InitGame()
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 	InitPlayer();
 	g_score.InitScore();
-	pTime->InitTime();
-	pTime->SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
-	pTime->StartTime();
 	g_Player3D.Init();
-
+	if (!pTimeParam->UseFlag) {
+		pTime->InitTime();
+		pTime->SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
+		pTime->StartTime();
+	}
 }
 
 
@@ -95,6 +98,7 @@ void UninitGame()
 	UninitPuzzle();
 	UninitGameMouse();
 	UninitGoal();
+	UninitGKey();
 	UninitPuzzleCip();
 	UninitBroken();
 	UninitPlayer();
@@ -124,12 +128,17 @@ void UpdateGame()
 			(*pause) = true;
 			pTime->PuaseStartTime();
 		}
-		else {
+	}	
+	if(GetKeyboardTrigger(DIK_Z)) {
+		if ((*pause)) {
 			(*pause) = false;
 			pTime->PuaseEndTime();
+			pTime->PuaseElapsedTime();
 		}
 	}
-	
+	if (GetKeyboardTrigger(DIK_R)) {
+		ResetGame();
+	}
 	if (!(*pause)) {
 		//UpdatePolygon();	//É|ÉäÉSÉìÇÃçXêV
 		BgUpdate();
@@ -145,6 +154,7 @@ void UpdateGame()
 		UpdatePuzzleCip();
 
 		UpdateGoal();
+		UpdateGKey();
 		UpdateBroken();
 		UpdateWarp();
 		UpdateJumpStand();
@@ -185,6 +195,7 @@ void DrawGame()
 
 		DrawPuzzleCip();
 		DrawPlayer();
+		DrawGKey();
 		DrawWarp();
 		DrawJumpStand();
 		DrawSheerFloors();

@@ -70,7 +70,7 @@ void Score::DrawScore() {
 	}
 }
 int Score::CulcScore() {
-	m_TimeScore = pTime->GetTime();
+	m_TimeScore;
 	if (m_TimeScore < 60) {
 		m_score = m_TimeScore;
 	}
