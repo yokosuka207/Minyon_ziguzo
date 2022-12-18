@@ -1,24 +1,35 @@
+//collision.h
 #include "collision.h"
+
+#include <math.h>
 #include "main.h"
 		 
-#include "player.h"
-#include <math.h>
+
+//操作関連
 #include "mouse.h"
-#include "block.h"
-#include "joint.h"
-#include "SplitStage.h"
 #include "inventory.h"
-#include "MapChip.h"
-#include "goal.h"
-#include "thorn_block.h"
-#include "jump_stand.h"
-#include "switch.h"
-#include "SwitchWall.h"
+
+//ゲーム関係
 #include "game.h"
+#include "MapChip.h"
+#include "player.h"
 #include "result.h"
 #include "scene.h"
+#include "goal.h"
 
-#include "button.h"
+#include "joint.h"
+#include "SplitStage.h"
+
+
+//ギミック系
+#include "block.h"			//基本ブロック
+#include "button.h"			//ボタン
+#include "thorn_block.h"	//トゲのブロック
+#include "broken.h"			//壊れるブロック
+#include "jump_stand.h"		//ジャンプスタンド
+#include "switch.h"			//スイッチ
+#include "SwitchWall.h"		//スイッチで開く壁
+
 /*==============================================================================
 
    当たり判定管理 [collsion.cpp]
@@ -77,7 +88,9 @@ void UpdateCollision()
 		}
 
 	}
-	//プレーヤーとスイッチ
+	//====================================
+	//プレーヤーとスイッチ系まとめ
+	//====================================
 	SWITCH* pSwitch = GetSwitch();
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
 	{
@@ -144,7 +157,8 @@ void UpdateCollision()
 		for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 			if (pThornBlock[i].UseFlag) {
 				
-				if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
+				if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size))
+				{
 
 					pPlayer->hp--;
 
@@ -175,7 +189,62 @@ void UpdateCollision()
 			}
 		}
 	}
-}
+
+
+
+//	//プレイヤー・壊れるブロック　当たり判定
+//	for (int i = 0; i < BROKEN_MAX; i++)
+//	{
+//		BROKEN* broken = GetBroken();
+//		if ((broken + i)->UseFlag == true)
+//		{
+//			//プレイヤー左・壊れるブロック右
+//			if (g_Player.Position.x + g_Player.size.x / 2 > (broken + i)->Postion.x - (broken + i)->Size.x / 2 &&
+//				g_Player.oldpos.x + g_Player.size.x / 2 <= (broken + i)->Postion.x - (broken + i)->Size.x / 2 &&
+//				g_Player.Position.y + g_Player.size.y / 2 > (broken + i)->Postion.y - (broken + i)->Size.y / 2 &&
+//				g_Player.Position.y - g_Player.size.y / 2 < (broken + i)->Postion.y + (broken + i)->Size.y / 2)
+//			{
+//				g_Player.Position.x = (broken + i)->Postion.x - (broken + i)->Size.x / 2 - g_Player.size.x / 2;
+//			}
+//			//プレイヤー右・壊れるブロック左
+//			if (g_Player.Position.x - g_Player.size.x / 2 < (broken + i)->Postion.x + (broken + i)->Size.x / 2 &&
+//				g_Player.oldpos.x - g_Player.size.x / 2 >= (broken + i)->Postion.x + (broken + i)->Size.x / 2 &&
+//				g_Player.Position.y + g_Player.size.y / 2 > (broken + i)->Postion.y - (broken + i)->Size.y / 2 &&
+//				g_Player.Position.y - g_Player.size.y / 2 < (broken + i)->Postion.y + (broken + i)->Size.y / 2)
+//			{
+//				g_Player.Position.x = (broken + i)->Postion.x + (broken + i)->Size.x / 2 + g_Player.size.x / 2;
+//			}
+//
+//			//プレイヤー上・壊れるブロック下
+//			if (g_Player.Position.x + g_Player.size.x / 2 > (broken + i)->Postion.x - (broken + i)->Size.x / 2 &&
+//				g_Player.Position.x - g_Player.size.x / 2 < (broken + i)->Postion.x + (broken + i)->Size.x / 2 &&
+//				g_Player.Position.y - g_Player.size.y / 2 < (broken + i)->Postion.y + (broken + i)->Size.y / 2 &&
+//				g_Player.oldpos.y - g_Player.size.y / 2 >= (broken + i)->Postion.y + (broken + i)->Size.y / 2)
+//			{
+//				g_Player.Position.y = (broken + i)->Postion.y - (broken + i)->Size.y / 2 - g_Player.size.y / 2;
+//				g_Player.jump = false;
+//				g_Player.fall = false;
+//				g_Player.frame = 0;
+//			}
+//			//プレイヤー下・壊れるブロック上,壊れる
+//			if (g_Player.Position.x + g_Player.size.x / 2 > (broken + i)->Postion.x - (broken + i)->Size.x / 2 &&
+//				g_Player.Position.x - g_Player.size.x / 2 < (broken + i)->Postion.x + (broken + i)->Size.x / 2 &&
+//				g_Player.Position.y + g_Player.size.y / 2 > (broken + i)->Postion.y - (broken + i)->Size.y / 2 &&
+//				g_Player.oldpos.y + g_Player.size.y / 2 <= (broken + i)->Postion.y - (broken + i)->Size.y / 2)
+//			{
+//				(broken + i)->UseFlag = false;
+//				g_Player.fall = true;
+//				g_Player.getfall = true;
+//				g_Player.frame = 50;
+//			}
+//		}
+//	}
+//}
+
+
+//==========================
+//パズルピース当たり判定
+//==========================
 void PieceCollision()
 {
 	SplitStage* pSplitStage = GetSplitStage();
