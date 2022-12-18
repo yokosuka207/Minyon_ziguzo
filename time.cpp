@@ -46,8 +46,6 @@ void Time::InitTime() {
 	m_PauseElapsed = 0;
 }
 void Time::UninitTime() {
-	g_TimeParam.UseFlag = false;
-	g_TimeParam.EndFlag = false;
 	if (g_TimeTexture != NULL) {
 		g_TimeTexture->Release();
 		g_TimeTexture = NULL;
@@ -142,7 +140,7 @@ void Time:: DrawGameTime() {
 }
 
 //ポーズ時間をどうにかしないと
-void Time::DrawResultTime() {
+void Time::DrawResultTime(clock_t elapsedtime, clock_t pause) {
 	SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TimeTextureNo));
 
@@ -150,8 +148,10 @@ void Time::DrawResultTime() {
 	g_TimeParam.pos.y = SCREEN_HEIGHT / 2;
 	g_TimeParam.size = D3DXVECTOR2(50.0f, 50.0f);
 	g_TimeParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
 	if (g_TimeParam.EndFlag) {
-		m_ElapsedTime = ElapsedTime();
+		m_ElapsedTime = elapsedtime;
+		m_PauseElapsed = pause;
 		m_ElapsedTime -= m_PauseElapsed;
 		g_TimeParam.EndFlag = false;
 	}
@@ -232,16 +232,18 @@ void Time::DrawResultTime() {
 		}
 	}
 }
+//計測開始
 void Time::StartTime() {
 	m_start = clock();
 }
-int Time::EndTime() {
+//計測終了
+clock_t Time::EndTime() {
 	m_end = clock();
 	m_ElapsedTime = m_end - m_start;
 	return m_ElapsedTime;
 }
-
-int Time::ElapsedTime() {
+//経過時間
+clock_t Time::ElapsedTime() {
 	m_ElapsedTime = clock() - m_start;
 	return m_ElapsedTime;
 }
@@ -252,14 +254,12 @@ void Time::PuaseStartTime() {
 //ポーズの終了時間
 void Time::PuaseEndTime() {
 	m_PuaseEnd = clock();
+}
+clock_t Time::PuaseElapsedTime() {
 	m_PauseElapsed += m_PuaseEnd - m_PuaseStart;
+	return m_PauseElapsed;
 }
-void Time::SetElapsedTime(clock_t elapsedtime) {
-	m_ElapsedTime = elapsedtime;
-}
-TimeParam* Time::GetTimeParam() {
-	return &g_TimeParam;
-}
+//時間の表示座標
 void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 	if (!g_TimeParam.UseFlag) {
 		g_TimeParam.pos = pos;
@@ -267,9 +267,8 @@ void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 		g_TimeParam.UseFlag = true;
 	}
 }
-clock_t Time::GetTime() {
-	m_ElapsedTime /= CLOCKS_PER_SEC;
-	return m_ElapsedTime;
+TimeParam* Time::GetTimeParam() {
+	return &g_TimeParam;
 }
 Time* Time::GetTimeClass() {
 	return this;

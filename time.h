@@ -36,16 +36,14 @@ public:
 	void InitTime();
 	void UninitTime();
 	void DrawGameTime();	//ゲーム中に表示される
-	void DrawResultTime();	//リザルトで表示される
+	void DrawResultTime(clock_t elapsedtime,clock_t pause);	//リザルトで表示される
 	void StartTime();
-	int EndTime();
-	int	 ElapsedTime();
+	clock_t EndTime();
+	clock_t	ElapsedTime();
 	void PuaseStartTime();
 	void PuaseEndTime();
-
+	clock_t PuaseElapsedTime();
 	void SetTime(D3DXVECTOR2 pos,D3DXVECTOR2 size);
-	clock_t GetTime();
-	void SetElapsedTime(clock_t elapsedtime);
 	TimeParam* GetTimeParam();
 	Time* GetTimeClass();
 };

@@ -133,6 +133,7 @@ void UpdateGame()
 		if ((*pause)) {
 			(*pause) = false;
 			pTime->PuaseEndTime();
+			pTime->PuaseElapsedTime();
 		}
 	}
 	if (GetKeyboardTrigger(DIK_R)) {

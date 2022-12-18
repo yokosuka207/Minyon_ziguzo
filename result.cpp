@@ -38,8 +38,9 @@ int		ResultButtonTextureNo2;//テクスチャ番号
 int ResultSoundNo;	//タイトルサウンド番号
 int ResultSoundNo2;	//タイトルサウンド番号
 
-static Time*	pTime = new(Time);
-static Score	g_Score;
+static Time*		pTime = new(Time);
+static TimeParam*	pTimeParam = pTime->GetTimeParam();
+static Score		g_Score;
 //======================
 //初期化
 //======================
@@ -157,6 +158,7 @@ void	UpdateResult()
 			if (min2.x < MousePos.x && max2.x > MousePos.x && min2.y < MousePos.y && max2.y > MousePos.y)
 			{
 				SetScene(SCENE::SCENE_TITLE);
+				pTimeParam->UseFlag = false;
 			}
 		}
 		
@@ -245,7 +247,6 @@ void	DrawResult()
 			1
 		);
 	}
-	pTime->DrawResultTime();
 	g_Score.DrawScore();
 }
 
