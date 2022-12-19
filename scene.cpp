@@ -8,11 +8,13 @@
 #include "save.h"
 #include "time.h"
 #include "pause.h"
+#include "score.h"
 
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
 
 static Time* pTime = pTime->GetTime();
+static Score* pScore = pScore->GetScore();
 static clock_t Elapsedtime = 0;
 static clock_t PauseElapsed = 0;
 static Save g_SaveScene;				// セーブクラスのインスタンス
@@ -113,6 +115,7 @@ void DrawScene(){
 	case SCENE::SCENE_RESULT:
 		DrawResult();
 		pTime->DrawResultTime(Elapsedtime,PauseElapsed);
+		pScore->DrawScore();
 		break;
 	default:
 		break;

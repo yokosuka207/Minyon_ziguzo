@@ -23,7 +23,7 @@ typedef struct {
 	bool		UseFlag;
 	bool		CalcFlag;	//計算したかどうか
 
-}SCORE;
+}SCOREPARAM;
 
 class Score{
 private:
@@ -35,7 +35,8 @@ public:
 	void DrawScore();
 	int CulcScore();	//スコアの計算
 	void SetScore(D3DXVECTOR2 pos, D3DXVECTOR2 size);
-	SCORE* GetScore();
+	SCOREPARAM* GetScoreParam();
+	Score* GetScore();
 };
 
 #endif // !_SCORE_H_

@@ -41,7 +41,7 @@ bool SpritStageCollision(Piece p);
 
 int punum = 0;	//パズルの配列の添え字の格納
 
-static Time* pTime = new(Time);
+static Time* pTime = pTime->GetTime();
 static TimeParam* pTimeParam = pTime->GetTimeParam();
 DIRECSION Direcsion = NUM;	//方向の確認
 //===============================
