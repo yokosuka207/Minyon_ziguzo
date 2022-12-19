@@ -38,7 +38,8 @@ public:
 	void DrawGameTime();	//ゲーム中に表示される
 	void DrawResultTime(clock_t elapsedtime,clock_t pause);	//リザルトで表示される
 	void StartTime();
-	clock_t EndTime();
+	void EndTime();
+	clock_t SumTime();
 	clock_t	ElapsedTime();
 	void PauseStartTime();
 	void PauseEndTime();

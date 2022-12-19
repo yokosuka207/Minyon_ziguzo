@@ -232,8 +232,12 @@ void Time::StartTime() {
 	m_start = clock();
 }
 //計測終了
-clock_t Time::EndTime() {
+void Time::EndTime() {
 	m_end = clock();
+	SumTime();
+}
+//計測時間合計
+clock_t Time::SumTime() {
 	m_ElapsedTime = m_end - m_start;
 	return m_ElapsedTime;
 }

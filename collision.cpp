@@ -154,6 +154,7 @@ void UpdateCollision()
 					if (pPlayer->hp <= 0) {
 						SetResultType(LOSE);
 						SetScene(SCENE::SCENE_RESULT);
+						pTime->EndTime();
 						pTimeParam->EndFlag = true;
 					}
 					
@@ -165,7 +166,8 @@ void UpdateCollision()
 		if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT)
 		{
 			pResult[0].type = LOSE;
-			
+			pTime->EndTime();
+			pTimeParam->EndFlag = true;
 			SetScene(SCENE::SCENE_RESULT);
 		}
 	}

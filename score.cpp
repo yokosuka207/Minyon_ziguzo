@@ -69,8 +69,11 @@ void Score::DrawScore() {
 	}
 }
 int Score::CulcScore() {
-	m_TimeScore = pTime->ElapsedTime();
+	//スコアに計測時間合計とポーズした時間を格納
+	m_TimeScore = pTime->SumTime();
 	m_TimeScore -= pTime->PauseElapsedTime();
+	//スコアの値を秒に変換
+	m_TimeScore /= CLOCKS_PER_SEC;
 	if (m_TimeScore < 60) {
 		m_score = m_TimeScore;
 	}
