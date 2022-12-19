@@ -29,6 +29,7 @@ static int g_SecondTime = 0;
 static int g_MintueTime = 0;
 static int g_TimeDistance = (TIME_POS_X);
 static TimeParam g_TimeParam;
+static Time g_TimeClass;
 static bool* pause = GetPause();
 
 void Time::InitTime() {
@@ -264,4 +265,7 @@ void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 }
 TimeParam* Time::GetTimeParam() {
 	return &g_TimeParam;
+}
+Time* Time::GetTime() {
+	return &g_TimeClass;
 }

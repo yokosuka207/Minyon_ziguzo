@@ -12,7 +12,7 @@
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
 
-static Time* pTime = new(Time);//getしたい
+static Time* pTime = pTime->GetTime();
 static clock_t Elapsedtime = 0;
 static clock_t PauseElapsed = 0;
 static Save g_SaveScene;				// セーブクラスのインスタンス

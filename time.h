@@ -45,6 +45,7 @@ public:
 	clock_t PauseElapsedTime();
 	void SetTime(D3DXVECTOR2 pos,D3DXVECTOR2 size);
 	TimeParam* GetTimeParam();
+	Time* GetTime();
 };
 
 #endif // !_TIME_H_

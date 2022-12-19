@@ -35,7 +35,7 @@
 #include "pause.h"
 #include "goal_key.h"
 
-static Time* pTime = new(Time);
+static Time* pTime = pTime->GetTime();
 static Score g_score;
 static PLAYER3D g_Player3D;
 static SCENE* p_Scene;

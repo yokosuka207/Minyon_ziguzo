@@ -17,7 +17,7 @@ static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";	//テクスチ
 static int g_ScoreTextureNo = 0;
 
 static SCORE g_Score;	//構造体
-static Time* pTime = new(Time);
+static Time* pTime = pTime->GetTime();
 
 static int g_TimeDistance = SCORE_POS_X;
 static int score = 0;

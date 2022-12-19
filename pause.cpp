@@ -28,7 +28,6 @@ int		PauseTextureNo = 0;//テクスチャ番号
 int		PauseEndTextureNo = 0;//テクスチャ番号
 
 static bool		PauseFlag;
-static Time*	pTime = new(Time);
 //======================
 //初期化
 //======================
