@@ -54,11 +54,11 @@ void Score::DrawScore() {
 
 		frame++;
 		for (int i = 0; i < SCORE_MAX; i++) {
-
+			//³í
 			if (!g_AnimeParam[i].AnimeFlag && frame % 60 == 0) {
 				g_AnimeParam[i].AnimeFlag = true;
 			}
-
+			//‘S•”o‚¿‚á‚¤ ¨ ˆêŒÂ‚¸‚Â‚É‚µ‚½‚¢
 			if (g_AnimeParam[i].AnimeFlag) {
 				SpriteDrawColorRotation
 				(
