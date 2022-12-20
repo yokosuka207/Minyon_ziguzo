@@ -60,7 +60,7 @@ bool SpritStageCollision(Piece p);
 
 int punum = 0;	//ƒpƒYƒ‹‚Ì”z—ñ‚Ì“Y‚¦Žš‚ÌŠi”[
 
-static Time* pTime = new(Time);
+static Time* pTime = pTime->GetTime();
 static TimeParam* pTimeParam = pTime->GetTimeParam();
 DIRECSION Direcsion = NUM;	//•ûŒü‚ÌŠm”F
 
@@ -216,6 +216,7 @@ void UpdateCollision()
 					if (pPlayer->hp <= 0) {
 						SetResultType(LOSE);
 						SetScene(SCENE::SCENE_RESULT);
+						pTime->EndTime();
 						pTimeParam->EndFlag = true;
 					}
 					
@@ -227,7 +228,8 @@ void UpdateCollision()
 		if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT)
 		{
 			pResult[0].type = LOSE;
-			
+			pTime->EndTime();
+			pTimeParam->EndFlag = true;
 			SetScene(SCENE::SCENE_RESULT);
 		}
 	}

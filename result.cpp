@@ -38,9 +38,9 @@ int		ResultButtonTextureNo2;//テクスチャ番号
 int ResultSoundNo;	//タイトルサウンド番号
 int ResultSoundNo2;	//タイトルサウンド番号
 
-static Time*		pTime = new(Time);
+static Time* pTime = pTime->GetTime();
 static TimeParam*	pTimeParam = pTime->GetTimeParam();
-static Score		g_Score;
+static Score* pScore = pScore->GetScore();
 //======================
 //初期化
 //======================
@@ -84,7 +84,7 @@ void	InitResult()
 	ResultObject[2].Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	ResultObject[2].Rotate = 0.0f;
 
-	g_Score.SetScore(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50), D3DXVECTOR2(50.0f, 50.0f));
+	pScore->SetScore(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50), D3DXVECTOR2(50.0f, 50.0f));
 }
 //======================
 //終了処理
@@ -147,6 +147,7 @@ void	UpdateResult()
 		{
 			if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y) 
 			{
+				pTimeParam->UseFlag = false;
 				pTime->StartTime();
 				SetScene(SCENE::SCENE_GAME);
 			}
@@ -247,7 +248,6 @@ void	DrawResult()
 			1
 		);
 	}
-	g_Score.DrawScore();
 }
 
 void SetResultType(RESULT_TYPE ty)

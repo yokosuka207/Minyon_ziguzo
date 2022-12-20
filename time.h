@@ -25,27 +25,28 @@ typedef struct {
 
 class Time {
 private:
-	clock_t m_start;		//計測開始時間
-	clock_t m_end;			//計測終了時間
-	clock_t	m_ElapsedTime;	//経過時間
+	clock_t m_start = 0;		//計測開始時間
+	clock_t m_end = 0;			//計測終了時間
+	clock_t	m_ElapsedTime = 0;	//経過時間
 
-	clock_t m_PuaseStart;	//一時停止計測開始時間
-	clock_t m_PuaseEnd;		//一時停止計測終了時間
-	clock_t m_PauseElapsed;	//一時停止時間合計
+	clock_t m_PauseStart = 0;	//一時停止計測開始時間
+	clock_t m_PauseEnd = 0;		//一時停止計測終了時間
+	clock_t m_PauseElapsed = 0;	//一時停止時間合計
 public:
 	void InitTime();
 	void UninitTime();
 	void DrawGameTime();	//ゲーム中に表示される
 	void DrawResultTime(clock_t elapsedtime,clock_t pause);	//リザルトで表示される
 	void StartTime();
-	clock_t EndTime();
+	void EndTime();
+	clock_t SumTime();
 	clock_t	ElapsedTime();
-	void PuaseStartTime();
-	void PuaseEndTime();
-	clock_t PuaseElapsedTime();
+	void PauseStartTime();
+	void PauseEndTime();
+	clock_t PauseElapsedTime();
 	void SetTime(D3DXVECTOR2 pos,D3DXVECTOR2 size);
 	TimeParam* GetTimeParam();
-	Time* GetTimeClass();
+	Time* GetTime();
 };
 
 #endif // !_TIME_H_

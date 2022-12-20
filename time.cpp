@@ -29,6 +29,7 @@ static int g_SecondTime = 0;
 static int g_MintueTime = 0;
 static int g_TimeDistance = (TIME_POS_X);
 static TimeParam g_TimeParam;
+static Time g_TimeClass;
 static bool* pause = GetPause();
 
 void Time::InitTime() {
@@ -38,12 +39,6 @@ void Time::InitTime() {
 	g_TimeParam.color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 	g_TimeParam.UseFlag = false;
 	g_TimeParam.EndFlag = false;
-	m_start = 0;
-	m_end = 0;
-	m_PuaseStart = 0;
-	m_PuaseStart = 0;
-	m_ElapsedTime = 0;
-	m_PauseElapsed = 0;
 }
 void Time::UninitTime() {
 	if (g_TimeTexture != NULL) {
@@ -237,8 +232,12 @@ void Time::StartTime() {
 	m_start = clock();
 }
 //計測終了
-clock_t Time::EndTime() {
+void Time::EndTime() {
 	m_end = clock();
+	SumTime();
+}
+//計測時間合計
+clock_t Time::SumTime() {
 	m_ElapsedTime = m_end - m_start;
 	return m_ElapsedTime;
 }
@@ -248,15 +247,16 @@ clock_t Time::ElapsedTime() {
 	return m_ElapsedTime;
 }
 //ポーズの開始時間
-void Time::PuaseStartTime() {
-	m_PuaseStart = clock();
+void Time::PauseStartTime() {
+	m_PauseStart = clock();
 }
 //ポーズの終了時間
-void Time::PuaseEndTime() {
-	m_PuaseEnd = clock();
+void Time::PauseEndTime() {
+	m_PauseEnd = clock();
 }
-clock_t Time::PuaseElapsedTime() {
-	m_PauseElapsed += m_PuaseEnd - m_PuaseStart;
+//ポーズの合計時間
+clock_t Time::PauseElapsedTime() {
+	m_PauseElapsed += m_PauseEnd - m_PauseStart;
 	return m_PauseElapsed;
 }
 //時間の表示座標
@@ -270,6 +270,6 @@ void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 TimeParam* Time::GetTimeParam() {
 	return &g_TimeParam;
 }
-Time* Time::GetTimeClass() {
-	return this;
+Time* Time::GetTime() {
+	return &g_TimeClass;
 }

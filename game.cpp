@@ -35,8 +35,8 @@
 #include "pause.h"
 #include "goal_key.h"
 
-static Time* pTime = new(Time);
-static Score g_score;
+static Time* pTime = pTime->GetTime();
+static Score* pScore = pScore->GetScore();
 static PLAYER3D g_Player3D;
 static SCENE* p_Scene;
 static bool* pause = GetPause();
@@ -78,7 +78,7 @@ void InitGame()
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 	InitPlayer();
-	g_score.InitScore();
+	pScore->InitScore();
 	g_Player3D.Init();
 	if (!pTimeParam->UseFlag) {
 		pTime->InitTime();
@@ -114,7 +114,7 @@ void UninitGame()
 	UninitSwitch();
 	UninitSwitchWall();
 	UninitPause();
-	g_score.UninitScore();
+	pScore->UninitScore();
 	pTime->UninitTime();
 	g_Player3D.Uninit();
 }
@@ -126,14 +126,14 @@ void UpdateGame()
 		//ポーズフラグがoff
 		if (!(*pause)) {
 			(*pause) = true;
-			pTime->PuaseStartTime();
+			pTime->PauseStartTime();
 		}
 	}	
 	if(GetKeyboardTrigger(DIK_Z)) {
 		if ((*pause)) {
 			(*pause) = false;
-			pTime->PuaseEndTime();
-			pTime->PuaseElapsedTime();
+			pTime->PauseEndTime();
+			pTime->PauseElapsedTime();
 		}
 	}
 	if (GetKeyboardTrigger(DIK_R)) {

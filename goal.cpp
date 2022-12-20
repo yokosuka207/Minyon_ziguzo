@@ -14,7 +14,7 @@ GOAL g_Goal;
 GKey g_GKey;
 static ID3D11ShaderResourceView	*g_textureGoal;	//画像一枚で一つの変数が必要
 static char *g_textureName_Goal = (char*)"data\\texture\\yello.jpg";	//テクスチャファイルパス
-static Time* pTime = new(Time);
+static Time* pTime = pTime->GetTime();
 static TimeParam* pTimeParam = pTime->GetTimeParam();
 HRESULT InitGoal(){
 	g_Goal.texno = LoadTexture(g_textureName_Goal);
@@ -55,6 +55,7 @@ void UpdateGoal()
 				g_Goal.UseFlag = false;
 				SetResultType(WIN);
 				SetScene(SCENE_RESULT);	
+				pTime->EndTime();
 				pTimeParam->EndFlag = true;
 			}
 		}
