@@ -19,7 +19,27 @@
 
 #include "button.h"
 #include "time.h"
-#include"spawnpoint.h"
+#include "spawnpoint.h"
+#include "joint.h"
+#include "SplitStage.h"
+
+//ギミック関連
+#include "block.h"			//基本ブロック
+#include "thorn_block.h"	//トゲブロック
+#include "broken.h"			//壊れるブロック
+#include "MoveBlock.h"		//動くブロック
+#include "High_broken.h"	//高い所から落ちたら壊れるブロック
+#include "FallBlock.h"		//落ちるブロック
+
+#include "SheerFloors.h"	//透ける床
+#include "jump_stand.h"		//ジャンプスタンド
+#include "switch.h"			//スイッチ
+#include "SwitchWall.h"		//スイッチで開く壁
+#include "warp.h"			//ワープ
+#include "Key.h"			//鍵
+#include "OpenKey.h"		//鍵で開く扉
+
+
 /*==============================================================================
 
    当たり判定管理 [collsion.cpp]
@@ -43,21 +63,35 @@ int punum = 0;	//パズルの配列の添え字の格納
 static Time* pTime = new(Time);
 static TimeParam* pTimeParam = pTime->GetTimeParam();
 DIRECSION Direcsion = NUM;	//方向の確認
+
+
 //===============================
 //当たり判定処理
 //当たり判定を一気に行う
 //================================
 void UpdateCollision()
 {
-	// ゲット
+	// ゲット-----------------------------
 	Piece* pPiece = GetPiece();
 	PLAYER* pPlayer = GetPlayer();
-
-	THORNBLOCK* pThornBlock = GetThornBlock();
 	MOUSE* pMouse = GetMouse();
 
+
+	THORNBLOCK* pThornBlock = GetThornBlock();
+	MOVEBLOCK* pMoveBlock = GetMoveBlock();
+	BROKEN* pBroken = GetBroken();
+	FALLBLOCK* pFallBlock = GetFallBlock();
+	HIGH* pHigh = GetHigh();
+
+	SWITCH* pSwitch = GetSwitch();
+	SWITCHWALL* pSwitchWall = GetSwitchWall();
+	
 	RESULT* pResult = GetResult();
+
+	//-------------------------------------
+
 	bool pFlag =false;	//プレーヤーがピースの中にいるか
+
 	//プレーヤーが動いているピースの中にいるか
 	{
 		for (int i = 0; i < PUZZLE_MAX; i++) {
@@ -79,11 +113,30 @@ void UpdateCollision()
 		}
 
 	}
-	//====================================
-	//プレーヤーとスイッチ系まとめ
-	//====================================
-	SWITCH* pSwitch = GetSwitch();
-	SWITCHWALL* pSwitchWall = GetSwitchWall();
+
+
+
+	//============================
+	//インベントリ系
+	//============================
+	if (!pFlag)
+	{
+		// ピースとインベントリ範囲の当たり判定
+		for (int i = 0; i < PUZZLE_MAX; i++) {
+			// ピースをインベントリにしまう
+			if (pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X)) {
+				DeleteMapChip(i);
+				SetInventory(pPiece[i].no);
+			}
+		}
+	}
+
+
+
+	//=========================================
+	//プレーヤーとスイッチ系(switch,SwitchWall)
+	//=========================================
+	
 	{
 		for (int i = 0; i < SWITCH_MAX; i++) {
 			if (pSwitch[i].UseFlag) {
@@ -142,6 +195,13 @@ void UpdateCollision()
 	}
 
 	//などの必要な判定をここで作る
+
+
+
+
+	//=====================================
+	//死亡判定（トゲ、落下死,thornBlock）
+	//=====================================
 	if (!pMouse->UseFlag)
 	{
 		//プレイヤーとトゲブロックの判定
@@ -171,68 +231,246 @@ void UpdateCollision()
 			SetScene(SCENE::SCENE_RESULT);
 		}
 	}
-	if (!pFlag)
+
+
+	
+
+
+	//========================================================================
+	//プレイヤー・壊れるブロック　当たり判定(PlayerとBrokenBlockの当たり判定)
+	//=========================================================================
+
+	for (int i = 0; i < BROKEN_MAX; i++)
 	{
-		// ピースとインベントリ範囲の当たり判定
-		for (int i = 0; i < PUZZLE_MAX; i++) {
-			// ピースをインベントリにしまう
-			if (pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X)) {
-				DeleteMapChip(i);
-				SetInventory(pPiece[i].no);
+		
+		if ((pBroken + i)->UseFlag == true)
+		{
+			//プレイヤー左・壊れるブロック右
+			if (pPlayer->Position.x + pPlayer->size.x / 2 > (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
+				pPlayer->oldpos.x + pPlayer->size.x / 2 <= (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
+				pPlayer->Position.y + pPlayer->size.y / 2 > (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2 &&
+				pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2)
+			{
+				pPlayer->Position.x = (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 - pPlayer->size.x / 2;
+			}
+			//プレイヤー右・壊れるブロック左
+			if (pPlayer->Position.x - pPlayer->size.x / 2 < (pBroken + i)->Postion.x + (pBroken + i)->Size.x / 2 &&
+				pPlayer->oldpos.x - pPlayer->size.x / 2 >= (pBroken + i)->Postion.x + (pBroken + i)->Size.x / 2 &&
+				pPlayer->Position.y + pPlayer->size.y / 2 > (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2 &&
+				pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2)
+			{
+				pPlayer->Position.x = (pBroken + i)->Postion.x + (pBroken + i)->Size.x / 2 + pPlayer->size.x / 2;
+			}
+
+			//プレイヤー上・壊れるブロック下
+			if (pPlayer->Position.x + pPlayer->size.x / 2 > (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
+				pPlayer->Position.x - pPlayer->size.x / 2 < (pBroken + i)->Postion.x + (pBroken + i)->Size.x / 2 &&
+				pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2 &&
+				pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2)
+			{
+				pPlayer->Position.y = (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2 - pPlayer->size.y / 2;
+				pPlayer->jump = false;
+				pPlayer->fall = false;
+				pPlayer->frame = 0;
+			}
+			//プレイヤー下・壊れるブロック上,壊れる
+			if (pPlayer->Position.x + pPlayer->size.x / 2 > (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
+				pPlayer->Position.x - pPlayer->size.x / 2 < (pBroken + i)->Postion.x + (pBroken + i)->Size.x / 2 &&
+				pPlayer->Position.y + pPlayer->size.y / 2 > (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2 &&
+				pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2)
+			{
+				(pBroken + i)->UseFlag = false;
+				pPlayer->fall = true;
+				pPlayer->getfall = true;
+				pPlayer->frame = 50;
 			}
 		}
 	}
 
 
+	//====================================================================
+	//プレイヤーと動くブロックの当たり判定(PlayerとMoveBlockの当たり判定)
+	//====================================================================
+	
+	
+	for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
+		if (pMoveBlock[i].bUse)
+		{
+			if (pPlayer->Position.x + pPlayer->size.x / 2 > pMoveBlock[i].pos.x - pMoveBlock[i].size.x / 2 &&
+				pPlayer->oldpos.x + pPlayer->size.x / 2 <= pMoveBlock[i].pos.x - pMoveBlock[i].size.x / 2 &&
+				pPlayer->Position.y + pPlayer->size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
+				pPlayer->Position.y - pPlayer->size.y / 2 < pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2)
+			{
+				pMoveBlock[i].sp = pPlayer->sp;
+				pMoveBlock[i].pos.x += pMoveBlock[i].sp.x;
 
-//	//プレイヤー・壊れるブロック　当たり判定
-//	for (int i = 0; i < BROKEN_MAX; i++)
-//	{
-//		BROKEN* broken = GetBroken();
-//		if ((broken + i)->UseFlag == true)
-//		{
-//			//プレイヤー左・壊れるブロック右
-//			if (g_Player.Position.x + g_Player.size.x / 2 > (broken + i)->Postion.x - (broken + i)->Size.x / 2 &&
-//				g_Player.oldpos.x + g_Player.size.x / 2 <= (broken + i)->Postion.x - (broken + i)->Size.x / 2 &&
-//				g_Player.Position.y + g_Player.size.y / 2 > (broken + i)->Postion.y - (broken + i)->Size.y / 2 &&
-//				g_Player.Position.y - g_Player.size.y / 2 < (broken + i)->Postion.y + (broken + i)->Size.y / 2)
-//			{
-//				g_Player.Position.x = (broken + i)->Postion.x - (broken + i)->Size.x / 2 - g_Player.size.x / 2;
-//			}
-//			//プレイヤー右・壊れるブロック左
-//			if (g_Player.Position.x - g_Player.size.x / 2 < (broken + i)->Postion.x + (broken + i)->Size.x / 2 &&
-//				g_Player.oldpos.x - g_Player.size.x / 2 >= (broken + i)->Postion.x + (broken + i)->Size.x / 2 &&
-//				g_Player.Position.y + g_Player.size.y / 2 > (broken + i)->Postion.y - (broken + i)->Size.y / 2 &&
-//				g_Player.Position.y - g_Player.size.y / 2 < (broken + i)->Postion.y + (broken + i)->Size.y / 2)
-//			{
-//				g_Player.Position.x = (broken + i)->Postion.x + (broken + i)->Size.x / 2 + g_Player.size.x / 2;
-//			}
-//
-//			//プレイヤー上・壊れるブロック下
-//			if (g_Player.Position.x + g_Player.size.x / 2 > (broken + i)->Postion.x - (broken + i)->Size.x / 2 &&
-//				g_Player.Position.x - g_Player.size.x / 2 < (broken + i)->Postion.x + (broken + i)->Size.x / 2 &&
-//				g_Player.Position.y - g_Player.size.y / 2 < (broken + i)->Postion.y + (broken + i)->Size.y / 2 &&
-//				g_Player.oldpos.y - g_Player.size.y / 2 >= (broken + i)->Postion.y + (broken + i)->Size.y / 2)
-//			{
-//				g_Player.Position.y = (broken + i)->Postion.y - (broken + i)->Size.y / 2 - g_Player.size.y / 2;
-//				g_Player.jump = false;
-//				g_Player.fall = false;
-//				g_Player.frame = 0;
-//			}
-//			//プレイヤー下・壊れるブロック上,壊れる
-//			if (g_Player.Position.x + g_Player.size.x / 2 > (broken + i)->Postion.x - (broken + i)->Size.x / 2 &&
-//				g_Player.Position.x - g_Player.size.x / 2 < (broken + i)->Postion.x + (broken + i)->Size.x / 2 &&
-//				g_Player.Position.y + g_Player.size.y / 2 > (broken + i)->Postion.y - (broken + i)->Size.y / 2 &&
-//				g_Player.oldpos.y + g_Player.size.y / 2 <= (broken + i)->Postion.y - (broken + i)->Size.y / 2)
-//			{
-//				(broken + i)->UseFlag = false;
-//				g_Player.fall = true;
-//				g_Player.getfall = true;
-//				g_Player.frame = 50;
-//			}
-//		}
-//	}
-//}
+			}
+			if (pPlayer->Position.x - pPlayer->size.x / 2 < pMoveBlock[i].pos.x + pMoveBlock[i].size.x / 2 &&
+				pPlayer->oldpos.x - pPlayer->size.x / 2 >= pMoveBlock[i].pos.x + pMoveBlock[i].size.x / 2 &&
+				pPlayer->Position.y + pPlayer->size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
+				pPlayer->Position.y - pPlayer->size.y / 2 < pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2)
+			{
+				pMoveBlock[i].sp = pPlayer->sp;
+				pMoveBlock[i].pos.x += pMoveBlock[i].sp.x;
+			}
+			if (pPlayer->Position.x + pPlayer->size.x / 2 > pMoveBlock[i].pos.x - pMoveBlock[i].size.x / 2 &&
+				pPlayer->Position.x - pPlayer->size.x / 2 < pMoveBlock[i].pos.x + pMoveBlock[i].size.x / 2 &&
+				pPlayer->Position.y + pPlayer->size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
+				pPlayer->oldpos.y + pPlayer->size.y / 2 <= pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2)
+			{
+				pPlayer->Position.y = pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 - pPlayer->size.y / 2;
+				// 着地中にする
+				if (!pPlayer->isMoveBlock) {
+					pPlayer->sp.y = 0.0f;
+					pPlayer->isMoveBlock = true;
+					break;
+				}
+			}
+			else {
+				pPlayer->isMoveBlock = false;
+			}
+			//プレイヤー下・ブロック上,落下する
+			if (pPlayer->Position.x + pPlayer->size.x / 2 > pMoveBlock[i].pos.x - pMoveBlock[i].size.x / 2 &&
+				pPlayer->Position.x - pPlayer->size.x / 2 < pMoveBlock[i].pos.x + pMoveBlock[i].size.x / 2 &&
+				pPlayer->Position.y - pPlayer->size.y / 2 < pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2 &&
+				pPlayer->oldpos.y - pPlayer->size.y / 2 >= pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2)
+			{
+				pMoveBlock[i].sp = pPlayer->sp;
+				pMoveBlock[i].pos.y += pMoveBlock[i].sp.x;
+			}
+		}
+	}
+
+	//====================================================================
+	//プレイヤーと落ちるブロックの当たり判定(PlayerとFallBlockの当たり判定)
+	//====================================================================
+			for (int i = 0; i < FALLBLOCK_MAX; i++)
+			{
+				
+				if ((pFallBlock + i)->UseFlag == true)
+				{
+					//プレイヤー左・ブロック右判定
+					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pFallBlock + i)->Position.x - (pFallBlock + i)->Size.x / 2 &&
+						pPlayer->oldpos.x + pPlayer->size.x / 2 <= (pFallBlock + i)->Position.x - (pFallBlock + i)->Size.x / 2 &&
+						pPlayer->Position.y + pPlayer->size.y / 2 > (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 &&
+						pPlayer->Position.y - pPlayer->size.y / 2 < (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2)
+					{
+						pPlayer->Position.x = (pFallBlock + i)->Position.x - (pFallBlock + i)->Size.x / 2 - pPlayer->size.x / 2;
+					}
+					//プレイヤー右・落ちるブロック左
+					if (pPlayer->Position.x - pPlayer->size.x / 2 < (pFallBlock + i)->Position.x + (pFallBlock + i)->Size.x / 2 &&
+						pPlayer->oldpos.x - pPlayer->size.x / 2 >= (pFallBlock + i)->Position.x + (pFallBlock + i)->Size.x / 2 &&
+						pPlayer->Position.y + pPlayer->size.y / 2 > (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 &&
+						pPlayer->Position.y - pPlayer->size.y / 2 < (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2)
+					{
+						pPlayer->Position.x = (pFallBlock + i)->Position.x + (pFallBlock + i)->Size.x / 2 + pPlayer->size.x / 2;
+					}
+					//プレイヤー上・落ちるブロック下
+					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pFallBlock + i)->Position.x - (pFallBlock + i)->Size.x / 2 &&
+						pPlayer->Position.x - pPlayer->size.x / 2 < (pFallBlock + i)->Position.x + (pFallBlock + i)->Size.x / 2 &&
+						pPlayer->Position.y + pPlayer->size.y / 2 > (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 &&
+						pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2)
+					{
+						pPlayer->Position.y = (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 - pPlayer->size.y / 2;
+						pPlayer->getfall = false;
+						pPlayer->fall = false;
+						pPlayer->frame = 50;
+						(pFallBlock + i)->Position.y++;
+					}
+					//プレイヤー下・落ちるブロック
+					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pFallBlock + i)->Position.x - (pFallBlock + i)->Size.x / 2 &&
+						pPlayer->Position.x - pPlayer->size.x / 2 < (pFallBlock + i)->Position.x + (pFallBlock + i)->Size.x / 2 &&
+						pPlayer->Position.y - pPlayer->size.y / 2 < (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 &&
+						pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2)
+					{
+						pPlayer->Position.y = (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 - pPlayer->size.y / 2;
+					}
+				}
+			}
+
+			
+	//====================================================================
+	//プレイヤーと落ちるブロックの当たり判定(PlayerとpHighの当たり判定)
+	//====================================================================
+			//プレイヤー・高いところから落ちたら壊れるブロック(以下たかこわ)　当たり判定
+			for (int i = 0; i < HIGH_MAX; i++)
+			{
+				HIGH* pHigh = GetHigh();
+				if ((pHigh + i)->UseFlag == true)
+				{
+					//プレイヤー左・たかこわ右
+					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
+						pPlayer->oldpos.x + pPlayer->size.x / 2 <= (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
+						pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
+						pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
+					{
+						pPlayer->Position.x = (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 - pPlayer->size.x / 2;
+					}
+					//プレイヤー右・たかこわ左
+					if (pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
+						pPlayer->oldpos.x - pPlayer->size.x / 2 >= (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
+						pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
+						pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
+					{
+						pPlayer->Position.x = (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 + pPlayer->size.x / 2;
+					}
+
+					//プレイヤー上・たかこわ下
+					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
+						pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
+						pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
+						pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
+					{
+						if (pPlayer->sp.y >= -10.0f)
+						{
+							//pPlayer->ispHigh = false;
+							(pHigh + i)->UseFlag = false;
+							pPlayer->frame = 50;
+						}
+						else
+						{
+							//pPlayer->ispHigh = true;
+							pPlayer->sp.y = 0.0f;
+							pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
+						}
+
+					}/*
+					else
+					{
+						pPlayer->ispHigh = false;
+					}*/
+					//プレイヤー下・たかこわ上,
+					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
+						pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
+						pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
+						pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2)
+					{
+						pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
+					}
+
+					// プレイヤーの下にブロックがあったら
+					if ((pPlayer->Position.y - pPlayer->size.y / 2 - 0.05f < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2) &&
+						(pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2) &&
+						(pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2) &&
+						(pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2))
+					{	// 着地中にする
+						if (!pPlayer->isHigh) {
+							pPlayer->sp.y = 0.0f;
+							pPlayer->isHigh = true;
+							break;
+						}
+					}
+					else {
+						pPlayer->isHigh = false;
+					}
+				}
+			}
+
+}
+
+
+//----------------------------------------------------------------------------------------------------------
+
 
 
 //==========================
@@ -430,6 +668,7 @@ void PieceCollision()
 												PositionPlas(temp, pPiece[i].no);
 
 												pPiece[i].pos = pPiece[i].OldMovePos;
+
 												if (pFlag)
 												{
 													pPlayer->Position = pPlayer->OneOldpos;
@@ -616,7 +855,6 @@ void PuzzleCollision()
 											pPuzzle[i].OneOldPosition = pPuzzle[i].oldPosition;
 
 											pPuzzle[i].oldPosition = pPuzzle[i].Position;
-
 
 											break;
 										}
