@@ -25,6 +25,11 @@ typedef struct {
 
 }SCOREPARAM;
 
+typedef struct {
+	bool	AnimeFlag;
+
+}ANIMEPARAM;
+
 class Score{
 private:
 	int m_score = 0;	//ƒXƒRƒA‚ð“ü‚ê‚é

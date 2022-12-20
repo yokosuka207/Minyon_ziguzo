@@ -18,11 +18,12 @@ static int g_ScoreTextureNo = 0;
 
 static Score g_Score;
 static SCOREPARAM g_ScoreParam;	//\‘¢‘Ì
+static ANIMEPARAM g_AnimeParam[SCORE_MAX];
 static Time* pTime = pTime->GetTime();
 
 static int g_TimeDistance = SCORE_POS_X;
 static int score = 0;
-
+static int frame = 0;
 
 void Score::InitScore() {
 	g_ScoreTextureNo = LoadTexture(g_ScoreTextureName);
@@ -31,6 +32,10 @@ void Score::InitScore() {
 	g_ScoreParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_ScoreParam.UseFlag = false;
 	g_ScoreParam.CalcFlag = false;
+	for (int i = 0; i < SCORE_MAX; i++) {
+		g_AnimeParam[i].AnimeFlag = false;
+	}
+
 }
 void Score::UninitScore() {
 	if (g_ScoreTexture) {
@@ -47,24 +52,31 @@ void Score::DrawScore() {
 		g_ScoreParam.pos.x = g_TimeDistance;
 		score = CulcScore();
 
+		frame++;
 		for (int i = 0; i < SCORE_MAX; i++) {
 
-			SpriteDrawColorRotation
-			(
-				g_ScoreParam.pos.x,
-				g_ScoreParam.pos.y,
-				0.0f,
-				g_ScoreParam.size.x,
-				g_ScoreParam.size.y,
-				0.0f,
-				g_ScoreParam.color,
-				(score % 10),
-				1.0f / 10.0f,
-				1.0f / 1.0f,
-				10
-			);
-			g_ScoreParam.pos.x -= 30;
-			score /= 10;
+			if (!g_AnimeParam[i].AnimeFlag && frame % 60 == 0) {
+				g_AnimeParam[i].AnimeFlag = true;
+			}
+
+			if (g_AnimeParam[i].AnimeFlag) {
+				SpriteDrawColorRotation
+				(
+					g_ScoreParam.pos.x,
+					g_ScoreParam.pos.y,
+					0.0f,
+					g_ScoreParam.size.x,
+					g_ScoreParam.size.y,
+					0.0f,
+					g_ScoreParam.color,
+					(score % 10),
+					1.0f / 10.0f,
+					1.0f / 1.0f,
+					10
+				);
+				g_ScoreParam.pos.x -= 30;
+				score /= 10;
+			}
 		}
 	}
 }
