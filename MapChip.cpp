@@ -69,7 +69,7 @@ HRESULT InitMapChip() {
 	}
 
 	STAGESELECT* pStageSelect = GetSelect();
-	FileLoad(pStageSelect->StagePieceIndex);	//あとでnoに変更する？fusegi	yeah
+	FileLoad(ReturnStageNo());	//あとでnoに変更する？fusegi	yeah
 
 	RotateChipData();
 

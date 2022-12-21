@@ -36,9 +36,9 @@ void Score::InitScore() {
 	for (int i = 0; i < SCORE_MAX; i++) {
 		g_AnimeParam[i].AnimeFlag = false;
 	}
-	char filename[] = "data\\SoundData\\.wav";
+	//char filename[] = "data\\SoundData\\.wav";
 	//char filename[] = "data\\SE\\bomb000.wav";
-	g_ScoreSoundNo = LoadSound(filename);
+	//g_ScoreSoundNo = LoadSound(filename);
 
 }
 void Score::UninitScore() {
