@@ -46,7 +46,6 @@ void Score::UninitScore() {
 void Score::DrawScore() {
 	if (g_ScoreParam.UseFlag) {
 		SetWorldViewProjection2D();
-
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreTextureNo));
 
 		g_ScoreParam.pos.x = g_ScoreDistance;
@@ -87,10 +86,10 @@ int Score::CulcScore() {
 	//スコアの値を秒に変換
 	m_TimeScore /= CLOCKS_PER_SEC;
 	if (m_TimeScore < 60) {
-		m_score = m_TimeScore;
+		m_score = m_TimeScore * 5;
 	}
 	else {
-		m_score = m_TimeScore * 0.5;
+		m_score = m_TimeScore;
 	}
 
 	return m_score;
