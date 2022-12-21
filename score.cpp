@@ -59,7 +59,7 @@ void Score::DrawScore() {
 		for (int i = 0; i < SCORE_MAX; i++) {
 			if (!g_AnimeParam[i].AnimeFlag && frame % 60 == 0) {
 				g_AnimeParam[i].AnimeFlag = true;
-				PlaySound(g_ScoreSoundNo, 0);	//0 = ˆê‰ñ‚¾‚¯Ä¶ sound.hŽQÆ
+				//PlaySound(g_ScoreSoundNo, 0);	//0 = ˆê‰ñ‚¾‚¯Ä¶ sound.hŽQÆ
 			}
 			if (g_AnimeParam[i].AnimeFlag) {
 				SpriteDrawColorRotation

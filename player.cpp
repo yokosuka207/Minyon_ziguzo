@@ -1017,7 +1017,7 @@ void UpdatePlayer()
 							{
 
 								g_Player.fall = true;
-								g_Player.sp.y = 0;
+								//g_Player.sp.y = 0;
 								//g_Player.getfall = true;
 								g_Player.frame = 50;
 								//g_Player.sp.y += 0.2;//‰Á‘¬
