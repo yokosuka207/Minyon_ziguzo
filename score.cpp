@@ -50,14 +50,12 @@ void Score::DrawScore() {
 
 		g_ScoreParam.pos.x = g_ScoreDistance;
 		score = CulcScore();
-
+		
 		frame++;
 		for (int i = 0; i < SCORE_MAX; i++) {
 			if (!g_AnimeParam[i].AnimeFlag && frame % 60 == 0) {
 				g_AnimeParam[i].AnimeFlag = true;
 			}
-			//全部出ちゃう → 一個ずつにしたい
-			//1桁目→1.2桁目→1.2.3桁目...
 			if (g_AnimeParam[i].AnimeFlag) {
 				SpriteDrawColorRotation
 				(
@@ -74,7 +72,7 @@ void Score::DrawScore() {
 					10
 				);
 				g_ScoreParam.pos.x -= 30;
-				score /= 10;
+				//score /= 10;
 			}
 		}
 	}
@@ -86,7 +84,7 @@ int Score::CulcScore() {
 	//スコアの値を秒に変換
 	m_TimeScore /= CLOCKS_PER_SEC;
 	if (m_TimeScore < 60) {
-		m_score = m_TimeScore * 5;
+		m_score = m_TimeScore;
 	}
 	else {
 		m_score = m_TimeScore;
