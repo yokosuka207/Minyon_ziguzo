@@ -21,7 +21,7 @@ static SCOREPARAM g_ScoreParam;	//\‘¢‘Ì
 static ANIMEPARAM g_AnimeParam[SCORE_MAX];
 static Time* pTime = pTime->GetTime();
 
-static int g_TimeDistance = SCORE_POS_X;
+static int g_ScoreDistance = SCORE_POS_X;
 static int score = 0;
 static int frame = 0;
 
@@ -49,16 +49,16 @@ void Score::DrawScore() {
 
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreTextureNo));
 
-		g_ScoreParam.pos.x = g_TimeDistance;
+		g_ScoreParam.pos.x = g_ScoreDistance;
 		score = CulcScore();
 
 		frame++;
 		for (int i = 0; i < SCORE_MAX; i++) {
-			//³í
 			if (!g_AnimeParam[i].AnimeFlag && frame % 60 == 0) {
 				g_AnimeParam[i].AnimeFlag = true;
 			}
 			//‘S•”o‚¿‚á‚¤ ¨ ˆêŒÂ‚¸‚Â‚É‚µ‚½‚¢
+			//1Œ…–Ú¨1.2Œ…–Ú¨1.2.3Œ…–Ú...
 			if (g_AnimeParam[i].AnimeFlag) {
 				SpriteDrawColorRotation
 				(

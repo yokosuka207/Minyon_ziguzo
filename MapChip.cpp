@@ -334,7 +334,7 @@ void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
 		if (!g_PieceMapChip[p].UseFlag) {
 			g_PieceMapChip[p].pos = pos;
 			g_PieceMapChip[p].no = PieceNo;
-			SetMapChip(pos, PieceNo,p);
+			SetMapChip(pos, PieceNo, p);
 
 			g_PieceMapChip[p].UseFlag = true;
 			break;
