@@ -11,6 +11,7 @@
 #include "sprite.h"
 #include "texture.h"
 #include "time.h"
+#include "sound.h"
 
 static ID3D11ShaderResourceView* g_ScoreTexture;	//画像一枚で一つの変数が必要
 static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
@@ -24,7 +25,7 @@ static Time* pTime = pTime->GetTime();
 static int g_ScoreDistance = SCORE_POS_X;
 static int score = 0;
 static int frame = 0;
-
+static int g_ScoreSoundNo = 0;
 void Score::InitScore() {
 	g_ScoreTextureNo = LoadTexture(g_ScoreTextureName);
 	g_ScoreParam.pos = D3DXVECTOR2(0.0f, 0.0f);
@@ -35,6 +36,9 @@ void Score::InitScore() {
 	for (int i = 0; i < SCORE_MAX; i++) {
 		g_AnimeParam[i].AnimeFlag = false;
 	}
+	char filename[] = "data\\SoundData\\.wav";
+	//char filename[] = "data\\SE\\bomb000.wav";
+	g_ScoreSoundNo = LoadSound(filename);
 
 }
 void Score::UninitScore() {
@@ -55,6 +59,7 @@ void Score::DrawScore() {
 		for (int i = 0; i < SCORE_MAX; i++) {
 			if (!g_AnimeParam[i].AnimeFlag && frame % 60 == 0) {
 				g_AnimeParam[i].AnimeFlag = true;
+				PlaySound(g_ScoreSoundNo, 0);	//0 = 一回だけ再生 sound.h参照
 			}
 			if (g_AnimeParam[i].AnimeFlag) {
 				SpriteDrawColorRotation
