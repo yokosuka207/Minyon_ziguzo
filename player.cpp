@@ -957,7 +957,7 @@ void UpdatePlayer()
 								g_Player.sp.y -= 0.2;//â¡ë¨
 							}
 							else
-							{
+							{//â∫Ç…âΩÇ‡Ç»Ç≠éÄñSÇ∑ÇÈèÍçá
 								for (int i = 0; i < SPAWN_POINT_MAX; i++)
 								{
 									if (pSpawnPoint[i].UseFlag)

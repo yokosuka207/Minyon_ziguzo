@@ -53,6 +53,7 @@ void UpdateCollision()
 	// ÉQÉbÉg
 	Piece* pPiece = GetPiece();
 	PLAYER* pPlayer = GetPlayer();
+	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	MOUSE* pMouse = GetMouse();
@@ -157,7 +158,23 @@ void UpdateCollision()
 						pTime->EndTime();
 						pTimeParam->EndFlag = true;
 					}
-					
+					else{//â∫Ç…âΩÇ‡Ç»Ç≠éÄñSÇ∑ÇÈèÍçá
+						for (int i = 0; i < SPAWN_POINT_MAX; i++)
+						{
+							if (pSpawnPoint[i].UseFlag)
+							{
+								if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex)
+								{
+									pPlayer->Position = pSpawnPoint[i].Position;
+
+								}
+
+
+							}
+						}
+
+					}
+
 				}
 			}
 		}
@@ -186,6 +203,7 @@ void UpdateCollision()
 void PieceCollision()
 {
 	SplitStage* pSplitStage = GetSplitStage();
+	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 
 	Piece* pPiece = GetPiece();
 	JOINT* pJoint = GetJoint();
