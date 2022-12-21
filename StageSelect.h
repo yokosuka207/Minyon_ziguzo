@@ -12,7 +12,7 @@
 #include "main.h"
 #include "renderer.h"
 
-#define STAGE_MAX (28)
+#define STAGE_MAX (27)
 //#define STAGE_MAX (8)
 
 #define SELECT_MAX (2)//2桁
@@ -38,7 +38,15 @@ typedef struct
 	D3DXVECTOR2		size;		// 表示サイズ
 	D3DXCOLOR		color;		// カラー
 	float			texno;		// テクスチャインデックス番号
-	bool			UseFlag;	//使用フラグ
+
+}STAGESELECT_STAIRS;
+
+typedef struct
+{
+	D3DXVECTOR2		pos;		// 表示座標
+	D3DXVECTOR2		size;		// 表示サイズ
+	D3DXCOLOR		color;		// カラー
+	float			texno;		// テクスチャインデックス番号
 
 }STAGESELECT_BLOCK;
 

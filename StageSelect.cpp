@@ -20,12 +20,18 @@
 //	ƒ}ƒNƒ’è‹`
 //*****************************************************************************
 
+#define STAIRS_LEFT	75
+#define STAIRS_RIGHT	285
+
+
+
 //*****************************************************************************
 //	ƒOƒ[ƒoƒ‹•Ï”
 //*****************************************************************************
 static STAGESELECT g_StageSelect[STAGE_MAX];
 static STAGESELECT_BG g_StageSelectBg;
-static STAGESELECT_BG g_StageSelectBlock[3];
+static STAGESELECT_BLOCK g_StageSelectBlock[3];
+static STAGESELECT_STAIRS g_StageSelectStairs[12];
 
 static ID3D11ShaderResourceView* g_StageSelectTexture;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
 static char* g_StageSelectTextureName = (char*)"data\\texture\\doa.png";	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
@@ -33,6 +39,8 @@ static ID3D11ShaderResourceView* g_StageSelectTextureBg;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚
 static char* g_StageSelectBgTextureName = (char*)"data\\texture\\gray.jpg";	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
 static ID3D11ShaderResourceView* g_StageSelectTextureBlock;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
 static char* g_StageSelectBlockTextureName = (char*)"data\\texture\\gray.jpg";	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
+static ID3D11ShaderResourceView* g_StageSelectTextureStairs;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
+static char* g_StageSelectStairsTextureName = (char*)"data\\texture\\Ground.png";	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
 
 
 static PLAYER ply;
@@ -61,29 +69,48 @@ HRESULT InitStageSelect() {
 		g_StageSelectBlock[i].texno = LoadTexture(g_StageSelectBlockTextureName);
 
 	}
-
-
-
-
 	int a = 0;
 	int b = 0;
+
+	for (int i = 0; i < 12; i++)
+	{
+		if (i % 6 == 0 && i != 0)
+		{
+			a++;
+			b = 0;
+		}
+
+		g_StageSelectStairs[i].pos = D3DXVECTOR2(90.0f+(b*25.0f), 270.0f+(b*40.0f) + (250 * a));
+		g_StageSelectStairs[i].size = D3DXVECTOR2(30.0f, 40.0f);
+		g_StageSelectStairs[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_StageSelectStairs[i].texno = LoadTexture(g_StageSelectStairsTextureName);
+		b++;
+
+	}
+
+
+
+
+	 a = 0;
+	b = 0;
 
 
 
 	for (int i = 0; i < STAGE_MAX; i++)
 	{
-		g_StageSelect[i].pos = D3DXVECTOR2((250.0f)+(120.0f*b), (175.0f)+(250.0f*a));
+		if (i % 9 == 0 && i != 0)
+		{
+			a++;
+			b = 0;
+		}
+
+		g_StageSelect[i].pos = D3DXVECTOR2((300.0f)+(120.0f*b), (175.0f)+(250.0f*a));
 		g_StageSelect[i].size = D3DXVECTOR2(150.0f, 150.0f);
 		g_StageSelect[i].UseFlag = true;
 		g_StageSelect[i].StagePieceIndex = i;
 		g_StageSelect[i].StageUseFlag = true;
 		g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
 		b++;
-		if (i % 9 == 0 &&i != 0)
-		{
-			a++;
-			b = 0;
-		}
 
 	}
 
@@ -142,29 +169,64 @@ void UpdateStageSelect() {
 
 	if (ply.UseFlag == true)
 	{
-		//ˆÚ“®
-		if (GetKeyboardPress(DIK_RIGHT))//‰EƒL[
-		{//‰Ÿ‚³‚ê‚Ä‚¢‚é‚Æ‚«‚Ìˆ—
-			ply.sp.x = 2.0f;
-			ply.PaternNo += 0.25f;
-
-			// Œü‚«‚ğ•Ï‚¦‚é
-			ply.dir = PLAYER_DIRECTION::RIGHT;
-			ply.uv_w = PLAYER_UV_W;
-		}
-		else if (GetKeyboardPress(DIK_LEFT))//¶ƒL[
-		{//‰Ÿ‚³‚ê‚Ä‚¢‚é‚Æ‚«‚Ìˆ—
-			ply.sp.x = -2.0f;
-			ply.PaternNo -= 0.25f;
-
-			// Œü‚«‚ğ•Ï‚¦‚é
-			ply.dir = PLAYER_DIRECTION::LEFT;
-			ply.uv_w = -PLAYER_UV_W;
-		}
-		else
+		if (ply.isGround)
 		{
-			ply.sp.x = 0;
 
+
+			//ˆÚ“®
+			if (GetKeyboardPress(DIK_RIGHT))//‰EƒL[
+			{//‰Ÿ‚³‚ê‚Ä‚¢‚é‚Æ‚«‚Ìˆ—
+				ply.sp.x = 2.0f;
+				ply.PaternNo += 0.25f;
+				if (ply.isHigh)
+				{
+					ply.sp.x = 3.0f;
+					ply.sp.y = 4.0f;
+
+				}
+
+				// Œü‚«‚ğ•Ï‚¦‚é
+				ply.dir = PLAYER_DIRECTION::RIGHT;
+				ply.uv_w = PLAYER_UV_W;
+			}
+			else if (GetKeyboardPress(DIK_LEFT))//¶ƒL[
+			{//‰Ÿ‚³‚ê‚Ä‚¢‚é‚Æ‚«‚Ìˆ—
+				ply.sp.x = -2.0f;
+				ply.PaternNo -= 0.25f;
+				if (ply.isHigh)
+				{
+					ply.sp.x = -3.0f;
+					ply.sp.y = -3.5f;
+
+				}
+
+				// Œü‚«‚ğ•Ï‚¦‚é
+				ply.dir = PLAYER_DIRECTION::LEFT;
+				ply.uv_w = -PLAYER_UV_W;
+			}
+			else
+			{
+				if (ply.isHigh)
+				{
+					ply.sp.y = 0.0f;
+				}
+				ply.sp.x = 0;
+
+			}
+		}
+		if (STAIRS_LEFT < ply.Position.x && ply.Position.x < STAIRS_RIGHT) {
+			if (GetKeyboardPress(DIK_DOWN))//‰EƒL[
+			{
+
+				if (ply.Position.y < SCREEN_HEIGHT - 110.0f)
+				{
+					ply.sp.x = 0;
+
+					ply.sp.y = 5.0f;
+					ply.isGround = false;
+
+				}
+			}
 		}
 
 		// ƒAƒjƒ[ƒVƒ‡ƒ“ƒpƒ^[ƒ“”Ô†‚ğ0`15‚Ì”ÍˆÍ“à‚É‚·‚é
@@ -173,6 +235,9 @@ void UpdateStageSelect() {
 
 		ply.oldpos = ply.Position;
 		ply.Position += ply.sp;
+
+
+
 
 		for (int i = 0; i < 3; i++)
 		{
@@ -193,26 +258,87 @@ void UpdateStageSelect() {
 				{
 					ply.Position.x = g_StageSelectBlock[i].pos.x + g_StageSelectBlock[i].size.x / 2 + ply.size.x / 2;
 				}
-
-				//ƒvƒŒƒCƒ„[ãEƒuƒƒbƒN‰º,’…’n‚·‚é
-				if (ply.Position.x + ply.size.x / 2 > g_StageSelectBlock[i].pos.x - g_StageSelectBlock[i].size.x / 2 &&
-					ply.Position.x - ply.size.x / 2 < g_StageSelectBlock[i].pos.x + g_StageSelectBlock[i].size.x / 2 &&
-					ply.Position.y + ply.size.y / 2 > g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2 &&
-					ply.oldpos.y + ply.size.y / 2 <= g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2)
+				if (ply.isGround)
 				{
-					ply.Position.y = g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2 - ply.size.y / 2 - 0.02f;
-					ply.jump = false;
-					ply.fall = false;
-					ply.WarpFlag = false;
-					//ply.isGround = true;
-					ply.sp.y = 0;
-					ply.frame = 0;
+					//ƒvƒŒƒCƒ„[ãEƒuƒƒbƒN‰º,’…’n‚·‚é
+					if (ply.Position.x + ply.size.x / 2 > g_StageSelectBlock[i].pos.x - g_StageSelectBlock[i].size.x / 2 &&
+						ply.Position.x - ply.size.x / 2 < g_StageSelectBlock[i].pos.x + g_StageSelectBlock[i].size.x / 2 &&
+						ply.Position.y + ply.size.y / 2 > g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2 &&
+						ply.oldpos.y + ply.size.y / 2 <= g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2)
+					{
+						ply.Position.y = g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2 - ply.size.y / 2 - 0.02f;
+						ply.jump = false;
+						ply.fall = false;
+						ply.WarpFlag = false;
+						//ply.isGround = true;
+						ply.sp.y = 0;
+						ply.frame = 0;
+						ply.isHigh = false;
+
+					}
 				}
 				//ƒvƒŒƒCƒ„[‰ºEƒuƒƒbƒNã,—‰º‚·‚é
 				if (ply.Position.x + ply.size.x / 2 > g_StageSelectBlock[i].pos.x - g_StageSelectBlock[i].size.x / 2 &&
 					ply.Position.x - ply.size.x / 2 < g_StageSelectBlock[i].pos.x + g_StageSelectBlock[i].size.x / 2 &&
-					ply.Position.y - ply.size.y / 2 < g_StageSelectBlock[i].pos.y + g_StageSelectBlock[i].size.y / 2 &&
-					ply.oldpos.y - ply.size.y / 2 >= g_StageSelectBlock[i].pos.y + g_StageSelectBlock[i].size.y / 2)
+					ply.Position.y + ply.size.y / 2 < g_StageSelectBlock[i].pos.y + g_StageSelectBlock[i].size.y / 2 &&
+					ply.oldpos.y + ply.size.y / 2 >= g_StageSelectBlock[i].pos.y + g_StageSelectBlock[i].size.y / 2)
+				{
+					ply.Position.y = g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2 - ply.size.y / 2 - 0.02f;
+					ply.isHigh = false;
+					ply.sp.y = 0.0f;
+					ply.fall = true;
+					ply.getfall = true;
+					ply.frame = 50;
+				}
+			}
+		}
+		for (int i = 0; i < 12; i++)
+		{
+			{
+				//ƒvƒŒƒCƒ„[¶EƒuƒƒbƒN‰E
+				if (ply.Position.x + ply.size.x / 2 > g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 &&
+					ply.oldpos.x + ply.size.x / 2 <= g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 &&
+					ply.Position.y + ply.size.y / 2 > g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 2 &&
+					ply.Position.y - ply.size.y / 2 < g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y / 2)
+				{
+					//ply.Position.x = g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 - ply.size.x / 2;
+				}
+				//ƒvƒŒƒCƒ„[‰EEƒuƒƒbƒN¶
+				if (ply.Position.x - ply.size.x / 2 < g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 &&
+					ply.oldpos.x - ply.size.x / 2 >= g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 &&
+					ply.Position.y + ply.size.y / 3 > g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 3 &&
+					ply.Position.y - ply.size.y / 3 < g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y / 3)
+				{
+					//ply.Position.x = g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 + ply.size.x / 2;
+					//ply.sp = D3DXVECTOR2(0.0f,-4.0f);
+					if (GetKeyboardPress(DIK_UP))
+					{
+						ply.isHigh = true;	//ã‚Éã‚é
+
+					}
+				}
+
+				//ƒvƒŒƒCƒ„[ãEƒuƒƒbƒN‰º,’…’n‚·‚é
+				if (ply.Position.x + ply.size.x / 2 > g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 &&
+					ply.Position.x - ply.size.x / 2 < g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 &&
+					ply.Position.y + ply.size.y / 2 > g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 2 &&
+					ply.oldpos.y + ply.size.y / 2 <= g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 2)
+				{
+					ply.isGround = true;
+
+					ply.Position.y = g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 2 - ply.size.y / 2 - 0.02f;
+					ply.jump = false;
+					ply.fall = false;
+					ply.WarpFlag = false;
+					//ply.isGround = true;
+					ply.sp.y = 4.0f;
+					ply.frame = 0;
+				}
+				//ƒvƒŒƒCƒ„[‰ºEƒuƒƒbƒNã,—‰º‚·‚é
+				if (ply.Position.x + ply.size.x / 2 > g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 &&
+					ply.Position.x - ply.size.x / 2 < g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 &&
+					ply.Position.y - ply.size.y / 2 < g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y / 2 &&
+					ply.oldpos.y - ply.size.y / 2 >= g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y / 2)
 				{
 					ply.fall = true;
 					ply.getfall = true;
@@ -244,6 +370,7 @@ void UpdateStageSelect() {
 				if (GetKeyboardTrigger(DIK_A)) {
 					StageNo = i;
 					SetScene(SCENE::SCENE_GAME);
+					break;
 				}
 			}
 		}
@@ -273,6 +400,17 @@ void DrawStageSelect() {
 		SpriteDrawColorRotation(
 			g_StageSelectBlock[i].pos.x, g_StageSelectBlock[i].pos.y, 0.5f, g_StageSelectBlock[i].size.x, g_StageSelectBlock[i].size.y
 			, 0.0f, g_StageSelectBlock[i].color, 0, 1.0f, 1.0f, 1);
+
+	}
+	for (int i = 0; i < 12; i++)
+	{
+		SetWorldViewProjection2D();
+
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairs[i].texno));
+
+		SpriteDrawColorRotation(
+			g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x, g_StageSelectStairs[i].size.y
+			, 0.0f, g_StageSelectStairs[i].color, 0, 1.0f, 1.0f, 1);
 
 	}
 
