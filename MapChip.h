@@ -53,6 +53,7 @@ enum class MAPCHIP_TYPE{
 	TYPE_HIGHBROKEN,	//18	ジャンプで壊れる床
 	TYPE_MIRROR,		//19	鏡
 	TYPE_SPWANPOINT,	//20	スポーンポイント
+	TYPE_MOVEBLOCK,		//21	動くブロック
 
 	TYPE_NUM		
 };
