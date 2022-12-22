@@ -285,7 +285,7 @@ void UpdatePlayer()
 			if ((g_Player.isGround || g_Player.isSheerFloors  || g_Player.isHigh || g_Player.isMoveBlock)&& g_Player.sp.y <= 0 && GetKeyboardPress(DIK_SPACE))
 			{
 
-    				g_Player.sp.y = 2.0f;			// スピードのyをマイナスにする
+    				g_Player.sp.y = 2.5f;			// スピードのyをマイナスにする
 				
 				if (g_Player.isGround) {
 					g_Player.isGround = false;			// フラグをジャンプ中にする
