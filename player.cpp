@@ -139,7 +139,7 @@ void UpdatePlayer()
 				g_Player.sp.x = 0;
 
 			}
-
+			//fuck
 			// アニメーションパターン番号を0～15の範囲内にする
 			if (g_Player.PaternNo > 15) { g_Player.PaternNo -= 15; }
 			if (g_Player.PaternNo < 0) { g_Player.PaternNo += 15; }
