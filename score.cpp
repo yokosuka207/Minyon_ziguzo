@@ -12,6 +12,7 @@
 #include "texture.h"
 #include "time.h"
 #include "sound.h"
+#include <math.h>
 
 static ID3D11ShaderResourceView* g_ScoreTexture;	//画像一枚で一つの変数が必要
 static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
@@ -26,6 +27,7 @@ static int g_ScoreDistance = SCORE_POS_X;
 static int score = 0;
 static int frame = 0;
 static int g_ScoreSoundNo = 0;
+
 void Score::InitScore() {
 	g_ScoreTextureNo = LoadTexture(g_ScoreTextureName);
 	g_ScoreParam.pos = D3DXVECTOR2(0.0f, 0.0f);
@@ -35,6 +37,7 @@ void Score::InitScore() {
 	g_ScoreParam.CalcFlag = false;
 	for (int i = 0; i < SCORE_MAX; i++) {
 		g_AnimeParam[i].AnimeFlag = false;
+		g_AnimeParam[i].num = 0;
 	}
 	//char filename[] = "data\\SoundData\\.wav";
 	//char filename[] = "data\\SE\\bomb000.wav";
@@ -57,8 +60,9 @@ void Score::DrawScore() {
 		
 		frame++;
 		for (int i = 0; i < SCORE_MAX; i++) {
-			if (!g_AnimeParam[i].AnimeFlag && frame % 60 == 0) {
+			if (!g_AnimeParam[i].AnimeFlag && frame % 120 == 0) {
 				g_AnimeParam[i].AnimeFlag = true;
+				g_AnimeParam[i].num = score / pow(10, i);
 				//PlaySound(g_ScoreSoundNo, 0);	//0 = 一回だけ再生 sound.h参照
 			}
 			if (g_AnimeParam[i].AnimeFlag) {
@@ -71,13 +75,12 @@ void Score::DrawScore() {
 					g_ScoreParam.size.y,
 					0.0f,
 					g_ScoreParam.color,
-					(score % 10),
+					(g_AnimeParam[i].num % 10),
 					1.0f / 10.0f,
 					1.0f / 1.0f,
 					10
 				);
 				g_ScoreParam.pos.x -= 30;
-				//score /= 10;
 			}
 		}
 	}
