@@ -43,7 +43,7 @@ struct PLAYER
 	bool isHigh;
 	bool isMoveBlock;
 	int	HaveKey; //Œ®Š”
-	int GHaveKey;
+	//int GHaveKey;
 	//int Hp;
 
 	D3DXVECTOR2 size;//BOXƒTƒCƒY
