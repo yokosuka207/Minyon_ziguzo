@@ -16,7 +16,9 @@
 
 static ID3D11ShaderResourceView* g_ScoreTexture;	//画像一枚で一つの変数が必要
 static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
+
 static int g_ScoreTextureNo = 0;
+static int g_ScoreSoundNo = 0;
 
 static Score g_Score;
 static SCOREPARAM g_ScoreParam;	//構造体
@@ -26,7 +28,6 @@ static Time* pTime = pTime->GetTime();
 static int g_ScoreDistance = SCORE_POS_X;
 static int score = 0;
 static int frame = 0;
-static int g_ScoreSoundNo = 0;
 
 void Score::InitScore() {
 	g_ScoreTextureNo = LoadTexture(g_ScoreTextureName);
@@ -40,10 +41,8 @@ void Score::InitScore() {
 		g_AnimeParam[i].num = 0;
 		g_AnimeParam[i].index = -1;
 	}
-	//char filename[] = "data\\SoundData\\.wav";
-	//char filename[] = "data\\SE\\bomb000.wav";
-	//g_ScoreSoundNo = LoadSound(filename);
-
+	char filename[] = "data\\SoundData\\meka_ge_type_chin_kaigyo01.wav";
+	//g_ScoreSoundNo = LoadSound(filename);//ここでエラー
 }
 void Score::UninitScore() {
 	if (g_ScoreTexture) {
@@ -62,30 +61,24 @@ void Score::DrawScore() {
 		frame++;
 
 		for (int i = 0; i < SCORE_MAX; i++) {
-			//フレーム数開けた後に一気に出てくる
-			if (!g_AnimeParam[0].AnimeFlag && frame == 60) {
-				SetAnimeParam(score / pow(10, 0), 0);
+			if (!g_AnimeParam[0].AnimeFlag && frame == 10) {
+				SetAnimeParam(score / pow(10, 0));
 				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
 			}
-			if (!g_AnimeParam[1].AnimeFlag && frame == 120) {
-				SetAnimeParam(score / pow(10, 1), 1);
-				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
+			if (!g_AnimeParam[1].AnimeFlag && frame == 30) {
+				SetAnimeParam(score / pow(10, 1));
 			}
-			if (!g_AnimeParam[2].AnimeFlag && frame == 180) {
-				SetAnimeParam(score / pow(10, 2), 2);
-				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
+			if (!g_AnimeParam[2].AnimeFlag && frame == 40) {
+				SetAnimeParam(score / pow(10, 2));
 			}
-			if (!g_AnimeParam[3].AnimeFlag && frame == 240) {
-				SetAnimeParam(score / pow(10, 3), 3);
-				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
+			if (!g_AnimeParam[3].AnimeFlag && frame == 50) {
+				SetAnimeParam(score / pow(10, 3));
 			}
-			if (!g_AnimeParam[4].AnimeFlag && frame == 300) {
-				SetAnimeParam(score / pow(10, 4), 4);
-				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
+			if (!g_AnimeParam[4].AnimeFlag && frame == 70) {
+				SetAnimeParam(score / pow(10, 4));
 			}
-			if (!g_AnimeParam[5].AnimeFlag && frame == 360) {
-				SetAnimeParam(score / pow(10, 5), 5);
-				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
+			if (!g_AnimeParam[5].AnimeFlag && frame == 90) {
+				SetAnimeParam(score / pow(10, 5));
 			}
 			if (g_AnimeParam[i].AnimeFlag) {
 				SpriteDrawColorRotation
@@ -129,7 +122,7 @@ void Score::SetScore(D3DXVECTOR2 pos,D3DXVECTOR2 size) {
 		g_ScoreParam.UseFlag = true;
 	}
 }
-void Score::SetAnimeParam(int num,int index) {
+void Score::SetAnimeParam(int num) {
 	for (int i = 0; i < SCORE_MAX; i++) {
 		if (!g_AnimeParam[i].AnimeFlag) {
 			g_AnimeParam[i].num = num;

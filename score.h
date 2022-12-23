@@ -41,7 +41,7 @@ public:
 	void DrawScore();
 	int CulcScore();	//スコアの計算
 	void SetScore(D3DXVECTOR2 pos, D3DXVECTOR2 size);
-	void SetAnimeParam(int num,int index);
+	void SetAnimeParam(int num);
 	SCOREPARAM* GetScoreParam();
 	Score* GetScore();
 };
