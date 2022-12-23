@@ -90,6 +90,10 @@ DIRECSION Direcsion = NUM;	//方向の確認
 void UpdateCollision()
 
 {
+	// ゲット
+	Piece* pPiece = GetPiece();
+	PLAYER* pPlayer = GetPlayer();
+	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 	// 使用ゲット一覧-----------------------------
 
 	PLAYER* pPlayer = GetPlayer();
@@ -257,6 +261,22 @@ void UpdateCollision()
 						SetScene(SCENE::SCENE_RESULT);
 						pTime->EndTime();
 						pTimeParam->EndFlag = true;
+					}
+					else{//下に何もなく死亡する場合
+						for (int i = 0; i < SPAWN_POINT_MAX; i++)
+						{
+							if (pSpawnPoint[i].UseFlag)
+							{
+								if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex)
+								{
+									pPlayer->Position = pSpawnPoint[i].Position;
+
+								}
+
+
+							}
+						}
+
 					}
 
 				}
@@ -755,6 +775,7 @@ void PieceCollision()
 {
 	
 	SplitStage* pSplitStage = GetSplitStage();
+	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 
 	Piece* pPiece = GetPiece();
 	JOINT* pJoint = GetJoint();

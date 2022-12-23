@@ -33,6 +33,7 @@
 #include "broken.h"
 #include "high_broken.h"
 #include"spawnpoint.h"
+#include "MoveBlock.h"	
 
 //**************************************************
 //　マクロ定義
@@ -69,7 +70,7 @@ HRESULT InitMapChip() {
 	}
 
 	STAGESELECT* pStageSelect = GetSelect();
-	FileLoad(pStageSelect->StagePieceIndex);	//あとでnoに変更する？fusegi	yeah
+	FileLoad(ReturnStageNo());	//あとでnoに変更する？fusegi	yeah
 
 	RotateChipData();
 
@@ -121,65 +122,69 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			switch (g_PieceMapChip[no].chip[g_PieceMapChip[Pin].direction][i][j]) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK) :	//0				
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//1
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//1　凸
 				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_BUMP,Pin);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_PULL) :	//2
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_PULL) :	//2　凹
 				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_DIP,Pin);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_NONE) :	//3
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_NONE) :	//3　空白
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLOCK) :	//4
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLOCK) :	//4　床
 				SetBlock(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP) :	//5
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP) :	//5　アイテムピース
 				SetChipPuzzuleChip(position, DrawSize, no + 1);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//6
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//6　ワープ
 				SetWarp(position, DrawSize);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL) :	//7
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL) :	//7　ゴール
 				SetGoal(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP) :	//8
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP) :	//8　ジャンプ台
 				SetJumpStand(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9　トゲ
 				SetThornBlock(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL) :	//10
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL) :	//10　乗ると落ちるブロック
 				SetFallBlock(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11　鍵
 				SetKey(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12　鍵付きの扉
 				SetOpenKey(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13　ボタン
 				SetSwitch(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14　ボタンで開く扉×３
 				SetSwitchWall(position, DrawSize, no, 3);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15　ボタンで開く扉×３
 				SetSwitchWall(position, DrawSize, no, 4);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
 				SetSheerFloors(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　着地で壊れる床
 				SetBroken(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18　ジャンプで壊れるブロック
 				SetHigh(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_MIRROR):	//19
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_MIRROR):	//19　鏡
 				//Set
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT)://20
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT)://20　スポーンポイント
 				SetSpawnPoint(position,DrawSize,no);
 					break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEBLOCK)://21　動かすブロック
+				SetMoveBlock(position, DrawSize, no);
+				break;
+
 			default:
 				break;
 			}
@@ -334,7 +339,7 @@ void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
 		if (!g_PieceMapChip[p].UseFlag) {
 			g_PieceMapChip[p].pos = pos;
 			g_PieceMapChip[p].no = PieceNo;
-			SetMapChip(pos, PieceNo,p);
+			SetMapChip(pos, PieceNo, p);
 
 			g_PieceMapChip[p].UseFlag = true;
 			break;

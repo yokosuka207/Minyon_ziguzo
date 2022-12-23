@@ -44,7 +44,7 @@ void UpdateGoal()
 		GKey* pGKey = GetGKey();
 		MOUSE* pMouse = GetMouse();
 		RESULT* pResult = GetResult();
-		if (!pMouse->UseFlag && pGKey->GetGKey)
+		if (!pMouse->UseFlag)// && pGKey->GetGKey)
 		{
 
 			if (g_Goal.Pos.x + g_Goal.Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2

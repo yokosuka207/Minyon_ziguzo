@@ -42,8 +42,6 @@
 //=============================================================================
 //マクロ定義
 //=============================================================================
-#define PLAYER_UV_W (1.0f / 4)
-#define PLAYER_UV_H (1.0f / 4)
 
 //=============================================================================
 //プロトタイプ宣言
@@ -143,7 +141,7 @@ void UpdatePlayer()
 				g_Player.sp.x = 0;
 
 			}
-
+			//fuck
 			// アニメーションパターン番号を0～15の範囲内にする
 			if (g_Player.PaternNo > 15) { g_Player.PaternNo -= 15; }
 			if (g_Player.PaternNo < 0) { g_Player.PaternNo += 15; }
@@ -296,8 +294,8 @@ void UpdatePlayer()
 			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock) && g_Player.sp.y <= 0 && GetKeyboardPress(DIK_SPACE))
 			{
 
-				g_Player.sp.y = 2.0f;			// スピードのyをマイナスにする
-
+    				g_Player.sp.y = 2.5f;			// スピードのyをマイナスにする
+				
 				if (g_Player.isGround) {
 					g_Player.isGround = false;			// フラグをジャンプ中にする
 				}
@@ -937,7 +935,7 @@ void UpdatePlayer()
 								g_Player.sp.y -= 0.2;//加速
 							}
 							else
-							{
+							{//下に何もなく死亡する場合
 								for (int i = 0; i < SPAWN_POINT_MAX; i++)
 								{
 									if (pSpawnPoint[i].UseFlag)
@@ -997,7 +995,7 @@ void UpdatePlayer()
 							{
 
 								g_Player.fall = true;
-								g_Player.sp.y = 0;
+								//g_Player.sp.y = 0;
 								//g_Player.getfall = true;
 								g_Player.frame = 50;
 								//g_Player.sp.y += 0.2;//加速

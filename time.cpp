@@ -61,76 +61,76 @@ void Time:: DrawGameTime() {
 	g_TimeParam.pos.x = g_TimeDistance;
 
 	if (g_TimeParam.UseFlag) {
-		//1‚ÌˆÊ(•b)
-		{
-			SpriteDrawColorRotation(
-				g_TimeParam.pos.x,
-				g_TimeParam.pos.y,
-				0.0f,
-				g_TimeParam.size.x,
-				g_TimeParam.size.y,
-				0.0f,
-				g_TimeParam.color,
-				(g_SecondTime) % 10,
-				1.0f / 10.0f,
-				1.0f / 1.0f,
-				10
-			);
-			g_TimeParam.pos.x -= 30;
-			g_SecondTime /= 10;
-		}
-		//10‚ÌˆÊ(•b)
-		{
-			SpriteDrawColorRotation(
-				g_TimeParam.pos.x,
-				g_TimeParam.pos.y,
-				0.0f,
-				g_TimeParam.size.x,
-				g_TimeParam.size.y,
-				0.0f,
-				g_TimeParam.color,
-				(g_SecondTime) % 10,
-				1.0f / 10.0f,
-				1.0f / 1.0f,
-				10
-			);
-			g_TimeParam.pos.x -= 30;
-		}
-		//1‚ÌˆÊ(•ª)
-		{
-			SpriteDrawColorRotation(
-				g_TimeParam.pos.x - 5,
-				g_TimeParam.pos.y,
-				0.0f,
-				g_TimeParam.size.x,
-				g_TimeParam.size.y,
-				0.0f,
-				g_TimeParam.color,
-				(g_MintueTime) % 10,
-				1.0f / 10.0f,
-				1.0f / 1.0f,
-				10
-			);
-			g_TimeParam.pos.x -= 30;
-			g_MintueTime /= 10;
-		}
-		//10‚ÌˆÊ(•ª)
-		{
-			SpriteDrawColorRotation(
-				g_TimeParam.pos.x - 5,
-				g_TimeParam.pos.y,
-				0.0f,
-				g_TimeParam.size.x,
-				g_TimeParam.size.y,
-				0.0f,
-				g_TimeParam.color,
-				(g_MintueTime) % 10,
-				1.0f / 10.0f,
-				1.0f / 1.0f,
-				10
-			);
-			g_TimeParam.pos.x -= 30;
-		}
+		////1‚ÌˆÊ(•b)
+		//{
+		//	SpriteDrawColorRotation(
+		//		g_TimeParam.pos.x,
+		//		g_TimeParam.pos.y,
+		//		0.0f,
+		//		g_TimeParam.size.x,
+		//		g_TimeParam.size.y,
+		//		0.0f,
+		//		g_TimeParam.color,
+		//		(g_SecondTime) % 10,
+		//		1.0f / 10.0f,
+		//		1.0f / 1.0f,
+		//		10
+		//	);
+		//	g_TimeParam.pos.x -= 30;
+		//	g_SecondTime /= 10;
+		//}
+		////10‚ÌˆÊ(•b)
+		//{
+		//	SpriteDrawColorRotation(
+		//		g_TimeParam.pos.x,
+		//		g_TimeParam.pos.y,
+		//		0.0f,
+		//		g_TimeParam.size.x,
+		//		g_TimeParam.size.y,
+		//		0.0f,
+		//		g_TimeParam.color,
+		//		(g_SecondTime) % 10,
+		//		1.0f / 10.0f,
+		//		1.0f / 1.0f,
+		//		10
+		//	);
+		//	g_TimeParam.pos.x -= 30;
+		//}
+		////1‚ÌˆÊ(•ª)
+		//{
+		//	SpriteDrawColorRotation(
+		//		g_TimeParam.pos.x - 5,
+		//		g_TimeParam.pos.y,
+		//		0.0f,
+		//		g_TimeParam.size.x,
+		//		g_TimeParam.size.y,
+		//		0.0f,
+		//		g_TimeParam.color,
+		//		(g_MintueTime) % 10,
+		//		1.0f / 10.0f,
+		//		1.0f / 1.0f,
+		//		10
+		//	);
+		//	g_TimeParam.pos.x -= 30;
+		//	g_MintueTime /= 10;
+		//}
+		////10‚ÌˆÊ(•ª)
+		//{
+		//	SpriteDrawColorRotation(
+		//		g_TimeParam.pos.x - 5,
+		//		g_TimeParam.pos.y,
+		//		0.0f,
+		//		g_TimeParam.size.x,
+		//		g_TimeParam.size.y,
+		//		0.0f,
+		//		g_TimeParam.color,
+		//		(g_MintueTime) % 10,
+		//		1.0f / 10.0f,
+		//		1.0f / 1.0f,
+		//		10
+		//	);
+		//	g_TimeParam.pos.x -= 30;
+		//}
 	}
 }
 

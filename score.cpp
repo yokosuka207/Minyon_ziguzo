@@ -11,18 +11,23 @@
 #include "sprite.h"
 #include "texture.h"
 #include "time.h"
+#include "sound.h"
+#include <math.h>
 
 static ID3D11ShaderResourceView* g_ScoreTexture;	//画像一枚で一つの変数が必要
 static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
+
 static int g_ScoreTextureNo = 0;
+static int g_ScoreSoundNo = 0;
 
 static Score g_Score;
 static SCOREPARAM g_ScoreParam;	//構造体
+static ANIMEPARAM g_AnimeParam[SCORE_MAX];
 static Time* pTime = pTime->GetTime();
 
-static int g_TimeDistance = SCORE_POS_X;
+static int g_ScoreDistance = SCORE_POS_X;
 static int score = 0;
-
+static int frame = 0;
 
 void Score::InitScore() {
 	g_ScoreTextureNo = LoadTexture(g_ScoreTextureName);
@@ -31,6 +36,13 @@ void Score::InitScore() {
 	g_ScoreParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_ScoreParam.UseFlag = false;
 	g_ScoreParam.CalcFlag = false;
+	for (int i = 0; i < SCORE_MAX; i++) {
+		g_AnimeParam[i].AnimeFlag = false;
+		g_AnimeParam[i].num = 0;
+		g_AnimeParam[i].index = -1;
+	}
+	char filename[] = "data\\SoundData\\meka_ge_type_chin_kaigyo01.wav";
+	//g_ScoreSoundNo = LoadSound(filename);//ここでエラー
 }
 void Score::UninitScore() {
 	if (g_ScoreTexture) {
@@ -41,30 +53,50 @@ void Score::UninitScore() {
 void Score::DrawScore() {
 	if (g_ScoreParam.UseFlag) {
 		SetWorldViewProjection2D();
-
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreTextureNo));
 
-		g_ScoreParam.pos.x = g_TimeDistance;
+		g_ScoreParam.pos.x = g_ScoreDistance;
 		score = CulcScore();
+		
+		frame++;
 
 		for (int i = 0; i < SCORE_MAX; i++) {
-
-			SpriteDrawColorRotation
-			(
-				g_ScoreParam.pos.x,
-				g_ScoreParam.pos.y,
-				0.0f,
-				g_ScoreParam.size.x,
-				g_ScoreParam.size.y,
-				0.0f,
-				g_ScoreParam.color,
-				(score % 10),
-				1.0f / 10.0f,
-				1.0f / 1.0f,
-				10
-			);
-			g_ScoreParam.pos.x -= 30;
-			score /= 10;
+			if (!g_AnimeParam[0].AnimeFlag && frame == 10) {
+				SetAnimeParam(score / pow(10, 0));
+				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
+			}
+			if (!g_AnimeParam[1].AnimeFlag && frame == 30) {
+				SetAnimeParam(score / pow(10, 1));
+			}
+			if (!g_AnimeParam[2].AnimeFlag && frame == 40) {
+				SetAnimeParam(score / pow(10, 2));
+			}
+			if (!g_AnimeParam[3].AnimeFlag && frame == 50) {
+				SetAnimeParam(score / pow(10, 3));
+			}
+			if (!g_AnimeParam[4].AnimeFlag && frame == 70) {
+				SetAnimeParam(score / pow(10, 4));
+			}
+			if (!g_AnimeParam[5].AnimeFlag && frame == 90) {
+				SetAnimeParam(score / pow(10, 5));
+			}
+			if (g_AnimeParam[i].AnimeFlag) {
+				SpriteDrawColorRotation
+				(
+					g_ScoreParam.pos.x,
+					g_ScoreParam.pos.y,
+					0.0f,
+					g_ScoreParam.size.x,
+					g_ScoreParam.size.y,
+					0.0f,
+					g_ScoreParam.color,
+					(g_AnimeParam[i].num % 10),
+					1.0f / 10.0f,
+					1.0f / 1.0f,
+					10
+				);
+				g_ScoreParam.pos.x -= 30;
+			}
 		}
 	}
 }
@@ -78,7 +110,7 @@ int Score::CulcScore() {
 		m_score = m_TimeScore;
 	}
 	else {
-		m_score = m_TimeScore * 0.5;
+		m_score = m_TimeScore;
 	}
 
 	return m_score;
@@ -88,6 +120,16 @@ void Score::SetScore(D3DXVECTOR2 pos,D3DXVECTOR2 size) {
 		g_ScoreParam.pos = pos;
 		g_ScoreParam.size = size;
 		g_ScoreParam.UseFlag = true;
+	}
+}
+void Score::SetAnimeParam(int num) {
+	for (int i = 0; i < SCORE_MAX; i++) {
+		if (!g_AnimeParam[i].AnimeFlag) {
+			g_AnimeParam[i].num = num;
+			g_AnimeParam[i].index = i;
+			g_AnimeParam[i].AnimeFlag = true;
+			break;
+		}
 	}
 }
 SCOREPARAM* Score::GetScoreParam() {

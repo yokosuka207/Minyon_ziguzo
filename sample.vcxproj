@@ -172,6 +172,7 @@
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="SheerFloors.cpp" />
+    <ClCompile Include="sound.cpp" />
     <ClCompile Include="spawnpoint.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="SplitStage.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="scene.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="SheerFloors.h" />
+    <ClInclude Include="sound.h" />
     <ClInclude Include="spawnpoint.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="SplitStage.h" />

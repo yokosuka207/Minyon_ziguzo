@@ -56,7 +56,7 @@ void DrawGKey()
 {
 	if (g_GKey[0].UseFlag)
 	{
-		SetWorldViewProjection2D();
+		//SetWorldViewProjection2D();
 
 		//テクスチャの設定
 		GetDeviceContext()[0].PSSetShaderResources(0, 1, GetTexture(g_GKey[0].texno));

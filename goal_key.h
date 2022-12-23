@@ -15,7 +15,7 @@
 #define GKEY_H		(15)
 #define GKEY_MAX	(1)
 
-typedef struct 
+typedef struct
 {
 	bool UseFlag;
 	bool GetGKey;
