@@ -238,6 +238,7 @@ void UpdateCollision()
 	
 
 
+
 	//========================================================================
 	//プレイヤー・壊れるブロック　当たり判定(PlayerとBrokenBlockの当たり判定)
 	//=========================================================================
@@ -392,15 +393,15 @@ void UpdateCollision()
 
 			
 	//====================================================================
-	//プレイヤーと落ちるブロックの当たり判定(PlayerとpHighの当たり判定)
+	//プレイヤーと高所落下ブロックの当たり判定(PlayerとHighの当たり判定)
 	//====================================================================
-			//プレイヤー・高いところから落ちたら壊れるブロック(以下たかこわ)　当たり判定
+			//プレイヤー・高いところから落ちたら壊れるブロック　当たり判定
 			for (int i = 0; i < HIGH_MAX; i++)
 			{
-				HIGH* pHigh = GetHigh();
+				
 				if ((pHigh + i)->UseFlag == true)
 				{
-					//プレイヤー左・たかこわ右
+					//プレイヤー左・高所落ちるブロック右
 					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
 						pPlayer->oldpos.x + pPlayer->size.x / 2 <= (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
 						pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
@@ -408,7 +409,7 @@ void UpdateCollision()
 					{
 						pPlayer->Position.x = (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 - pPlayer->size.x / 2;
 					}
-					//プレイヤー右・たかこわ左
+					//プレイヤー右・高所落ちるブロック左
 					if (pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
 						pPlayer->oldpos.x - pPlayer->size.x / 2 >= (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
 						pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
@@ -417,7 +418,7 @@ void UpdateCollision()
 						pPlayer->Position.x = (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 + pPlayer->size.x / 2;
 					}
 
-					//プレイヤー上・たかこわ下
+					//プレイヤー上・高所落ちるブロック下
 					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
 						pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
 						pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
@@ -425,13 +426,13 @@ void UpdateCollision()
 					{
 						if (pPlayer->sp.y >= -10.0f)
 						{
-							//pPlayer->ispHigh = false;
+							//pPlayer->isHigh = false;
 							(pHigh + i)->UseFlag = false;
 							pPlayer->frame = 50;
 						}
 						else
 						{
-							//pPlayer->ispHigh = true;
+							//pPlayer->isHigh = true;
 							pPlayer->sp.y = 0.0f;
 							pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
 						}
@@ -439,9 +440,9 @@ void UpdateCollision()
 					}/*
 					else
 					{
-						pPlayer->ispHigh = false;
+						pPlayer->isHigh = false;
 					}*/
-					//プレイヤー下・たかこわ上,
+					//プレイヤー下・高所落ちるブロック上,
 					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
 						pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
 						pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
