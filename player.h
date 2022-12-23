@@ -32,10 +32,10 @@ struct PLAYER
 {
 	bool UseFlag;//構造体利用中フラグ
 	bool jump;//ジャンプ中
-	bool getjump;//ジャンプの開始
+	//bool getjump;//ジャンプの開始
 	bool fall;//落下中
-	bool getfall;//落下の開始
-	bool WarpFlag;//ワープしたか
+	bool getfall = false;//落下の開始
+	bool WarpFlag = false;//ワープしたか
 	bool GetJumpStand;
 	bool isGround;	// 地に足をつけている
 	bool isSheerFloors;
@@ -43,6 +43,7 @@ struct PLAYER
 	bool isHigh;
 	bool isMoveBlock;
 	int	HaveKey; //鍵所持数
+	int GHaveKey;
 	//int Hp;
 
 	D3DXVECTOR2 size;//BOXサイズ
