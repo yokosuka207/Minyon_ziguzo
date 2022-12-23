@@ -27,13 +27,8 @@ typedef struct {
 
 typedef struct {
 	bool	AnimeFlag;
-	int		num;
-	//int		num1;
-	//int		num2;
-	//int		num3;
-	//int		num4;
-	//int		num5;
-
+	int		num;	//スコアの桁ごとの値
+	int		index;	//何番目に描画されるか
 }ANIMEPARAM;
 
 class Score{
@@ -46,6 +41,7 @@ public:
 	void DrawScore();
 	int CulcScore();	//スコアの計算
 	void SetScore(D3DXVECTOR2 pos, D3DXVECTOR2 size);
+	void SetAnimeParam(int num,int index);
 	SCOREPARAM* GetScoreParam();
 	Score* GetScore();
 };

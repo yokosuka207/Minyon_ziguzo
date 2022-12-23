@@ -38,6 +38,7 @@ void Score::InitScore() {
 	for (int i = 0; i < SCORE_MAX; i++) {
 		g_AnimeParam[i].AnimeFlag = false;
 		g_AnimeParam[i].num = 0;
+		g_AnimeParam[i].index = -1;
 	}
 	//char filename[] = "data\\SoundData\\.wav";
 	//char filename[] = "data\\SE\\bomb000.wav";
@@ -59,11 +60,32 @@ void Score::DrawScore() {
 		score = CulcScore();
 		
 		frame++;
+
 		for (int i = 0; i < SCORE_MAX; i++) {
-			if (!g_AnimeParam[i].AnimeFlag && frame % 120 == 0) {
-				g_AnimeParam[i].AnimeFlag = true;
-				g_AnimeParam[i].num = score / pow(10, i);
-				//PlaySound(g_ScoreSoundNo, 0);	//0 = 一回だけ再生 sound.h参照
+			//フレーム数開けた後に一気に出てくる
+			if (!g_AnimeParam[0].AnimeFlag && frame == 60) {
+				SetAnimeParam(score / pow(10, 0), 0);
+				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
+			}
+			if (!g_AnimeParam[1].AnimeFlag && frame == 120) {
+				SetAnimeParam(score / pow(10, 1), 1);
+				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
+			}
+			if (!g_AnimeParam[2].AnimeFlag && frame == 180) {
+				SetAnimeParam(score / pow(10, 2), 2);
+				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
+			}
+			if (!g_AnimeParam[3].AnimeFlag && frame == 240) {
+				SetAnimeParam(score / pow(10, 3), 3);
+				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
+			}
+			if (!g_AnimeParam[4].AnimeFlag && frame == 300) {
+				SetAnimeParam(score / pow(10, 4), 4);
+				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
+			}
+			if (!g_AnimeParam[5].AnimeFlag && frame == 360) {
+				SetAnimeParam(score / pow(10, 5), 5);
+				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
 			}
 			if (g_AnimeParam[i].AnimeFlag) {
 				SpriteDrawColorRotation
@@ -105,6 +127,16 @@ void Score::SetScore(D3DXVECTOR2 pos,D3DXVECTOR2 size) {
 		g_ScoreParam.pos = pos;
 		g_ScoreParam.size = size;
 		g_ScoreParam.UseFlag = true;
+	}
+}
+void Score::SetAnimeParam(int num,int index) {
+	for (int i = 0; i < SCORE_MAX; i++) {
+		if (!g_AnimeParam[i].AnimeFlag) {
+			g_AnimeParam[i].num = num;
+			g_AnimeParam[i].index = i;
+			g_AnimeParam[i].AnimeFlag = true;
+			break;
+		}
 	}
 }
 SCOREPARAM* Score::GetScoreParam() {
