@@ -17,9 +17,13 @@
 #include <math.h>
 
 static ID3D11ShaderResourceView* g_ScoreTexture;	//画像一枚で一つの変数が必要
+static ID3D11ShaderResourceView* g_ScoreRankTexture;	
+
 static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
+static char* g_ScoreRankTextureName = (char*)"data\\texture\\number.png";
 
 static int g_ScoreTextureNo = 0;
+static int g_ScoreRankTextureNo = 0;
 static int g_ScoreSoundNo = 0;
 
 static Score g_Score;
@@ -53,6 +57,10 @@ void Score::UninitScore() {
 	if (g_ScoreTexture != NULL) {
 		g_ScoreTexture->Release();
 		g_ScoreTexture = NULL;
+	}
+	if (g_ScoreRankTexture != NULL) {
+		g_ScoreRankTexture->Release();
+		g_ScoreRankTexture = NULL;
 	}
 }
 void Score::DrawScore() {
