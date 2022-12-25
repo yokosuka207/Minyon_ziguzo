@@ -70,7 +70,6 @@ typedef struct {
 	bool		MoveEndFlag;//動き終わった瞬間
 	bool		MoveFlag;//動いているか
 	bool		UseFlag;//パズルが出現しているか否か
-
 }Piece;
 
 //**************************************************

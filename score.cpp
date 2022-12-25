@@ -12,6 +12,8 @@
 #include "texture.h"
 #include "time.h"
 #include "sound.h"
+#include "StageSelect.h"
+#include "result.h"
 #include <math.h>
 
 static ID3D11ShaderResourceView* g_ScoreTexture;	//画像一枚で一つの変数が必要
@@ -24,6 +26,8 @@ static Score g_Score;
 static SCOREPARAM g_ScoreParam;	//構造体
 static ANIMEPARAM g_AnimeParam[SCORE_MAX];
 static Time* pTime = pTime->GetTime();
+static RESULT* pResult = GetResult();
+static int StageNo = 0;
 
 static int g_ScoreDistance = SCORE_POS_X;
 static int score = 0;
@@ -36,16 +40,17 @@ void Score::InitScore() {
 	g_ScoreParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_ScoreParam.UseFlag = false;
 	g_ScoreParam.CalcFlag = false;
+	g_ScoreParam.rank = SCORE_RANK::RANK_NONE;
 	for (int i = 0; i < SCORE_MAX; i++) {
 		g_AnimeParam[i].AnimeFlag = false;
 		g_AnimeParam[i].num = 0;
 		g_AnimeParam[i].index = -1;
 	}
 	char filename[] = "data\\SoundData\\meka_ge_type_chin_kaigyo01.wav";
-	//g_ScoreSoundNo = LoadSound(filename);//ここでエラー
+	g_ScoreSoundNo = LoadSound(filename);
 }
 void Score::UninitScore() {
-	if (g_ScoreTexture) {
+	if (g_ScoreTexture != NULL) {
 		g_ScoreTexture->Release();
 		g_ScoreTexture = NULL;
 	}
@@ -63,21 +68,21 @@ void Score::DrawScore() {
 		for (int i = 0; i < SCORE_MAX; i++) {
 			if (!g_AnimeParam[0].AnimeFlag && frame == 10) {
 				SetAnimeParam(score / pow(10, 0));
-				//PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
+				PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
 			}
 			if (!g_AnimeParam[1].AnimeFlag && frame == 30) {
 				SetAnimeParam(score / pow(10, 1));
 			}
-			if (!g_AnimeParam[2].AnimeFlag && frame == 40) {
+			if (!g_AnimeParam[2].AnimeFlag && frame == 50) {
 				SetAnimeParam(score / pow(10, 2));
 			}
-			if (!g_AnimeParam[3].AnimeFlag && frame == 50) {
+			if (!g_AnimeParam[3].AnimeFlag && frame == 80) {
 				SetAnimeParam(score / pow(10, 3));
 			}
-			if (!g_AnimeParam[4].AnimeFlag && frame == 70) {
+			if (!g_AnimeParam[4].AnimeFlag && frame == 90) {
 				SetAnimeParam(score / pow(10, 4));
 			}
-			if (!g_AnimeParam[5].AnimeFlag && frame == 90) {
+			if (!g_AnimeParam[5].AnimeFlag && frame == 110) {
 				SetAnimeParam(score / pow(10, 5));
 			}
 			if (g_AnimeParam[i].AnimeFlag) {
@@ -106,14 +111,86 @@ int Score::CulcScore() {
 	m_TimeScore -= pTime->PauseElapsedTime();
 	//スコアの値を秒に変換
 	m_TimeScore /= CLOCKS_PER_SEC;
-	if (m_TimeScore < 60) {
-		m_score = m_TimeScore;
-	}
-	else {
-		m_score = m_TimeScore;
-	}
 
+	RankScore(m_TimeScore);
+
+	switch (g_ScoreParam.rank) {
+	case (SCORE_RANK::RANK_S):
+		m_score = m_TimeScore * 10;
+		break;
+	case (SCORE_RANK::RANK_A):
+		m_score = m_TimeScore * 5;
+		break;
+	case (SCORE_RANK::RANK_B):
+		m_score = m_TimeScore;
+		break;
+	case (SCORE_RANK::RANK_C):
+		m_score = m_TimeScore / 2;
+		break;
+	default:
+		break;
+	}
 	return m_score;
+}
+void Score::RankScore(int score) {
+	switch (StageNo) {
+	case 0:
+		break;
+	case 1:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	case 4:
+		break;
+	case 5:
+		break;
+	case 6:
+		break;
+	case 7:
+		break;
+	case 8:
+		break;
+	case 9:
+		break;
+	case 10:
+		break;
+	case 11:
+		break;
+	case 12:
+		break;
+	case 13:
+		break;
+	case 14:
+		break;
+	case 15:
+		break;
+	case 16:
+		break;
+	case 17:
+		break;
+	case 18:
+		break;
+	case 19:
+		break;
+	case 20:
+		break;
+	default:
+		break;
+	}
 }
 void Score::SetScore(D3DXVECTOR2 pos,D3DXVECTOR2 size) {
 	if (!g_ScoreParam.UseFlag) {
@@ -131,6 +208,9 @@ void Score::SetAnimeParam(int num) {
 			break;
 		}
 	}
+}
+void Score::SetStageNo(int stage) {
+	StageNo = stage;
 }
 SCOREPARAM* Score::GetScoreParam() {
 	return &g_ScoreParam;

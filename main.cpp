@@ -24,6 +24,7 @@
 #include"texture.h"
 #include"game.h"
 #include"scene.h"
+#include "sound.h"
 
 
 
@@ -230,7 +231,9 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	InitScene(SCENE::SCENE_TITLE);
 	//InitScene(SCENE_RESULT);
 
-		// 背面ポリゴンをカリング
+	InitSound(hWnd);
+	 
+	// 背面ポリゴンをカリング
 	SetCullingMode(CULL_MODE_NONE);
 
 
@@ -250,6 +253,8 @@ void Uninit(void)
 
 	SpriteUninit();
 	UninitInput();	//入力処理の終了処理
+
+	UninitSound();
 
 	// レンダリングの終了処理
 	UninitRenderer();

@@ -17,6 +17,7 @@ static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
 static clock_t Elapsedtime = 0;
 static clock_t PauseElapsed = 0;
+static int	StageNo = 0;
 static Save g_SaveScene;				// セーブクラスのインスタンス
 
 void InitScene(SCENE no){
@@ -62,6 +63,7 @@ void UninitScene(){
 	case SCENE::SCENE_GAME:
 		Elapsedtime = pTime->SumTime();
 		PauseElapsed = pTime->PauseElapsedTime();
+		StageNo = ReturnStageNo();
 		UninitGame();
 		break;
 	case SCENE::SCENE_RESULT:
@@ -116,6 +118,7 @@ void DrawScene(){
 		DrawResult();
 		pTime->DrawResultTime(Elapsedtime,PauseElapsed);
 		pScore->DrawScore();
+		pScore->SetStageNo(StageNo);
 		break;
 	default:
 		break;

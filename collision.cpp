@@ -96,7 +96,7 @@ void UpdateCollision()
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 	// 使用ゲット一覧-----------------------------
 
-	PLAYER* pPlayer = GetPlayer();
+	//PLAYER* pPlayer = GetPlayer();
 	MOUSE* pMouse = GetMouse();
 
 	//Piece* pPiece = GetPiece();

@@ -125,7 +125,7 @@ HRESULT InitStageSelect() {
 	ply.rot = 0.0f;
 	ply.UseFlag = true;
 	ply.jump = false;
-	ply.getjump = false;
+	//ply.getjump = false;
 	ply.GetJumpStand = false;		//ƒWƒƒƒ“ƒv‘ä—p
 	ply.fall = false;
 	ply.getfall = false;

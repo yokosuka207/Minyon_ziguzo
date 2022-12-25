@@ -38,7 +38,7 @@ void UninitGoal()
 
 void UpdateGoal()
 {
-	/*if (g_Goal.UseFlag)
+	if (g_Goal.UseFlag)
 	{
 		PLAYER* pPlayer = GetPlayer();
 		GKey* pGKey = GetGKey();
@@ -59,7 +59,7 @@ void UpdateGoal()
 				pTimeParam->EndFlag = true;
 			}
 		}
-	}*/
+	}
 }
 
 void DrawGoal()
