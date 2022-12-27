@@ -67,6 +67,7 @@ HRESULT InitPlayer()
 	g_Player.OneOldpos = g_Player.oldpos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	g_Player.sp = D3DXVECTOR2(0,-8);
 	g_Player.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
+	g_Player.Drawsize = D3DXVECTOR2(33.0f, 33.0f);
 	g_Player.col = D3DXCOLOR(1.0f, 1.0f, 1.0, 1.0f);
 	g_Player.rot = 180.0f;
 	g_Player.UseFlag = true;
@@ -1024,7 +1025,7 @@ void DrawPlayer()
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Player.texno));
 		//スプライトを表示
 		D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		SpriteDrawColorRotation(g_Player.Position.x, g_Player.Position.y,-0.2f, g_Player.size.x, g_Player.size.y, g_Player.rot, g_Player.col, g_Player.PaternNo, g_Player.uv_w, g_Player.uv_h, g_Player.NumPatern);
+		SpriteDrawColorRotation(g_Player.Position.x, g_Player.Position.y,-0.2f, g_Player.Drawsize.x, g_Player.Drawsize.y, g_Player.rot, g_Player.col, g_Player.PaternNo, g_Player.uv_w, g_Player.uv_h, g_Player.NumPatern);
 	}
 }
 
