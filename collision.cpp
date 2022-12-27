@@ -343,6 +343,8 @@ void UpdateCollision()
 				pPlayer->Position.y + pPlayer->size.y / 2 > (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2 &&
 				pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2)
 			{
+				pPlayer->Position.y = (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2 - pPlayer->size.y / 2 - 0.02f;
+
 				pPlayer->fall = true;
 				pPlayer->getfall = true;
 				pPlayer->frame = 50;
