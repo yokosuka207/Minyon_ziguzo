@@ -14,8 +14,8 @@
 #include "cursor.h"
 #include "MapChip.h"
 #include "scene.h"
-#include"player.h"
-
+#include "player.h"
+#include "fade.h"
 //*****************************************************************************
 //	É}ÉNÉçíËã`
 //*****************************************************************************
@@ -369,7 +369,8 @@ void UpdateStageSelect() {
 
 				if (GetKeyboardTrigger(DIK_A)) {
 					StageNo = i;
-					SetScene(SCENE::SCENE_GAME);
+					//SetScene(SCENE::SCENE_GAME);
+					StartFade(FADE::FADE_OUT);
 					break;
 				}
 			}

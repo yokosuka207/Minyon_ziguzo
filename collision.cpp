@@ -22,7 +22,7 @@
 #include "spawnpoint.h"
 #include "joint.h"
 #include "SplitStage.h"
-
+#include "fade.h"
 //ギミック関連
 #include "block.h"			//基本ブロック
 #include "thorn_block.h"	//トゲブロック
@@ -258,7 +258,8 @@ void UpdateCollision()
 
 					if (pPlayer->hp <= 0) {
 						SetResultType(LOSE);
-						SetScene(SCENE::SCENE_RESULT);
+						//SetScene(SCENE::SCENE_RESULT);
+						StartFade(FADE::FADE_OUT);
 						pTime->EndTime();
 						pTimeParam->EndFlag = true;
 					}
@@ -289,7 +290,8 @@ void UpdateCollision()
 			pResult[0].type = LOSE;
 			pTime->EndTime();
 			pTimeParam->EndFlag = true;
-			SetScene(SCENE::SCENE_RESULT);
+			//SetScene(SCENE::SCENE_RESULT);
+			StartFade(FADE::FADE_OUT);
 		}
 	}
 
@@ -751,7 +753,8 @@ void UpdateCollision()
 					{
 						GetGoal()->UseFlag = false;
 						SetResultType(WIN);
-						SetScene(SCENE_RESULT);
+						//SetScene(SCENE_RESULT);
+						StartFade(FADE::FADE_OUT);
 						pTime->EndTime();
 						pTimeParam->EndFlag = true;
 					}

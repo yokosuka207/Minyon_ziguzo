@@ -8,6 +8,7 @@
 #include	"mouse.h"
 #include	"time.h"
 #include	"score.h"
+#include	"fade.h"
 //======================
 //マクロ定義
 //=======================
@@ -41,6 +42,7 @@ int ResultSoundNo2;	//タイトルサウンド番号
 static Time* pTime = pTime->GetTime();
 static TimeParam*	pTimeParam = pTime->GetTimeParam();
 static Score* pScore = pScore->GetScore();
+static FADEPARAM* pFadeParam = GetFadeParam();
 //======================
 //初期化
 //======================
@@ -127,7 +129,8 @@ void	UpdateResult()
 		//キー入力のチェック
 		if (GetKeyboardTrigger(DIK_SPACE))
 		{
-			SetScene(SCENE::SCENE_TITLE);
+			//SetScene(SCENE::SCENE_TITLE);
+			StartFade(FADE::FADE_OUT);
 		}
 	}
 	else if (ResultObject[0].type == LOSE)
@@ -149,7 +152,9 @@ void	UpdateResult()
 			{
 				pTimeParam->UseFlag = false;
 				pTime->StartTime();
-				SetScene(SCENE::SCENE_GAME);
+				//SetScene(SCENE::SCENE_GAME);
+				pFadeParam->ExceptFlag = true;
+				StartFade(FADE::FADE_OUT);
 			}
 		}
 		
@@ -158,7 +163,8 @@ void	UpdateResult()
 		{
 			if (min2.x < MousePos.x && max2.x > MousePos.x && min2.y < MousePos.y && max2.y > MousePos.y)
 			{
-				SetScene(SCENE::SCENE_TITLE);
+				//SetScene(SCENE::SCENE_TITLE);
+				StartFade(FADE::FADE_OUT);
 				pTimeParam->UseFlag = false;
 			}
 		}

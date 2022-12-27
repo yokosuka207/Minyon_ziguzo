@@ -143,6 +143,7 @@
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="cursor.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="fade.cpp" />
     <ClCompile Include="fallblock.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="goal.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="collision.h" />
     <ClInclude Include="cursor.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="fade.h" />
     <ClInclude Include="fallblock.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="goal.h" />

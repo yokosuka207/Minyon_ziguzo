@@ -5,7 +5,7 @@
 #include	"sprite.h"
 #include	"input.h"
 #include	"scene.h"
-
+#include	"fade.h"
 //======================
 //É}ÉNÉçíËã`
 //=======================
@@ -87,8 +87,8 @@ void	UpdateTitle()
 	{
 		if (TitleNum == 1)
 		{
-			SetScene(SCENE::SCENE_DATASELECT);
-
+			//SetScene(SCENE::SCENE_DATASELECT);
+			StartFade(FADE::FADE_OUT);
 		}
 		if (TitleNum == 0)
 		{

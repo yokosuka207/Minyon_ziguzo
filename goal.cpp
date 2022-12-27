@@ -9,6 +9,7 @@
 #include "mouse.h"
 #include "result.h"
 #include "time.h"
+#include "fade.h"
 
 GOAL g_Goal;
 GKey g_GKey;
@@ -54,7 +55,8 @@ void UpdateGoal()
 			{
 				g_Goal.UseFlag = false;
 				SetResultType(WIN);
-				SetScene(SCENE_RESULT);	
+				//SetScene(SCENE_RESULT);
+				StartFade(FADE::FADE_OUT);
 				pTime->EndTime();
 				pTimeParam->EndFlag = true;
 			}

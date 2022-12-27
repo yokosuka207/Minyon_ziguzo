@@ -17,7 +17,7 @@ Update:
 #include "scene.h"
 
 #include "input.h"
-
+#include "fade.h"
 //**************************************************
 // マクロ定義
 //**************************************************
@@ -114,7 +114,8 @@ void Save::Update()
 	// Aボタンを押したら
 	if (GetKeyboardTrigger(DIK_A)) {
 		// ステージセレクトシーンへ
-		SetScene(SCENE_STAGESELECT);
+		//SetScene(SCENE_STAGESELECT);
+		StartFade(FADE::FADE_OUT);
 	}
 	// Zボタンを押したら
 	if (GetKeyboardTrigger(DIK_Z)) {

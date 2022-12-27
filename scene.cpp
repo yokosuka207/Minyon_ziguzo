@@ -9,12 +9,14 @@
 #include "time.h"
 #include "pause.h"
 #include "score.h"
+#include "fade.h"
 
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
+static FADEPARAM* pFade = GetFadeParam();
 static clock_t Elapsedtime = 0;
 static clock_t PauseElapsed = 0;
 static int	StageNo = 0;
@@ -36,6 +38,7 @@ void InitScene(SCENE no){
 		SetStageSelect();
 		break;
 	case SCENE::SCENE_GAME :
+		pFade->ExceptFlag = false;
 		pTime->StartTime();
 		InitGame();
 		break;

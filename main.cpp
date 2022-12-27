@@ -25,7 +25,7 @@
 #include"game.h"
 #include"scene.h"
 #include "sound.h"
-
+#include "fade.h"
 
 
 //*****************************************************************************
@@ -232,7 +232,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//InitScene(SCENE_RESULT);
 
 	InitSound(hWnd);
-	 
+	InitFade();
 	// 背面ポリゴンをカリング
 	SetCullingMode(CULL_MODE_NONE);
 
@@ -255,7 +255,7 @@ void Uninit(void)
 	UninitInput();	//入力処理の終了処理
 
 	UninitSound();
-
+	UninitFade();
 	// レンダリングの終了処理
 	UninitRenderer();
 
@@ -269,6 +269,7 @@ void Update(void)
 {
 	UpdateInput();	//入力処理の更新処理(早めのほうがいい)
 	UpdateScene();
+	UpdateFade();
 }
 
 //=============================================================================
@@ -283,6 +284,7 @@ void Draw(void)
 	SetDepthEnable(false);
 
 	DrawScene();
+	DrawFade();
 
 	// バックバッファ、フロントバッファ入れ替え
 	Present();
