@@ -160,10 +160,10 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13　ボタン
 				SetSwitch(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14　ボタンで開く扉×３
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14　ボタンで開く扉×3
 				SetSwitchWall(position, DrawSize, no, 3);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15　ボタンで開く扉×３
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15　ボタンで開く扉×4
 				SetSwitchWall(position, DrawSize, no, 4);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
