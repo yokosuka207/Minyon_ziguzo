@@ -34,6 +34,7 @@
 // グローバル変数
 //*****************************************************************************
 static CAMERA			g_Camera;		// カメラデータ
+static CAMERA			g_Camera2;		// カメラデータ
 
 //=============================================================================
 // 初期化処理
@@ -53,6 +54,20 @@ void InitCamera(void)
 	g_Camera.len = sqrtf(vx * vx + vz * vz);
 	g_Camera.zoomFlag = false;
 	g_Camera.fov = 45.0f;		// 視野角の初期化
+
+
+	g_Camera2.pos = D3DXVECTOR3(POS_X_CAM, POS_Y_CAM, POS_Z_CAM);	// カメラの座標
+	g_Camera2.at = D3DXVECTOR3(0.0f, 1.0f, 0.0f);	// カメラの注視点
+	g_Camera2.up = D3DXVECTOR3(0.0f, 1.0f, 0.0f);	// カメラの上ベクトル
+
+	g_Camera2.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	// 視点と注視点の距離を計算
+	vx = g_Camera2.pos.x - g_Camera.at.x;
+	vz = g_Camera2.pos.z - g_Camera.at.z;
+	g_Camera2.len = sqrtf(vx * vx + vz * vz);
+	g_Camera2.zoomFlag = false;
+	g_Camera2.fov = 45.0f;		// 視野角の初期化
 }
 
 

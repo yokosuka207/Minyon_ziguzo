@@ -317,8 +317,8 @@ void UpdateCollision()
 			//プレイヤー右・ブロック左
 			if (pPlayer->Position.x - pPlayer->size.x / 2 < (pChipblock + i)->Position.x + (pChipblock + i)->Size.x / 2 &&
 				pPlayer->oldpos.x - pPlayer->size.x / 2 >= (pChipblock + i)->Position.x + (pChipblock + i)->Size.x / 2 &&
-				pPlayer->Position.y + pPlayer->size.y / 3 > (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 3 &&
-				pPlayer->Position.y - pPlayer->size.y / 3 < (pChipblock + i)->Position.y + (pChipblock + i)->Size.y / 3)
+				pPlayer->Position.y + pPlayer->size.y / 2 > (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2 &&
+				pPlayer->Position.y - pPlayer->size.y / 2 < (pChipblock + i)->Position.y + (pChipblock + i)->Size.y / 2)
 			{
 				pPlayer->Position.x = (pChipblock + i)->Position.x + (pChipblock + i)->Size.x / 2 + pPlayer->size.x / 2;
 			}
