@@ -230,9 +230,34 @@ void UpdateGameMouse()
 		NoIndex = -1;
 	}
 
+	for (int i = 0; i < PUZZLE_MAX; i++)
+	{
+
+		if (pPiece[i].UseFlag)
+		{
+
+			if (pPiece[i].pos.y - pPiece[i].size.y / 3 < -Mouse.PosY &&
+				pPiece[i].pos.y + pPiece[i].size.y / 3 > -Mouse.PosY &&
+				pPiece[i].pos.x - pPiece[i].size.x / 3 < Mouse.PosX &&
+				pPiece[i].pos.x + pPiece[i].size.x / 3 > Mouse.PosX &&
+				!oneFlag) {
+
+				if (GetKeyboardTrigger(DIK_Y))
+				{
+					DeleteMapChip(i);
+					SetPieceMapChip(pPiece[i].pos, pPiece[i].no);
+				}
+
+
+			}
+
+		}
+	}
+
 }
 
 MOUSE * GetMouse()
 {
 	return &Mouse;
 }
+
