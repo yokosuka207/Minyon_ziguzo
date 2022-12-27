@@ -26,7 +26,7 @@ void InitFade() {
 	g_FadeParam.ExceptFlag = false;
 
 	g_FadeParam.pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	g_FadeParam.size = D3DXVECTOR2(SCREEN_WIDTH*2, SCREEN_HEIGHT*2);
+	g_FadeParam.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	g_FadeParam.rot = 0.0f;
 	g_FadeParam.PaternNo = 0;
 	g_FadeParam.uv_w = 1.0f / 1.0f;
@@ -94,7 +94,7 @@ void UpdateFade() {
 	}
 }
 void DrawFade() {
-	//SetWorldViewProjection2D();
+	SetWorldViewProjection2D();
 
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_FadeParam.TexNo));
 	SpriteDrawColorRotation(

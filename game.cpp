@@ -183,6 +183,8 @@ void UpdateGame()
 void DrawGame()
 {
 	if (!(*pause)) {
+		SetCamera();
+
 		BgDraw();
 		DrawSplitStage();			// ‹æØ‚è˜g‚Ì•`‰æ
 
