@@ -10,7 +10,7 @@
 #define _FADE_H_
 
 #include "main.h"
-#define FADE_SPEED (0.01f)
+#define FADE_SPEED (0.02f)
 
 enum class FADE {
 	FADE_NONE = 0,

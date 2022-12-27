@@ -14,7 +14,7 @@
 #include "scene.h"
 
 static ID3D11ShaderResourceView* g_FadeTexture;	//画像一枚で一つの変数が必要
-static char* g_FadeTextureName = (char*)"data\\texture\\blue.jpg";	//テクスチャファイルパス
+static char* g_FadeTextureName = (char*)"data\\texture\\fade_white.png";	//テクスチャファイルパス
 
 static FADEPARAM g_FadeParam;
 
@@ -52,7 +52,10 @@ void UpdateFade() {
 			case SCENE::SCENE_NONE:
 				break;
 			case SCENE::SCENE_TITLE:
-				SetScene(SCENE::SCENE_DATASELECT);
+				//説明がないときはフェードだけ
+				if (g_FadeParam.ExceptFlag) {
+					SetScene(SCENE::SCENE_DATASELECT);
+				}
 				break;
 			case SCENE::SCENE_DATASELECT:
 				SetScene(SCENE::SCENE_STAGESELECT);
@@ -101,7 +104,7 @@ void DrawFade() {
 		g_FadeParam.size.x,
 		g_FadeParam.size.y,
 		g_FadeParam.rot,
-		D3DXCOLOR(1.0f,1.0f,1.0f,g_FadeParam.alpha),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, g_FadeParam.alpha),
 		g_FadeParam.PaternNo,
 		g_FadeParam.uv_w,
 		g_FadeParam.uv_h,

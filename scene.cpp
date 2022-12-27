@@ -31,6 +31,7 @@ void InitScene(SCENE no){
 		InitTitle();
 		break;
 	case SCENE::SCENE_DATASELECT:
+		pFade->ExceptFlag = false;
 		g_SaveScene.Init();
 		break;
 	case SCENE::SCENE_STAGESELECT:
