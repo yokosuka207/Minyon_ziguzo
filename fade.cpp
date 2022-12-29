@@ -14,7 +14,7 @@
 #include "scene.h"
 
 static ID3D11ShaderResourceView* g_FadeTexture;	//画像一枚で一つの変数が必要
-static char* g_FadeTextureName = (char*)"data\\texture\\fade_white.png";	//テクスチャファイルパス
+static char* g_FadeTextureName = (char*)"data\\texture\\fade_puzzle.png";	//テクスチャファイルパス
 
 static FADEPARAM g_FadeParam;
 
