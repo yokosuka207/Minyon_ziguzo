@@ -13,7 +13,7 @@
 //É}ÉNÉçíËã`
 //=============================================================================
 
-#define PLAYER_SIZE_W (25)
+#define PLAYER_SIZE_W (10)
 #define PLAYER_SIZE_H (30)
 
 #define PLAYER_COOLTIME	(120)
