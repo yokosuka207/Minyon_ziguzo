@@ -217,8 +217,32 @@ void FileLoad(int StageNo) {
 		filename = "data/MapData/Stage05.txt";
 		break;
 	case 7:
-		filename = "data/MapData/Stage06.txt";
+		filename = "data/MapData/Stage07.txt";
 		break;
+	case 8:
+		filename = "data/MapData/Stage08.txt";
+		break;
+	case 9:
+		filename = "data/MapData/Stage09.txt";
+		break;
+	case 10:
+		filename = "data/MapData/Stage10.txt";
+	//	break;
+	//case 11:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 12:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 13:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 14:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 15:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
 	}
 	FILE* fp;
 	//ÉIÅ[ÉvÉì
