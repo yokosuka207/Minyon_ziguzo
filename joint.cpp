@@ -82,7 +82,7 @@ void DrawJoint()
 			// テクスチャの設定
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Joint[i].texNo));
 			// 四角形の描画
-			SpriteDrawColorRotation(g_Joint[i].pos.x, g_Joint[i].pos.y, g_Joint[i].size.x, g_Joint[i].size.y, 0.0f, g_Joint[i].color, 0, 1.0f, 1.0f, 1);
+			SpriteDrawColorRotation(g_Joint[i].pos.x, g_Joint[i].pos.y,-0.2f, g_Joint[i].size.x, g_Joint[i].size.y, 0.0f, g_Joint[i].color, 0, 1.0f, 1.0f, 1);
 		}
 	}
 }

@@ -1,4 +1,5 @@
 #include "goal.h"
+#include "goal_key.h"
 #include "texture.h"
 #include "sprite.h"
 #include "puzzle.h"
@@ -7,18 +8,20 @@
 #include "mouse.h"
 #include "result.h"
 #include "time.h"
+#include "fade.h"
 
 GOAL g_Goal;
+GKey g_GKey;
 static ID3D11ShaderResourceView	*g_textureGoal;	//画像一枚で一つの変数が必要
 static char *g_textureName_Goal = (char*)"data\\texture\\yello.jpg";	//テクスチャファイルパス
-static Time g_Time;
-
+static Time* pTime = pTime->GetTime();
+static TimeParam* pTimeParam = pTime->GetTimeParam();
 HRESULT InitGoal(){
 	g_Goal.texno = LoadTexture(g_textureName_Goal);
 	g_Goal.Pos = D3DXVECTOR2(0.0f, 0.0f);
 	g_Goal.Size = D3DXVECTOR2(GOAL_SIEZX, GOAL_SIZEY);
 	g_Goal.Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	g_Goal.Rotation = 0.0f;
+	g_Goal.Rotation = 180.0f;
 	g_Goal.pieceIndex = -1;
 	g_Goal.UseFlag = false;
 	return S_OK;
@@ -38,9 +41,10 @@ void UpdateGoal()
 	if (g_Goal.UseFlag)
 	{
 		PLAYER* pPlayer = GetPlayer();
+		GKey* pGKey = GetGKey();
 		MOUSE* pMouse = GetMouse();
 		RESULT* pResult = GetResult();
-		if (!pMouse->UseFlag)
+		if (!pMouse->UseFlag)// && pGKey->GetGKey)
 		{
 
 			if (g_Goal.Pos.x + g_Goal.Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2
@@ -50,7 +54,10 @@ void UpdateGoal()
 			{
 				g_Goal.UseFlag = false;
 				SetResultType(WIN);
-				SetScene(SCENE_RESULT);				
+				//SetScene(SCENE_RESULT);
+				StartFade(FADE::FADE_OUT);
+				pTime->EndTime();
+				pTimeParam->EndFlag = true;
 			}
 		}
 	}
@@ -59,14 +66,14 @@ void UpdateGoal()
 void DrawGoal()
 {
 	if (g_Goal.UseFlag){
-		SetWorldViewProjection2D();
+		//SetWorldViewProjection2D();
 
 
 		//四角形の描画
 		//D3DXCOLOR	col = D3DXCOLOR(1.0f, 0.8f, 0.8f, 0.5f);
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Goal.texno));
 
-		SpriteDrawColorRotation(g_Goal.Pos.x, g_Goal.Pos.y,
+		SpriteDrawColorRotation(g_Goal.Pos.x, g_Goal.Pos.y,-0.2f,
 			g_Goal.Size.x, g_Goal.Size.y, g_Goal.Rotation, g_Goal.Col,
 			0, 1.0f, 1.0f, 1);
 	}

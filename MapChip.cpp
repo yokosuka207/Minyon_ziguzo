@@ -30,6 +30,10 @@
 #include "SwitchWall.h"
 #include "StageSelect.h"
 #include "SheerFloors.h"
+#include "broken.h"
+#include "high_broken.h"
+#include"spawnpoint.h"
+#include "MoveBlock.h"	
 
 //**************************************************
 //　マクロ定義
@@ -51,14 +55,15 @@ HRESULT InitMapChip() {
 		g_PieceMapChip[p].UseFlag = false;
 		g_PieceMapChip[p].no = -1;
 		g_PieceMapChip[p].TexNo = LoadTexture(g_MapChipTextureName);
-		g_PieceMapChip[p].direction = 0;
-		g_PieceMapChip[p].pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		g_PieceMapChip[p].direction = 2;
+		g_PieceMapChip[p].pos = D3DXVECTOR2(0.0f,0.0f);
 		g_PieceMapChip[p].OldMovePos = g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
 		//g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);		// 180 x 180
 		//g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE, PUZZLE_SIZE);		// 240 x 240
 		//g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE + 20, PUZZLE_SIZE + 20);		// 260 x 260
 		g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE + 16, PUZZLE_SIZE + 16);		// 256 x 256
 		g_PieceMapChip[p].MoveEndFlag = false;
+		g_PieceMapChip[p].MoveFlag = false;
 		for (int d = 0; d < BLOCK_CHIP_DIRECTION; d++) {
 			for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
 				for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
@@ -69,12 +74,13 @@ HRESULT InitMapChip() {
 	}
 
 	STAGESELECT* pStageSelect = GetSelect();
-	FileLoad(pStageSelect->StagePieceIndex);	//あとでnoに変更する？fusegi	yeah
+	FileLoad(ReturnStageNo());	//あとでnoに変更する？fusegi	yeah
 
 	RotateChipData();
 
 	SplitStage* pSplitStage = GetSplitStage();
-	SetPieceMapChip(pSplitStage->Split3[1][0], 0);
+	SetPieceMapChip(pSplitStage->Split3[0][0], 0);
+
 	//SetPieceMapChip(pSplitStage->Split3[1][2], 2);
 
 	//SetPieceMapChip(pSplitStage->Split3[1][0], 1);
@@ -94,7 +100,7 @@ void UpdateMapChip() {
 void DrawMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (g_PieceMapChip[p].UseFlag) {
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_PieceMapChip[p].TexNo));
 
@@ -104,14 +110,13 @@ void DrawMapChip() {
 			//	1, 0.5f, 1.0f, 2
 			//);
 			SpriteDrawColorRotation(
-				g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,
-				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, g_PieceMapChip[p].direction * 90, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-				0, 1.0f, 1.0f, 1
+				g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,0.0f,
+				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, g_PieceMapChip[p].direction * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+				1, 0.5f, 1.0f, 2
 			);
 		}
 	}
 }
-
 void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 	//p=ブロック最大数
 		//i=y方向
@@ -120,66 +125,81 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 		for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
 			// 中心座標変数
 			//D3DXVECTOR2 position = D3DXVECTOR2((pos.x - PUZZLE_SIZE / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
-			D3DXVECTOR2 position = D3DXVECTOR2((pos.x - PUZZLE_SIZE / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
+			D3DXVECTOR2 position = D3DXVECTOR2((pos.x + PUZZLE_SIZE / 2) - j * BLOCK_CHIP_SIZE - BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
 			D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
 
 			switch (g_PieceMapChip[no].chip[g_PieceMapChip[Pin].direction][i][j]) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK) :	//0				
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//1
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//1　凸
 				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_BUMP,Pin);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_PULL) :	//2
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_PULL) :	//2　凹
 				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_DIP,Pin);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_NONE) :	//3
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_NONE) :	//3　空白
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLOCK) :	//4
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLOCK) :	//4　床
 				SetBlock(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP) :	//5
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP) :	//5　アイテムピース
 				SetChipPuzzuleChip(position, DrawSize, no + 1);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//6
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//6　ワープ
 				SetWarp(position, DrawSize);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL) :	//7
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL) :	//7　ゴール
 				SetGoal(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP) :	//8
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP) :	//8　ジャンプ台
 				SetJumpStand(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9　トゲ
 				SetThornBlock(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL) :	//10
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL) :	//10　乗ると落ちるブロック
 				SetFallBlock(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11
-				//Set
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11　鍵
+				SetKey(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12
-				//Set
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12　鍵付きの扉
+				SetOpenKey(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13　ボタン
 				SetSwitch(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14　ボタンで開く扉×3
 				SetSwitchWall(position, DrawSize, no, 3);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15　ボタンで開く扉×4
 				SetSwitchWall(position, DrawSize, no, 4);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16
-				SetSheerFloors(position, DrawSize);
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
+				SetSheerFloors(position, DrawSize, no);
 				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　着地で壊れる床
+				SetBroken(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18　ジャンプで壊れるブロック
+				SetHigh(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_MIRROR):	//19　鏡
+				//Set
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT)://20　スポーンポイント
+				SetSpawnPoint(position,DrawSize,no);
+					break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEBLOCK)://21　動かすブロック
+				SetMoveBlock(position, DrawSize, no);
+				break;
+
 			default:
 				break;
 			}
 		}
 	}
 }
-
 void FileLoad(int StageNo) {
 	const char* filename;
 	switch (StageNo)
@@ -191,8 +211,47 @@ void FileLoad(int StageNo) {
 		filename = "data/MapData/map.txt"; 
 		break;
 	case 2:
+		filename = "data/MapData/Stage01.txt";
+		break;
+	case 3:
+		filename = "data/MapData/Stage02.txt";
+		break;
+	case 4:
+		filename = "data/MapData/Stage03.txt";
+		break;
+	case 5:
 		filename = "data/MapData/Stage04.txt";
 		break;
+	case 6:
+		filename = "data/MapData/Stage05.txt";
+		break;
+	case 7:
+		filename = "data/MapData/Stage07.txt";
+		break;
+	case 8:
+		filename = "data/MapData/Stage08.txt";
+		break;
+	case 9:
+		filename = "data/MapData/Stage09.txt";
+		break;
+	case 10:
+		filename = "data/MapData/Stage10.txt";
+	//	break;
+	//case 11:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 12:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 13:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 14:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 15:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
 	}
 	FILE* fp;
 	//オープン
@@ -227,8 +286,6 @@ void RotateChipData() {
 		}
 	}
 }
-
-
 //==================================================
 // ピース回転（右）
 //==================================================
@@ -255,8 +312,6 @@ void RotateMapChipR(int PieceNo) {
 		}
 	}
 }
-
-
 //==================================================
 // ピース回転（左）
 //==================================================
@@ -284,8 +339,6 @@ void RotateMapChipL(int PieceNo) {
 		}
 	}
 }
-
-
 //==================================================
 //ピースの回転やインベントリから取り出すときに使うピースを消す関数
 //==================================================
@@ -302,22 +355,24 @@ void DeleteMapChip(int PieceNo) {
 	DeleteThornBlock(g_PieceMapChip[PieceNo].no);
 	DeleteSwitch(g_PieceMapChip[PieceNo].no);
 	DeleteSwitchWall(g_PieceMapChip[PieceNo].no);
-	DeleteSheet();
+	DeleteKey(g_PieceMapChip[PieceNo].no);
+	DeleteOpenKey(g_PieceMapChip[PieceNo].no);
+	DeleteBroken(g_PieceMapChip[PieceNo].no);
+	DeleteHigh(g_PieceMapChip[PieceNo].no);
+	DeleteSheet(g_PieceMapChip[PieceNo].no);
 	DeleteGoal(g_PieceMapChip[PieceNo].no);
+	DeleteSpawnPoint(g_PieceMapChip[PieceNo].no);
+	//Delete
 }
-
-
 Piece* GetPiece() {
 	return g_PieceMapChip;
 }
-
-
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (!g_PieceMapChip[p].UseFlag) {
 			g_PieceMapChip[p].pos = pos;
 			g_PieceMapChip[p].no = PieceNo;
-			SetMapChip(pos, PieceNo,p);
+			SetMapChip(pos, PieceNo, p);
 
 			g_PieceMapChip[p].UseFlag = true;
 			break;

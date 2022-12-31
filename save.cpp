@@ -20,6 +20,8 @@ Update:
 #include "xinput.h"
 #include "xkeyboard.h"
 
+#include "input.h"
+#include "fade.h"
 //**************************************************
 // マクロ定義
 //**************************************************
@@ -117,7 +119,8 @@ void Save::Update()
 	if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
 		Keyboard_IsKeyTrigger(KK_A)) {						// Keyboard	A
 		// ステージセレクトシーンへ
-		SetScene(SCENE_STAGESELECT);
+		//SetScene(SCENE_STAGESELECT);
+		StartFade(FADE::FADE_OUT);
 	}
 	// Zボタンを押したら
 	if (IsButtonTriggered(0, XINPUT_GAMEPAD_X) ||			// GamePad	X
@@ -171,7 +174,7 @@ void Save::Draw()
 	// テクスチャの設定
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(m_BGTexNo));
 	// 四角形の描画
-	SpriteDrawColorRotation(m_BGPos.x, m_BGPos.y, m_BGSize.x, m_BGSize.y, 0.0f, m_BGColor, 0.0f, 1.0f, 1.0f, 1);
+	SpriteDrawColorRotation(m_BGPos.x, m_BGPos.y,0.0f, m_BGSize.x, m_BGSize.y, 0.0f, m_BGColor, 0.0f, 1.0f, 1.0f, 1);
 	//----------背景の表示----------]
 
 	// 各ボタンの描画

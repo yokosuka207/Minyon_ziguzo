@@ -10,6 +10,7 @@
 #include	"mouse.h"
 #include	"time.h"
 #include	"score.h"
+#include	"fade.h"
 //======================
 //マクロ定義
 //=======================
@@ -40,9 +41,10 @@ int		ResultButtonTextureNo2;//テクスチャ番号
 int ResultSoundNo;	//タイトルサウンド番号
 int ResultSoundNo2;	//タイトルサウンド番号
 
-static Time		g_Time;
-static Score	g_Score;
-
+static Time* pTime = pTime->GetTime();
+static TimeParam*	pTimeParam = pTime->GetTimeParam();
+static Score* pScore = pScore->GetScore();
+static FADEPARAM* pFadeParam = GetFadeParam();
 //======================
 //初期化
 //======================
@@ -86,8 +88,7 @@ void	InitResult()
 	ResultObject[2].Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	ResultObject[2].Rotate = 0.0f;
 
-	g_Time.SetTime(D3DXVECTOR2(SCREEN_WIDTH / 2,SCREEN_HEIGHT / 2 - 50),D3DXVECTOR2(200.0f,200.0f));
-	g_Score.SetScore(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50), D3DXVECTOR2(50.0f, 50.0f));
+	pScore->SetScore(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50), D3DXVECTOR2(50.0f, 50.0f));
 }
 //======================
 //終了処理
@@ -127,7 +128,12 @@ void	UpdateResult()
 {
 	if (ResultObject[0].type == WIN) 
 	{
-
+		//キー入力のチェック
+		if (GetKeyboardTrigger(DIK_SPACE))
+		{
+			//SetScene(SCENE::SCENE_TITLE);
+			StartFade(FADE::FADE_OUT);
+		}
 	}
 	else if (ResultObject[0].type == LOSE)
 	{
@@ -147,8 +153,11 @@ void	UpdateResult()
 		{
 			if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y) 
 			{
-				g_Time.StartTime();
-				SetScene(SCENE::SCENE_GAME);
+				pTimeParam->UseFlag = false;
+				pTime->StartTime();
+				//SetScene(SCENE::SCENE_GAME);
+				pFadeParam->ExceptFlag = true;
+				StartFade(FADE::FADE_OUT);
 			}
 		}
 		
@@ -157,7 +166,9 @@ void	UpdateResult()
 		{
 			if (min2.x < MousePos.x && max2.x > MousePos.x && min2.y < MousePos.y && max2.y > MousePos.y)
 			{
-				SetScene(SCENE::SCENE_TITLE);
+				//SetScene(SCENE::SCENE_TITLE);
+				StartFade(FADE::FADE_OUT);
+				pTimeParam->UseFlag = false;
 			}
 		}
 		
@@ -187,6 +198,7 @@ void	DrawResult()
 		(
 			ResultObject[0].Position.x,
 			ResultObject[0].Position.y,
+			0.0f,
 			ResultObject[0].Size.x,
 			ResultObject[0].Size.y,
 			ResultObject[0].Rotate,
@@ -202,6 +214,7 @@ void	DrawResult()
 		(//countinuButton
 			ResultObject[1].Position.x,
 			ResultObject[1].Position.y,
+			0.0f,
 			ResultObject[1].Size.x,
 			ResultObject[1].Size.y,
 			ResultObject[1].Rotate,
@@ -217,6 +230,7 @@ void	DrawResult()
 		(//endButton
 			ResultObject[2].Position.x,
 			ResultObject[2].Position.y,
+			0.0f,
 			ResultObject[2].Size.x,
 			ResultObject[2].Size.y,
 			ResultObject[2].Rotate,
@@ -237,6 +251,7 @@ void	DrawResult()
 		(
 			ResultObject[0].Position.x,
 			ResultObject[0].Position.y,
+			0.0f,
 			ResultObject[0].Size.x,
 			ResultObject[0].Size.y,
 			ResultObject[0].Rotate,
@@ -247,8 +262,6 @@ void	DrawResult()
 			1
 		);
 	}
-	g_Time.DrawResultTime();
-	g_Score.DrawScore();
 }
 
 void SetResultType(RESULT_TYPE ty)

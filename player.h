@@ -13,12 +13,14 @@
 //マクロ定義
 //=============================================================================
 
-#define PLAYER_SIZE_W (25)
+#define PLAYER_SIZE_W (10)
 #define PLAYER_SIZE_H (30)
 
 #define PLAYER_COOLTIME	(120)
 
 #define PLAYER_HP (3)
+#define PLAYER_UV_W (1.0f / 4)
+#define PLAYER_UV_H (1.0f / 4)
 
 enum class PLAYER_DIRECTION
 {
@@ -32,19 +34,22 @@ struct PLAYER
 {
 	bool UseFlag;//構造体利用中フラグ
 	bool jump;//ジャンプ中
-	bool getjump;//ジャンプの開始
+	//bool getjump;//ジャンプの開始
 	bool fall;//落下中
-	bool getfall;//落下の開始
-	bool WarpFlag;//ワープしたか
+	bool getfall = false;//落下の開始
+	bool WarpFlag = false;//ワープしたか
 	bool GetJumpStand;
 	bool isGround;	// 地に足をつけている
 	bool isSheerFloors;
 	bool isSheerFloorsUse;
 	bool isHigh;
+	bool isMoveBlock;
 	int	HaveKey; //鍵所持数
+	//int GHaveKey;
 	//int Hp;
 
 	D3DXVECTOR2 size;//BOXサイズ
+	D3DXVECTOR2 Drawsize;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
 	D3DXVECTOR2 oldpos;//1フレーム前の座標
 	D3DXVECTOR2 OneOldpos;//1フレーム前の座標
@@ -61,6 +66,7 @@ struct PLAYER
 	int frame;
 	int CoolTime;//クールタイム
 	PLAYER_DIRECTION dir;			// プレイヤーの向き
+	int PieceIndex;	//動いでいるピースの番号
 
 };
 

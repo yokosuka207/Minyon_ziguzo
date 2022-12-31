@@ -74,7 +74,7 @@ void SpriteUninit()
 //表示座標X, 表示座標Y,横サイズ,縦サイズ,回転速度,色
 //速度,テクスチャのパターン,テクスチャの横サイズ,縦サイズ,横パターンの数
 //=================================================
-void SpriteDrawColorRotation(float PosX, float PosY, int Size_W, int Size_H, float Kakudo,D3DXCOLOR COL
+void SpriteDrawColorRotation(float PosX, float PosY,float PosZ, int Size_W, int Size_H, float Kakudo,D3DXCOLOR COL
 	,float PaternNo, float uv_w, float uv_h, int NumPatern)
 {
 	D3D11_MAPPED_SUBRESOURCE msr;
@@ -86,19 +86,19 @@ void SpriteDrawColorRotation(float PosX, float PosY, int Size_W, int Size_H, flo
 	//static float sokudo = 0.0f;
 
 	//頂点 V0をセット
-	vertex[0].Position = D3DXVECTOR3(-Size_W/2, -Size_H/2, 0.0f);
+	vertex[0].Position = D3DXVECTOR3(-Size_W/2, -Size_H/2, PosZ);
 	vertex[0].Diffuse = COL;
 	vertex[0].TexCoord = D3DXVECTOR2(0.0f, 0.0f);
 	//頂点 V1をセット
-	vertex[1].Position = D3DXVECTOR3(+Size_W/2, -Size_H/2, 0.0f);
+	vertex[1].Position = D3DXVECTOR3(+Size_W/2, -Size_H/2, PosZ);
 	vertex[1].Diffuse = COL;
 	vertex[1].TexCoord = D3DXVECTOR2(1.0f  , 0.0f);
 	//頂点 V2をセット
-	vertex[2].Position = D3DXVECTOR3(-Size_W/2, +Size_H/2,0.0f);
+	vertex[2].Position = D3DXVECTOR3(-Size_W/2, +Size_H/2,PosZ);
 	vertex[2].Diffuse = COL;
 	vertex[2].TexCoord = D3DXVECTOR2(0.0f , 1.0f);
 	//頂点 V3をセット
-	vertex[3].Position = D3DXVECTOR3(+Size_W/2, +Size_H/2, 0.0f);
+	vertex[3].Position = D3DXVECTOR3(+Size_W/2, +Size_H/2, PosZ);
 	vertex[3].Diffuse = COL;
 	vertex[3].TexCoord = D3DXVECTOR2(1.0f , 1.0f);
 	//offset += sokudo / 60.0f;

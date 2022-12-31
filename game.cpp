@@ -32,50 +32,68 @@
 #include "MoveBlock.h"
 #include "switch.h"
 #include "SwitchWall.h"
+#include"player3D.h"
+#include"camera.h"
 #include "scene.h"
 #include "pause.h"
+#include "goal_key.h"
 
-static Time g_time;
-static Score g_score;
+static Time* pTime = pTime->GetTime();
+static Score* pScore = pScore->GetScore();
+static PLAYER3D g_Player3D;
+static SCENE* p_Scene;
 static bool* pause = GetPause();
-
+static TimeParam* pTimeParam = pTime->GetTimeParam();
 
 void InitGame()
 {
-	//----------げーむ
-	//InitPolygon();//ポリゴンの初期化
-	//-----------------------
-	InitSplitStage();
-	BgInit();
-	InitBlock();
-	InitJoint();
-	InitGameMouse();
-	InitGoal();
-	InitBroken();
-	InitWarp();
-	InitJumpStand();
-	InitSheerFloors();
-	InitPuzzleCip();
-	InitPuzzle();
-	InitInventory();			// インベントリの初期化
-	InitCursor();				// カーソルの初期化
-	InitThornBlock();
-	InitMoveBlock();
-	InitHigh();
-	InitSwitch();
-	InitSwitchWall();
-	InitPause();
+	p_Scene = GetScene();
+
+	if ((int)p_Scene != SCENE_GAME)
+	{
+		InitCamera();
+		//----------げーむ
+		//InitPolygon();//ポリゴンの初期化
+		//-----------------------
+		InitSplitStage();
+		BgInit();
+		InitBlock();
+		InitJoint();
+		InitGameMouse();
+		InitGoal();
+		InitGKey();
+		InitBroken();
+		InitWarp();
+		InitJumpStand();
+		InitSheerFloors();
+		InitPuzzleCip();
+		InitPuzzle();
+		InitInventory();			// インベントリの初期化
+		InitCursor();				// カーソルの初期化
+		InitThornBlock();
+		InitHigh();
+		InitSwitch();
+		InitSwitchWall();
+		InitMoveBlock();
+		InitPause();
+
+	}
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
 	InitPlayer();
-	g_score.InitScore();
-	g_time.InitTime();
-	g_time.SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
-	//g_time.GetTime();
+	pScore->InitScore();
+	g_Player3D.Init();
+	if (!pTimeParam->UseFlag) {
+		pTime->InitTime();
+		pTime->SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
+		pTime->StartTime();
+	}
 }
+
 
 void UninitGame()
 {
+	UninitCamera();
 	//UninitPolygon();	//ポリゴンの終了
 	BgUninit();
 	UninitBlock();
@@ -83,6 +101,7 @@ void UninitGame()
 	UninitPuzzle();
 	UninitGameMouse();
 	UninitGoal();
+	UninitGKey();
 	UninitPuzzleCip();
 	UninitBroken();
 	UninitPlayer();
@@ -98,28 +117,31 @@ void UninitGame()
 	UninitSwitch();
 	UninitSwitchWall();
 	UninitPause();
-	g_score.UninitScore();
-	g_time.UninitTime();
+	pScore->UninitScore();
+	pTime->UninitTime();
+	g_Player3D.Uninit();
 }
 
 void UpdateGame()
 {
 	//ポーズ処理
-	//[----------入力----------
-	if (IsButtonTriggered(0, XINPUT_GAMEPAD_START) ||			// GamePad	START
-		Keyboard_IsKeyTrigger(KK_TAB)) {						// Keyboard	TAB
+	if (GetKeyboardTrigger(DIK_TAB)) {
 		//ポーズフラグがoff
 		if (!(*pause)) {
 			(*pause) = true;
-			g_time.PuaseStartTime();
+			pTime->PauseStartTime();
 		}
-		else {
+	}	
+	if(GetKeyboardTrigger(DIK_Z)) {
+		if ((*pause)) {
 			(*pause) = false;
-			g_time.PuaseEndTime();
+			pTime->PauseEndTime();
+			pTime->PauseElapsedTime();
 		}
 	}
-	//----------入力----------]
-	
+	if (GetKeyboardTrigger(DIK_R)) {
+		ResetGame();
+	}
 	if (!(*pause)) {
 		//UpdatePolygon();	//ポリゴンの更新
 		BgUpdate();
@@ -135,6 +157,7 @@ void UpdateGame()
 		UpdatePuzzleCip();
 
 		UpdateGoal();
+		UpdateGKey();
 		UpdateBroken();
 		UpdateWarp();
 		UpdateJumpStand();
@@ -148,6 +171,8 @@ void UpdateGame()
 		UpdateMapChip();
 		UpdateGameMouse();
 		UpdateCursor();				// カーソルの更新
+		g_Player3D.Update();
+		UpdateCamera();
 
 	}
 	else {
@@ -157,9 +182,12 @@ void UpdateGame()
 	}
 }	
 
+
 void DrawGame()
 {
 	if (!(*pause)) {
+		SetCamera();
+
 		BgDraw();
 		DrawSplitStage();			// 区切り枠の描画
 
@@ -172,6 +200,7 @@ void DrawGame()
 
 		DrawPuzzleCip();
 		DrawPlayer();
+		DrawGKey();
 		DrawWarp();
 		DrawJumpStand();
 		DrawSheerFloors();
@@ -185,12 +214,15 @@ void DrawGame()
 
 		DrawThornBlock();
 		DrawInventory();			// インベントリの描画
-		g_time.DrawGameTime();
-		DrawCursor();				// カーソルの描画
+		pTime->DrawGameTime();
+		//DrawCursor();				// カーソルの描画
+		g_Player3D.Draw();
+		SetCamera();
+
 	}
 	else {
 		BgDraw();
-		DrawCursor();				// カーソルの描画
+		//DrawCursor();				// カーソルの描画
 		DrawPause();
 	}
 }

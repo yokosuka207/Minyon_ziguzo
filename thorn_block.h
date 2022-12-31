@@ -17,7 +17,7 @@
 //=============================================================================
 
 
-#define	THORN_BLOCK_MAX (5)
+#define	THORN_BLOCK_MAX (20)
 #define THORN_BLOCK_H		30	//ブロックの縦サイズ
 #define THORN_BLOCK_W		30	//ブロックの横サイズ
 

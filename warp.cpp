@@ -85,13 +85,13 @@ void DrawWarp()
 	{
 		if (g_Warp[i].UseFlag)
 		{
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 
 				//テクスチャの設定
 				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Warp[i].texno));
 				//スプライトを表示
 				//D3DXCOLOR col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
-				SpriteDrawColorRotation(g_Warp[i].Position.x, g_Warp[i].Position.y, g_Warp[i].Size.x, g_Warp[i].Size.y,
+				SpriteDrawColorRotation(g_Warp[i].Position.x, g_Warp[i].Position.y,-0.1f, g_Warp[i].Size.x, g_Warp[i].Size.y,
 					g_Warp[i].rot, g_Warp[i].col, 0, 1.0f, 1.0f, 1);
 			
 		}

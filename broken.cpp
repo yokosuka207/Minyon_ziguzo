@@ -49,6 +49,7 @@ HRESULT InitBroken()
 	{
 		g_Broken[i].Postion = D3DXVECTOR2(SCREEN_WIDTH / 2 - 50.0f, 600.0f);
 		g_Broken[i].Size = D3DXVECTOR2(BROKEN_SIZE_W, BROKEN_SIZE_H);
+		g_Broken[i].index = -1;
 		g_Broken[i].texno = LoadTexture(g_TextureNameBroken);
 		g_Broken[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);;
 		g_Broken[i].UseFlag = false;
@@ -83,38 +84,38 @@ void DrawBroken()
 	{
 		if (g_Broken[i].UseFlag)
 		{
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 
 				//テクスチャの設定
 				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Broken[i].texno));
 				//スプライトを表示
 				D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-				SpriteDrawColorRotation(g_Broken[i].Postion.x, g_Broken[i].Postion.y, g_Broken[i].Size.x, g_Broken[i].Size.y, 
+				SpriteDrawColorRotation(g_Broken[i].Postion.x, g_Broken[i].Postion.y,-0.1f, g_Broken[i].Size.x, g_Broken[i].Size.y, 
 					g_Broken[i].rot, g_Broken[i].col, 0, 1.0f, 1.0f, 1);
 				
 		}
 	}
 }
 
-int SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s)
-{
-	//PUZZLE* pPuzzle = GetPuzzle();
-
-	for (int i = 0; i < BROKEN_MAX; i++)
-	{
-		if (!g_Broken[i].UseFlag)
-		{
-
+void SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index){
+	for (int i = 0; i < BROKEN_MAX; i++){
+		if (!g_Broken[i].UseFlag){
 			g_Broken[i].Postion = Pos;
 			g_Broken[i].Size = s;
+			g_Broken[i].index = index;
 			g_Broken[i].UseFlag = true;
-			return i;
-
+			break;
 		}
-
-
 	}
-
+}
+void DeleteBroken(int PieceNo) {
+	for (int i = 0; i < BROKEN_MAX; i++) {
+		if (g_Broken[i].index == PieceNo) {
+			if (g_Broken[i].UseFlag) {
+				g_Broken[i].UseFlag = false;
+			}
+		}
+	}
 }
 
 //=============================================================================

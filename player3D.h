@@ -18,10 +18,10 @@
 //--------------------
 //構造体宣言
 //--------------------
-typedef struct
+struct PLAYER3D
 {
 	bool UseFlag;//使用中フラグ
-
+	bool zoomFlag;
 	//DX11_MODEL Model;	//モデル構造体
 
 	//アップデートで更新させる
@@ -57,7 +57,7 @@ typedef struct
 
 	void SetUse(bool use) { UseFlag = use; };
 	bool GetUseFlag() { return UseFlag; };//使用中かどうか
-}PLAYER3D;
+};
 
 
 //--------------------

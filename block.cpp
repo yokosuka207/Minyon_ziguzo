@@ -69,14 +69,14 @@ void DrawBlock()
 		if (g_ThornBlock[i].UseFlag)
 		{
 
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 
 
 			//ŽlŠpŒ`‚Ì•`‰æ
 			//D3DXCOLOR	col = D3DXCOLOR(1.0f, 0.8f, 0.8f, 0.5f);
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ThornBlock[i].texno));
 
-			SpriteDrawColorRotation(g_ThornBlock[i].Position.x, g_ThornBlock[i].Position.y,
+			SpriteDrawColorRotation(g_ThornBlock[i].Position.x, g_ThornBlock[i].Position.y,-0.1f,
 				g_ThornBlock[i].Size.x, g_ThornBlock[i].Size.y, g_ThornBlock[i].Rotation, g_ThornBlock[i].Col,
 				0, 1.0f, 1.0f, 1);
 		}
@@ -85,10 +85,10 @@ void DrawBlock()
 	for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
 		if (g_ChipBlock[i].UseFlag)
 		{
-			SetWorldViewProjection2D();
+			//SetWorldViewProjection2D();
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ChipBlock[i].texno));
 
-			SpriteDrawColorRotation(g_ChipBlock[i].Position.x, g_ChipBlock[i].Position.y,
+			SpriteDrawColorRotation(g_ChipBlock[i].Position.x, g_ChipBlock[i].Position.y,-0.1f,
 				g_ChipBlock[i].Size.x, g_ChipBlock[i].Size.y, g_ChipBlock[i].Rotation, g_ChipBlock[i].Col,
 				0, 1.0f, 1.0f, 1);
 		}

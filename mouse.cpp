@@ -15,6 +15,7 @@
 #include"thorn_block.h"
 //#include"puzzlecip.h"
 #include"jump_stand.h"
+#include"spawnpoint.h"
 
 MOUSE Mouse;
 bool oneFlag = false;	//マウスでパズルを一つ持っているか
@@ -62,6 +63,7 @@ void UpdateGameMouse()
 	GOAL* pGoal = GetGoal();
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	JUMPSTAND* pJumpStand = GetJumpStand();
+	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 	Mouse.oldPosX = GetMousePosX();
 	Mouse.oldPosY = GetMousePosY();
 
@@ -70,27 +72,29 @@ void UpdateGameMouse()
 
 	Mouse.PosX = GetMousePosX();
 	Mouse.PosY = GetMousePosY();
+	Mouse.oldPosX = Mouse.PosX -= SCREEN_WIDTH / 2;
+	Mouse.oldPosY = Mouse.PosY -= SCREEN_HEIGHT / 2;
 
 	Mouse.UseFlag = Mouse_IsLeftDown();
 	Mouse.ScrollFlag = Mouse_IsMiddleDown();
 
-	if (Mouse.ScrollFlag)
-	{
-		pPlayer->Position.y = pPlayer->Position.y - y;
-		pPlayer->Position.x = pPlayer->Position.x - x;
+	 if (Mouse.ScrollFlag)
+	 {
+		 pPlayer->Position.y = pPlayer->Position.y - y;
+		 pPlayer->Position.x = pPlayer->Position.x - x;
 
-		for (int i = 0; i < PUZZLE_MAX; i++)
-		{
-			if (pPuzzle[i].UseFlag)
-			{
+		 for (int i = 0; i < PUZZLE_MAX; i++)
+		 {
+			 if (pPuzzle[i].UseFlag)
+			 {
 				// pPuzzle[i].Position.x -= SCREEN_HEIGHT - Mouse.PosX;
-				pPuzzle[i].Position.y = pPuzzle[i].Position.y - y;
-				pPuzzle[i].Position.x = pPuzzle[i].Position.x - x;
+				 pPuzzle[i].Position.y = pPuzzle[i].Position.y-y;
+				 pPuzzle[i].Position.x = pPuzzle[i].Position.x - x;
 
-			}
+			 }
 
-		}
-	}
+		 }
+	 }
 
 
 	if (Mouse.UseFlag)
@@ -98,92 +102,94 @@ void UpdateGameMouse()
 
 		for (int i = 0; i < PUZZLE_MAX; i++)
 		{
-			//if (pPuzzle[i].UseFlag)
-			//{
-			//	pPuzzle[i].MoveEndFlag = false;
-			//	if (pPuzzle[i].Position.y - pPuzzle[i].Size.y / 3 < Mouse.PosY&&
-			//		pPuzzle[i].Position.y + pPuzzle[i].Size.y / 3 > Mouse.PosY&&
-			//		pPuzzle[i].Position.x - pPuzzle[i].Size.x / 3 < Mouse.PosX&&
-			//		pPuzzle[i].Position.x + pPuzzle[i].Size.x / 3 > Mouse.PosX&&
-			//		!oneFlag)
-			//	{
-			//		if (pPuzzle[i].Position.y - pPuzzle[i].Size.y / 2 < pPlayer->Position.y&&
-			//			pPuzzle[i].Position.y + pPuzzle[i].Size.y / 2 > pPlayer->Position.y&&
-			//			pPuzzle[i].Position.x - pPuzzle[i].Size.x / 2 < pPlayer->Position.x&&
-			//			pPuzzle[i].Position.x + pPuzzle[i].Size.x / 2 > pPlayer->Position.x
-			//			)
-			//		{
-			//		}
-			//		else
-			//		{
-			//			oneFlag = true;
-			//			MouseIndex = i;
-			//			pPuzzle[i].oldPosition = pPuzzle[i].Position;
-			//		}
-			//	}
-			//	else if (oneFlag && i == MouseIndex)
-			//	{
-			//		pPuzzle[MouseIndex].Position.x = Mouse.PosX;
-			//		pPuzzle[MouseIndex].Position.y = Mouse.PosY;
-			//		pPuzzle[MouseIndex].MoveFlag = true;
-			//		if (Keyboard_IsKeyDown(KK_A))	//aキーが押されたら
-			//		{				//押されてる時の処理
-			//			pPuzzle[MouseIndex].Rotation += 90.0f;
-			//			pPuzzle[MouseIndex].RotNum++;
-			//			if (pPuzzle[MouseIndex].RotNum >=4)
-			//			{
-			//				pPuzzle[MouseIndex].RotNum = 0;
-			//			}
-			//			if (pPuzzle[MouseIndex].Block_Type == TYPE_GRAND)
-			//			{
-			//				for (int j = 0; j < 4; j++)
-			//				{
-			//					if (pPuzzle[MouseIndex].blockIndex[j] != -1)
-			//					{
-			//						//pBlock[pPuzzle[MouseIndex].blockIndex[j]].Rotation += 90.0f;
-			//					}
-			//				}
-			//			}
-			//			PuzzleTypeShift(MouseIndex);
-			//		}
-			//	}
-			//}
+				//if (pPuzzle[i].UseFlag)
+				//{
+				//	pPuzzle[i].MoveEndFlag = false;
+				//	if (pPuzzle[i].Position.y - pPuzzle[i].Size.y / 3 < Mouse.PosY&&
+				//		pPuzzle[i].Position.y + pPuzzle[i].Size.y / 3 > Mouse.PosY&&
+				//		pPuzzle[i].Position.x - pPuzzle[i].Size.x / 3 < Mouse.PosX&&
+				//		pPuzzle[i].Position.x + pPuzzle[i].Size.x / 3 > Mouse.PosX&&
+				//		!oneFlag)
+				//	{
+				//		if (pPuzzle[i].Position.y - pPuzzle[i].Size.y / 2 < pPlayer->Position.y&&
+				//			pPuzzle[i].Position.y + pPuzzle[i].Size.y / 2 > pPlayer->Position.y&&
+				//			pPuzzle[i].Position.x - pPuzzle[i].Size.x / 2 < pPlayer->Position.x&&
+				//			pPuzzle[i].Position.x + pPuzzle[i].Size.x / 2 > pPlayer->Position.x
+				//			)
+				//		{
+				//		}
+				//		else
+				//		{
+				//			oneFlag = true;
+				//			MouseIndex = i;
+				//			pPuzzle[i].oldPosition = pPuzzle[i].Position;
+				//		}
+				//	}
+				//	else if (oneFlag && i == MouseIndex)
+				//	{
+				//		pPuzzle[MouseIndex].Position.x = Mouse.PosX;
+				//		pPuzzle[MouseIndex].Position.y = Mouse.PosY;
+				//		pPuzzle[MouseIndex].MoveFlag = true;
+				//		if (GetKeyboardTrigger(DIK_A))	//aキーが押されたら
+				//		{				//押されてる時の処理
+				//			pPuzzle[MouseIndex].Rotation += 90.0f;
+				//			pPuzzle[MouseIndex].RotNum++;
+				//			if (pPuzzle[MouseIndex].RotNum >=4)
+				//			{
+				//				pPuzzle[MouseIndex].RotNum = 0;
+				//			}
+				//			if (pPuzzle[MouseIndex].Block_Type == TYPE_GRAND)
+				//			{
+				//				for (int j = 0; j < 4; j++)
+				//				{
+				//					if (pPuzzle[MouseIndex].blockIndex[j] != -1)
+				//					{
+				//						//pBlock[pPuzzle[MouseIndex].blockIndex[j]].Rotation += 90.0f;
+				//					}
+				//				}
+				//			}
+				//			PuzzleTypeShift(MouseIndex);
+				//		}
+				//	}
+				//}
 
-			if (pPiece[i].UseFlag)
-			{
-				if (pPiece[i].pos.y - pPiece[i].size.y / 3 < Mouse.PosY &&
-					pPiece[i].pos.y + pPiece[i].size.y / 3 > Mouse.PosY &&
-					pPiece[i].pos.x - pPiece[i].size.x / 3 < Mouse.PosX &&
-					pPiece[i].pos.x + pPiece[i].size.x / 3 > Mouse.PosX &&
-					!oneFlag)
+				if (pPiece[i].UseFlag)
 				{
-					//プレーヤーが持ったピースの中にいたら
-					if (pPiece[i].pos.y - pPiece[i].size.y / 2 < pPlayer->Position.y &&
-						pPiece[i].pos.y + pPiece[i].size.y / 2 > pPlayer->Position.y &&
-						pPiece[i].pos.x - pPiece[i].size.x / 2 < pPlayer->Position.x &&
-						pPiece[i].pos.x + pPiece[i].size.x / 2 > pPlayer->Position.x
-						)
+
+					if (pPiece[i].pos.y - pPiece[i].size.y / 3 < -Mouse.PosY &&
+						pPiece[i].pos.y + pPiece[i].size.y / 3 > -Mouse.PosY &&
+						pPiece[i].pos.x - pPiece[i].size.x / 3 <Mouse.PosX &&
+						pPiece[i].pos.x + pPiece[i].size.x / 3 > Mouse.PosX &&
+						!oneFlag)
 					{
-						Mouse.pFlag = true;
-						pPlayer->OneOldpos = pPlayer->Position;
+						//プレーヤーが持ったピースの中にいたら
+						if (pPiece[i].pos.y - pPiece[i].size.y / 2 < pPlayer->Position.y &&
+							pPiece[i].pos.y + pPiece[i].size.y / 2 > pPlayer->Position.y &&
+							pPiece[i].pos.x - pPiece[i].size.x / 2 < pPlayer->Position.x &&
+							pPiece[i].pos.x + pPiece[i].size.x / 2 > pPlayer->Position.x
+							)
+						{
+							Mouse.pFlag = true;
+							pPlayer->OneOldpos = pPlayer->Position;
+						}
+
+						Mouse.RotIndex = 0;
+						
+						oneFlag = true;
+						pPiece[i].MoveFlag = true;
+						MouseIndex = i;
+						NoIndex = pPiece[i].no;
+						pPiece[i].OldMovePos = pPiece[i].pos;
+
 					}
+					else if (oneFlag && i == MouseIndex)
+					{
+						pPiece[MouseIndex].OldPos = pPiece[MouseIndex].pos;
 
-					Mouse.RotIndex = 0;
-
-					oneFlag = true;
-					MouseIndex = i;
-					NoIndex = pPiece[i].no;
-					pPiece[i].OldMovePos = pPiece[i].pos;
-
-				}
-				else if (oneFlag && i == MouseIndex)
-				{
-					pPiece[MouseIndex].OldPos = pPiece[MouseIndex].pos;
-
-					pPiece[MouseIndex].pos.x = Mouse.PosX;
-					pPiece[MouseIndex].pos.y = Mouse.PosY;
-					//pPiece[MouseIndex].MoveFlag = true;
-					D3DXVECTOR2 temp = (pPiece[MouseIndex].pos - pPiece[MouseIndex].OldPos);
+						pPiece[MouseIndex].pos.x = Mouse.PosX;
+						pPiece[MouseIndex].pos.y = -Mouse.PosY;
+						//pPiece[MouseIndex].MoveFlag = true;
+						D3DXVECTOR2 temp = (pPiece[MouseIndex].pos - pPiece[MouseIndex].OldPos);
 
 					for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 					{//ブロック動かす
@@ -235,24 +241,36 @@ void UpdateGameMouse()
 							}
 						}
 
-					}
-					for (int i = 0; i < JUMPSTAND_MAX; i++)
-					{//ジャンプスタンド
-						if (pJumpStand[i].UseJumpStand)
-						{
-							if (pJumpStand[i].PieceIndex == NoIndex)
+						}
+						for (int i = 0; i < JUMPSTAND_MAX; i++)
+						{//ジャンプスタンド
+							if (pJumpStand[i].UseJumpStand)
 							{
-								pJumpStand[i].pos += temp;
+								if (pJumpStand[i].PieceIndex == NoIndex)
+								{
+									pJumpStand[i].pos += temp;
+								}
 							}
 						}
-					}
-					if (!Mouse.pFlag)
-					{
-						if (Keyboard_IsKeyTrigger(KK_A) ||				// Keyboard	A
-							IsButtonPressed(0, XINPUT_GAMEPAD_A))		// Gamepad	A
+						for (int i = 0; i < SPAWN_POINT_MAX; i++)
+						{//スポーンポイント
+							if (pSpawnPoint[i].UseFlag)
+							{
+								if (pSpawnPoint[i].PieceIndex == NoIndex)
+								{
+									pSpawnPoint[i].Position += temp;
+								}
+
+							}
+
+						}
+
+						if (!Mouse.pFlag)
 						{
-							RotateMapChipR(NoIndex);
-							Mouse.RotIndex += 1;
+							if (GetKeyboardTrigger(DIK_A))	//aキーが押されたら
+							{
+								RotateMapChipR(NoIndex);
+								Mouse.RotIndex += 1;
 
 						}
 					}
@@ -277,6 +295,8 @@ void UpdateGameMouse()
 			pPuzzle[MouseIndex].MoveFlag = false;
 			pPuzzle[MouseIndex].MoveEndFlag = true;
 			pPiece[MouseIndex].MoveEndFlag = true;
+			pPiece[MouseIndex].MoveFlag = false;
+
 			//Mouse.RotIndex = 0;
 			Mouse.pFlag = false;
 
@@ -285,6 +305,30 @@ void UpdateGameMouse()
 		oneFlag = false;
 		MouseIndex = -1;
 		NoIndex = -1;
+	}
+
+	for (int i = 0; i < PUZZLE_MAX; i++)
+	{
+
+		if (pPiece[i].UseFlag)
+		{
+
+			if (pPiece[i].pos.y - pPiece[i].size.y / 3 < -Mouse.PosY &&
+				pPiece[i].pos.y + pPiece[i].size.y / 3 > -Mouse.PosY &&
+				pPiece[i].pos.x - pPiece[i].size.x / 3 < Mouse.PosX &&
+				pPiece[i].pos.x + pPiece[i].size.x / 3 > Mouse.PosX &&
+				!oneFlag) {
+
+				if (GetKeyboardTrigger(DIK_Y))
+				{
+					DeleteMapChip(i);
+					SetPieceMapChip(pPiece[i].pos, pPiece[i].no);
+				}
+
+
+			}
+
+		}
 	}
 
 }

@@ -30,7 +30,6 @@ int		PauseTextureNo = 0;//テクスチャ番号
 int		PauseEndTextureNo = 0;//テクスチャ番号
 
 static bool		PauseFlag;
-static Time		g_Time;
 //======================
 //初期化
 //======================
@@ -102,9 +101,9 @@ void	UpdatePause()
 		{
 			if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y)
 			{
-				//g_Time.PuaseEndTime();
+				
 				//SetScene(SCENE::SCENE_GAME);
-				PauseFlag = false;
+				
 			}
 		}
 	}
@@ -120,13 +119,18 @@ void	DrawPause()
 
 
 	//スプライトの描画
+	
 	//シーン画面
-	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseTextureNo));
-	if (PauseFlag) {
+	if (PauseFlag)
+	{
+
+
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseTextureNo));
 		SpriteDrawColorRotation
 		(
 			PauseObject[0].Position.x,
 			PauseObject[0].Position.y,
+			-0.0f,
 			PauseObject[0].Size.x,
 			PauseObject[0].Size.y,
 			PauseObject[0].Rotate,
@@ -143,6 +147,7 @@ void	DrawPause()
 		(
 			PauseObject[1].Position.x,
 			PauseObject[1].Position.y,
+			0.0f,
 			PauseObject[1].Size.x,
 			PauseObject[1].Size.y,
 			PauseObject[1].Rotate,

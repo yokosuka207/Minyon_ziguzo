@@ -27,7 +27,7 @@
 
 
 
-void	SpriteDrawColorRotation(float, float, int, int, float, D3DXCOLOR, 
+void	SpriteDrawColorRotation(float, float,float, int, int, float, D3DXCOLOR, 
 	 float PaternNo, float uv_w, float uv_h, int NumPatern);	//三角形用頂点格納処理
 void	SpriteInit();//初期化
 void	SpriteUninit();//終了処理

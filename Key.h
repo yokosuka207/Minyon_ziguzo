@@ -29,12 +29,13 @@ typedef struct {
 	D3DXCOLOR col;//色
 	D3DXVECTOR2 oldpos;
 	float rot;//回転角度
+	int index;
 	float texno;//テクスチャインデックス
 	float PaternNo;//パターン番号
 	float uv_w;//横サイズ
 	float uv_h;//縦サイズ
 	int NumPatern;//横枚数
-
+	
 }KEY;
 //=============================================================================
 //プロトタイプ宣言
@@ -45,7 +46,7 @@ void UninitKey();
 void UpdateKey();
 void DrawKey();
 
-void SetKey(D3DXVECTOR2 pos, D3DXVECTOR2 size);
+void SetKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index);
 void DeleteKey(int PieceNo);
 
 KEY *GetKey();

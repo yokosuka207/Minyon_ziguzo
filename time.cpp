@@ -10,6 +10,7 @@
 #include "time.h"
 #include "sprite.h"
 #include "texture.h"
+#include "pause.h"
 #include <iostream>
 #include <Windows.h>
 #include <vector>
@@ -28,6 +29,8 @@ static int g_SecondTime = 0;
 static int g_MintueTime = 0;
 static int g_TimeDistance = (TIME_POS_X);
 static TimeParam g_TimeParam;
+static Time g_TimeClass;
+static bool* pause = GetPause();
 
 void Time::InitTime() {
 	g_TimeTextureNo = LoadTexture(g_TimeTextureName);
@@ -36,11 +39,6 @@ void Time::InitTime() {
 	g_TimeParam.color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 	g_TimeParam.UseFlag = false;
 	g_TimeParam.EndFlag = false;
-	m_start = 0;
-	m_PuaseStart = 0;
-	m_PuaseStart = 0;
-	m_ElapsedTime = 0;
-	m_PauseElapsed = 0;
 }
 void Time::UninitTime() {
 	if (g_TimeTexture != NULL) {
@@ -48,97 +46,109 @@ void Time::UninitTime() {
 		g_TimeTexture = NULL;
 	}
 }
+
+//要らない
 void Time:: DrawGameTime() {
 	SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TimeTextureNo));
 
 	m_ElapsedTime = ElapsedTime();
+	m_ElapsedTime -= m_PauseElapsed;
+	
 	g_Time = m_ElapsedTime / CLOCKS_PER_SEC;//秒表示
 	g_SecondTime = g_Time % 60;	//秒
 	g_MintueTime = g_Time / 60;	//分
 	g_TimeParam.pos.x = g_TimeDistance;
 
 	if (g_TimeParam.UseFlag) {
-		//1の位(秒)
-		{
-			SpriteDrawColorRotation(
-				g_TimeParam.pos.x,
-				g_TimeParam.pos.y,
-				g_TimeParam.size.x,
-				g_TimeParam.size.y,
-				0.0f,
-				g_TimeParam.color,
-				(g_SecondTime) % 10,
-				1.0f / 10.0f,
-				1.0f / 1.0f,
-				10
-			);
-			g_TimeParam.pos.x -= 30;
-			g_SecondTime /= 10;
-		}
-		//10の位(秒)
-		{
-			SpriteDrawColorRotation(
-				g_TimeParam.pos.x,
-				g_TimeParam.pos.y,
-				g_TimeParam.size.x,
-				g_TimeParam.size.y,
-				0.0f,
-				g_TimeParam.color,
-				(g_SecondTime) % 10,
-				1.0f / 10.0f,
-				1.0f / 1.0f,
-				10
-			);
-			g_TimeParam.pos.x -= 30;
-		}
-		//1の位(分)
-		{
-			SpriteDrawColorRotation(
-				g_TimeParam.pos.x - 5,
-				g_TimeParam.pos.y,
-				g_TimeParam.size.x,
-				g_TimeParam.size.y,
-				0.0f,
-				g_TimeParam.color,
-				(g_MintueTime) % 10,
-				1.0f / 10.0f,
-				1.0f / 1.0f,
-				10
-			);
-			g_TimeParam.pos.x -= 30;
-			g_MintueTime /= 10;
-		}
-		//10の位(分)
-		{
-			SpriteDrawColorRotation(
-				g_TimeParam.pos.x - 5,
-				g_TimeParam.pos.y,
-				g_TimeParam.size.x,
-				g_TimeParam.size.y,
-				0.0f,
-				g_TimeParam.color,
-				(g_MintueTime) % 10,
-				1.0f / 10.0f,
-				1.0f / 1.0f,
-				10
-			);
-			g_TimeParam.pos.x -= 30;
-		}
+		////1の位(秒)
+		//{
+		//	SpriteDrawColorRotation(
+		//		g_TimeParam.pos.x,
+		//		g_TimeParam.pos.y,
+		//		0.0f,
+		//		g_TimeParam.size.x,
+		//		g_TimeParam.size.y,
+		//		0.0f,
+		//		g_TimeParam.color,
+		//		(g_SecondTime) % 10,
+		//		1.0f / 10.0f,
+		//		1.0f / 1.0f,
+		//		10
+		//	);
+		//	g_TimeParam.pos.x -= 30;
+		//	g_SecondTime /= 10;
+		//}
+		////10の位(秒)
+		//{
+		//	SpriteDrawColorRotation(
+		//		g_TimeParam.pos.x,
+		//		g_TimeParam.pos.y,
+		//		0.0f,
+		//		g_TimeParam.size.x,
+		//		g_TimeParam.size.y,
+		//		0.0f,
+		//		g_TimeParam.color,
+		//		(g_SecondTime) % 10,
+		//		1.0f / 10.0f,
+		//		1.0f / 1.0f,
+		//		10
+		//	);
+		//	g_TimeParam.pos.x -= 30;
+		//}
+		////1の位(分)
+		//{
+		//	SpriteDrawColorRotation(
+		//		g_TimeParam.pos.x - 5,
+		//		g_TimeParam.pos.y,
+		//		0.0f,
+		//		g_TimeParam.size.x,
+		//		g_TimeParam.size.y,
+		//		0.0f,
+		//		g_TimeParam.color,
+		//		(g_MintueTime) % 10,
+		//		1.0f / 10.0f,
+		//		1.0f / 1.0f,
+		//		10
+		//	);
+		//	g_TimeParam.pos.x -= 30;
+		//	g_MintueTime /= 10;
+		//}
+		////10の位(分)
+		//{
+		//	SpriteDrawColorRotation(
+		//		g_TimeParam.pos.x - 5,
+		//		g_TimeParam.pos.y,
+		//		0.0f,
+		//		g_TimeParam.size.x,
+		//		g_TimeParam.size.y,
+		//		0.0f,
+		//		g_TimeParam.color,
+		//		(g_MintueTime) % 10,
+		//		1.0f / 10.0f,
+		//		1.0f / 1.0f,
+		//		10
+		//	);
+		//	g_TimeParam.pos.x -= 30;
+		//}
 	}
 }
 
 //ポーズ時間をどうにかしないと
-void Time::DrawResultTime() {
+void Time::DrawResultTime(clock_t elapsedtime, clock_t pause) {
 	SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TimeTextureNo));
 
 	g_TimeParam.pos.x = SCREEN_WIDTH / 2 + 70;
 	g_TimeParam.pos.y = SCREEN_HEIGHT / 2;
+	g_TimeParam.size = D3DXVECTOR2(50.0f, 50.0f);
 	g_TimeParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	if (!g_TimeParam.EndFlag) {
-		m_ElapsedTime = ElapsedTime();
-		g_TimeParam.EndFlag = true;
+
+	if (g_TimeParam.EndFlag) {
+		m_ElapsedTime = elapsedtime;
+		m_PauseElapsed = pause;
+		m_ElapsedTime -= m_PauseElapsed;
+		g_TimeParam.EndFlag = false;
 	}
 	g_Time = m_ElapsedTime / CLOCKS_PER_SEC;//秒表示
 	g_SecondTime = g_Time % 60;	//秒
@@ -150,6 +160,7 @@ void Time::DrawResultTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -167,6 +178,7 @@ void Time::DrawResultTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -183,6 +195,7 @@ void Time::DrawResultTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x - 5,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -200,6 +213,7 @@ void Time::DrawResultTime() {
 			SpriteDrawColorRotation(
 				g_TimeParam.pos.x - 5,
 				g_TimeParam.pos.y,
+				0.0f,
 				g_TimeParam.size.x,
 				g_TimeParam.size.y,
 				0.0f,
@@ -213,23 +227,39 @@ void Time::DrawResultTime() {
 		}
 	}
 }
+//計測開始
 void Time::StartTime() {
 	m_start = clock();
 }
-int Time::ElapsedTime() {
+//計測終了
+void Time::EndTime() {
+	m_end = clock();
+	SumTime();
+}
+//計測時間合計
+clock_t Time::SumTime() {
+	m_ElapsedTime = m_end - m_start;
+	return m_ElapsedTime;
+}
+//経過時間
+clock_t Time::ElapsedTime() {
 	m_ElapsedTime = clock() - m_start;
 	return m_ElapsedTime;
 }
 //ポーズの開始時間
-void Time::PuaseStartTime() {
-	m_PuaseStart = clock();
+void Time::PauseStartTime() {
+	m_PauseStart = clock();
 }
 //ポーズの終了時間
-void Time::PuaseEndTime() {
-	m_PuaseEnd = clock();
-	//m_PauseElapsed += m_PuaseEnd - m_PuaseStart;
-	m_ElapsedTime -= m_PuaseEnd - m_PuaseStart;
+void Time::PauseEndTime() {
+	m_PauseEnd = clock();
 }
+//ポーズの合計時間
+clock_t Time::PauseElapsedTime() {
+	m_PauseElapsed += m_PauseEnd - m_PauseStart;
+	return m_PauseElapsed;
+}
+//時間の表示座標
 void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 	if (!g_TimeParam.UseFlag) {
 		g_TimeParam.pos = pos;
@@ -237,15 +267,9 @@ void Time::SetTime(D3DXVECTOR2 pos, D3DXVECTOR2 size) {
 		g_TimeParam.UseFlag = true;
 	}
 }
-int* Time::GetTime() {
-	return &m_ElapsedTime;
-}
-
-void Time::SetElapsedTime(int elapsedtime) {
-	m_ElapsedTime = elapsedtime;
-}
-
 TimeParam* Time::GetTimeParam() {
 	return &g_TimeParam;
 }
-
+Time* Time::GetTime() {
+	return &g_TimeClass;
+}

@@ -17,7 +17,7 @@ static ID3D11ShaderResourceView	*g_texture;	//画像一枚で一つの変数が必要
 static char *g_textureName = (char*)"data\\texture\\runningman003.png";	//テクスチャファイルパス
 
 static ID3D11ShaderResourceView	*g_texture_under;	//画像一枚で一つの変数が必要
-static char *g_texture_under_Name = (char*)"data\\texture\\gray.jpg";	//テクスチャファイルパス
+static char *g_texture_under_Name = (char*)"data\\texture\\GameBg.png";	//テクスチャファイルパス
 static int g_TextureNoBG = 0;
 
 BG *Bg;	//背景構造体のポインタ変数
@@ -32,8 +32,8 @@ HRESULT BgInit()
 		exit(999);	//強制終了する
 	}
 	Bg = new BG;	//動的インスタンス化
-	Bg->Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
-	Bg->Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
+	Bg->Position = D3DXVECTOR3(0.0f, 0.0f, 0);
+	Bg->Size = D3DXVECTOR2(SCREEN_WIDTH*2, SCREEN_HEIGHT*2);
 	Bg->Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	Bg->Rotation = 0.0f;
 
@@ -69,7 +69,7 @@ void BgUpdate()
 
 void BgDraw()
 {
-	SetWorldViewProjection2D();
+	//SetWorldViewProjection2D();
 
 	{	//背景ポリゴン表示
 
@@ -77,7 +77,7 @@ void BgDraw()
 
 		D3DXCOLOR	col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f);
 		SpriteDrawColorRotation(
-			Bg->Position.x, Bg->Position.y, Bg->Size.x, Bg->Size.y
+			Bg->Position.x, Bg->Position.y,0.5f, Bg->Size.x, Bg->Size.y
 			, Bg->Rotation, Bg->Color, 0, 1.0f, 1.0f, 1);
 	}
 

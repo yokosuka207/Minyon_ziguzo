@@ -99,7 +99,7 @@ void DrawCursor()
 		// テクスチャの設定
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Cursor.texNo));
 		// ポリゴンの描画
-		SpriteDrawColorRotation(g_Cursor.pos.x, g_Cursor.pos.y, g_Cursor.size.x, g_Cursor.size.y, 0.0f, g_Cursor.color, 1.0f, 1.0f, 1.0f, 1);
+		SpriteDrawColorRotation(g_Cursor.pos.x, g_Cursor.pos.y,-0.2f, g_Cursor.size.x, g_Cursor.size.y, 0.0f, g_Cursor.color, 1.0f, 1.0f, 1.0f, 1);
 	}
 }
 

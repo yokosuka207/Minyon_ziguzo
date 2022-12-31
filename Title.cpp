@@ -7,7 +7,7 @@
 #include "xinput.h"
 #include "xkeyboard.h"
 #include	"scene.h"
-
+#include	"fade.h"
 //======================
 //マクロ定義
 //=======================
@@ -19,6 +19,8 @@ static	char	*g_TitleTextureName1 = (char*)"data\\texture\\タイトル.jpg";
 
 static	ID3D11ShaderResourceView	*g_TitleTexture2 = NULL;//テクスチャ情報
 static	char	*g_TitleTextureName2 = (char*)"data\\texture\\ジグソーワールド.jpg";
+
+static FADEPARAM* pFadeParam = GetFadeParam();
 
 typedef	struct
 {
@@ -57,7 +59,7 @@ void	InitTitle()
 	TitleObject.Color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
 	TitleObject.Rotate = 0.0;
 
-	//SetScene(SCENE::SCENE_GAME);		// ゲームシーンへGO!!
+
 }
 //======================
 //終了処理
@@ -90,11 +92,15 @@ void	UpdateTitle()
 	{
 		if (TitleNum == 1)
 		{
-			SetScene(SCENE::SCENE_DATASELECT);
+			//SetScene(SCENE::SCENE_DATASELECT);
+			pFadeParam->ExceptFlag = true;
+			StartFade(FADE::FADE_OUT);
 		}
 		if (TitleNum == 0)
 		{
+			//フェード画面が切り替わる
 			TitleNum++;
+			StartFade(FADE::FADE_OUT);
 		}
 	}
 }
@@ -120,6 +126,7 @@ void	DrawTitle()
 	(
 		TitleObject.Position.x,
 		TitleObject.Position.y,
+		0.0f,
 		TitleObject.Size.x,
 		TitleObject.Size.y,
 		TitleObject.Rotate,
