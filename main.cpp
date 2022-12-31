@@ -8,7 +8,10 @@
 ==============================================================================*/
 #include	"main.h"
 #include	"renderer.h"
-#include "input.h"	//入力処理
+//#include "input.h"	//入力処理
+#include "xinput.h"		// xinput版入力
+#include "xkeyboard.h"	// xinput版キーボード
+#include "xmouse.h"		// xinput版マウス
 
 //#include	"polygon.h"	//新しく追加したプログラム
 //#include"bg.h"	//背景
@@ -189,6 +192,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 //=============================================================================
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	// xinputのキーボードとマウスのプロセスメッセージ
+	Keyboard_ProcessMessage(uMsg, wParam, lParam);
+	Mouse_ProcessMessage(uMsg, wParam, lParam);
+
 	switch (uMsg) {
 	case WM_KEYDOWN:
 		if (wParam == VK_ESCAPE) {
@@ -210,6 +217,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		return 0;
 	};
 
+
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
@@ -224,6 +232,10 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//入力処理の初期化
 	InitInput(hInstance,hWnd);
 	SpriteInit();
+
+	// xinputの入力処理の初期化
+	Mouse_Initialize(hWnd);
+	Keyboard_Initialize();
 
 	//InitGame();
 	InitScene(SCENE::SCENE_TITLE);

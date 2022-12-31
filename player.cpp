@@ -12,7 +12,11 @@
 #include "polygon.h"
 #include "sprite.h"
 #include "texture.h"
-#include "input.h"
+//#include "input.h"
+#include "xinput.h"
+#include "xkeyboard.h"
+#include "xmouse.h"
+
 #include "block.h"
 #include "thorn_block.h"
 #include "broken.h"
@@ -111,7 +115,8 @@ void UpdatePlayer()
 		if (g_Player.UseFlag == true)
 		{
 			//移動
-			if (GetKeyboardPress(DIK_RIGHT))//右キー
+			if (GetThumbLeftX(0) > 0.3f ||					// GamePad	右スティック	右
+				Keyboard_IsKeyDown(KK_RIGHT))				// Keyboard	右
 			{//押されているときの処理
 				g_Player.sp.x = 1.0f;
 				g_Player.PaternNo += 0.25f;
@@ -120,7 +125,8 @@ void UpdatePlayer()
 				g_Player.dir = PLAYER_DIRECTION::RIGHT;
 				g_Player.uv_w = PLAYER_UV_W;
 			}
-			else if (GetKeyboardPress(DIK_LEFT))//左キー
+			else if (GetThumbLeftX(0) < -0.3f ||			// GamePad	右スティック	左
+				Keyboard_IsKeyDown(KK_LEFT))				// Keyboard	左
 			{//押されているときの処理
 				g_Player.sp.x = -1.0f;
 				g_Player.PaternNo -= 0.25f;
@@ -132,7 +138,6 @@ void UpdatePlayer()
 			else
 			{
 				g_Player.sp.x = 0;
-
 			}
 
 			// アニメーションパターン番号を0～15の範囲内にする
@@ -144,7 +149,8 @@ void UpdatePlayer()
 
 			for (int i = 0; i < JUMPSTAND_MAX; i++) {
 				if (p_JumpStand[i].UseJumpStand) {
-					if (GetKeyboardPress(DIK_B))
+					if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
+						Keyboard_IsKeyDown(KK_B))						// Keyboard	B
 					{
 						if (CollisionBB(g_Player.Position, p_JumpStand[i].pos, g_Player.size, p_JumpStand[i].size)) {
 							p_JumpStand[i].GetJumpStand = true;
@@ -200,7 +206,8 @@ void UpdatePlayer()
 				}
 
 				//プレイヤー上・ブロック下,着地する
-				if (!GetKeyboardPress(DIK_DOWN))
+				if (!GetThumbLeftY(0) < -0.3f ||		// GamePad	左スティック	下
+					!Keyboard_IsKeyDown(KK_DOWN))		// Keyboard 下
 				{
 					if ((g_Player.oldpos.y + g_Player.size.y / 2 < pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
 						CollisionBB(g_Player.Position, pSheerFloors[i].pos, g_Player.size, pSheerFloors[i].size))
@@ -229,7 +236,9 @@ void UpdatePlayer()
 
 			for (int i = 0; i < SHEERFLOORS_NUM; i++)
 			{
-				if (!GetKeyboardPress(DIK_DOWN)) {
+				if (!GetThumbLeftY(0) < 0.3f ||					// GamePad	左スティック	下
+					!Keyboard_IsKeyDown(KK_DOWN))				// Keyboard	下
+				{
 					// プレイヤーの下にブロックがあったら
 					if ((g_Player.Position.y + g_Player.size.y / 2 + 0.05f > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
 						(g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2) &&
@@ -250,12 +259,16 @@ void UpdatePlayer()
 				}
 			}
 
-			if (GetKeyboardTrigger(DIK_DOWN)) {
+			if (GetThumbLeftY(0) < -0.3f ||			// GamePad	左スティック	下
+				Keyboard_IsKeyDown(KK_DOWN))		// Keyboard	下
+			{
 				g_Player.isSheerFloors = false;
 			}
 
 			// ジャンプ
-			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh) && GetKeyboardPress(DIK_SPACE))
+			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh) && 
+				(IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||					// GamePad	B 
+				Keyboard_IsKeyTrigger(KK_SPACE)))							// Keyboard	SPACE
 			{
 				g_Player.sp.y = -2.5f;			// スピードのyをマイナスにする
 
@@ -821,7 +834,8 @@ void UpdatePlayer()
 
 
 
-			if (GetKeyboardTrigger(DIK_R))	//Rキーが押されたら
+			if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_THUMB) || 	// GamePad	Lタブ
+				Keyboard_IsKeyTrigger(KK_R))						// Keyboard	R
 			{
 				ResetGame();
 			}

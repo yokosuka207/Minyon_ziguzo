@@ -146,7 +146,9 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="goal.cpp" />
     <ClCompile Include="high_broken.cpp" />
-    <ClCompile Include="input.cpp" />
+    <ClCompile Include="input.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="joint.cpp" />
     <ClCompile Include="jump_stand.cpp" />
@@ -179,6 +181,9 @@
     <ClCompile Include="time.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="warp.cpp" />
+    <ClCompile Include="xinput.cpp" />
+    <ClCompile Include="xkeyboard.cpp" />
+    <ClCompile Include="xmouse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -192,7 +197,9 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="goal.h" />
     <ClInclude Include="high_broken.h" />
-    <ClInclude Include="input.h" />
+    <ClInclude Include="input.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="inventory.h" />
     <ClInclude Include="joint.h" />
     <ClInclude Include="jump_stand.h" />
@@ -225,6 +232,9 @@
     <ClInclude Include="time.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="warp.h" />
+    <ClInclude Include="xinput.h" />
+    <ClInclude Include="xkeyboard.h" />
+    <ClInclude Include="xmouse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

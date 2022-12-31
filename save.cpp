@@ -16,7 +16,9 @@ Update:
 #include "sprite.h"
 #include "scene.h"
 
-#include "input.h"
+//#include "input.h"
+#include "xinput.h"
+#include "xkeyboard.h"
 
 //**************************************************
 // マクロ定義
@@ -111,13 +113,15 @@ void Save::Uninit()
 void Save::Update()
 {
 	//[----------とりあえずまだ残しておきます----------
-	// Aボタンを押したら
-	if (GetKeyboardTrigger(DIK_A)) {
+	//[----------入力----------
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
+		Keyboard_IsKeyTrigger(KK_A)) {						// Keyboard	A
 		// ステージセレクトシーンへ
 		SetScene(SCENE_STAGESELECT);
 	}
 	// Zボタンを押したら
-	if (GetKeyboardTrigger(DIK_Z)) {
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_X) ||			// GamePad	X
+		Keyboard_IsKeyTrigger(KK_Z)) {						// Keyboard	Z
 		// 全データ削除
 		DeleteSaveData();
 		// テクスチャを変える
@@ -125,6 +129,7 @@ void Save::Update()
 			b.SetButtonTexNo(LoadTexture(g_TextureFileName0));
 		}
 	}
+	//----------入力----------]
 	//----------とりあえずまだ残しておきます----------]
 
 	int dataNo = 0;

@@ -43,7 +43,8 @@ Piece g_PieceMapChip[PUZZLE_MAX];
 // グローバル変数:
 //**************************************************
 static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
-static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
+//static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
+static char* g_MapChipTextureName = (char*)"data\\texture\\03.png";	//テクスチャファイルパス
 
 HRESULT InitMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
@@ -53,7 +54,10 @@ HRESULT InitMapChip() {
 		g_PieceMapChip[p].direction = 0;
 		g_PieceMapChip[p].pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 		g_PieceMapChip[p].OldMovePos = g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
-		g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);
+		//g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);		// 180 x 180
+		//g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE, PUZZLE_SIZE);		// 240 x 240
+		//g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE + 20, PUZZLE_SIZE + 20);		// 260 x 260
+		g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE + 16, PUZZLE_SIZE + 16);		// 256 x 256
 		g_PieceMapChip[p].MoveEndFlag = false;
 		for (int d = 0; d < BLOCK_CHIP_DIRECTION; d++) {
 			for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
@@ -94,10 +98,15 @@ void DrawMapChip() {
 
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_PieceMapChip[p].TexNo));
 
+			//SpriteDrawColorRotation(
+			//	g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,
+			//	g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, g_PieceMapChip[p].direction * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+			//	1, 0.5f, 1.0f, 2
+			//);
 			SpriteDrawColorRotation(
 				g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,
-				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, g_PieceMapChip[p].direction * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
-				1, 0.5f, 1.0f, 2
+				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, g_PieceMapChip[p].direction * 90, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+				0, 1.0f, 1.0f, 1
 			);
 		}
 	}

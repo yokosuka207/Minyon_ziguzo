@@ -14,7 +14,9 @@ Update:
 #include "inventory.h"
 #include "texture.h"
 #include "sprite.h"
-#include "input.h"
+//#include "input.h"
+#include "xinput.h"
+
 #include "puzzle.h"
 #include "MapChip.h"
 #include"mouse.h"
@@ -122,7 +124,7 @@ void UpdateInventory()
 			float bgmax_x = INVENTORYBG_POS_X + INVENTORYBG_SIZE_X / 2;
 
 			// 入力(マウス左Press)
-			if (IsMouseLeftPressed()) {
+			if (Mouse_IsLeftDown()) {
 				//----------Trigger挙動----------
 				if (!g_Inventory[i].IsCatch) {
 					// マウスと所持パズルが当たっていたら

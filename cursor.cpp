@@ -8,7 +8,8 @@
 #include "cursor.h"		// 自身
 #include "sprite.h"		// スプライト
 #include "texture.h"	// テクスチャ
-#include "input.h"		// 入力
+//#include "input.h"		// 入力
+#include "xinput.h"	// x入力
 
 //--------------------------------------------------
 // マクロ定義
@@ -62,24 +63,28 @@ void UninitCursor()
 void UpdateCursor()
 {
 	if (g_Cursor.useFlag) {
+		g_Cursor.oldPos = g_Cursor.pos;
 		//[----------移動----------
-		if(GetKeyboardPress(DIK_T)) {			// Press	T
-			g_Cursor.pos.x -= g_Cursor.sp.x;	// 左移動
+		if(GetThumbRightX(0) < -0.2f || GetThumbRightX(0) > 0.2f) {				// 右スティック	左右
+			g_Cursor.pos.x += GetThumbRightX(0) * 12;	// 左右移動
 		}
-		if(GetKeyboardPress(DIK_Y)) {			// Press	Y
-			g_Cursor.pos.x += g_Cursor.sp.x;	// 右移動
-		}
-		if(GetKeyboardPress(DIK_U)) {			// Press	U
-			g_Cursor.pos.y -= g_Cursor.sp.y;	// 上移動
-		}
-		if(GetKeyboardPress(DIK_I)) {			// Press	I
-			g_Cursor.pos.y += g_Cursor.sp.y;	// 下移動
+		if(GetThumbRightY(0) < -0.2f || GetThumbRightY(0) > 0.2f) {				// 右スティック	上下
+			g_Cursor.pos.y -= GetThumbRightY(0) * 12;	// 上下移動
 		}
 		//----------移動----------]
 
 		//[----------壁判定 (壁の上下左右)----------
-		if (g_Cursor.pos.y < SCREEN_LIMIT_UP || g_Cursor.pos.y > SCREEN_LIMIT_DOWN || g_Cursor.pos.x < SCREEN_LIMIT_LEFT || g_Cursor.pos.x > SCREEN_LIMIT_RIGHT) {
-			g_Cursor.pos = g_Cursor.oldPos;
+		// 上下
+		if (g_Cursor.pos.y - g_Cursor.size.y / 2 < SCREEN_LIMIT_UP ||
+			g_Cursor.pos.y + g_Cursor.size.y / 2 > SCREEN_LIMIT_DOWN) 
+		{
+			g_Cursor.pos.y = g_Cursor.oldPos.y;
+		}
+		// 左右
+		if(	g_Cursor.pos.x - g_Cursor.size.x / 2 < SCREEN_LIMIT_LEFT ||
+			g_Cursor.pos.x + g_Cursor.size.x / 2 > SCREEN_LIMIT_RIGHT) 
+		{
+			g_Cursor.pos.x = g_Cursor.oldPos.x;
 		}
 		//-----------------------------------------]
 	}

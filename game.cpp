@@ -3,7 +3,10 @@
 #include "renderer.h"
 #include "polygon.h" 
 
-#include "input.h"	//入力処理
+//#include "input.h"	//入力処理
+#include "xinput.h"
+#include "xkeyboard.h"
+
 #include "bg.h"	//背景
 #include "player.h"//プレイヤー
 #include "collision.h"	//当たり判定]
@@ -102,7 +105,9 @@ void UninitGame()
 void UpdateGame()
 {
 	//ポーズ処理
-	if (GetKeyboardTrigger(DIK_TAB)) {
+	//[----------入力----------
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_START) ||			// GamePad	START
+		Keyboard_IsKeyTrigger(KK_TAB)) {						// Keyboard	TAB
 		//ポーズフラグがoff
 		if (!(*pause)) {
 			(*pause) = true;
@@ -113,6 +118,7 @@ void UpdateGame()
 			g_time.PuaseEndTime();
 		}
 	}
+	//----------入力----------]
 	
 	if (!(*pause)) {
 		//UpdatePolygon();	//ポリゴンの更新
@@ -180,11 +186,11 @@ void DrawGame()
 		DrawThornBlock();
 		DrawInventory();			// インベントリの描画
 		g_time.DrawGameTime();
-		//DrawCursor();				// カーソルの描画
+		DrawCursor();				// カーソルの描画
 	}
 	else {
 		BgDraw();
-		//DrawCursor();				// カーソルの描画
+		DrawCursor();				// カーソルの描画
 		DrawPause();
 	}
 }

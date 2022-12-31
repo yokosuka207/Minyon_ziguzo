@@ -3,7 +3,9 @@
 #include	"renderer.h"
 #include	"texture.h"
 #include	"sprite.h"
-#include	"input.h"
+//#include	"input.h"
+#include	"xinput.h"
+#include	"xkeyboard.h"
 #include	"scene.h"
 #include	"result.h"
 #include	"mouse.h"
@@ -94,7 +96,9 @@ void	UpdatePause()
 
 		//キー入力のチェック
 
-		if (IsMouseLeftPressed())
+		if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
+			Keyboard_IsKeyTrigger(KK_TAB) ||					// Keyboard	TAB
+			Mouse_IsLeftDown())									// Mouse	左
 		{
 			if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y)
 			{

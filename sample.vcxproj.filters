@@ -43,6 +43,9 @@
     <ClCompile Include="SwitchWall.cpp" />
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="MoveBlock.cpp" />
+    <ClCompile Include="xinput.cpp" />
+    <ClCompile Include="xkeyboard.cpp" />
+    <ClCompile Include="xmouse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -87,5 +90,8 @@
     <ClInclude Include="SwitchWall.h" />
     <ClInclude Include="pause.h" />
     <ClInclude Include="MoveBlock.h" />
+    <ClInclude Include="xinput.h" />
+    <ClInclude Include="xkeyboard.h" />
+    <ClInclude Include="xmouse.h" />
   </ItemGroup>
 </Project>

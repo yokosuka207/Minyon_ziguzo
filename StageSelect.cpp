@@ -10,7 +10,11 @@
 #include "texture.h"
 #include "sprite.h"
 #include "StageSelect.h"
-#include "input.h"
+//#include "input.h"
+#include "xinput.h"
+#include "xkeyboard.h"
+#include "xmouse.h"
+
 #include "cursor.h"
 #include "MapChip.h"
 #include "scene.h"
@@ -56,22 +60,41 @@ void UninitStageSelect() {
 void UpdateStageSelect() {
 
 	//ステージ選択
-	if (GetKeyboardTrigger(DIK_RIGHT)) {
+	//[----------入力----------
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_RIGHT) ||				// GamePad	RIGHT
+		Keyboard_IsKeyTrigger(KK_RIGHT)) {								// Keyboard	RIGHT	
 		g_StageSelect.StagePieceIndex++;
 		if (g_StageSelect.StagePieceIndex > STAGE_MAX - 1) {
 			g_StageSelect.StagePieceIndex = 0;
 		}
 	}
-	if (GetKeyboardTrigger(DIK_LEFT)) {
-		g_StageSelect.StagePieceIndex--;
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_LEFT) ||				// GamePad	LEFT
+		Keyboard_IsKeyTrigger(KK_LEFT)) {								// Keyboard	LEFT	
 		if (g_StageSelect.StagePieceIndex < 0) {
 			g_StageSelect.StagePieceIndex = STAGE_MAX - 1;
 		}
 	}
-
-	if (GetKeyboardTrigger(DIK_A)) {
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||				// GamePad	A
+		Keyboard_IsKeyTrigger(KK_A)) {								// Keyboard	A	
 		SetScene(SCENE::SCENE_GAME);
 	}
+	//----------入力----------]
+
+	//if (GetKeyboardTrigger(DIK_RIGHT)) {
+	//	g_StageSelect.StagePieceIndex++;
+	//	if (g_StageSelect.StagePieceIndex > STAGE_MAX - 1) {
+	//		g_StageSelect.StagePieceIndex = 0;
+	//	}
+	//}
+	//if (GetKeyboardTrigger(DIK_LEFT)) {
+	//	g_StageSelect.StagePieceIndex--;
+	//	if (g_StageSelect.StagePieceIndex < 0) {
+	//		g_StageSelect.StagePieceIndex = STAGE_MAX - 1;
+	//	}
+	//}
+	//if (GetKeyboardTrigger(DIK_A)) {
+	//	SetScene(SCENE::SCENE_GAME);
+	//}
 }
 
 //-----------------------------------------------------------------------------
