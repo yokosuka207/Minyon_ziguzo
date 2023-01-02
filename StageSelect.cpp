@@ -178,7 +178,7 @@ void UpdateStageSelect() {
 
 
 			//移動
-			if (GetKeyboardPress(DIK_RIGHT))//右キー
+			if (Keyboard_IsKeyDown(KK_RIGHT))//右キー
 			{//押されているときの処理
 				ply.sp.x = 2.0f;
 				ply.PaternNo += 0.25f;
@@ -193,7 +193,7 @@ void UpdateStageSelect() {
 				ply.dir = PLAYER_DIRECTION::RIGHT;
 				ply.uv_w = PLAYER_UV_W;
 			}
-			else if (GetKeyboardPress(DIK_LEFT))//左キー
+			else if (Keyboard_IsKeyDown(KK_LEFT))//左キー
 			{//押されているときの処理
 				ply.sp.x = -2.0f;
 				ply.PaternNo -= 0.25f;
@@ -219,7 +219,7 @@ void UpdateStageSelect() {
 			}
 		}
 		if (STAIRS_LEFT < ply.Position.x && ply.Position.x < STAIRS_RIGHT) {
-			if (GetKeyboardPress(DIK_DOWN))//右キー
+			if (Keyboard_IsKeyDown(KK_DOWN))//右キー
 			{
 
 				if (ply.Position.y < SCREEN_HEIGHT - 110.0f)
@@ -315,7 +315,7 @@ void UpdateStageSelect() {
 				{
 					//ply.Position.x = g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 + ply.size.x / 2;
 					//ply.sp = D3DXVECTOR2(0.0f,-4.0f);
-					if (GetKeyboardPress(DIK_UP))
+					if (Keyboard_IsKeyDown(KK_UP))
 					{
 						ply.isHigh = true;	//上に上る
 
@@ -371,7 +371,7 @@ void UpdateStageSelect() {
 			{
 
 
-				if (GetKeyboardTrigger(DIK_A)) {
+				if (Keyboard_IsKeyTrigger(KK_A)) {
 					StageNo = i;
 					//SetScene(SCENE::SCENE_GAME);
 					StartFade(FADE::FADE_OUT);

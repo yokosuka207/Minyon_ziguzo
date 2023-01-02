@@ -180,7 +180,7 @@ void UpdatePlayer()
 
 			for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 				if (pMoveBlock[i].bUse) {
-					if (GetKeyboardPress(DIK_N))
+					if (Keyboard_IsKeyDown(KK_N))
 					{
 						if (CollisionBB(g_Player.Position, pMoveBlock[i].pos, g_Player.size, pMoveBlock[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
 							pMoveBlock[i].GetMoveBlock = true;
@@ -303,11 +303,11 @@ void UpdatePlayer()
 			}
 
 			// ジャンプ
-			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock) && g_Player.sp.y <= 0 && GetKeyboardPress(DIK_SPACE))
+			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock) && g_Player.sp.y <= 0 && Keyboard_IsKeyDown(KK_SPACE))
 			{
 
-    				g_Player.sp.y = 2.5f;			// スピードのyをマイナスにする
-				
+				g_Player.sp.y = 2.5f;			// スピードのyをマイナスにする
+
 				if (g_Player.isGround) {
 					g_Player.isGround = false;			// フラグをジャンプ中にする
 				}
@@ -381,7 +381,7 @@ void UpdatePlayer()
 			g_Player.Position += g_Player.sp;
 
 
-			
+
 
 			//透ける床処理
 			//SHEERFLOORS* pSheerFloors = GetSheerFloors();
@@ -546,54 +546,54 @@ void UpdatePlayer()
 
 			////トゲ・プレイヤー  当たり判定colision.cppへ移動
 			{
-			//プレイヤー・トゲブロック　当たり判定
-			// 
-			//for (int i = 0; i < THORN_BLOCK_MAX; i++)
-			//{
-			//	THORNBLOCK* thornblock = GetThornBlock();
-			//	if ((thornblock + i)->UseFlag == true)
-			//	{
-			//		//プレイヤー左・トゲブロック右
-			//		if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
-			//			g_Player.oldpos.x + g_Player.size.x / 2 <= (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
-			//			g_Player.Position.y + g_Player.size.y / 2 > (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 &&
-			//			g_Player.Position.y - g_Player.size.y / 2 < (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2)
-			//		{
-			//			g_Player.Position.x = (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 - g_Player.size.x / 2;
-			//			//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
-			//		}
-			//		//プレイヤー右・トゲブロック左
-			//		if (g_Player.Position.x - g_Player.size.x / 2 < (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
-			//			g_Player.oldpos.x - g_Player.size.x / 2 >= (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
-			//			g_Player.Position.y + g_Player.size.y / 2 > (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 &&
-			//			g_Player.Position.y - g_Player.size.y / 2 < (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2)
-			//		{
-			//			g_Player.Position.x = (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 + g_Player.size.x / 2;
-			//			//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
-			//		}
+				//プレイヤー・トゲブロック　当たり判定
+				// 
+				//for (int i = 0; i < THORN_BLOCK_MAX; i++)
+				//{
+				//	THORNBLOCK* thornblock = GetThornBlock();
+				//	if ((thornblock + i)->UseFlag == true)
+				//	{
+				//		//プレイヤー左・トゲブロック右
+				//		if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
+				//			g_Player.oldpos.x + g_Player.size.x / 2 <= (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
+				//			g_Player.Position.y + g_Player.size.y / 2 > (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 &&
+				//			g_Player.Position.y - g_Player.size.y / 2 < (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2)
+				//		{
+				//			g_Player.Position.x = (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 - g_Player.size.x / 2;
+				//			//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
+				//		}
+				//		//プレイヤー右・トゲブロック左
+				//		if (g_Player.Position.x - g_Player.size.x / 2 < (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
+				//			g_Player.oldpos.x - g_Player.size.x / 2 >= (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
+				//			g_Player.Position.y + g_Player.size.y / 2 > (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 &&
+				//			g_Player.Position.y - g_Player.size.y / 2 < (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2)
+				//		{
+				//			g_Player.Position.x = (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 + g_Player.size.x / 2;
+				//			//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
+				//		}
 
-			//		//プレイヤー上・トゲブロック下
-			//		if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
-			//			g_Player.Position.x - g_Player.size.x / 2 < (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
-			//			g_Player.Position.y + g_Player.size.y / 2 > (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 &&
-			//			g_Player.oldpos.y + g_Player.size.y / 2 <= (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2)
-			//		{
-			//			g_Player.Position.y = (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 - g_Player.size.y / 2;
-			//			//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
-			//			//(SCENE_RESULT);
-			//		}
-			//		//プレイヤー下・トゲブロック上,
-			//		if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
-			//			g_Player.Position.x - g_Player.size.x / 2 < (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
-			//			g_Player.Position.y - g_Player.size.y / 2 < (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2 &&
-			//			g_Player.oldpos.y - g_Player.size.y / 2 >= (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2)
-			//		{
-			//			g_Player.Position.y = (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2 + g_Player.size.y / 2;
-			//			//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
-			//		}
-			//	}
-			//}
-		}
+				//		//プレイヤー上・トゲブロック下
+				//		if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
+				//			g_Player.Position.x - g_Player.size.x / 2 < (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
+				//			g_Player.Position.y + g_Player.size.y / 2 > (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 &&
+				//			g_Player.oldpos.y + g_Player.size.y / 2 <= (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2)
+				//		{
+				//			g_Player.Position.y = (thornblock + i)->Postion.y - (thornblock + i)->Size.y / 2 - g_Player.size.y / 2;
+				//			//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
+				//			//(SCENE_RESULT);
+				//		}
+				//		//プレイヤー下・トゲブロック上,
+				//		if (g_Player.Position.x + g_Player.size.x / 2 > (thornblock + i)->Postion.x - (thornblock + i)->Size.x / 2 &&
+				//			g_Player.Position.x - g_Player.size.x / 2 < (thornblock + i)->Postion.x + (thornblock + i)->Size.x / 2 &&
+				//			g_Player.Position.y - g_Player.size.y / 2 < (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2 &&
+				//			g_Player.oldpos.y - g_Player.size.y / 2 >= (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2)
+				//		{
+				//			g_Player.Position.y = (thornblock + i)->Postion.y + (thornblock + i)->Size.y / 2 + g_Player.size.y / 2;
+				//			//g_Player.UseFlag = false;//ゲームオーバーもしくはライフ-1
+				//		}
+				//	}
+				//}
+			}
 
 			////プレイヤー・高所落下壊れるブロック　当たり判定 collision.cppへ移動
 			{
@@ -764,8 +764,8 @@ void UpdatePlayer()
 				//		}
 				//	}
 				//}
-		}
-		
+			}
+
 			////鍵を取得したプレイヤー・鍵で開く扉　当たり判定 collision.cppへ移動
 			{
 				//for (int i = 0; i < OPEN_KEY_MAX; i++)
@@ -925,108 +925,109 @@ void UpdatePlayer()
 				//		}
 				//	}
 				//}
-			if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_THUMB) || 	// GamePad	Lタブ
-				Keyboard_IsKeyTrigger(KK_R))						// Keyboard	R
-			{
-				ResetGame();
-			}
-
-			//プレイヤーとパズルの画面外判定
-			Piece* pPiece = GetPiece();
-
-			for (int i = 0; i < PUZZLE_MAX; i++)
-			{
-				if (pPiece[i].UseFlag)
+				if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_THUMB) || 	// GamePad	Lタブ
+					Keyboard_IsKeyTrigger(KK_R))						// Keyboard	R
 				{
-					bool hitflag = CollisionBB(g_Player.Position, pPiece[i].pos, g_Player.size, pPiece[i].size);
+					ResetGame();
+				}
 
-					if (hitflag)
+				//プレイヤーとパズルの画面外判定
+				Piece* pPiece = GetPiece();
+
+				for (int i = 0; i < PUZZLE_MAX; i++)
+				{
+					if (pPiece[i].UseFlag)
 					{
-						if (g_Player.Position.y < pPiece[i].pos.y - PUZZLE_HEIGHT/2)
-						{
-							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, DOWN);
+						bool hitflag = CollisionBB(g_Player.Position, pPiece[i].pos, g_Player.size, pPiece[i].size);
 
-							if (!hitflag2)
+						if (hitflag)
+						{
+							if (g_Player.Position.y < pPiece[i].pos.y - PUZZLE_HEIGHT / 2)
 							{
-								g_Player.sp.y -= 0.2;//加速
-							}
-							else
-							{//下に何もなく死亡する場合
-								for (int i = 0; i < SPAWN_POINT_MAX; i++)
+								bool hitflag2 = PlayerPieceOpen(pPiece[i], i, DOWN);
+
+								if (!hitflag2)
 								{
-									if (pSpawnPoint[i].UseFlag)
+									g_Player.sp.y -= 0.2;//加速
+								}
+								else
+								{//下に何もなく死亡する場合
+									for (int i = 0; i < SPAWN_POINT_MAX; i++)
 									{
-										if (g_Player.PieceIndex == pSpawnPoint[i].PieceIndex)
+										if (pSpawnPoint[i].UseFlag)
 										{
-											g_Player.Position = pSpawnPoint[i].Position;
+											if (g_Player.PieceIndex == pSpawnPoint[i].PieceIndex)
+											{
+												g_Player.Position = pSpawnPoint[i].Position;
+
+											}
+
 
 										}
-
-
 									}
+
+								}
+							}
+							else if (g_Player.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
+							{
+
+								bool hitflag2 = PlayerPieceOpen(pPiece[i], i, RIGHT);
+
+								if (!hitflag2)
+								{
+									//g_Player.sp.y += 0.2;//加速
+								}
+								else
+								{
+									g_Player.Position.x = g_Player.oldpos.x;
+								}
+
+
+							}
+							else if (g_Player.Position.x <= pPiece[i].pos.x - PUZZLE_WIDHT / 2)
+							{
+								bool hitflag2 = PlayerPieceOpen(pPiece[i], i, LEFT);
+
+								if (!hitflag2)
+								{
+									//g_Player.sp.y += 0.2;//加速
+								}
+								else
+								{
+									g_Player.Position.x = g_Player.oldpos.x;
+								}
+
+
+							}
+							else if (g_Player.Position.y >= pPiece[i].pos.y + PUZZLE_HEIGHT / 2)
+							{
+								bool hitflag2 = PlayerPieceOpen(pPiece[i], i, UP);
+
+								if (!hitflag2)
+								{
+									//g_Player.sp.y += 0.2;//加速
+								}
+								else
+								{
+
+									g_Player.fall = true;
+									//g_Player.sp.y = 0;
+									//g_Player.getfall = true;
+									g_Player.frame = 50;
+									//g_Player.sp.y += 0.2;//加速
 								}
 
 							}
 						}
-						else if (g_Player.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
-						{
-
-							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, RIGHT);
-
-							if (!hitflag2)
-							{
-								//g_Player.sp.y += 0.2;//加速
-							}
-							else
-							{
-								g_Player.Position.x = g_Player.oldpos.x;
-							}
-
-
-						}
-						else if (g_Player.Position.x <= pPiece[i].pos.x - PUZZLE_WIDHT / 2)
-						{
-							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, LEFT);
-
-							if (!hitflag2)
-							{
-								//g_Player.sp.y += 0.2;//加速
-							}
-							else
-							{
-								g_Player.Position.x = g_Player.oldpos.x;
-							}
-
-
-						}
-						else if (g_Player.Position.y >= pPiece[i].pos.y + PUZZLE_HEIGHT/2)
-						{
-							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, UP);
-
-							if (!hitflag2)
-							{
-								//g_Player.sp.y += 0.2;//加速
-							}
-							else
-							{
-
-								g_Player.fall = true;
-								//g_Player.sp.y = 0;
-								//g_Player.getfall = true;
-								g_Player.frame = 50;
-								//g_Player.sp.y += 0.2;//加速
-							}
-
-						}
 					}
+
+
 				}
 
 
 			}
 
-
 		}
-
 	}
 }
 //=============================================================================

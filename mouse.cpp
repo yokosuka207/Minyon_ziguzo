@@ -267,7 +267,7 @@ void UpdateGameMouse()
 
 						if (!Mouse.pFlag)
 						{
-							if (GetKeyboardTrigger(DIK_A))	//aキーが押されたら
+							if (Keyboard_IsKeyTrigger(KK_A))	//aキーが押されたら
 							{
 								RotateMapChipR(NoIndex);
 								Mouse.RotIndex += 1;
@@ -319,7 +319,7 @@ void UpdateGameMouse()
 				pPiece[i].pos.x + pPiece[i].size.x / 3 > Mouse.PosX &&
 				!oneFlag) {
 
-				if (GetKeyboardTrigger(DIK_Y))
+				if (Keyboard_IsKeyTrigger(KK_Y))
 				{
 					DeleteMapChip(i);
 					SetPieceMapChip(pPiece[i].pos, pPiece[i].no);

@@ -129,7 +129,7 @@ void	UpdateResult()
 	if (ResultObject[0].type == WIN) 
 	{
 		//キー入力のチェック
-		if (GetKeyboardTrigger(DIK_SPACE))
+		if (Keyboard_IsKeyTrigger(KK_SPACE))
 		{
 			//SetScene(SCENE::SCENE_TITLE);
 			StartFade(FADE::FADE_OUT);

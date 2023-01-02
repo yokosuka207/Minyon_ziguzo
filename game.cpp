@@ -125,21 +125,21 @@ void UninitGame()
 void UpdateGame()
 {
 	//ポーズ処理
-	if (GetKeyboardTrigger(DIK_TAB)) {
+	if (Keyboard_IsKeyTrigger(KK_TAB)) {
 		//ポーズフラグがoff
 		if (!(*pause)) {
 			(*pause) = true;
 			pTime->PauseStartTime();
 		}
 	}	
-	if(GetKeyboardTrigger(DIK_Z)) {
+	if(Keyboard_IsKeyTrigger(KK_Z)) {
 		if ((*pause)) {
 			(*pause) = false;
 			pTime->PauseEndTime();
 			pTime->PauseElapsedTime();
 		}
 	}
-	if (GetKeyboardTrigger(DIK_R)) {
+	if (Keyboard_IsKeyTrigger(KK_R)) {
 		ResetGame();
 	}
 	if (!(*pause)) {
