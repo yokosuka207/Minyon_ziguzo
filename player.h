@@ -13,7 +13,7 @@
 //マクロ定義
 //=============================================================================
 
-#define PLAYER_SIZE_W (25)
+#define PLAYER_SIZE_W (10)
 #define PLAYER_SIZE_H (30)
 
 #define PLAYER_COOLTIME	(120)
@@ -49,6 +49,7 @@ struct PLAYER
 	//int Hp;
 
 	D3DXVECTOR2 size;//BOXサイズ
+	D3DXVECTOR2 Drawsize;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
 	D3DXVECTOR2 oldpos;//1フレーム前の座標
 	D3DXVECTOR2 OneOldpos;//1フレーム前の座標

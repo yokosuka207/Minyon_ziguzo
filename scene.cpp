@@ -9,14 +9,17 @@
 #include "time.h"
 #include "pause.h"
 #include "score.h"
+#include "fade.h"
 
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
+static FADEPARAM* pFade = GetFadeParam();
 static clock_t Elapsedtime = 0;
 static clock_t PauseElapsed = 0;
+static int	StageNo = 0;
 static Save g_SaveScene;				// セーブクラスのインスタンス
 
 void InitScene(SCENE no){
@@ -28,6 +31,7 @@ void InitScene(SCENE no){
 		InitTitle();
 		break;
 	case SCENE::SCENE_DATASELECT:
+		pFade->ExceptFlag = false;
 		g_SaveScene.Init();
 		break;
 	case SCENE::SCENE_STAGESELECT:
@@ -35,6 +39,7 @@ void InitScene(SCENE no){
 		SetStageSelect();
 		break;
 	case SCENE::SCENE_GAME :
+		pFade->ExceptFlag = false;
 		pTime->StartTime();
 		InitGame();
 		break;
@@ -62,6 +67,7 @@ void UninitScene(){
 	case SCENE::SCENE_GAME:
 		Elapsedtime = pTime->SumTime();
 		PauseElapsed = pTime->PauseElapsedTime();
+		StageNo = ReturnStageNo();
 		UninitGame();
 		break;
 	case SCENE::SCENE_RESULT:
@@ -116,6 +122,7 @@ void DrawScene(){
 		DrawResult();
 		pTime->DrawResultTime(Elapsedtime,PauseElapsed);
 		pScore->DrawScore();
+		pScore->SetStageNo(StageNo);
 		break;
 	default:
 		break;

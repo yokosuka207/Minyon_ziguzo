@@ -8,7 +8,10 @@
 ==============================================================================*/
 #include	"main.h"
 #include	"renderer.h"
-#include "input.h"	//入力処理
+//#include "input.h"	//入力処理
+#include "xinput.h"		// xinput版入力
+#include "xkeyboard.h"	// xinput版キーボード
+#include "xmouse.h"		// xinput版マウス
 
 //#include	"polygon.h"	//新しく追加したプログラム
 //#include"bg.h"	//背景
@@ -24,7 +27,8 @@
 #include"texture.h"
 #include"game.h"
 #include"scene.h"
-
+#include "sound.h"
+#include "fade.h"
 
 
 //*****************************************************************************
@@ -190,6 +194,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 //=============================================================================
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	// xinputのキーボードとマウスのプロセスメッセージ
+	Keyboard_ProcessMessage(uMsg, wParam, lParam);
+	Mouse_ProcessMessage(uMsg, wParam, lParam);
+
 	switch (uMsg) {
 	case WM_KEYDOWN:
 		if (wParam == VK_ESCAPE) {
@@ -211,6 +219,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		return 0;
 	};
 
+
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
@@ -226,11 +235,17 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	InitInput(hInstance,hWnd);
 	SpriteInit();
 
+	// xinputの入力処理の初期化
+	Mouse_Initialize(hWnd);
+	Keyboard_Initialize();
+
 	//InitGame();
 	InitScene(SCENE::SCENE_TITLE);
 	//InitScene(SCENE_RESULT);
 
-		// 背面ポリゴンをカリング
+	InitSound(hWnd);
+	InitFade();
+	// 背面ポリゴンをカリング
 	SetCullingMode(CULL_MODE_NONE);
 
 
@@ -251,6 +266,8 @@ void Uninit(void)
 	SpriteUninit();
 	UninitInput();	//入力処理の終了処理
 
+	UninitSound();
+	UninitFade();
 	// レンダリングの終了処理
 	UninitRenderer();
 
@@ -264,6 +281,7 @@ void Update(void)
 {
 	UpdateInput();	//入力処理の更新処理(早めのほうがいい)
 	UpdateScene();
+	UpdateFade();
 }
 
 //=============================================================================
@@ -278,6 +296,7 @@ void Draw(void)
 	SetDepthEnable(false);
 
 	DrawScene();
+	DrawFade();
 
 	// バックバッファ、フロントバッファ入れ替え
 	Present();

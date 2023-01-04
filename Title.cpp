@@ -3,9 +3,11 @@
 #include	"renderer.h"
 #include	"texture.h"
 #include	"sprite.h"
-#include	"input.h"
+//#include	"input.h"
+#include "xinput.h"
+#include "xkeyboard.h"
 #include	"scene.h"
-
+#include	"fade.h"
 //======================
 //マクロ定義
 //=======================
@@ -17,6 +19,8 @@ static	char	*g_TitleTextureName1 = (char*)"data\\texture\\タイトル.jpg";
 
 static	ID3D11ShaderResourceView	*g_TitleTexture2 = NULL;//テクスチャ情報
 static	char	*g_TitleTextureName2 = (char*)"data\\texture\\ジグソーワールド.jpg";
+
+static FADEPARAM* pFadeParam = GetFadeParam();
 
 typedef	struct
 {
@@ -83,20 +87,22 @@ void	UninitTitle()
 void	UpdateTitle()
 {
 	//キー入力のチェック
-	if (GetKeyboardTrigger(DIK_A))
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
+		Keyboard_IsKeyTrigger(KK_A))						// Keyboard	A
 	{
 		if (TitleNum == 1)
 		{
-			SetScene(SCENE::SCENE_DATASELECT);
-
+			//SetScene(SCENE::SCENE_DATASELECT);
+			pFadeParam->ExceptFlag = true;
+			StartFade(FADE::FADE_OUT);
 		}
 		if (TitleNum == 0)
 		{
+			//フェード画面が切り替わる
 			TitleNum++;
+			StartFade(FADE::FADE_OUT);
 		}
 	}
-
-
 }
 //======================
 //描画処理

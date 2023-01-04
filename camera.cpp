@@ -5,8 +5,9 @@
 //
 //=============================================================================
 #include "main.h"
-#include "input.h"
+//#include "input.h"
 //#include "keyboard.h"
+#include "xkeyboard.h"
 #include "mouse.h"
 #include "camera.h"
 #include"player.h"
@@ -34,6 +35,7 @@
 // グローバル変数
 //*****************************************************************************
 static CAMERA			g_Camera;		// カメラデータ
+static CAMERA			g_Camera2;		// カメラデータ
 
 //=============================================================================
 // 初期化処理
@@ -53,6 +55,20 @@ void InitCamera(void)
 	g_Camera.len = sqrtf(vx * vx + vz * vz);
 	g_Camera.zoomFlag = false;
 	g_Camera.fov = 45.0f;		// 視野角の初期化
+
+
+	g_Camera2.pos = D3DXVECTOR3(POS_X_CAM, POS_Y_CAM, POS_Z_CAM);	// カメラの座標
+	g_Camera2.at = D3DXVECTOR3(0.0f, 1.0f, 0.0f);	// カメラの注視点
+	g_Camera2.up = D3DXVECTOR3(0.0f, 1.0f, 0.0f);	// カメラの上ベクトル
+
+	g_Camera2.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	// 視点と注視点の距離を計算
+	vx = g_Camera2.pos.x - g_Camera.at.x;
+	vz = g_Camera2.pos.z - g_Camera.at.z;
+	g_Camera2.len = sqrtf(vx * vx + vz * vz);
+	g_Camera2.zoomFlag = false;
+	g_Camera2.fov = 45.0f;		// 視野角の初期化
 }
 
 
@@ -72,22 +88,22 @@ void UpdateCamera(void)
 {
 	PLAYER* pPlayer = GetPlayer();
 	// カメラを初期に戻す
-	if (GetKeyboardTrigger(DIK_P))
+	if (Keyboard_IsKeyTrigger(KK_P))
 	{
 		UninitCamera();
 		InitCamera();
 	}
 
 	// 視野角を変更する
-	if (GetKeyboardTrigger(DIK_O))
+	if (Keyboard_IsKeyTrigger(KK_O))
 	{// 角度を大きくする
 		g_Camera.fov += 1.0f;
 	}
-	else if (GetKeyboardTrigger(DIK_L))
+	else if (Keyboard_IsKeyTrigger(KK_L))
 	{// 角度を小さくする
 		g_Camera.fov -= 1.0f;
 	}
-	if (GetKeyboardPress(DIK_UP))//W
+	if (Keyboard_IsKeyDown(KK_UP))//W
 	{
 		g_Camera.fov -= 0.2f;
 		g_Camera.zoomFlag = true;
@@ -98,7 +114,7 @@ void UpdateCamera(void)
 		}
 
 	}
-	if (GetKeyboardPress(DIK_DOWN))//S
+	if (Keyboard_IsKeyDown(KK_DOWN))//S
 	{
 		g_Camera.fov += 0.2f;
 		if (g_Camera.fov > 47.0f)
@@ -111,7 +127,7 @@ void UpdateCamera(void)
 		}
 
 	}
-	if (GetKeyboardPress(DIK_Z))
+	if (Keyboard_IsKeyDown(KK_Z))
 	{
 
 	}

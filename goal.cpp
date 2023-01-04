@@ -2,13 +2,13 @@
 #include "goal_key.h"
 #include "texture.h"
 #include "sprite.h"
-#include "input.h"
 #include "puzzle.h"
 #include "scene.h"
 #include "player.h"
 #include "mouse.h"
 #include "result.h"
 #include "time.h"
+#include "fade.h"
 
 GOAL g_Goal;
 GKey g_GKey;
@@ -38,7 +38,7 @@ void UninitGoal()
 
 void UpdateGoal()
 {
-	/*if (g_Goal.UseFlag)
+	if (g_Goal.UseFlag)
 	{
 		PLAYER* pPlayer = GetPlayer();
 		GKey* pGKey = GetGKey();
@@ -54,12 +54,13 @@ void UpdateGoal()
 			{
 				g_Goal.UseFlag = false;
 				SetResultType(WIN);
-				SetScene(SCENE_RESULT);	
+				//SetScene(SCENE_RESULT);
+				StartFade(FADE::FADE_OUT);
 				pTime->EndTime();
 				pTimeParam->EndFlag = true;
 			}
 		}
-	}*/
+	}
 }
 
 void DrawGoal()

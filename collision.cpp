@@ -22,7 +22,7 @@
 #include "spawnpoint.h"
 #include "joint.h"
 #include "SplitStage.h"
-
+#include "fade.h"
 //ギミック関連
 #include "block.h"			//基本ブロック
 #include "thorn_block.h"	//トゲブロック
@@ -93,7 +93,7 @@ void UpdateCollision()
 	
 	// 使用ゲット一覧-----------------------------
 
-	PLAYER* pPlayer = GetPlayer();
+	//PLAYER* pPlayer = GetPlayer();
 	MOUSE* pMouse = GetMouse();
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 	Piece* pPiece = GetPiece();
@@ -255,7 +255,8 @@ void UpdateCollision()
 
 					if (pPlayer->hp <= 0) {
 						SetResultType(LOSE);
-						SetScene(SCENE::SCENE_RESULT);
+						//SetScene(SCENE::SCENE_RESULT);
+						StartFade(FADE::FADE_OUT);
 						pTime->EndTime();
 						pTimeParam->EndFlag = true;
 					}
@@ -286,7 +287,8 @@ void UpdateCollision()
 			pResult[0].type = LOSE;
 			pTime->EndTime();
 			pTimeParam->EndFlag = true;
-			SetScene(SCENE::SCENE_RESULT);
+			//SetScene(SCENE::SCENE_RESULT);
+			StartFade(FADE::FADE_OUT);
 		}
 	}
 
@@ -312,8 +314,8 @@ void UpdateCollision()
 			//プレイヤー右・ブロック左
 			if (pPlayer->Position.x - pPlayer->size.x / 2 < (pChipblock + i)->Position.x + (pChipblock + i)->Size.x / 2 &&
 				pPlayer->oldpos.x - pPlayer->size.x / 2 >= (pChipblock + i)->Position.x + (pChipblock + i)->Size.x / 2 &&
-				pPlayer->Position.y + pPlayer->size.y / 3 > (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 3 &&
-				pPlayer->Position.y - pPlayer->size.y / 3 < (pChipblock + i)->Position.y + (pChipblock + i)->Size.y / 3)
+				pPlayer->Position.y + pPlayer->size.y / 2 > (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2 &&
+				pPlayer->Position.y - pPlayer->size.y / 2 < (pChipblock + i)->Position.y + (pChipblock + i)->Size.y / 2)
 			{
 				pPlayer->Position.x = (pChipblock + i)->Position.x + (pChipblock + i)->Size.x / 2 + pPlayer->size.x / 2;
 			}
@@ -338,6 +340,8 @@ void UpdateCollision()
 				pPlayer->Position.y + pPlayer->size.y / 2 > (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2 &&
 				pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2)
 			{
+				pPlayer->Position.y = (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2 - pPlayer->size.y / 2 - 0.02f;
+
 				pPlayer->fall = true;
 				pPlayer->getfall = true;
 				pPlayer->frame = 50;
@@ -748,7 +752,8 @@ void UpdateCollision()
 					{
 						GetGoal()->UseFlag = false;
 						SetResultType(WIN);
-						SetScene(SCENE_RESULT);
+						//SetScene(SCENE_RESULT);
+						StartFade(FADE::FADE_OUT);
 						pTime->EndTime();
 						pTimeParam->EndFlag = true;
 					}

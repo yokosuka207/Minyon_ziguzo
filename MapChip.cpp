@@ -47,7 +47,8 @@ Piece g_PieceMapChip[PUZZLE_MAX];
 // グローバル変数:
 //**************************************************
 static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
-static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
+//static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
+static char* g_MapChipTextureName = (char*)"data\\texture\\03.png";	//テクスチャファイルパス
 
 HRESULT InitMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
@@ -57,7 +58,10 @@ HRESULT InitMapChip() {
 		g_PieceMapChip[p].direction = 2;
 		g_PieceMapChip[p].pos = D3DXVECTOR2(0.0f,0.0f);
 		g_PieceMapChip[p].OldMovePos = g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
-		g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);
+		//g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);		// 180 x 180
+		//g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE, PUZZLE_SIZE);		// 240 x 240
+		g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE + 20, PUZZLE_SIZE + 20);		// 260 x 260
+		//g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE + 16, PUZZLE_SIZE + 16);		// 256 x 256
 		g_PieceMapChip[p].MoveEndFlag = false;
 		g_PieceMapChip[p].MoveFlag = false;
 		for (int d = 0; d < BLOCK_CHIP_DIRECTION; d++) {
@@ -100,6 +104,11 @@ void DrawMapChip() {
 
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_PieceMapChip[p].TexNo));
 
+			//SpriteDrawColorRotation(
+			//	g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,
+			//	g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, g_PieceMapChip[p].direction * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+			//	1, 0.5f, 1.0f, 2
+			//);
 			SpriteDrawColorRotation(
 				g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,0.0f,
 				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, g_PieceMapChip[p].direction * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
@@ -160,10 +169,10 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13　ボタン
 				SetSwitch(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14　ボタンで開く扉×３
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14　ボタンで開く扉×3
 				SetSwitchWall(position, DrawSize, no, 3);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15　ボタンで開く扉×３
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15　ボタンで開く扉×4
 				SetSwitchWall(position, DrawSize, no, 4);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
@@ -217,8 +226,32 @@ void FileLoad(int StageNo) {
 		filename = "data/MapData/Stage05.txt";
 		break;
 	case 7:
-		filename = "data/MapData/Stage06.txt";
+		filename = "data/MapData/Stage07.txt";
 		break;
+	case 8:
+		filename = "data/MapData/Stage08.txt";
+		break;
+	case 9:
+		filename = "data/MapData/Stage09.txt";
+		break;
+	case 10:
+		filename = "data/MapData/Stage10.txt";
+	//	break;
+	//case 11:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 12:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 13:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 14:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 15:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
 	}
 	FILE* fp;
 	//オープン

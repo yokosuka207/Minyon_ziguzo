@@ -3,8 +3,7 @@
 //--------------------------
 
 #include"main.h"
-#include"input.h"
-//#include"keyboard.h"
+#include "xkeyboard.h"
 #include"camera.h"
 #include"texture.h"
 
@@ -67,19 +66,19 @@ void PLAYER3D::Update()
 	{
 		//グローバル座標
 		MoveSpeed.x = MoveSpeed.y = MoveSpeed.z = 0.0f;
-		if (GetKeyboardPress(DIK_W))//W
+		if (Keyboard_IsKeyDown(KK_W))//W
 		{
 			//MoveSpeed.y = -MOVE_SPEED;
 		}
-		if (GetKeyboardPress(DIK_S))//S
+		if (Keyboard_IsKeyDown(KK_S))//S
 		{
 			//MoveSpeed.y = MOVE_SPEED;
 		}
-		if (GetKeyboardPress(DIK_A))//A
+		if (Keyboard_IsKeyDown(KK_A))//A
 		{
 			//MoveSpeed.x += -MOVE_SPEED;
 		}
-		if (GetKeyboardPress(DIK_D))//D
+		if (Keyboard_IsKeyDown(KK_D))//D
 		{
 			//MoveSpeed.x += MOVE_SPEED;
 		}
