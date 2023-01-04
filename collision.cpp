@@ -90,16 +90,13 @@ DIRECSION Direcsion = NUM;	//方向の確認
 void UpdateCollision()
 
 {
-	// ゲット
-	Piece* pPiece = GetPiece();
-	PLAYER* pPlayer = GetPlayer();
-	SpawnPoint* pSpawnPoint = GetSpawnPoint();
+	
 	// 使用ゲット一覧-----------------------------
 
 	PLAYER* pPlayer = GetPlayer();
 	MOUSE* pMouse = GetMouse();
-
-	//Piece* pPiece = GetPiece();
+	SpawnPoint* pSpawnPoint = GetSpawnPoint();
+	Piece* pPiece = GetPiece();
 
 	//BLOCK* pBlock = GetBlock();
 	//BLOCK* pChipblock = GetChipBlock();
