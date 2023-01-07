@@ -73,6 +73,9 @@ void UpdateCursor()
 		}
 		//----------移動----------]
 
+		g_Cursor.pos.x = GetMousePosX();
+		g_Cursor.pos.y = GetMousePosY();
+
 		//[----------壁判定 (壁の上下左右)----------
 		// 上下
 		if (g_Cursor.pos.y - g_Cursor.size.y / 2 < SCREEN_LIMIT_UP ||
@@ -95,6 +98,8 @@ void UpdateCursor()
 //==================================================
 void DrawCursor()
 {
+	SetWorldViewProjection2D();
+
 	if (g_Cursor.useFlag) {
 		// テクスチャの設定
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Cursor.texNo));
