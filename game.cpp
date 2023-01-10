@@ -37,6 +37,7 @@
 #include "scene.h"
 #include "pause.h"
 #include "goal_key.h"
+#include "doppelganger.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -75,7 +76,12 @@ void InitGame()
 		InitSwitch();
 		InitSwitchWall();
 		InitMoveBlock();
+
+		InitDoppelganger();
+		SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1);
+
 		InitPause();
+		
 
 	}
 	InitMapChip();
@@ -88,6 +94,8 @@ void InitGame()
 		pTime->SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
 		pTime->StartTime();
 	}
+
+
 }
 
 
@@ -116,6 +124,9 @@ void UninitGame()
 	UninitHigh();
 	UninitSwitch();
 	UninitSwitchWall();
+
+	UninitDoppelganger();
+
 	UninitPause();
 	pScore->UninitScore();
 	pTime->UninitTime();
@@ -167,6 +178,9 @@ void UpdateGame()
 		UpdateHigh();
 		UpdateSwitch();
 		UpdateSwitchWall();
+
+		UpdateDoppelganger();
+
 		UpdateInventory();			// インベントリの更新
 		UpdateMapChip();
 		UpdateGameMouse();
@@ -213,6 +227,9 @@ void DrawGame()
 		DrawBroken();
 
 		DrawThornBlock();
+
+		DrawDoppelganger();
+
 		DrawInventory();			// インベントリの描画
 		pTime->DrawGameTime();
 		DrawCursor();				// カーソルの描画

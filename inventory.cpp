@@ -24,10 +24,10 @@ Update:
 // マクロ定義
 //**************************************************
 #define INVENTORY_MAX			(4)
-#define INVENTORY_SIZE_X		(60)
-#define INVENTORY_SIZE_Y		(60)
-#define INVENTORY_BIGSIZE_X		(80)
-#define INVENTORY_BIGSIZE_Y		(80)
+#define INVENTORY_SIZE_X		(96)
+#define INVENTORY_SIZE_Y		(96)
+#define INVENTORY_BIGSIZE_X		(120)
+#define INVENTORY_BIGSIZE_Y		(120)
 
 #define INVENTORY_BOX_SIZE_Y	(INVENTORYBG_SIZE_Y / INVENTORY_MAX)
 #define INVENTORY_POS_X			(INVENTORYBG_POS_X)
@@ -122,14 +122,17 @@ void UpdateInventory()
 			}
 
 			// 左に置くバージョン
-			float bgmax_x = INVENTORYBG_POS_X + INVENTORYBG_SIZE_X / 2;
+			float bgmax_x = -SCREEN_WIDTH/2 +INVENTORYBG_POS_X + INVENTORYBG_SIZE_X*2;
 
 			// 入力(マウス左Press)
 			if (Mouse_IsLeftDown()) {
 				//----------Trigger挙動----------
 				if (!g_Inventory[i].IsCatch) {
 					// マウスと所持パズルが当たっていたら
-					if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y) {
+					float x = MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x;
+					float y = MousePos.y - SCREEN_HEIGHT / 2 + g_Inventory[i].size.y;
+					y =y * -1;
+					if (min.x < (MousePos.x - SCREEN_WIDTH / 2+g_Inventory[i].size.x/2) && max.x >(MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x/2) && min.y < (y) && max.y >(y)) {
 						// 所持ピースを全部調べて誰もつかまれていなかったら自分がつかまる
 						for (int j = 0; j < INVENTORY_MAX; j++) {
 							if (g_Inventory[j].IsCatch == true) {
@@ -148,7 +151,15 @@ void UpdateInventory()
 				// つかまれていたら
 				if (g_Inventory[i].IsCatch) {
 					// パズルをマウスの位置に移動
-					g_Inventory[i].pos = MousePos;
+					float x = MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x/2;
+					float y = MousePos.y - SCREEN_HEIGHT / 2 + g_Inventory[i].size.y;
+					y = y * -1;
+
+					g_Inventory[i].pos.x = x;
+					g_Inventory[i].pos.y = y;
+					DeleteMapChip(g_Inventory[i].PieNo);
+					SetInventoryMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo, g_Inventory[i].PieNo);
+
 				}
 				//-----------------------------
 			}
@@ -157,7 +168,10 @@ void UpdateInventory()
 				if (g_Inventory[i].IsCatch) {
 					// 初期位置に戻る
 					//g_Inventory[i].pos = D3DXVECTOR2(i * INVENTORY_POS_X, INVENTORY_POS_Y);		// 下ver
-					g_Inventory[i].pos = D3DXVECTOR2(INVENTORY_POS_X, i * INVENTORY_POS_Y);			// 左ver
+					g_Inventory[i].pos = g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f * 2 - i * 150.0f);// 左ver
+					DeleteMapChip(g_Inventory[i].PieNo);
+					SetInventoryMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo, g_Inventory[i].PieNo);
+
 					// 逃れた!!!!
 					g_Inventory[i].IsCatch = false;
 				}
@@ -169,8 +183,11 @@ void UpdateInventory()
 				// 外に出たよ
 				// ピースを出す
 				//DeleteMapChip(g_Inventory[i].PieNo);
-				SetPieceMapChip(D3DXVECTOR2(pMouse->PosX,-pMouse->PosY), g_Inventory[i].PieNo);
+				//SetPieceMapChip(D3DXVECTOR2(pMouse->PosX,-pMouse->PosY), g_Inventory[i].PieNo);
+				int Pieno = g_Inventory[i].PieNo;
 				DeleteInventory(g_Inventory[i].PieNo);
+
+				SetPieceMapChip(g_Inventory[i].pos, Pieno);
 
 			}
 		}
@@ -199,9 +216,9 @@ void DrawInventory()
 	{
 		if (g_Inventory[i].IsUse) {
 			// テクスチャの設定
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Inventory[i].texno));
+			//GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Inventory[i].texno));
 			// 四角形の描画
-			SpriteDrawColorRotation(g_Inventory[i].pos.x, g_Inventory[i].pos.y,0.1f, g_Inventory[i].size.x, g_Inventory[i].size.y, 0.0f, g_Inventory[i].color, 1.0f, 1.0f, 1.0f, 1);
+			//SpriteDrawColorRotation(g_Inventory[i].pos.x, g_Inventory[i].pos.y,0.1f, g_Inventory[i].size.x, g_Inventory[i].size.y, 0.0f, g_Inventory[i].color, 1.0f, 1.0f, 1.0f, 1);
 		}
 	}
 }
@@ -218,8 +235,8 @@ void SetInventory(int PieNo)
 			if (!g_Inventory[i].IsUse) {
 				g_Inventory[i].PieNo = PieNo;
 
-				g_Inventory[i].pos = D3DXVECTOR2(INVENTORY_POS_X, i * INVENTORY_POS_Y);
-
+				g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f*2 - i * 150.0f);
+				SetInventoryMapChip(g_Inventory[i].pos, PieNo, PieNo);
 				g_Inventory[i].IsUse = true;
 
 				break;
@@ -246,6 +263,7 @@ void DeleteInventory(int PieNo)
 		if (g_Inventory[i].IsUse)
 		{
 			if (g_Inventory[i].PieNo == PieNo) {
+				DeleteMapChip(PieNo);
 				g_Inventory[i].IsCatch = false;
 				g_Inventory[i].PieNo = -1;
 				g_Inventory[i].IsUse = false;

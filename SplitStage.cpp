@@ -27,6 +27,15 @@ void InitSplitStage()
 		}
 
 	}
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			g_splitStage.Split34[i][j] = D3DXVECTOR2(g_splitStage.pos.x - SPLIT_SIZE +(SPLIT_SIZE * i), g_splitStage.pos.y + SPLIT_SIZE - (SPLIT_SIZE * j));
+
+		}
+
+	}
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
