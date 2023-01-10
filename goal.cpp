@@ -2,7 +2,6 @@
 #include "goal_key.h"
 #include "texture.h"
 #include "sprite.h"
-#include "input.h"
 #include "puzzle.h"
 #include "scene.h"
 #include "player.h"

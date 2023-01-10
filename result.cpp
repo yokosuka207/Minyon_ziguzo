@@ -2,7 +2,9 @@
 #include	"renderer.h"
 #include	"texture.h"
 #include	"sprite.h"
-#include	"input.h"
+//#include	"input.h"
+#include "xinput.h"
+#include "xkeyboard.h"
 #include	"scene.h"
 #include	"result.h"
 #include	"mouse.h"
@@ -127,7 +129,7 @@ void	UpdateResult()
 	if (ResultObject[0].type == WIN) 
 	{
 		//キー入力のチェック
-		if (GetKeyboardTrigger(DIK_SPACE))
+		if (Keyboard_IsKeyTrigger(KK_SPACE))
 		{
 			//SetScene(SCENE::SCENE_TITLE);
 			StartFade(FADE::FADE_OUT);
@@ -145,8 +147,9 @@ void	UpdateResult()
 		min2 = D3DXVECTOR2(ResultObject[2].Position.x - ResultObject[2].Size.x / 2, ResultObject[2].Position.x - ResultObject[2].Size.x / 2);
 		max2 = D3DXVECTOR2(ResultObject[2].Position.x + ResultObject[2].Size.x / 2, ResultObject[2].Position.x + ResultObject[2].Size.x / 2);
 
+
 		// マウスとcontinyボタンの当たり判定
-		if (IsMouseLeftPressed())
+		if (Mouse_IsLeftDown())
 		{
 			if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y) 
 			{
@@ -159,7 +162,7 @@ void	UpdateResult()
 		}
 		
 		// マウスと終了ボタンの当たり判定
-		if (IsMouseLeftPressed())
+		if (Mouse_IsLeftDown())
 		{
 			if (min2.x < MousePos.x && max2.x > MousePos.x && min2.y < MousePos.y && max2.y > MousePos.y)
 			{
@@ -171,7 +174,12 @@ void	UpdateResult()
 		
 	}
 
-
+	//キー入力のチェック
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_Y) ||		// GamePad	Y
+		Keyboard_IsKeyTrigger(KK_SPACE))				// Keyboard	SPACE	
+	{
+		SetScene(SCENE::SCENE_TITLE);
+	}
 }
 //======================
 //描画処理

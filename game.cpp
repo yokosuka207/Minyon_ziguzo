@@ -3,7 +3,10 @@
 #include "renderer.h"
 #include "polygon.h" 
 
-#include "input.h"	//入力処理
+//#include "input.h"	//入力処理
+#include "xinput.h"
+#include "xkeyboard.h"
+
 #include "bg.h"	//背景
 #include "player.h"//プレイヤー
 #include "collision.h"	//当たり判定]
@@ -122,21 +125,21 @@ void UninitGame()
 void UpdateGame()
 {
 	//ポーズ処理
-	if (GetKeyboardTrigger(DIK_TAB)) {
+	if (Keyboard_IsKeyTrigger(KK_TAB)) {
 		//ポーズフラグがoff
 		if (!(*pause)) {
 			(*pause) = true;
 			pTime->PauseStartTime();
 		}
 	}	
-	if(GetKeyboardTrigger(DIK_Z)) {
+	if(Keyboard_IsKeyTrigger(KK_Z)) {
 		if ((*pause)) {
 			(*pause) = false;
 			pTime->PauseEndTime();
 			pTime->PauseElapsedTime();
 		}
 	}
-	if (GetKeyboardTrigger(DIK_R)) {
+	if (Keyboard_IsKeyTrigger(KK_R)) {
 		ResetGame();
 	}
 	if (!(*pause)) {
@@ -212,7 +215,7 @@ void DrawGame()
 		DrawThornBlock();
 		DrawInventory();			// インベントリの描画
 		pTime->DrawGameTime();
-		//DrawCursor();				// カーソルの描画
+		DrawCursor();				// カーソルの描画
 		g_Player3D.Draw();
 		SetCamera();
 

@@ -47,17 +47,39 @@ Piece g_PieceMapChip[PUZZLE_MAX];
 // グローバル変数:
 //**************************************************
 static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
-static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
+//static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
+static char* g_MapChipTextureName = (char*)"data\\texture\\パズルピース修正版\\16.png";	//テクスチャファイルパス
+static char* g_MCTNArray[16] = {
+	(char*)"data\\texture\\パズルピース修正版\\01.png",
+	(char*)"data\\texture\\パズルピース修正版\\02.png",
+	(char*)"data\\texture\\パズルピース修正版\\03.png",
+	(char*)"data\\texture\\パズルピース修正版\\04.png",
+	(char*)"data\\texture\\パズルピース修正版\\05.png",
+	(char*)"data\\texture\\パズルピース修正版\\06.png",
+	(char*)"data\\texture\\パズルピース修正版\\07.png",
+	(char*)"data\\texture\\パズルピース修正版\\08.png",
+	(char*)"data\\texture\\パズルピース修正版\\09.png",
+	(char*)"data\\texture\\パズルピース修正版\\10.png",
+	(char*)"data\\texture\\パズルピース修正版\\11.png",
+	(char*)"data\\texture\\パズルピース修正版\\12.png",
+	(char*)"data\\texture\\パズルピース修正版\\13.png",
+	(char*)"data\\texture\\パズルピース修正版\\14.png",
+	(char*)"data\\texture\\パズルピース修正版\\15.png",
+	(char*)"data\\texture\\パズルピース修正版\\16.png"};
 
 HRESULT InitMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		g_PieceMapChip[p].UseFlag = false;
 		g_PieceMapChip[p].no = -1;
-		g_PieceMapChip[p].TexNo = LoadTexture(g_MapChipTextureName);
+		//g_PieceMapChip[p].TexNo = LoadTexture(g_MapChipTextureName);
+		g_PieceMapChip[p].TexNo = LoadTexture(g_MCTNArray[1]);
 		g_PieceMapChip[p].direction = 2;
 		g_PieceMapChip[p].pos = D3DXVECTOR2(0.0f,0.0f);
 		g_PieceMapChip[p].OldMovePos = g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
-		g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);
+		//g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);		// 180 x 180
+		g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE, PUZZLE_SIZE);		// 240 x 240
+		//g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE + 20, PUZZLE_SIZE + 20);		// 260 x 260
+		//g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE + 16, PUZZLE_SIZE + 16);		// 256 x 256
 		g_PieceMapChip[p].MoveEndFlag = false;
 		g_PieceMapChip[p].MoveFlag = false;
 		g_PieceMapChip[p].InventoryFlag = false;
@@ -104,7 +126,7 @@ void DrawMapChip() {
 			SpriteDrawColorRotation(
 				g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,0.0f,
 				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, g_PieceMapChip[p].direction * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
-				1, 0.5f, 1.0f, 2
+				1, 1.0f, 1.0f, 1
 			);
 		}
 	}
@@ -220,8 +242,32 @@ void FileLoad(int StageNo) {
 		filename = "data/MapData/Stage05.txt";
 		break;
 	case 7:
-		filename = "data/MapData/Stage06.txt";
+		filename = "data/MapData/Stage07.txt";
 		break;
+	case 8:
+		filename = "data/MapData/Stage08.txt";
+		break;
+	case 9:
+		filename = "data/MapData/Stage09.txt";
+		break;
+	case 10:
+		filename = "data/MapData/Stage10.txt";
+	//	break;
+	//case 11:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 12:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 13:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 14:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
+	//case 15:
+	//	filename = "data/MapData/Stage06.txt";
+	//	break;
 	}
 	FILE* fp;
 	//オープン
@@ -337,6 +383,10 @@ void DeleteMapChip(int PieceNo) {
 Piece* GetPiece() {
 	return g_PieceMapChip;
 }
+
+//========================================
+// ピースのセット
+//========================================
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (!g_PieceMapChip[p].UseFlag) {

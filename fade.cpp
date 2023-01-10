@@ -14,19 +14,20 @@
 #include "scene.h"
 
 static ID3D11ShaderResourceView* g_FadeTexture;	//画像一枚で一つの変数が必要
-static char* g_FadeTextureName = (char*)"data\\texture\\fade_white.png";	//テクスチャファイルパス
+static char* g_FadeTextureName = (char*)"data\\texture\\fade_puzzle.png";	//テクスチャファイルパス
 
 static FADEPARAM g_FadeParam;
 
 void InitFade() {
 	g_FadeParam.TexNo = LoadTexture(g_FadeTextureName);
-	g_FadeParam.alpha = 0.0f;
+	g_FadeParam.alpha = 1.0f;
+	g_FadeParam.scaling = D3DXVECTOR2(SCREEN_WIDTH * 10, SCREEN_HEIGHT * 10);
 	g_FadeParam.state = FADE::FADE_NONE;
 	g_FadeParam.FadeFlag = false;
 	g_FadeParam.ExceptFlag = false;
 
 	g_FadeParam.pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	g_FadeParam.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
+	g_FadeParam.size = D3DXVECTOR2(0.0f, 0.0f);
 	g_FadeParam.rot = 0.0f;
 	g_FadeParam.PaternNo = 0;
 	g_FadeParam.uv_w = 1.0f / 1.0f;
@@ -42,10 +43,11 @@ void UninitFade() {
 }
 void UpdateFade() {
 	if (g_FadeParam.state == FADE::FADE_OUT) {
-		g_FadeParam.alpha += FADE_SPEED;
-
-		if (g_FadeParam.alpha >= 1.0f) {
-			g_FadeParam.alpha = 1.0f;
+		g_FadeParam.size -= D3DXVECTOR2(FADE_SPPED_X, FADE_SPPED_Y);
+		//0より小さくなっても入ってこない
+		if (g_FadeParam.size.x < 0.0f ||
+			g_FadeParam.size.y < 0.0f) {
+			g_FadeParam.size = D3DXVECTOR2(0.0f, 0.0f);
 			g_FadeParam.state = FADE::FADE_IN;
 
 			switch (*GetScene()) {
@@ -84,10 +86,11 @@ void UpdateFade() {
 	}
 
 	if (g_FadeParam.state == FADE::FADE_IN) {
-		g_FadeParam.alpha -= FADE_SPEED;
+		g_FadeParam.size += D3DXVECTOR2(FADE_SPPED_X, FADE_SPPED_Y);
 
-		if (g_FadeParam.alpha <= 0.0f) {
-			g_FadeParam.alpha = 0.0f;
+		if (fabsf(g_FadeParam.size.x) >= fabsf(g_FadeParam.scaling.x) &&
+			fabsf(g_FadeParam.size.y) >= fabsf(g_FadeParam.scaling.y)) {
+			g_FadeParam.size = g_FadeParam.scaling;
 			g_FadeParam.state = FADE::FADE_NONE;
 		}
 		g_FadeParam.FadeFlag = false;
@@ -115,10 +118,10 @@ void StartFade(FADE state) {
 	if (!g_FadeParam.FadeFlag) {
 		g_FadeParam.state = state;
 		if (g_FadeParam.state == FADE::FADE_IN) {
-			g_FadeParam.alpha = 1.0f;
+			g_FadeParam.size = D3DXVECTOR2(0.0f, 0.0f);
 		}
 		if (g_FadeParam.state == FADE::FADE_OUT) {
-			g_FadeParam.alpha = 0.0f;
+			g_FadeParam.size = g_FadeParam.scaling;
 		}
 		g_FadeParam.FadeFlag = true;
 	}

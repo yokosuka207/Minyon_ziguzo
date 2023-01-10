@@ -5,8 +5,9 @@
 //
 //=============================================================================
 #include "main.h"
-#include "input.h"
+//#include "input.h"
 //#include "keyboard.h"
+#include "xkeyboard.h"
 #include "mouse.h"
 #include "camera.h"
 #include"player.h"
@@ -87,22 +88,22 @@ void UpdateCamera(void)
 {
 	PLAYER* pPlayer = GetPlayer();
 	// ƒJƒƒ‰‚ð‰Šú‚É–ß‚·
-	if (GetKeyboardTrigger(DIK_P))
+	if (Keyboard_IsKeyTrigger(KK_P))
 	{
 		UninitCamera();
 		InitCamera();
 	}
 
 	// Ž‹–ìŠp‚ð•ÏX‚·‚é
-	if (GetKeyboardTrigger(DIK_O))
+	if (Keyboard_IsKeyTrigger(KK_O))
 	{// Šp“x‚ð‘å‚«‚­‚·‚é
 		g_Camera.fov += 1.0f;
 	}
-	else if (GetKeyboardTrigger(DIK_L))
+	else if (Keyboard_IsKeyTrigger(KK_L))
 	{// Šp“x‚ð¬‚³‚­‚·‚é
 		g_Camera.fov -= 1.0f;
 	}
-	if (GetKeyboardPress(DIK_UP))//W
+	if (Keyboard_IsKeyDown(KK_UP))//W
 	{
 		g_Camera.fov -= 0.2f;
 		g_Camera.zoomFlag = true;
@@ -113,7 +114,7 @@ void UpdateCamera(void)
 		}
 
 	}
-	if (GetKeyboardPress(DIK_DOWN))//S
+	if (Keyboard_IsKeyDown(KK_DOWN))//S
 	{
 		g_Camera.fov += 0.2f;
 		if (g_Camera.fov > 47.0f)
@@ -126,7 +127,7 @@ void UpdateCamera(void)
 		}
 
 	}
-	if (GetKeyboardPress(DIK_Z))
+	if (Keyboard_IsKeyDown(KK_Z))
 	{
 
 	}
