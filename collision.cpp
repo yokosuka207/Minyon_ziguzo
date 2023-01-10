@@ -39,7 +39,8 @@
 #include "Key.h"			//Œ®
 #include "OpenKey.h"		//Œ®‚ÅŠJ‚­”à
 #include "goal_key.h"		//ƒS[ƒ‹ê—pŒ®
-
+#include "bullet.h"			//ƒhƒbƒyƒ‹ƒQƒ“ƒK[”­ŽË’e
+#include "doppelganger.h"   //ƒhƒbƒyƒ‹ƒQƒ“ƒK[
 
 
 /*==============================================================================
@@ -57,7 +58,7 @@ bool fourPieceCollision(Piece piece, int index);
 bool PieceOpen(Piece piece, int index, DIRECSION direcsion);	//‚»‚Ì•ûŒü‚ÌƒpƒYƒ‹‚ª‹ó‚¢‚Ä‚¢‚é‚©
 bool fourNomalPieceCollision(Piece piece, int index);
 void Rotreturn(int index);	//‰ñ“]‚ð–ß‚·
-void SetPosition(Piece p,int i);
+//void SetPosition(Piece p,int i);
 bool SpritStageCollision(Piece p);
 
 void UpdateCollision();
@@ -93,7 +94,7 @@ void UpdateCollision()
 	
 	// Žg—pƒQƒbƒgˆê——-----------------------------
 
-	//PLAYER* pPlayer = GetPlayer();
+	PLAYER* pPlayer = GetPlayer();
 	MOUSE* pMouse = GetMouse();
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 	Piece* pPiece = GetPiece();
@@ -763,7 +764,47 @@ void UpdateCollision()
 			
 		}
 
+		//------------------------------------
+		//ƒhƒbƒyƒ‹ƒQƒ“ƒK[’e—p“–‚½‚è”»’è
+		//------------------------------------
+		//DOPPELGANGER* pDoppel = GetDoppelganger();
+		//BULLET* pBullet = GetBullet();
 
+		//”½ƒvƒŒƒCƒ„[’e ‚Æ “GƒLƒƒƒ‰
+		//if(pDoppel->UseFlag == true)
+		//{ 
+		//	pBullet->use = true;
+
+		//	if (pBullet->use == true)
+		//	{
+		//		if (pPlayer->UseFlag)
+		//		{
+		//			bool hit = CollisionBB(pBullet->pos, pPlayer->Position, D3DXVECTOR2(pBullet->w, pBullet->h), D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H));
+
+		//			if (hit == true)//“–‚½‚Á‚Ä‚¢‚é
+		//			{
+		//				if (pBullet->hit)
+		//				{
+		//					pPlayer->hp - (pBullet->Damage);
+		//					if (pPlayer->hp <= 0)
+		//					{
+		//						pPlayer->UseFlag = false;
+		//						StartFade(FADE::FADE_OUT);
+		//						SetResultType(LOSE);
+		//						pTime->EndTime();
+		//						pTimeParam->EndFlag = true;
+		//					}
+		//					
+		//				}
+		//			}
+		//			else//“–‚Á‚Ä‚¢‚È‚¢
+		//			{
+
+		//			}
+		//		}
+		//	}
+		//}
+		
 }
 //----------------------------------------------------------------------------------------------------------
 
