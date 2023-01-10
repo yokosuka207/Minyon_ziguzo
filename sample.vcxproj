@@ -188,6 +188,7 @@
     <ClCompile Include="thorn_block.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="warp.cpp" />
     <ClCompile Include="xinput.cpp" />
     <ClCompile Include="xkeyboard.cpp" />
@@ -247,6 +248,7 @@
     <ClInclude Include="thorn_block.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="tutorial.h" />
     <ClInclude Include="warp.h" />
     <ClInclude Include="xinput.h" />
     <ClInclude Include="xkeyboard.h" />

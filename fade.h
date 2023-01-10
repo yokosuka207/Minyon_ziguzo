@@ -10,10 +10,9 @@
 #define _FADE_H_
 
 #include "main.h"
-#define FADE_SPEED (0.02f)
 
-#define FADE_SPPED_X (22.0f * 10)	//1422 / 60
-#define FADE_SPPED_Y (12.5f * 10)	//800 / 60
+#define FADE_SPEED_X (22.0f * 100)	//1422 / 60
+#define FADE_SPEED_Y (12.5f * 100)	//800 / 60
 
 enum class FADE {
 	FADE_NONE = 0,

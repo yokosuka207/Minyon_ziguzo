@@ -232,7 +232,7 @@ void DrawGame()
 
 		DrawInventory();			// インベントリの描画
 		pTime->DrawGameTime();
-		//DrawCursor();				// カーソルの描画
+		DrawCursor();				// カーソルの描画
 		g_Player3D.Draw();
 		SetCamera();
 

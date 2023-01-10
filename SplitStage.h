@@ -22,6 +22,7 @@ typedef struct
 	int texNo;		// テクスチャ番号
 
 	D3DXVECTOR2 Split3[3][3];
+	D3DXVECTOR2 Split34[3][4];
 	D3DXVECTOR2 Split4[4][4];
 
 }SplitStage;
