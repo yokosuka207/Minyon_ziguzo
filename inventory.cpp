@@ -22,10 +22,10 @@ Update:
 // マクロ定義
 //**************************************************
 #define INVENTORY_MAX			(4)
-#define INVENTORY_SIZE_X		(60)
-#define INVENTORY_SIZE_Y		(60)
-#define INVENTORY_BIGSIZE_X		(80)
-#define INVENTORY_BIGSIZE_Y		(80)
+#define INVENTORY_SIZE_X		(96)
+#define INVENTORY_SIZE_Y		(96)
+#define INVENTORY_BIGSIZE_X		(120)
+#define INVENTORY_BIGSIZE_Y		(120)
 
 #define INVENTORY_BOX_SIZE_Y	(INVENTORYBG_SIZE_Y / INVENTORY_MAX)
 #define INVENTORY_POS_X			(INVENTORYBG_POS_X)
@@ -197,9 +197,9 @@ void DrawInventory()
 	{
 		if (g_Inventory[i].IsUse) {
 			// テクスチャの設定
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Inventory[i].texno));
+			//GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Inventory[i].texno));
 			// 四角形の描画
-			SpriteDrawColorRotation(g_Inventory[i].pos.x, g_Inventory[i].pos.y,0.1f, g_Inventory[i].size.x, g_Inventory[i].size.y, 0.0f, g_Inventory[i].color, 1.0f, 1.0f, 1.0f, 1);
+			//SpriteDrawColorRotation(g_Inventory[i].pos.x, g_Inventory[i].pos.y,0.1f, g_Inventory[i].size.x, g_Inventory[i].size.y, 0.0f, g_Inventory[i].color, 1.0f, 1.0f, 1.0f, 1);
 		}
 	}
 }
@@ -216,8 +216,8 @@ void SetInventory(int PieNo)
 			if (!g_Inventory[i].IsUse) {
 				g_Inventory[i].PieNo = PieNo;
 
-				g_Inventory[i].pos = D3DXVECTOR2(INVENTORY_POS_X, i * INVENTORY_POS_Y);
-
+				g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f*2 - i * 100.0f);
+				SetInventoryMapChip(g_Inventory[i].pos, PieNo, PieNo);
 				g_Inventory[i].IsUse = true;
 
 				break;
