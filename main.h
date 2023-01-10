@@ -26,6 +26,7 @@
 
 #pragma warning(pop)
 
+#pragma comment (lib, "xinput.lib")     // xinput
 
 
 //*****************************************************************************
