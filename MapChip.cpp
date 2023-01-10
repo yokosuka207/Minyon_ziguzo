@@ -132,7 +132,7 @@ void DrawMapChip() {
 	}
 }
 void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
-	g_PieceMapChip[no].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);
+	g_PieceMapChip[Pin].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);
 
 	//p=ブロック最大数
 		//i=y方向
@@ -144,7 +144,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			D3DXVECTOR2 position = D3DXVECTOR2((pos.x + PUZZLE_SIZE / 2) - j * BLOCK_CHIP_SIZE - BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
 			D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
 
-			switch (g_PieceMapChip[no].chip[g_PieceMapChip[Pin].direction][i][j]) {
+			switch (g_PieceMapChip[Pin].chip[g_PieceMapChip[no].direction][i][j]) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK) :	//0				
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//1　凸
