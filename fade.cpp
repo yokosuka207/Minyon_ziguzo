@@ -75,7 +75,7 @@ void UpdateFade() {
 				}
 				//í èÌ
 				else {
-					SetScene(SCENE::SCENE_TITLE);
+					SetScene(SCENE::SCENE_STAGESELECT);
 				}
 				break;
 			default:
