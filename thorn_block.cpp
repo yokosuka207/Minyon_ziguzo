@@ -11,7 +11,6 @@
 #include "polygon.h"
 #include "texture.h"
 #include "sprite.h"
-#include "input.h"
 #include "player.h"
 #include "time.h"
 #include "scene.h"

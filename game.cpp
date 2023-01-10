@@ -3,7 +3,10 @@
 #include "renderer.h"
 #include "polygon.h" 
 
-#include "input.h"	//入力処理
+//#include "input.h"	//入力処理
+#include "xinput.h"
+#include "xkeyboard.h"
+
 #include "bg.h"	//背景
 #include "player.h"//プレイヤー
 #include "collision.h"	//当たり判定]
@@ -34,6 +37,7 @@
 #include "scene.h"
 #include "pause.h"
 #include "goal_key.h"
+#include "doppelganger.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -72,7 +76,12 @@ void InitGame()
 		InitSwitch();
 		InitSwitchWall();
 		InitMoveBlock();
+
+		InitDoppelganger();
+		SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1);
+
 		InitPause();
+		
 
 	}
 	InitMapChip();
@@ -85,6 +94,8 @@ void InitGame()
 		pTime->SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
 		pTime->StartTime();
 	}
+
+
 }
 
 
@@ -113,6 +124,9 @@ void UninitGame()
 	UninitHigh();
 	UninitSwitch();
 	UninitSwitchWall();
+
+	UninitDoppelganger();
+
 	UninitPause();
 	pScore->UninitScore();
 	pTime->UninitTime();
@@ -122,21 +136,21 @@ void UninitGame()
 void UpdateGame()
 {
 	//ポーズ処理
-	if (GetKeyboardTrigger(DIK_TAB)) {
+	if (Keyboard_IsKeyTrigger(KK_TAB)) {
 		//ポーズフラグがoff
 		if (!(*pause)) {
 			(*pause) = true;
 			pTime->PauseStartTime();
 		}
 	}	
-	if(GetKeyboardTrigger(DIK_Z)) {
+	if(Keyboard_IsKeyTrigger(KK_Z)) {
 		if ((*pause)) {
 			(*pause) = false;
 			pTime->PauseEndTime();
 			pTime->PauseElapsedTime();
 		}
 	}
-	if (GetKeyboardTrigger(DIK_R)) {
+	if (Keyboard_IsKeyTrigger(KK_R)) {
 		ResetGame();
 	}
 	if (!(*pause)) {
@@ -164,6 +178,9 @@ void UpdateGame()
 		UpdateHigh();
 		UpdateSwitch();
 		UpdateSwitchWall();
+
+		UpdateDoppelganger();
+
 		UpdateInventory();			// インベントリの更新
 		UpdateMapChip();
 		UpdateGameMouse();
@@ -183,6 +200,8 @@ void UpdateGame()
 void DrawGame()
 {
 	if (!(*pause)) {
+		SetCamera();
+
 		BgDraw();
 		DrawSplitStage();			// 区切り枠の描画
 
@@ -208,9 +227,12 @@ void DrawGame()
 		DrawBroken();
 
 		DrawThornBlock();
+
+		DrawDoppelganger();
+
 		DrawInventory();			// インベントリの描画
 		pTime->DrawGameTime();
-		//DrawCursor();				// カーソルの描画
+		DrawCursor();				// カーソルの描画
 		g_Player3D.Draw();
 		SetCamera();
 

@@ -6,7 +6,6 @@
 //=============================================================================
 #pragma once
 #include "texture.h"
-#include "input.h"
 #include "player.h"
 #include "time.h"
 #include "scene.h"

@@ -3,7 +3,6 @@
 #include "renderer.h"
 #include "texture.h"
 #include "sprite.h"
-#include "input.h"
 #include "jump_stand.h"
 #include "player.h"
 #include "collision.h"

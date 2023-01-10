@@ -9,7 +9,6 @@
 #include "polygon.h"
 #include "sprite.h"
 #include "texture.h"
-#include "input.h"
 #include "player.h"
 #include "time.h"
 #include "scene.h"

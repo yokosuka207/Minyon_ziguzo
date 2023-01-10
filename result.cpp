@@ -2,12 +2,15 @@
 #include	"renderer.h"
 #include	"texture.h"
 #include	"sprite.h"
-#include	"input.h"
+//#include	"input.h"
+#include "xinput.h"
+#include "xkeyboard.h"
 #include	"scene.h"
 #include	"result.h"
 #include	"mouse.h"
 #include	"time.h"
 #include	"score.h"
+#include	"fade.h"
 //======================
 //マクロ定義
 //=======================
@@ -41,6 +44,7 @@ int ResultSoundNo2;	//タイトルサウンド番号
 static Time* pTime = pTime->GetTime();
 static TimeParam*	pTimeParam = pTime->GetTimeParam();
 static Score* pScore = pScore->GetScore();
+static FADEPARAM* pFadeParam = GetFadeParam();
 //======================
 //初期化
 //======================
@@ -125,9 +129,10 @@ void	UpdateResult()
 	if (ResultObject[0].type == WIN) 
 	{
 		//キー入力のチェック
-		if (GetKeyboardTrigger(DIK_SPACE))
+		if (Keyboard_IsKeyTrigger(KK_SPACE))
 		{
-			SetScene(SCENE::SCENE_TITLE);
+			//SetScene(SCENE::SCENE_TITLE);
+			StartFade(FADE::FADE_OUT);
 		}
 	}
 	else if (ResultObject[0].type == LOSE)
@@ -142,30 +147,39 @@ void	UpdateResult()
 		min2 = D3DXVECTOR2(ResultObject[2].Position.x - ResultObject[2].Size.x / 2, ResultObject[2].Position.x - ResultObject[2].Size.x / 2);
 		max2 = D3DXVECTOR2(ResultObject[2].Position.x + ResultObject[2].Size.x / 2, ResultObject[2].Position.x + ResultObject[2].Size.x / 2);
 
+
 		// マウスとcontinyボタンの当たり判定
-		if (IsMouseLeftPressed())
+		if (Mouse_IsLeftDown())
 		{
 			if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y) 
 			{
 				pTimeParam->UseFlag = false;
 				pTime->StartTime();
-				SetScene(SCENE::SCENE_GAME);
+				//SetScene(SCENE::SCENE_GAME);
+				pFadeParam->ExceptFlag = true;
+				StartFade(FADE::FADE_OUT);
 			}
 		}
 		
 		// マウスと終了ボタンの当たり判定
-		if (IsMouseLeftPressed())
+		if (Mouse_IsLeftDown())
 		{
 			if (min2.x < MousePos.x && max2.x > MousePos.x && min2.y < MousePos.y && max2.y > MousePos.y)
 			{
-				SetScene(SCENE::SCENE_TITLE);
+				//SetScene(SCENE::SCENE_TITLE);
+				StartFade(FADE::FADE_OUT);
 				pTimeParam->UseFlag = false;
 			}
 		}
 		
 	}
 
-
+	//キー入力のチェック
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_Y) ||		// GamePad	Y
+		Keyboard_IsKeyTrigger(KK_SPACE))				// Keyboard	SPACE	
+	{
+		SetScene(SCENE::SCENE_TITLE);
+	}
 }
 //======================
 //描画処理

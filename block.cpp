@@ -1,7 +1,6 @@
 #include "block.h"
 #include "texture.h"
 #include "sprite.h"
-#include "input.h"
 #include "puzzle.h"
 #include "broken.h"
 #include "puzzlecip.h"

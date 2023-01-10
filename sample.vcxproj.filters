@@ -48,6 +48,13 @@
     <ClCompile Include="spawnpoint.cpp" />
     <ClCompile Include="goal_key.cpp" />
     <ClCompile Include="sound.cpp" />
+    <ClCompile Include="fade.cpp" />
+    <ClCompile Include="xinput.cpp" />
+    <ClCompile Include="xkeyboard.cpp" />
+    <ClCompile Include="xmouse.cpp" />
+    <ClCompile Include="doppelganger.cpp" />
+    <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -95,7 +102,20 @@
     <ClInclude Include="pause.h" />
     <ClInclude Include="goal_key.h" />
     <ClInclude Include="MoveBlock.h" />
-    <ClInclude Include="spawnpoint.h" />
+    <ClInclude Include="fade.h" />
     <ClInclude Include="sound.h" />
+    <ClInclude Include="spawnpoint.h" />
+    <ClInclude Include="xinput.h" />
+    <ClInclude Include="xkeyboard.h" />
+    <ClInclude Include="xmouse.h" />
+    <ClInclude Include="doppelganger.h" />
+    <ClInclude Include="bullet.h" />
+    <ClInclude Include="fade.h" />
+    <ClInclude Include="sound.h" />
+    <ClInclude Include="spawnpoint.h" />
+    <ClInclude Include="xinput.h" />
+    <ClInclude Include="xkeyboard.h" />
+    <ClInclude Include="xmouse.h" />
+    <ClInclude Include="tutorial.h" />
   </ItemGroup>
 </Project>

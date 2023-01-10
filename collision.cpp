@@ -22,7 +22,7 @@
 #include "spawnpoint.h"
 #include "joint.h"
 #include "SplitStage.h"
-
+#include "fade.h"
 //ギミック関連
 #include "block.h"			//基本ブロック
 #include "thorn_block.h"	//トゲブロック
@@ -39,7 +39,8 @@
 #include "Key.h"			//鍵
 #include "OpenKey.h"		//鍵で開く扉
 #include "goal_key.h"		//ゴール専用鍵
-
+#include "bullet.h"			//ドッペルゲンガー発射弾
+#include "doppelganger.h"   //ドッペルゲンガー
 
 
 /*==============================================================================
@@ -57,7 +58,7 @@ bool fourPieceCollision(Piece piece, int index);
 bool PieceOpen(Piece piece, int index, DIRECSION direcsion);	//その方向のパズルが空いているか
 bool fourNomalPieceCollision(Piece piece, int index);
 void Rotreturn(int index);	//回転を戻す
-void SetPosition(Piece p,int i);
+//void SetPosition(Piece p,int i);
 bool SpritStageCollision(Piece p);
 
 void UpdateCollision();
@@ -90,16 +91,13 @@ DIRECSION Direcsion = NUM;	//方向の確認
 void UpdateCollision()
 
 {
-	// ゲット
-	Piece* pPiece = GetPiece();
-	PLAYER* pPlayer = GetPlayer();
-	SpawnPoint* pSpawnPoint = GetSpawnPoint();
+	
 	// 使用ゲット一覧-----------------------------
 
 	PLAYER* pPlayer = GetPlayer();
 	MOUSE* pMouse = GetMouse();
-
-	//Piece* pPiece = GetPiece();
+	SpawnPoint* pSpawnPoint = GetSpawnPoint();
+	Piece* pPiece = GetPiece();
 
 	//BLOCK* pBlock = GetBlock();
 	//BLOCK* pChipblock = GetChipBlock();
@@ -258,7 +256,8 @@ void UpdateCollision()
 
 					if (pPlayer->hp <= 0) {
 						SetResultType(LOSE);
-						SetScene(SCENE::SCENE_RESULT);
+						//SetScene(SCENE::SCENE_RESULT);
+						StartFade(FADE::FADE_OUT);
 						pTime->EndTime();
 						pTimeParam->EndFlag = true;
 					}
@@ -289,7 +288,8 @@ void UpdateCollision()
 			pResult[0].type = LOSE;
 			pTime->EndTime();
 			pTimeParam->EndFlag = true;
-			SetScene(SCENE::SCENE_RESULT);
+			//SetScene(SCENE::SCENE_RESULT);
+			StartFade(FADE::FADE_OUT);
 		}
 	}
 
@@ -315,8 +315,8 @@ void UpdateCollision()
 			//プレイヤー右・ブロック左
 			if (pPlayer->Position.x - pPlayer->size.x / 2 < (pChipblock + i)->Position.x + (pChipblock + i)->Size.x / 2 &&
 				pPlayer->oldpos.x - pPlayer->size.x / 2 >= (pChipblock + i)->Position.x + (pChipblock + i)->Size.x / 2 &&
-				pPlayer->Position.y + pPlayer->size.y / 3 > (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 3 &&
-				pPlayer->Position.y - pPlayer->size.y / 3 < (pChipblock + i)->Position.y + (pChipblock + i)->Size.y / 3)
+				pPlayer->Position.y + pPlayer->size.y / 2 > (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2 &&
+				pPlayer->Position.y - pPlayer->size.y / 2 < (pChipblock + i)->Position.y + (pChipblock + i)->Size.y / 2)
 			{
 				pPlayer->Position.x = (pChipblock + i)->Position.x + (pChipblock + i)->Size.x / 2 + pPlayer->size.x / 2;
 			}
@@ -341,6 +341,8 @@ void UpdateCollision()
 				pPlayer->Position.y + pPlayer->size.y / 2 > (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2 &&
 				pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2)
 			{
+				pPlayer->Position.y = (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2 - pPlayer->size.y / 2 - 0.02f;
+
 				pPlayer->fall = true;
 				pPlayer->getfall = true;
 				pPlayer->frame = 50;
@@ -751,7 +753,8 @@ void UpdateCollision()
 					{
 						GetGoal()->UseFlag = false;
 						SetResultType(WIN);
-						SetScene(SCENE_RESULT);
+						//SetScene(SCENE_RESULT);
+						StartFade(FADE::FADE_OUT);
 						pTime->EndTime();
 						pTimeParam->EndFlag = true;
 					}
@@ -761,7 +764,47 @@ void UpdateCollision()
 			
 		}
 
+		//------------------------------------
+		//ドッペルゲンガー弾用当たり判定
+		//------------------------------------
+		//DOPPELGANGER* pDoppel = GetDoppelganger();
+		//BULLET* pBullet = GetBullet();
 
+		//反プレイヤー弾 と 敵キャラ
+		//if(pDoppel->UseFlag == true)
+		//{ 
+		//	pBullet->use = true;
+
+		//	if (pBullet->use == true)
+		//	{
+		//		if (pPlayer->UseFlag)
+		//		{
+		//			bool hit = CollisionBB(pBullet->pos, pPlayer->Position, D3DXVECTOR2(pBullet->w, pBullet->h), D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H));
+
+		//			if (hit == true)//当たっている
+		//			{
+		//				if (pBullet->hit)
+		//				{
+		//					pPlayer->hp - (pBullet->Damage);
+		//					if (pPlayer->hp <= 0)
+		//					{
+		//						pPlayer->UseFlag = false;
+		//						StartFade(FADE::FADE_OUT);
+		//						SetResultType(LOSE);
+		//						pTime->EndTime();
+		//						pTimeParam->EndFlag = true;
+		//					}
+		//					
+		//				}
+		//			}
+		//			else//当っていない
+		//			{
+
+		//			}
+		//		}
+		//	}
+		//}
+		
 }
 //----------------------------------------------------------------------------------------------------------
 
