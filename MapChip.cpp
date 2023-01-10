@@ -132,7 +132,7 @@ void DrawMapChip() {
 	}
 }
 void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
-	g_PieceMapChip[Pin].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);
+	g_PieceMapChip[Pin].size = D3DXVECTOR2(PUZZLE_SIZE, PUZZLE_SIZE);
 
 	//p=ƒuƒƒbƒNÅ‘å”
 		//i=y•ûŒü

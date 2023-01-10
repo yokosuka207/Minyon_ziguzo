@@ -130,8 +130,9 @@ void UpdateInventory()
 				if (!g_Inventory[i].IsCatch) {
 					// マウスと所持パズルが当たっていたら
 					float x = MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x;
-					float y = MousePos.y;
-					if (min.x < (MousePos.x - SCREEN_WIDTH / 2+g_Inventory[i].size.x/2) && max.x >(MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x/2) && min.y < (MousePos.y) && max.y >(MousePos.y)) {
+					float y = MousePos.y - SCREEN_HEIGHT / 2 + g_Inventory[i].size.y;
+					y =y * -1;
+					if (min.x < (MousePos.x - SCREEN_WIDTH / 2+g_Inventory[i].size.x/2) && max.x >(MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x/2) && min.y < (y) && max.y >(y)) {
 						// 所持ピースを全部調べて誰もつかまれていなかったら自分がつかまる
 						for (int j = 0; j < INVENTORY_MAX; j++) {
 							if (g_Inventory[j].IsCatch == true) {
@@ -151,7 +152,8 @@ void UpdateInventory()
 				if (g_Inventory[i].IsCatch) {
 					// パズルをマウスの位置に移動
 					float x = MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x/2;
-					float y = MousePos.y + g_Inventory[i].size.y/2;
+					float y = MousePos.y - SCREEN_HEIGHT / 2 + g_Inventory[i].size.y;
+					y = y * -1;
 
 					g_Inventory[i].pos.x = x;
 					g_Inventory[i].pos.y = y;
@@ -166,7 +168,7 @@ void UpdateInventory()
 				if (g_Inventory[i].IsCatch) {
 					// 初期位置に戻る
 					//g_Inventory[i].pos = D3DXVECTOR2(i * INVENTORY_POS_X, INVENTORY_POS_Y);		// 下ver
-					g_Inventory[i].pos = g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f * 2 - i * 100.0f);// 左ver
+					g_Inventory[i].pos = g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f * 2 - i * 150.0f);// 左ver
 					DeleteMapChip(g_Inventory[i].PieNo);
 					SetInventoryMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo, g_Inventory[i].PieNo);
 
@@ -182,9 +184,10 @@ void UpdateInventory()
 				// ピースを出す
 				//DeleteMapChip(g_Inventory[i].PieNo);
 				//SetPieceMapChip(D3DXVECTOR2(pMouse->PosX,-pMouse->PosY), g_Inventory[i].PieNo);
+				int Pieno = g_Inventory[i].PieNo;
 				DeleteInventory(g_Inventory[i].PieNo);
 
-				SetPieceMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo);
+				SetPieceMapChip(g_Inventory[i].pos, Pieno);
 
 			}
 		}
@@ -232,7 +235,7 @@ void SetInventory(int PieNo)
 			if (!g_Inventory[i].IsUse) {
 				g_Inventory[i].PieNo = PieNo;
 
-				g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f*2 - i * 100.0f);
+				g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f*2 - i * 150.0f);
 				SetInventoryMapChip(g_Inventory[i].pos, PieNo, PieNo);
 				g_Inventory[i].IsUse = true;
 
