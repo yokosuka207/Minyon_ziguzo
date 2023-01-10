@@ -17,8 +17,6 @@
 static	ID3D11ShaderResourceView	*g_TitleTexture1 = NULL;//テクスチャ情報
 static	char	*g_TitleTextureName1 = (char*)"data\\texture\\タイトル.jpg";
 
-static FADEPARAM* pFadeParam = GetFadeParam();
-
 typedef	struct
 {
 	D3DXVECTOR3		Position;	//表示座標

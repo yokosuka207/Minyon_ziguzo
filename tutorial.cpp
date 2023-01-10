@@ -15,11 +15,9 @@
 //======================
 //グローバル変数
 //======================
-static	ID3D11ShaderResourceView* g_TutorialTexture = NULL;//テクスチャ情報
-static	char* g_TutorialTextureName = (char*)"data\\texture\\ジグソーワールド.jpg";
+static ID3D11ShaderResourceView* g_TutorialTexture = NULL;//テクスチャ情報
+static char* g_TutorialTextureName = (char*)"data\\texture\\ジグソーワールド.jpg";
 static int g_TutorialTextureNo = 0;
-
-static FADEPARAM* pFadeParam = GetFadeParam();
 
 typedef	struct
 {
@@ -29,7 +27,7 @@ typedef	struct
 	float			Rotate;		//角度
 }TUTORIAL;
 
-TUTORIAL g_Tutorial;
+static TUTORIAL g_Tutorial;
 
 void	InitTutorial() {
 	//	テクスチャのロード
