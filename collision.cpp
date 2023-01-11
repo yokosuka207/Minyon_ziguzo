@@ -941,16 +941,19 @@ void PieceCollision()
 										{
 											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
 
-											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
+											pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_SIZE, pPiece[pJoint[k].indexno].pos.y);
 
 											if (fourPieceCollision(pPiece[i], i))
 											{
+												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_SIZE, pPiece[pJoint[k].indexno].pos.y);
+
 												PositionPlas(temp, pPiece[i].no);
 												pPiece[i].OldMovePos = pPiece[i].pos;
 												if (pFlag)
 												{
 													pPlayer->Position += temp;
 												}
+												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
 
 											}
 											else
@@ -1197,7 +1200,7 @@ void PuzzleCollision()
 										if (hitFlag)
 										{
 											//空いていたらポジションを移動する
-											pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x + PUZZLE_WIDHT, pPuzzle[j].Position.y);
+											pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x + PUZZLE_SIZE, pPuzzle[j].Position.y);
 											//四方向のパズルに合うか
 											if (fourCollision(pPuzzle[i], i))
 											{
@@ -1246,7 +1249,7 @@ void PuzzleCollision()
 
 										if (hitFlag) {
 											//空いていたらポジションを移動する
-											pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x - PUZZLE_WIDHT, pPuzzle[j].Position.y);
+											pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x - PUZZLE_SIZE, pPuzzle[j].Position.y);
 											//四方向のパズルに合うか
 											if (fourCollision(pPuzzle[i], i))
 											{
@@ -1304,7 +1307,7 @@ void PuzzleCollision()
 										if (hitFlag)
 										{
 											//空いていたらポジションを移動する
-											pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x, pPuzzle[j].Position.y - PUZZLE_HEIGHT);
+											pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x, pPuzzle[j].Position.y - PUZZLE_SIZE);
 											//四方向のパズルに合うか
 											if (fourCollision(pPuzzle[i], i))
 											{
@@ -1355,7 +1358,7 @@ void PuzzleCollision()
 										if (hitFlag)
 										{
 											//空いていたらポジションを移動する
-											pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x, pPuzzle[j].Position.y + PUZZLE_HEIGHT);
+											pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x, pPuzzle[j].Position.y + PUZZLE_SIZE);
 											//四方向のパズルに合うか
 											if (fourCollision(pPuzzle[i], i))
 											{
@@ -1433,7 +1436,7 @@ void PuzzleCollision()
 											if (hitFlag)
 											{
 												//空いていたらポジションを移動する
-												pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x + PUZZLE_WIDHT, pPuzzle[j].Position.y);
+												pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x + PUZZLE_SIZE, pPuzzle[j].Position.y);
 												//四方向のパズルに合うか
 
 												if (fourCollision(pPuzzle[i], i))
@@ -1475,7 +1478,7 @@ void PuzzleCollision()
 											hitFlag = PuzzleOpen(pPuzzle[j], i, LEFT);
 
 											if (hitFlag) {
-												pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x - PUZZLE_WIDHT, pPuzzle[j].Position.y);
+												pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x - PUZZLE_SIZE, pPuzzle[j].Position.y);
 												if (fourCollision(pPuzzle[i], i))
 												{
 													colFlag = true;
@@ -1523,7 +1526,7 @@ void PuzzleCollision()
 
 											if (hitFlag)
 											{
-												pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x, pPuzzle[j].Position.y - PUZZLE_HEIGHT);
+												pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x, pPuzzle[j].Position.y - PUZZLE_SIZE);
 												if (fourCollision(pPuzzle[i], i))
 												{
 													colFlag = true;
@@ -1565,7 +1568,7 @@ void PuzzleCollision()
 
 											if (hitFlag)
 											{
-												pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x, pPuzzle[j].Position.y + PUZZLE_HEIGHT);
+												pPuzzle[i].Position = D3DXVECTOR2(pPuzzle[j].Position.x, pPuzzle[j].Position.y + PUZZLE_SIZE);
 
 												if (fourCollision(pPuzzle[i], i))
 												{
@@ -1752,10 +1755,10 @@ bool PuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion)
 				case UP:
 
 					//puzzleの上に別のパズルがあるか
-					if (puzzle.Position.y - PUZZLE_HEIGHT - (PUZZLE_HEIGHT / 2) < pPuzzle[i].Position.y &&
-						puzzle.Position.y - PUZZLE_HEIGHT + (PUZZLE_HEIGHT / 2) > pPuzzle[i].Position.y &&
-						puzzle.Position.x - PUZZLE_WIDHT / 3 <= pPuzzle[i].Position.x &&
-						puzzle.Position.x + PUZZLE_WIDHT / 3 >= pPuzzle[i].Position.x)
+					if (puzzle.Position.y - PUZZLE_SIZE - (PUZZLE_SIZE / 2) < pPuzzle[i].Position.y &&
+						puzzle.Position.y - PUZZLE_SIZE + (PUZZLE_SIZE / 2) > pPuzzle[i].Position.y &&
+						puzzle.Position.x - PUZZLE_SIZE / 3 <= pPuzzle[i].Position.x &&
+						puzzle.Position.x + PUZZLE_SIZE / 3 >= pPuzzle[i].Position.x)
 					{
 
 						punum = i;
@@ -1764,13 +1767,13 @@ bool PuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion)
 
 					break;
 				case DOWN:
-					//if (puzzle.Position.y + PUZZLE_HEIGHT == pPuzzle[i].Position.y)	return false;
+					//if (puzzle.Position.y + PUZZLE_SIZE == pPuzzle[i].Position.y)	return false;
 										//puzzleの下に別のパズルがあるか
 
-					if (puzzle.Position.y + PUZZLE_HEIGHT - PUZZLE_HEIGHT / 2 < pPuzzle[i].Position.y &&
-						puzzle.Position.y + PUZZLE_HEIGHT + PUZZLE_HEIGHT / 2 > pPuzzle[i].Position.y &&
-						puzzle.Position.x - PUZZLE_WIDHT / 3 <= pPuzzle[i].Position.x &&
-						puzzle.Position.x + PUZZLE_WIDHT / 3 >= pPuzzle[i].Position.x)
+					if (puzzle.Position.y + PUZZLE_SIZE - PUZZLE_SIZE / 2 < pPuzzle[i].Position.y &&
+						puzzle.Position.y + PUZZLE_SIZE + PUZZLE_SIZE / 2 > pPuzzle[i].Position.y &&
+						puzzle.Position.x - PUZZLE_SIZE / 3 <= pPuzzle[i].Position.x &&
+						puzzle.Position.x + PUZZLE_SIZE / 3 >= pPuzzle[i].Position.x)
 					{
 						punum = i;
 						return false;
@@ -1778,13 +1781,13 @@ bool PuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion)
 
 					break;
 				case LEFT:
-					//if (puzzle.Position.x - PUZZLE_WIDHT == pPuzzle[i].Position.x)	return false;
+					//if (puzzle.Position.x - PUZZLE_SIZE == pPuzzle[i].Position.x)	return false;
 										//puzzleの左に別のパズルがあるか
 
-					if (puzzle.Position.y - PUZZLE_HEIGHT / 3 <= pPuzzle[i].Position.y &&
-						puzzle.Position.y + PUZZLE_HEIGHT / 3 >= pPuzzle[i].Position.y &&
-						puzzle.Position.x - PUZZLE_WIDHT - PUZZLE_WIDHT / 3 < pPuzzle[i].Position.x &&
-						puzzle.Position.x - PUZZLE_WIDHT + PUZZLE_WIDHT / 3 > pPuzzle[i].Position.x)
+					if (puzzle.Position.y - PUZZLE_SIZE / 3 <= pPuzzle[i].Position.y &&
+						puzzle.Position.y + PUZZLE_SIZE / 3 >= pPuzzle[i].Position.y &&
+						puzzle.Position.x - PUZZLE_SIZE - PUZZLE_SIZE / 3 < pPuzzle[i].Position.x &&
+						puzzle.Position.x - PUZZLE_SIZE + PUZZLE_SIZE / 3 > pPuzzle[i].Position.x)
 					{
 						punum = i;
 
@@ -1793,12 +1796,12 @@ bool PuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion)
 
 					break;
 				case RIGHT:
-					//if (puzzle.Position.x + PUZZLE_WIDHT == pPuzzle[i].Position.x)	return false;
+					//if (puzzle.Position.x + PUZZLE_SIZE == pPuzzle[i].Position.x)	return false;
 					//puzzleの右に別のパズルがあるか
-					if (puzzle.Position.y - PUZZLE_HEIGHT / 3 < pPuzzle[i].Position.y &&
-						puzzle.Position.y + PUZZLE_HEIGHT / 3 > pPuzzle[i].Position.y &&
-						puzzle.Position.x + PUZZLE_WIDHT - PUZZLE_WIDHT / 3 < pPuzzle[i].Position.x &&
-						puzzle.Position.x + PUZZLE_WIDHT + PUZZLE_WIDHT / 3 > pPuzzle[i].Position.x)
+					if (puzzle.Position.y - PUZZLE_SIZE / 3 < pPuzzle[i].Position.y &&
+						puzzle.Position.y + PUZZLE_SIZE / 3 > pPuzzle[i].Position.y &&
+						puzzle.Position.x + PUZZLE_SIZE - PUZZLE_SIZE / 3 < pPuzzle[i].Position.x &&
+						puzzle.Position.x + PUZZLE_SIZE + PUZZLE_SIZE / 3 > pPuzzle[i].Position.x)
 					{
 						punum = i;
 
@@ -1836,12 +1839,12 @@ bool PlayerPuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion)
 				{
 				case UP:
 					//puzzleの上に別のパズルがあるか
-					if (puzzle.Position.y - PUZZLE_HEIGHT == pPuzzle[i].Position.y)return false;
+					if (puzzle.Position.y - PUZZLE_SIZE == pPuzzle[i].Position.y)return false;
 
-					if (puzzle.Position.y - PUZZLE_HEIGHT - PUZZLE_HEIGHT / 2 < pPuzzle[i].Position.y &&
-						puzzle.Position.y - PUZZLE_HEIGHT + PUZZLE_HEIGHT / 2 > pPuzzle[i].Position.y &&
-						puzzle.Position.x - PUZZLE_WIDHT / 2 > pPuzzle[i].Position.x &&
-						puzzle.Position.x + PUZZLE_WIDHT / 2 < pPuzzle[i].Position.x)
+					if (puzzle.Position.y - PUZZLE_SIZE - PUZZLE_SIZE / 2 < pPuzzle[i].Position.y &&
+						puzzle.Position.y - PUZZLE_SIZE + PUZZLE_SIZE / 2 > pPuzzle[i].Position.y &&
+						puzzle.Position.x - PUZZLE_SIZE / 2 > pPuzzle[i].Position.x &&
+						puzzle.Position.x + PUZZLE_SIZE / 2 < pPuzzle[i].Position.x)
 					{
 						//return false;
 					}
@@ -1849,12 +1852,12 @@ bool PlayerPuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion)
 					break;
 				case DOWN:
 					//puzzleの下に別のパズルがあるか
-					if (puzzle.Position.y + PUZZLE_HEIGHT == pPuzzle[i].Position.y)	return false;
+					if (puzzle.Position.y + PUZZLE_SIZE == pPuzzle[i].Position.y)	return false;
 
-					if (puzzle.Position.y + PUZZLE_HEIGHT - PUZZLE_HEIGHT / 2 < pPuzzle[i].Position.y &&
-						puzzle.Position.y + PUZZLE_HEIGHT + PUZZLE_HEIGHT / 2 > pPuzzle[i].Position.y &&
-						puzzle.Position.x - PUZZLE_WIDHT / 2 < pPuzzle[i].Position.x &&
-						puzzle.Position.x + PUZZLE_WIDHT / 2 > pPuzzle[i].Position.x)
+					if (puzzle.Position.y + PUZZLE_SIZE - PUZZLE_SIZE / 2 < pPuzzle[i].Position.y &&
+						puzzle.Position.y + PUZZLE_SIZE + PUZZLE_SIZE / 2 > pPuzzle[i].Position.y &&
+						puzzle.Position.x - PUZZLE_SIZE / 2 < pPuzzle[i].Position.x &&
+						puzzle.Position.x + PUZZLE_SIZE / 2 > pPuzzle[i].Position.x)
 					{
 						//return false;
 					}
@@ -1862,12 +1865,12 @@ bool PlayerPuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion)
 					break;
 				case LEFT:
 					//puzzleの左に別のパズルがあるか
-					if (puzzle.Position.x - PUZZLE_WIDHT == pPuzzle[i].Position.x)	return false;
+					if (puzzle.Position.x - PUZZLE_SIZE == pPuzzle[i].Position.x)	return false;
 
-					if (puzzle.Position.y - PUZZLE_HEIGHT / 2 < pPuzzle[i].Position.y &&
-						puzzle.Position.y + PUZZLE_HEIGHT / 2 > pPuzzle[i].Position.y &&
-						puzzle.Position.x - PUZZLE_WIDHT - PUZZLE_WIDHT / 2 < pPuzzle[i].Position.x &&
-						puzzle.Position.x - PUZZLE_WIDHT + PUZZLE_WIDHT / 2 > pPuzzle[i].Position.x)
+					if (puzzle.Position.y - PUZZLE_SIZE / 2 < pPuzzle[i].Position.y &&
+						puzzle.Position.y + PUZZLE_SIZE / 2 > pPuzzle[i].Position.y &&
+						puzzle.Position.x - PUZZLE_SIZE - PUZZLE_SIZE / 2 < pPuzzle[i].Position.x &&
+						puzzle.Position.x - PUZZLE_SIZE + PUZZLE_SIZE / 2 > pPuzzle[i].Position.x)
 					{
 						//return false;
 					}
@@ -1875,12 +1878,12 @@ bool PlayerPuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion)
 					break;
 				case RIGHT:
 					//puzzleの右に別のパズルがあるか
-					if (puzzle.Position.x + PUZZLE_WIDHT == pPuzzle[i].Position.x)	return false;
+					if (puzzle.Position.x + PUZZLE_SIZE == pPuzzle[i].Position.x)	return false;
 
-					if (puzzle.Position.y - PUZZLE_HEIGHT / 2 < pPuzzle[i].Position.y &&
-						puzzle.Position.y + PUZZLE_HEIGHT / 2 > pPuzzle[i].Position.y &&
-						puzzle.Position.x + PUZZLE_WIDHT - PUZZLE_WIDHT / 2 < pPuzzle[i].Position.x &&
-						puzzle.Position.x + PUZZLE_WIDHT + PUZZLE_WIDHT / 2 > pPuzzle[i].Position.x)
+					if (puzzle.Position.y - PUZZLE_SIZE / 2 < pPuzzle[i].Position.y &&
+						puzzle.Position.y + PUZZLE_SIZE / 2 > pPuzzle[i].Position.y &&
+						puzzle.Position.x + PUZZLE_SIZE - PUZZLE_SIZE / 2 < pPuzzle[i].Position.x &&
+						puzzle.Position.x + PUZZLE_SIZE + PUZZLE_SIZE / 2 > pPuzzle[i].Position.x)
 					{
 						//return false;
 					}
@@ -2421,10 +2424,10 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
 				case UP:
 
 					//pieceの上に別のパズルがあるか
-					if (piece.pos.y - PUZZLE_HEIGHT - (PUZZLE_HEIGHT / 2) < pPiece[i].pos.y &&
-						piece.pos.y - PUZZLE_HEIGHT + (PUZZLE_HEIGHT / 2) > pPiece[i].pos.y &&
-						piece.pos.x - PUZZLE_WIDHT / 3 <= pPiece[i].pos.x &&
-						piece.pos.x + PUZZLE_WIDHT / 3 >= pPiece[i].pos.x)
+					if (piece.pos.y - PUZZLE_SIZE - (PUZZLE_SIZE / 2) < pPiece[i].pos.y &&
+						piece.pos.y - PUZZLE_SIZE + (PUZZLE_SIZE / 2) > pPiece[i].pos.y &&
+						piece.pos.x - PUZZLE_SIZE / 3 <= pPiece[i].pos.x &&
+						piece.pos.x + PUZZLE_SIZE / 3 >= pPiece[i].pos.x)
 					{
 
 						punum = i;
@@ -2433,13 +2436,13 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
 
 					break;
 				case DOWN:
-					//if (piece.pos.y + PUZZLE_HEIGHT == pPiece[i].pos.y)	return false;
+					//if (piece.pos.y + PUZZLE_SIZE == pPiece[i].pos.y)	return false;
 										//pieceの下に別のパズルがあるか
 
-					if (piece.pos.y + PUZZLE_HEIGHT - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
-						piece.pos.y + PUZZLE_HEIGHT + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&
-						piece.pos.x - PUZZLE_WIDHT / 3 <= pPiece[i].pos.x &&
-						piece.pos.x + PUZZLE_WIDHT / 3 >= pPiece[i].pos.x)
+					if (piece.pos.y + PUZZLE_SIZE - PUZZLE_SIZE / 2 < pPiece[i].pos.y &&
+						piece.pos.y + PUZZLE_SIZE + PUZZLE_SIZE / 2 > pPiece[i].pos.y &&
+						piece.pos.x - PUZZLE_SIZE / 3 <= pPiece[i].pos.x &&
+						piece.pos.x + PUZZLE_SIZE / 3 >= pPiece[i].pos.x)
 					{
 						punum = i;
 						return false;
@@ -2447,13 +2450,13 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
 
 					break;
 				case LEFT:
-					//if (piece.pos.x - PUZZLE_WIDHT == pPiece[i].pos.x)	return false;
+					//if (piece.pos.x - PUZZLE_SIZE == pPiece[i].pos.x)	return false;
 										//pieceの左に別のパズルがあるか
 
-					if (piece.pos.y - PUZZLE_HEIGHT / 3 <= pPiece[i].pos.y &&
-						piece.pos.y + PUZZLE_HEIGHT / 3 >= pPiece[i].pos.y &&
-						piece.pos.x - PUZZLE_WIDHT - PUZZLE_WIDHT / 3 < pPiece[i].pos.x &&
-						piece.pos.x - PUZZLE_WIDHT + PUZZLE_WIDHT / 3 > pPiece[i].pos.x)
+					if (piece.pos.y - PUZZLE_SIZE / 3 <= pPiece[i].pos.y &&
+						piece.pos.y + PUZZLE_SIZE / 3 >= pPiece[i].pos.y &&
+						piece.pos.x - PUZZLE_SIZE - PUZZLE_SIZE / 3 < pPiece[i].pos.x &&
+						piece.pos.x - PUZZLE_SIZE + PUZZLE_SIZE / 3 > pPiece[i].pos.x)
 					{
 						punum = i;
 
@@ -2462,12 +2465,12 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
 
 					break;
 				case RIGHT:
-					//if (piece.pos.x + PUZZLE_WIDHT == pPiece[i].pos.x)	return false;
+					//if (piece.pos.x + PUZZLE_SIZE == pPiece[i].pos.x)	return false;
 					//pieceの右に別のパズルがあるか
-					if (piece.pos.y - PUZZLE_HEIGHT / 3 < pPiece[i].pos.y &&
-						piece.pos.y + PUZZLE_HEIGHT / 3 > pPiece[i].pos.y &&
-						piece.pos.x + PUZZLE_WIDHT - PUZZLE_WIDHT / 3 < pPiece[i].pos.x &&
-						piece.pos.x + PUZZLE_WIDHT + PUZZLE_WIDHT / 3 > pPiece[i].pos.x)
+					if (piece.pos.y - PUZZLE_SIZE / 3 < pPiece[i].pos.y &&
+						piece.pos.y + PUZZLE_SIZE / 3 > pPiece[i].pos.y &&
+						piece.pos.x + PUZZLE_SIZE - PUZZLE_SIZE / 3 < pPiece[i].pos.x &&
+						piece.pos.x + PUZZLE_SIZE + PUZZLE_SIZE / 3 > pPiece[i].pos.x)
 					{
 						punum = i;
 
