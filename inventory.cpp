@@ -131,7 +131,10 @@ void UpdateInventory()
 					// マウスと所持パズルが当たっていたら
 					float x = MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x;
 					float y = MousePos.y - SCREEN_HEIGHT / 2 + g_Inventory[i].size.y;
-					y =y * -1;
+					if (MousePos.y < 400) {
+						y = y * -1;
+						y += 30.0f;
+					}
 					if (min.x < (MousePos.x - SCREEN_WIDTH / 2+g_Inventory[i].size.x/2) && max.x >(MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x/2) && min.y < (y) && max.y >(y)) {
 						// 所持ピースを全部調べて誰もつかまれていなかったら自分がつかまる
 						for (int j = 0; j < INVENTORY_MAX; j++) {
