@@ -10,6 +10,7 @@
 #include "texture.h"	// テクスチャ
 //#include "input.h"		// 入力
 #include "xinput.h"	// x入力
+#include "mouse.h"
 
 //--------------------------------------------------
 // マクロ定義
@@ -73,8 +74,12 @@ void UpdateCursor()
 		}
 		//----------移動----------]
 
-		g_Cursor.pos.x = GetMousePosX();
-		g_Cursor.pos.y = GetMousePosY();
+		// 絶対モード時
+		g_Cursor.pos.x = GetXMousePosX();
+		g_Cursor.pos.y = GetXMousePosY();
+		// 相対モード時
+		//g_Cursor.pos.x += GetXMousePosX();
+		//g_Cursor.pos.y += GetXMousePosY();
 
 		//[----------壁判定 (壁の上下左右)----------
 		// 上下
@@ -104,7 +109,7 @@ void DrawCursor()
 		// テクスチャの設定
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Cursor.texNo));
 		// ポリゴンの描画
-		SpriteDrawColorRotation(g_Cursor.pos.x, g_Cursor.pos.y,-0.2f, g_Cursor.size.x, g_Cursor.size.y, 0.0f, g_Cursor.color, 1.0f, 1.0f, 1.0f, 1);
+		SpriteDrawColorRotation(g_Cursor.pos.x, g_Cursor.pos.y, 0.0f, g_Cursor.size.x, g_Cursor.size.y, 0.0f, g_Cursor.color, 1.0f, 1.0f, 1.0f, 1);
 	}
 }
 

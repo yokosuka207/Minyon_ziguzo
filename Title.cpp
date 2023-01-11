@@ -58,8 +58,6 @@ void	InitTitle()
 	TitleObject.Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	TitleObject.Color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
 	TitleObject.Rotate = 0.0;
-
-
 }
 //======================
 //èIóπèàóù

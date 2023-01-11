@@ -40,6 +40,8 @@
 #include "OpenKey.h"		//鍵で開く扉
 #include "goal_key.h"		//ゴール専用鍵
 
+#include "EffectSpark.h"	// ヒバナエフェクト
+
 
 
 /*==============================================================================
@@ -843,6 +845,9 @@ void PieceCollision()
 										pJoint[k].type == JOINT_TYPE::TYPE_BUMP && pJoint[j].type == JOINT_TYPE::TYPE_DIP)
 									{
 										colFlag2 = true;
+
+										// ヒバナエフェクト
+										SetEffectSpark(pJoint[j].pos, D3DXVECTOR2(300.0f, 300.0f));
 
 										//ジョイントが右だったら
 										if (pPiece[i].pos.x + pPiece[i].size.x / 3 < pJoint[j].pos.x)
