@@ -211,10 +211,10 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEBLOCK)://21　動かすブロック
 				SetMoveBlock(position, DrawSize, no);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER):
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER)://22　ドッペルゲンガー
 				SetDoppelGanger(position, DrawSize, no);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY):
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY)://23　敵
 				SetEnemy(position, DrawSize, no);
 				break;
 			default:
@@ -498,10 +498,10 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEBLOCK)://21　動かすブロック
 				SetMoveBlock(position, DrawSize, no);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER):
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER)://22　ドッペルゲンガー
 				SetDoppelGanger(position, DrawSize, no);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY):
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY)://23　敵
 				SetEnemy(position, DrawSize, no);
 				break;
 			default:
