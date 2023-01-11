@@ -83,3 +83,4 @@ void DrawDoppelganger();
 DOPPELGANGER* GetDoppelganger();//DOPPELGANGER構造体の先頭ポインタを取得
 
 void SetDoppelGanger(D3DXVECTOR2 position, D3DXVECTOR2 size, int index);
+void DeleteDoppelGanger(int index);

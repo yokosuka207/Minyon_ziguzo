@@ -11,15 +11,21 @@
 #include "renderer.h"
 #include "sprite.h"
 #include "texture.h"
+#include "player.h"
+#include "bullet.h"
+#include "xkeyboard.h"
+#include "collision.h"
 
 static ENEMY g_Enemy[ENEMY_MAX];
 
 static ID3D11ShaderResourceView* g_EnemyTexture;	//画像一枚で一つの変数が必要
 static char* g_EnemyTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
 
+BULLET* bullet = GetBullet();
+
 HRESULT InitEnemy() {
 	for (int i = 0; i < ENEMY_MAX; i++) {
-		g_Enemy[i].pos = D3DXVECTOR2(0.0f, 0.0f);
+		g_Enemy[i].pos = D3DXVECTOR2(300.0f, 400.0f);
 		g_Enemy[i].size = D3DXVECTOR2(0.0f, 0.0f);
 		g_Enemy[i].sp = D3DXVECTOR2(0.0f, 0.0f);
 		g_Enemy[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
@@ -27,6 +33,7 @@ HRESULT InitEnemy() {
 		g_Enemy[i].texno = LoadTexture(g_EnemyTextureName);
 		g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_LEFT;
 		g_Enemy[i].UseFlag = false;
+		g_Enemy[i].AIFlag = false;
 	}
 	return S_OK;
 }
@@ -36,10 +43,17 @@ void UninitEnemy() {
 		g_EnemyTexture=NULL;
 	}
 }
+
+
+
 void UpdateEnemy() {
 	for (int i = 0; i < ENEMY_MAX; i++) {
 		if (g_Enemy[i].UseFlag) {
-
+			if (g_Enemy[i].AIFlag)
+			{
+				SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), 1);
+			}
+			
 		}
 	}
 }
@@ -78,3 +92,11 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index) {
 ENEMY* GetEnemy() {
 	return g_Enemy;
 }
+void DeleteEnemy(int index) {
+	for (int i = 0; i < ENEMY_MAX; i++) {
+		if (g_Enemy[i].UseFlag && g_Enemy[i].index == index) {
+			g_Enemy[i].UseFlag = false;
+		}
+	}
+}
+

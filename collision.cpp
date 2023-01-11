@@ -41,6 +41,7 @@
 #include "goal_key.h"		//ゴール専用鍵
 #include "bullet.h"			//ドッペルゲンガー発射弾
 #include "doppelganger.h"   //ドッペルゲンガー
+#include "enemy.h"			//エネミー
 
 
 /*==============================================================================
@@ -98,6 +99,7 @@ void UpdateCollision()
 	MOUSE* pMouse = GetMouse();
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 	Piece* pPiece = GetPiece();
+	ENEMY* pEnemy = GetEnemy();
 
 	//BLOCK* pBlock = GetBlock();
 	//BLOCK* pChipblock = GetChipBlock();
@@ -765,6 +767,16 @@ void UpdateCollision()
 			
 		}
 
+		for (int i = 0; i < ENEMY_MAX; i++)
+		{
+			if (pEnemy[i].UseFlag == true)
+			{
+				if (CollisionBB(pEnemy[i].pos, pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x * 1000, pEnemy[i].size.y), pPlayer->size))
+				{
+					pEnemy[i].AIFlag = true;
+				}
+			}
+		}
 		//------------------------------------
 		//ドッペルゲンガー弾用当たり判定
 		//------------------------------------

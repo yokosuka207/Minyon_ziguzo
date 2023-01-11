@@ -9,14 +9,15 @@
 
 #include "main.h"
 #include "renderer.h"
+#include "enemy.h"
 
 //=============================================================================
 //マクロ定義
 //=============================================================================
 #define BULLET_MAX (100)
 #define BULLET_SPEED (10.0f)
-#define BULLET_SIZE_W (100)
-#define BULLET_SIZE_H (100)
+#define BULLET_SIZE_W (ENEMY_SIZE_W)
+#define BULLET_SIZE_H (ENEMY_SIZE_H / 3)
 
 struct BULLET
 {
@@ -43,4 +44,4 @@ void UninitBullet();
 void UpdateBullet();
 void DrawBullet();
 BULLET* GetBullet();//BULLET構造体の先頭ポインタを取得
-void SetBullet(D3DXVECTOR2 pos);//弾発生
+void SetBullet(D3DXVECTOR2 pos,D3DXVECTOR2 size,int index);//弾発生

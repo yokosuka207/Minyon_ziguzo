@@ -187,7 +187,7 @@ void UpdateDoppelganger()
 
 			
 			//ÉhÉbÉyÉãÉQÉìÉKÅ[íeî≠éÀ
-			SetBullet(g_Doppel.Position);
+			//SetBullet(g_Doppel.Position, D3DXVECTOR2(BULLET_SIZE_H, BULLET_SIZE_W), 1);
 
 		}
 
@@ -784,5 +784,10 @@ void SetDoppelGanger(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index)
 		g_Doppel.size = size;
 		g_Doppel.PieceIndex = index;
 		g_Doppel.UseFlag = true;
+	}
+}
+void DeleteDoppelGanger(int index) {
+	if (g_Doppel.UseFlag && g_Doppel.PieceIndex == index) {
+		g_Doppel.UseFlag = false;
 	}
 }

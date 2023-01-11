@@ -82,7 +82,7 @@ void UpdateBullet()
 	{
 		if (g_Bullet[i].use == true)
 		{
-			g_Bullet[i].pos += g_Bullet[i].sp;
+			g_Bullet[i].pos.x += g_Bullet[i].sp.x;
 		}
 
 		if (g_Bullet[i].pos.y < SCREEN_LIMIT_UP - (g_Bullet[i].h / 2.0f))
@@ -106,7 +106,7 @@ void DrawBullet()
 			//スプライトを表示
 			D3DXCOLOR col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
 			//ここの引数間違ってるかも
-			SpriteDrawColorRotation(g_Bullet[i].pos.x, g_Bullet[i].pos.y, g_Bullet[i].w, g_Bullet[i].h, g_Bullet[i].rot, g_Bullet[i].col, g_Bullet[i].PaternNo, g_Bullet[i].uv_w, g_Bullet[i].uv_h, g_Bullet[i].NumPatern,0);
+			SpriteDrawColorRotation(g_Bullet[i].pos.x, g_Bullet[i].pos.y, 0.0f, g_Bullet[i].w, g_Bullet[i].h, g_Bullet[i].rot, g_Bullet[i].col, g_Bullet[i].PaternNo, g_Bullet[i].uv_w, g_Bullet[i].uv_h, g_Bullet[i].NumPatern);
 		}
 	}
 }
@@ -114,13 +114,15 @@ void DrawBullet()
 //=============================================================================
 //セット関数
 //=============================================================================
-void SetBullet(D3DXVECTOR2 pos)
+void SetBullet(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index)
 {
 	for (int i = 0; i < BULLET_MAX; i++)
 	{
 		if (g_Bullet[i].use == false)
 		{
 			g_Bullet[i].pos = pos;
+			g_Bullet[i].h = BULLET_SIZE_H;
+			g_Bullet[i].w = BULLET_SIZE_W;
 			g_Bullet[i].use = true;
 			
 			return;
