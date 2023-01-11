@@ -37,6 +37,9 @@
 #include "scene.h"
 #include "pause.h"
 #include "goal_key.h"
+#include "doppelganger.h"
+#include "enemy.h"
+#include "bullet.h"
 #include "issuer.h"		// 光線発射装置
 #include "ray.h"		// 光線
 #include "EffectSpark.h"	// ヒバナエフェクト
@@ -78,10 +81,16 @@ void InitGame()
 		InitSwitch();
 		InitSwitchWall();
 		InitMoveBlock();
+
+		InitDoppelganger();
+		SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1);
+		InitEnemy();
 		InitPause();
 		InitRay();				// 光線の初期化
 		InitIssuer();			// 光線発射装置の初期化
 		InitEffectSpark();		// ヒバナエフェクト
+		InitBullet();
+
 	}
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
@@ -93,6 +102,8 @@ void InitGame()
 		pTime->SetTime(D3DXVECTOR2(TIME_POS_X, 30.0f), D3DXVECTOR2(50.0f, 50.0f));
 		pTime->StartTime();
 	}
+
+
 }
 
 
@@ -121,6 +132,11 @@ void UninitGame()
 	UninitHigh();
 	UninitSwitch();
 	UninitSwitchWall();
+
+	UninitDoppelganger();
+	UninitEnemy();
+	UninitBullet();
+
 	UninitPause();
 	pScore->UninitScore();
 	pTime->UninitTime();
@@ -175,6 +191,11 @@ void UpdateGame()
 		UpdateHigh();
 		UpdateSwitch();
 		UpdateSwitchWall();
+
+		UpdateDoppelganger();
+		UpdateEnemy();
+		UpdateBullet();
+
 		UpdateInventory();			// インベントリの更新
 		UpdateMapChip();
 		UpdateGameMouse();
@@ -222,6 +243,11 @@ void DrawGame()
 		DrawGoal();
 		DrawBroken();		
 		DrawThornBlock();
+
+		DrawDoppelganger();
+		DrawEnemy();
+		DrawBullet();
+
 		DrawRay();				// 光線の描画
 		DrawIssuer();			// 光線発射装置の描画
 		DrawInventory();			// インベントリの描画

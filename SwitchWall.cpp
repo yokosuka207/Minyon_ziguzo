@@ -57,7 +57,7 @@ void DrawSwitchwall() {
 					g_SwitchWall[i].pos.y,
 					-0.1f,
 					g_SwitchWall[i].size.x,
-					g_SwitchWall[i].size.y,
+					-g_SwitchWall[i].size.y,
 					0.0f,
 					g_SwitchWall[i].color,
 					g_SwitchWall[i].PaternNo,
@@ -74,7 +74,7 @@ void SetSwitchWall(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo,int WallMax) {
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
 		if (!g_SwitchWall[i].UseFlag) {
 			for (int j = 0; j < WallMax; j++) {
-				g_SwitchWall[j].pos = D3DXVECTOR2(pos.x, pos.y + j * size.y);
+				g_SwitchWall[j].pos = D3DXVECTOR2(pos.x, pos.y - j * size.y);
 				g_SwitchWall[j].size = size;
 				g_SwitchWall[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 				g_SwitchWall[j].PieceIndex = PieceNo;

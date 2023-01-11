@@ -39,6 +39,9 @@
 #include "Key.h"			//鍵
 #include "OpenKey.h"		//鍵で開く扉
 #include "goal_key.h"		//ゴール専用鍵
+#include "bullet.h"			//ドッペルゲンガー発射弾
+#include "doppelganger.h"   //ドッペルゲンガー
+#include "enemy.h"			//エネミー
 
 #include "EffectSpark.h"	// ヒバナエフェクト
 
@@ -59,7 +62,7 @@ bool fourPieceCollision(Piece piece, int index);
 bool PieceOpen(Piece piece, int index, DIRECSION direcsion);	//その方向のパズルが空いているか
 bool fourNomalPieceCollision(Piece piece, int index);
 void Rotreturn(int index);	//回転を戻す
-void SetPosition(Piece p,int i);
+//void SetPosition(Piece p,int i);
 bool SpritStageCollision(Piece p);
 
 void UpdateCollision();
@@ -92,16 +95,14 @@ DIRECSION Direcsion = NUM;	//方向の確認
 void UpdateCollision()
 
 {
-	// ゲット
-	Piece* pPiece = GetPiece();
-	PLAYER* pPlayer = GetPlayer();
-	SpawnPoint* pSpawnPoint = GetSpawnPoint();
+	
 	// 使用ゲット一覧-----------------------------
 
-	//PLAYER* pPlayer = GetPlayer();
+	PLAYER* pPlayer = GetPlayer();
 	MOUSE* pMouse = GetMouse();
-
-	//Piece* pPiece = GetPiece();
+	SpawnPoint* pSpawnPoint = GetSpawnPoint();
+	Piece* pPiece = GetPiece();
+	ENEMY* pEnemy = GetEnemy();
 
 	//BLOCK* pBlock = GetBlock();
 	//BLOCK* pChipblock = GetChipBlock();
@@ -199,6 +200,7 @@ void UpdateCollision()
 				}
 
 				if (pSwitch[i].PressFlag) {
+					//要改善
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
 						if (pSwitch[i].SwitchIndex == pSwitchWall[j].SwitchIndex) {
 							pSwitchWall[j].UseFlag = false;//押されたら壁がなくなる
@@ -768,7 +770,57 @@ void UpdateCollision()
 			
 		}
 
+		for (int i = 0; i < ENEMY_MAX; i++)
+		{
+			if (pEnemy[i].UseFlag == true)
+			{
+				if (CollisionBB(pEnemy[i].pos, pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x * 1000, pEnemy[i].size.y), pPlayer->size))
+				{
+					pEnemy[i].AIFlag = true;
+				}
+			}
+		}
+		//------------------------------------
+		//ドッペルゲンガー弾用当たり判定
+		//------------------------------------
+		//DOPPELGANGER* pDoppel = GetDoppelganger();
+		//BULLET* pBullet = GetBullet();
 
+		//反プレイヤー弾 と 敵キャラ
+		//if(pDoppel->UseFlag == true)
+		//{ 
+		//	pBullet->use = true;
+
+		//	if (pBullet->use == true)
+		//	{
+		//		if (pPlayer->UseFlag)
+		//		{
+		//			bool hit = CollisionBB(pBullet->pos, pPlayer->Position, D3DXVECTOR2(pBullet->w, pBullet->h), D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H));
+
+		//			if (hit == true)//当たっている
+		//			{
+		//				if (pBullet->hit)
+		//				{
+		//					pPlayer->hp - (pBullet->Damage);
+		//					if (pPlayer->hp <= 0)
+		//					{
+		//						pPlayer->UseFlag = false;
+		//						StartFade(FADE::FADE_OUT);
+		//						SetResultType(LOSE);
+		//						pTime->EndTime();
+		//						pTimeParam->EndFlag = true;
+		//					}
+		//					
+		//				}
+		//			}
+		//			else//当っていない
+		//			{
+
+		//			}
+		//		}
+		//	}
+		//}
+		
 }
 //----------------------------------------------------------------------------------------------------------
 

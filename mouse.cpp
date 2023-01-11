@@ -16,6 +16,8 @@
 //#include"puzzlecip.h"
 #include"jump_stand.h"
 #include"spawnpoint.h"
+#include "switch.h"
+#include "SwitchWall.h"
 
 MOUSE Mouse;
 bool oneFlag = false;	//マウスでパズルを一つ持っているか
@@ -67,6 +69,8 @@ void UpdateGameMouse()
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	JUMPSTAND* pJumpStand = GetJumpStand();
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
+	SWITCH* pSwitch = GetSwitch();
+	SWITCHWALL* pSwitchWall = GetSwitchWall();
 	Mouse.oldPosX = GetMousePosX();
 	Mouse.oldPosY = GetMousePosY();
 
@@ -244,36 +248,58 @@ void UpdateGameMouse()
 							}
 						}
 
-						}
-						for (int i = 0; i < JUMPSTAND_MAX; i++)
-						{//ジャンプスタンド
-							if (pJumpStand[i].UseJumpStand)
-							{
-								if (pJumpStand[i].PieceIndex == NoIndex)
-								{
-									pJumpStand[i].pos += temp;
-								}
-							}
-						}
-						for (int i = 0; i < SPAWN_POINT_MAX; i++)
-						{//スポーンポイント
-							if (pSpawnPoint[i].UseFlag)
-							{
-								if (pSpawnPoint[i].PieceIndex == NoIndex)
-								{
-									pSpawnPoint[i].Position += temp;
-								}
-
-							}
-
-						}
-
-						if (!Mouse.pFlag)
+					}
+					for (int i = 0; i < JUMPSTAND_MAX; i++)
+					{//ジャンプスタンド
+						if (pJumpStand[i].UseJumpStand)
 						{
-							if (Keyboard_IsKeyTrigger(KK_A))	//aキーが押されたら
+							if (pJumpStand[i].PieceIndex == NoIndex)
 							{
-								RotateMapChipR(NoIndex);
-								Mouse.RotIndex += 1;
+								pJumpStand[i].pos += temp;
+							}
+						}
+					}
+					for (int i = 0; i < SPAWN_POINT_MAX; i++)
+					{//スポーンポイント
+						if (pSpawnPoint[i].UseFlag)
+						{
+							if (pSpawnPoint[i].PieceIndex == NoIndex)
+							{
+								pSpawnPoint[i].Position += temp;
+							}
+
+						}
+
+					}
+					for (int i = 0; i < SWITCH_MAX; i++)
+					{//スイッチ
+						if (pSwitch[i].UseFlag)
+						{
+							if (pSwitch[i].PieceIndex == NoIndex)
+							{
+								pSwitch[i].pos += temp;
+							}
+
+						}
+					}
+					for (int i = 0; i < SWITCHWALL_MAX; i++)
+					{//スイッチ壁
+						if (pSwitchWall[i].UseFlag)
+						{
+							if (pSwitchWall[i].PieceIndex == NoIndex)
+							{
+								pSwitchWall[i].pos += temp;
+							}
+
+						}
+					}
+
+					if (!Mouse.pFlag)
+					{
+						if (Keyboard_IsKeyTrigger(KK_A))	//aキーが押されたら
+						{
+							RotateMapChipR(NoIndex);
+							Mouse.RotIndex += 1;
 
 						}
 					}

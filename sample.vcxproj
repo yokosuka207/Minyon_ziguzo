@@ -138,11 +138,13 @@
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="broken.cpp" />
+    <ClCompile Include="bullet.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="cursor.cpp" />
     <ClCompile Include="EffectSpark.cpp" />
+    <ClCompile Include="doppelganger.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="fallblock.cpp" />
@@ -189,6 +191,7 @@
     <ClCompile Include="thorn_block.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="warp.cpp" />
     <ClCompile Include="xinput.cpp" />
     <ClCompile Include="xkeyboard.cpp" />
@@ -198,11 +201,13 @@
     <ClInclude Include="bg.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="broken.h" />
+    <ClInclude Include="bullet.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="cursor.h" />
     <ClInclude Include="EffectSpark.h" />
+    <ClInclude Include="doppelganger.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="fallblock.h" />
@@ -249,6 +254,7 @@
     <ClInclude Include="thorn_block.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="tutorial.h" />
     <ClInclude Include="warp.h" />
     <ClInclude Include="xinput.h" />
     <ClInclude Include="xkeyboard.h" />
