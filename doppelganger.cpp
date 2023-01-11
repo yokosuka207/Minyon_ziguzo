@@ -31,7 +31,7 @@
 #include"game.h"
 #include"puzzle.h"
 #include"collision.h"
-//#include"mouse.h"
+#include"mouse.h"
 #include"jump_stand.h"		//ジャンプ台
 #include"MapChip.h"
 #include"thorn_block.h"
@@ -86,7 +86,7 @@ HRESULT InitDoppelganger()
 	g_Doppel.UseFlag = true;
 	g_Doppel.jump = false;
 	//g_Doppel.getjump = false;
-	//g_Doppel.GetJumpStand = false;		//ジャンプ台用
+	g_Doppel.GetJumpStand = false;		//ジャンプ台用
 	g_Doppel.fall = false;
 	//g_Doppel.getfall = false;
 	g_Doppel.WarpFlag = false;
@@ -98,8 +98,8 @@ HRESULT InitDoppelganger()
 	g_Doppel.texno = LoadTexture(g_TextureNameBroken);
 
 	g_Doppel.PaternNo = 0;//パターン番号
-	g_Doppel.uv_w = PLAYER_UV_W;//横サイズ
-	g_Doppel.uv_h = PLAYER_UV_H;//縦サイズ
+	g_Doppel.uv_w = DOPPELGANGER_UV_W;//横サイズ
+	g_Doppel.uv_h = DOPPELGANGER_UV_H;//縦サイズ
 	g_Doppel.NumPatern = 4;//横枚数
 
 
@@ -127,75 +127,75 @@ void UninitDoppelganger()
 
 void UpdateDoppelganger()
 {	
-	PLAYER* pPlayer = GetPlayer();
-
-	
-	
-	
-	//-------------------------------------------------
-	//プレイヤーと反プレイヤーの移動処理
-	//-------------------------------------------------
-	
-	if (pPlayer->UseFlag == true)
+	MOUSE* pMouse = GetMouse();
+	if (!pMouse->UseFlag)
 	{
-		g_Doppel.sp = pPlayer->sp;
-		//pDoppel->sp == pPlayer->sp;
-		//pDoppel->Position = pPlayer->Position;
+		PLAYER* pPlayer = GetPlayer();
+		//-------------------------------------------------
+		//プレイヤーと反プレイヤーの移動処理
+		//-------------------------------------------------
 
-		g_Doppel.UseFlag = true;
-
-		if (g_Doppel.UseFlag == true)
+		if (pPlayer->UseFlag == true)
 		{
+			g_Doppel.sp.x = pPlayer->sp.x * -1;
 			
-			
-			//移動
-			if (pPlayer->dir == PLAYER_DIRECTION::RIGHT)
+			//pDoppel->sp == pPlayer->sp;
+			//pDoppel->Position = pPlayer->Position;
+
+			g_Doppel.UseFlag = true;
+
+			if (g_Doppel.UseFlag == true)
 			{
-				//プレイヤーの速度がプラスされたら反プレイヤーも右に移動
-				
-				g_Doppel.Position.x += g_Doppel.sp.x;
-				if (g_Doppel.sp.x != 0) {
-					g_Doppel.PaternNo -= 0.25f;
+
+
+				//移動
+				if (pPlayer->dir == PLAYER_DIRECTION::RIGHT)
+				{
+					//プレイヤーの速度がプラスされたら反プレイヤーも右に移動
+
+					//g_Doppel.Position.x += g_Doppel.sp.x;
+					if (g_Doppel.sp.x != 0) {
+						g_Doppel.PaternNo += 0.25f;
+					}
+
+
+					// 向きを変える
+					g_Doppel.dir = DOPPELGANGER_DIRECTION::RIGHT;
+					g_Doppel.uv_w = -DOPPELGANGER_UV_W;
 				}
-				
+				else if (pPlayer->dir == PLAYER_DIRECTION::LEFT)
+				{
+					//プレイヤーの速度がプラスされたら反プレイヤーも左に移動
+					//g_Doppel.Position.x += g_Doppel.sp.x;
+					if (g_Doppel.sp.x != 0) {
+						g_Doppel.PaternNo += 0.25f;
+					}
 
-				// 向きを変える
-				g_Doppel.dir = DOPPELGANGER_DIRECTION::RIGHT;
-				g_Doppel.uv_w = -DOPPELGANGER_UV_W;
-			}
-			else if (pPlayer->dir == PLAYER_DIRECTION::LEFT)
-			{
-				//プレイヤーの速度がプラスされたら反プレイヤーも左に移動
-				g_Doppel.Position.x += g_Doppel.sp.x;
-				if (g_Doppel.sp.x != 0) {
-					g_Doppel.PaternNo += 0.25f;
+
+					// 向きを変える
+					g_Doppel.dir = DOPPELGANGER_DIRECTION::LEFT;
+					g_Doppel.uv_w = DOPPELGANGER_UV_W;
 				}
-				
+				else
+				{
+					g_Doppel.sp.x = 0;
+				}
+				//fuck
+				// アニメーションパターン番号を0～15の範囲内にする
+				if (g_Doppel.PaternNo >= 16) { g_Doppel.PaternNo = 0; }
+				//if (g_Doppel.PaternNo < 0) { g_Doppel.PaternNo = -17; }
 
-				// 向きを変える
-				g_Doppel.dir = DOPPELGANGER_DIRECTION::LEFT;
-				g_Doppel.uv_w = DOPPELGANGER_UV_W;
-			}
-			else
-			{
-				g_Doppel.sp.x = 0;
-			}
-			//fuck
-			// アニメーションパターン番号を0～15の範囲内にする
-			if (g_Doppel.PaternNo > 15) { g_Doppel.PaternNo -= 15; }
-			if (g_Doppel.PaternNo < 0) { g_Doppel.PaternNo += 15; }
 
-			
-			//ドッペルゲンガー弾発射
-			//SetBullet(g_Doppel.Position, D3DXVECTOR2(BULLET_SIZE_H, BULLET_SIZE_W), 1);
+				//ドッペルゲンガー弾発射
+				//SetBullet(g_Doppel.Position, D3DXVECTOR2(BULLET_SIZE_H, BULLET_SIZE_W), 1);
 
-		}
+			//}
 
 
 
-				//-------------------
-				//基本ブロックの場合
-				//-------------------
+			//-------------------
+			//基本ブロックの場合
+			//-------------------
 				BLOCK* block = GetChipBlock();
 
 				for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
@@ -243,21 +243,21 @@ void UpdateDoppelganger()
 					}
 
 					////反プレイヤー上・ブロック下,着地する
-					
-						if ((g_Doppel.oldpos.y + g_Doppel.size.y / 2 < pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
-							CollisionBB(g_Doppel.Position, pSheerFloors[i].pos, g_Doppel.size, pSheerFloors[i].size))
-						{
-							g_Doppel.Position.y = pSheerFloors[i].pos.y - (pSheerFloors[i].size.y / 2 + g_Doppel.size.y / 2);
-							g_Doppel.sp.y = 0.0f;
-							//p_JumpStand->JumpStandFlag = false;
 
-							g_Doppel.isSheerFloors = true;
-							g_Doppel.sp.y = 0.0f;
+					if ((g_Doppel.oldpos.y + g_Doppel.size.y / 2 < pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
+						CollisionBB(g_Doppel.Position, pSheerFloors[i].pos, g_Doppel.size, pSheerFloors[i].size))
+					{
+						g_Doppel.Position.y = pSheerFloors[i].pos.y - (pSheerFloors[i].size.y / 2 + g_Doppel.size.y / 2);
+						g_Doppel.sp.y = 0.0f;
+						//p_JumpStand->JumpStandFlag = false;
+
+						g_Doppel.isSheerFloors = true;
+						g_Doppel.sp.y = 0.0f;
 
 
-						}
-					
-					
+					}
+
+
 					//反プレイヤー下・ブロック上,落下する
 					if (g_Doppel.Position.x + g_Doppel.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
 						g_Doppel.Position.x - g_Doppel.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
@@ -300,7 +300,7 @@ void UpdateDoppelganger()
 				}
 
 				// ジャンプ
-				if ((g_Doppel.isGround || g_Doppel.isSheerFloors || g_Doppel.isHigh || g_Doppel.isMoveBlock) && g_Doppel.sp.y <= 0 )//&& Keyboard_IsKeyDown(KK_SPACE
+				if ((g_Doppel.isGround || g_Doppel.isSheerFloors || g_Doppel.isHigh || g_Doppel.isMoveBlock) && g_Doppel.sp.y <=0 && Keyboard_IsKeyDown(KK_SPACE))//&& Keyboard_IsKeyDown(KK_SPACE
 				{
 
 					g_Doppel.sp.y = 2.5f;			// スピードのyをマイナスにする
@@ -311,9 +311,9 @@ void UpdateDoppelganger()
 					if (g_Doppel.isSheerFloors) {
 						g_Doppel.isSheerFloors = false;			// フラグをジャンプ中にする
 					}
-					//if (g_Doppel.isHigh) {
-					//	g_Doppel.isHigh = false;			// フラグをジャンプ中にする
-					//}
+					if (g_Doppel.isHigh) {
+						g_Doppel.isHigh = false;			// フラグをジャンプ中にする
+					}
 					if (g_Doppel.isMoveBlock) {
 						g_Doppel.isMoveBlock = false;
 					}
@@ -323,7 +323,7 @@ void UpdateDoppelganger()
 				if (!g_Doppel.isGround && !g_Doppel.isSheerFloors && !g_Doppel.isMoveBlock) {
 					g_Doppel.sp.y -= 0.1f;			// スピードのyを増やす
 				}
-				
+
 				//反映
 				g_Doppel.oldpos = g_Doppel.Position;
 				g_Doppel.Position += g_Doppel.sp;
@@ -383,11 +383,11 @@ void UpdateDoppelganger()
 					}
 				}
 
-				
-				
-			//----------------
-			//ジャンプ台の場合
-			//----------------
+
+
+				//----------------
+				//ジャンプ台の場合
+				//----------------
 				JUMPSTAND* p_JumpStand = GetJumpStand();
 
 				for (int i = 0; i < JUMPSTAND_MAX; i++) {
@@ -408,7 +408,7 @@ void UpdateDoppelganger()
 
 				////反プレイヤー・動くブロック 当たり判定
 				{
-					MOVEBLOCK *pMoveBlock = GetMoveBlock();
+					MOVEBLOCK* pMoveBlock = GetMoveBlock();
 
 					for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 						if (pMoveBlock[i].bUse)
@@ -460,9 +460,9 @@ void UpdateDoppelganger()
 				}
 
 
-			//========================================================================
-			//プレイヤー・ワープ　当たり判定(PlayerとWarpの当たり判定)
-			//=========================================================================
+				//========================================================================
+				//プレイヤー・ワープ　当たり判定(PlayerとWarpの当たり判定)
+				//=========================================================================
 
 				g_Doppel.CoolTime--;
 
@@ -497,7 +497,7 @@ void UpdateDoppelganger()
 									{
 										g_Doppel.Position = (warp + i - 1)->Position;
 										g_Doppel.CoolTime = PLAYER_COOLTIME;
-										
+
 										g_Doppel.WarpFlag = true;
 
 									}
@@ -514,7 +514,7 @@ void UpdateDoppelganger()
 					for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 
 						THORNBLOCK* pThornBlock = GetThornBlock();
-						
+
 
 						if (pThornBlock[i].UseFlag) {
 
@@ -523,7 +523,7 @@ void UpdateDoppelganger()
 								//GKey* pGkey = GetGKey();
 
 								g_Doppel.UseFlag = false;
-								
+
 								/*pGKey->UseFlag = false;
 								pGKey->GetGKey = true;*/
 
@@ -533,12 +533,12 @@ void UpdateDoppelganger()
 					}
 				}
 
-					//プレイヤーが落下死したら
-					if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT)
-					{
-						g_Doppel.UseFlag = false;
-					}
-			
+				//プレイヤーが落下死したら
+				if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT)
+				{
+					g_Doppel.UseFlag = false;
+				}
+
 
 
 				//落ちるブロック　当たり判定 
@@ -588,9 +588,9 @@ void UpdateDoppelganger()
 					}
 				}
 
-			//========================================================================
-			//プレイヤー・壊れるブロック　当たり判定(PlayerとBrokenBlockの当たり判定)
-			//=========================================================================
+				//========================================================================
+				//プレイヤー・壊れるブロック　当たり判定(PlayerとBrokenBlockの当たり判定)
+				//=========================================================================
 
 				for (int i = 0; i < BROKEN_MAX; i++)
 				{
@@ -641,9 +641,9 @@ void UpdateDoppelganger()
 					}
 				}
 
-			//====================================================================
-			//プレイヤーと高所落下ブロックの当たり判定(PlayerとHighの当たり判定)
-			//====================================================================
+				//====================================================================
+				//プレイヤーと高所落下ブロックの当たり判定(PlayerとHighの当たり判定)
+				//====================================================================
 
 				for (int i = 0; i < HIGH_MAX; i++)
 				{
@@ -718,50 +718,50 @@ void UpdateDoppelganger()
 				}
 
 
-			////------------------------------------
-			////ドッペルゲンガー弾用当たり判定
-			////------------------------------------
-			//	//DOPPELGANGER* pDoppel = GetDoppelganger();
-			//	BULLET* pBullet = GetBullet();
-			//	
+				////------------------------------------
+				////ドッペルゲンガー弾用当たり判定
+				////------------------------------------
+				//	//DOPPELGANGER* pDoppel = GetDoppelganger();
+				//	BULLET* pBullet = GetBullet();
+				//	
 
-			//	if (g_Doppel.UseFlag == true)
-			//	{
-			//		pBullet->use = true;
+				//	if (g_Doppel.UseFlag == true)
+				//	{
+				//		pBullet->use = true;
 
-			//		if (pBullet->use == true)
-			//		{
-			//			if (pPlayer->UseFlag)
-			//			{
-			//				bool hit = CollisionBB(pBullet->pos, pPlayer->Position, D3DXVECTOR2(pBullet->w, pBullet->h), D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H));
+				//		if (pBullet->use == true)
+				//		{
+				//			if (pPlayer->UseFlag)
+				//			{
+				//				bool hit = CollisionBB(pBullet->pos, pPlayer->Position, D3DXVECTOR2(pBullet->w, pBullet->h), D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H));
 
-			//				if (hit == true)//当たっている
-			//				{
-			//					if (pBullet->hit)
-			//					{
-			//						pPlayer->hp - (pBullet->Damage);
-			//						if (pPlayer->hp <= 0)
-			//						{
-			//							pPlayer->UseFlag = false;
-			//							StartFade(FADE::FADE_OUT);
-			//							SetResultType(LOSE);
-			//							/*pTime->EndTime();
-			//							pTimeParam->EndFlag = true;*/
-			//						}
+				//				if (hit == true)//当たっている
+				//				{
+				//					if (pBullet->hit)
+				//					{
+				//						pPlayer->hp - (pBullet->Damage);
+				//						if (pPlayer->hp <= 0)
+				//						{
+				//							pPlayer->UseFlag = false;
+				//							StartFade(FADE::FADE_OUT);
+				//							SetResultType(LOSE);
+				//							/*pTime->EndTime();
+				//							pTimeParam->EndFlag = true;*/
+				//						}
 
-			//					}
-			//				}
-			//				else//当っていない
-			//				{
+				//					}
+				//				}
+				//				else//当っていない
+				//				{
 
-			//				}
-			//			}
-			//		}
-			//	}
+				//				}
+				//			}
+				//		}
+				//	}
 
 
 				Piece* pPiece = GetPiece();
-				SpawnPoint*pSpawnPoint = GetSpawnPoint();
+				SpawnPoint* pSpawnPoint = GetSpawnPoint();
 
 				for (int i = 0; i < PUZZLE_MAX; i++)
 				{
@@ -852,6 +852,8 @@ void UpdateDoppelganger()
 
 
 				}
+			}
+		}
 	}
 }
 
@@ -867,7 +869,7 @@ void DrawDoppelganger()
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Doppel.texno));
 		//スプライトを表示
 		D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		SpriteDrawColorRotation(g_Doppel.Position.x, g_Doppel.Position.y, -0.2f, g_Doppel.Drawsize.x, g_Doppel.Drawsize.y, g_Doppel.rot, g_Doppel.col, g_Doppel.PaternNo, g_Doppel.uv_w, g_Doppel.uv_h, g_Doppel.NumPatern);
+		SpriteDrawColorRotation(g_Doppel.Position.x, g_Doppel.Position.y, -0.2f, g_Doppel.Drawsize.x, g_Doppel.Drawsize.y, g_Doppel.rot, g_Doppel.col, g_Doppel.PaternNo, g_Doppel.uv_w *-1, g_Doppel.uv_h, g_Doppel.NumPatern);
 	}
 }
 

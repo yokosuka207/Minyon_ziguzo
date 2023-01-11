@@ -1897,6 +1897,9 @@ bool PlayerPuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion)
 	return true;
 
 }
+
+
+
 //--------------------------------------------
 //4方向にパズルがあるかあったらピースの出っ張りが有っているか
 //----------------------------------------------
