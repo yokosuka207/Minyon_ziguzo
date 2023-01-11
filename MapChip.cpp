@@ -498,7 +498,12 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEBLOCK)://21　動かすブロック
 				SetMoveBlock(position, DrawSize, no);
 				break;
-
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER):
+				SetDoppelGanger(position, DrawSize, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY):
+				SetEnemy(position, DrawSize, no);
+				break;
 			default:
 				break;
 			}
