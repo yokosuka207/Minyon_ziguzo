@@ -1075,15 +1075,15 @@ void PieceCollision()
 						if (!colFlag2)
 						{
 
-							for (int n = 0; n < 3; n++)
+							for (int n = 0; n < 4; n++)
 							{
 
 								if (pSplitStage->pos.y + SPLIT_SIZE - (m * SPLIT_SIZE) - pSplitStage->size.y / 2 < pPiece[i].pos.y &&
 									pSplitStage->pos.y + SPLIT_SIZE - (m * SPLIT_SIZE) + pSplitStage->size.y / 2 > pPiece[i].pos.y &&
-									pSplitStage->pos.x - SPLIT_SIZE + (n * SPLIT_SIZE) - pSplitStage->size.x / 2 < pPiece[i].pos.x &&
-									pSplitStage->pos.x - SPLIT_SIZE + (n * SPLIT_SIZE) + pSplitStage->size.x / 2 > pPiece[i].pos.x)
+									pSplitStage->pos.x - SPLIT_SIZE - SPLIT_SIZE / 2 + (n * SPLIT_SIZE) - pSplitStage->size.x / 2 < pPiece[i].pos.x &&
+									pSplitStage->pos.x - SPLIT_SIZE - SPLIT_SIZE / 2 + (n * SPLIT_SIZE) + pSplitStage->size.x / 2 > pPiece[i].pos.x)
 								{
-									pPiece[i].pos = pSplitStage->Split3[n][m];
+									pPiece[i].pos = pSplitStage->Split34[n][m];
 
 									if (fourNomalPieceCollision(pPiece[i], i))
 									{

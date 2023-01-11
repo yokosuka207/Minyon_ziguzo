@@ -100,7 +100,7 @@ HRESULT InitMapChip() {
 	RotateChipData();
 
 	SplitStage* pSplitStage = GetSplitStage();
-	SetPieceMapChip(pSplitStage->Split3[0][0], 0);
+	SetPieceMapChip(pSplitStage->Split34[0][0], 0);
 
 	//SetPieceMapChip(pSplitStage->Split3[1][2], 2);
 
