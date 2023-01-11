@@ -187,7 +187,7 @@ void UpdateDoppelganger()
 
 			
 			//ドッペルゲンガー弾発射
-			SetBullet(g_Doppel.Position);
+			//SetBullet(g_Doppel.Position, D3DXVECTOR2(BULLET_SIZE_H, BULLET_SIZE_W), 1);
 
 		}
 

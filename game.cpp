@@ -38,6 +38,8 @@
 #include "pause.h"
 #include "goal_key.h"
 #include "doppelganger.h"
+#include "enemy.h"
+#include "bullet.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -79,9 +81,9 @@ void InitGame()
 
 		InitDoppelganger();
 		SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1);
-
+		InitEnemy();
 		InitPause();
-		
+		InitBullet();
 
 	}
 	InitMapChip();
@@ -126,6 +128,8 @@ void UninitGame()
 	UninitSwitchWall();
 
 	UninitDoppelganger();
+	UninitEnemy();
+	UninitBullet();
 
 	UninitPause();
 	pScore->UninitScore();
@@ -180,6 +184,8 @@ void UpdateGame()
 		UpdateSwitchWall();
 
 		UpdateDoppelganger();
+		UpdateEnemy();
+		UpdateBullet();
 
 		UpdateInventory();			// インベントリの更新
 		UpdateMapChip();
@@ -229,6 +235,8 @@ void DrawGame()
 		DrawThornBlock();
 
 		DrawDoppelganger();
+		DrawEnemy();
+		DrawBullet();
 
 		DrawInventory();			// インベントリの描画
 		pTime->DrawGameTime();
