@@ -22,7 +22,7 @@
 
 #define DOPPELGANGER_HP (5)
 #define DOPPELGANGER_UV_W (1.0f / 4)
-#define DOPPELGANGER_UV_H (1.0f / 4)
+#define DOPPELGANGER_UV_H (1.0f / 5)
 
 enum class DOPPELGANGER_DIRECTION
 {
@@ -43,7 +43,7 @@ struct DOPPELGANGER
 	bool fall;//—Ž‰º’†
 	bool getfall = false;//—Ž‰º‚ÌŠJŽn
 	
-	//bool GetJumpStand;
+	bool GetJumpStand;
 	bool isGround;	// ’n‚É‘«‚ð‚Â‚¯‚Ä‚¢‚é
 	bool isSheerFloors;
 	bool isSheerFloorsUse;

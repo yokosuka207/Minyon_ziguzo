@@ -72,6 +72,9 @@ bool PlayerPuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion);
 bool fourCollision(PUZZLE puzzle, int index);
 void PositionPlas(D3DXVECTOR2 num, int pinNo);
 bool PlayerPieceOpen(Piece p, int index, DIRECSION direcsion);
+
+bool DoppelPieceOpen(Piece pi, int index, DIRECSION direcsion);
+
 bool fourPieceCollision(Piece piece, int index);
 bool PieceOpen(Piece piece, int index, DIRECSION direcsion);
 bool fourNomalPieceCollision(Piece piece, int index);
@@ -1076,15 +1079,15 @@ void PieceCollision()
 						if (!colFlag2)
 						{
 
-							for (int n = 0; n < 3; n++)
+							for (int n = 0; n < 4; n++)
 							{
 
 								if (pSplitStage->pos.y + SPLIT_SIZE - (m * SPLIT_SIZE) - pSplitStage->size.y / 2 < pPiece[i].pos.y &&
 									pSplitStage->pos.y + SPLIT_SIZE - (m * SPLIT_SIZE) + pSplitStage->size.y / 2 > pPiece[i].pos.y &&
-									pSplitStage->pos.x - SPLIT_SIZE + (n * SPLIT_SIZE) - pSplitStage->size.x / 2 < pPiece[i].pos.x &&
-									pSplitStage->pos.x - SPLIT_SIZE + (n * SPLIT_SIZE) + pSplitStage->size.x / 2 > pPiece[i].pos.x)
+									pSplitStage->pos.x - SPLIT_SIZE - SPLIT_SIZE / 2 + (n * SPLIT_SIZE) - pSplitStage->size.x / 2 < pPiece[i].pos.x &&
+									pSplitStage->pos.x - SPLIT_SIZE - SPLIT_SIZE / 2 + (n * SPLIT_SIZE) + pSplitStage->size.x / 2 > pPiece[i].pos.x)
 								{
-									pPiece[i].pos = pSplitStage->Split3[n][m];
+									pPiece[i].pos = pSplitStage->Split34[n][m];
 
 									if (fourNomalPieceCollision(pPiece[i], i))
 									{
@@ -1895,6 +1898,9 @@ bool PlayerPuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion)
 	return true;
 
 }
+
+
+
 //--------------------------------------------
 //4方向にパズルがあるかあったらピースの出っ張りが有っているか
 //----------------------------------------------
@@ -2162,7 +2168,90 @@ bool PlayerPieceOpen(Piece p, int index, DIRECSION direcsion)
 	}
 	return true;
 
-}//--------------------------------------------
+}
+
+//--------------------------------------------
+//ドッペルゲンガーの移動先にピースがあるか
+//引数：元のピース、移動したいピースの添え字、移動したい場所
+//----------------------------------------------
+bool DoppelPieceOpen(Piece p, int index, DIRECSION direcsion)
+{
+	Piece* pPiece = GetPiece();
+
+
+	for (int i = 0; i < PUZZLE_MAX; i++)
+	{
+		if (pPiece[i].UseFlag)
+		{
+			if (i != index)
+			{
+				switch (direcsion)
+				{
+				case UP:
+					//puzzleの上に別のパズルがあるか
+					if (p.pos.y - PUZZLE_HEIGHT == pPiece[i].pos.y && p.pos.x == pPiece[i].pos.x)return false;
+
+					if (p.pos.y - PUZZLE_HEIGHT - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
+						p.pos.y - PUZZLE_HEIGHT + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&
+						p.pos.x - PUZZLE_WIDHT / 2 > pPiece[i].pos.x &&
+						p.pos.x + PUZZLE_WIDHT / 2 < pPiece[i].pos.x)
+					{
+						//return false;
+					}
+
+					break;
+				case DOWN:
+					//pの下に別のパズルがあるか
+					if (p.pos.y + PUZZLE_HEIGHT == pPiece[i].pos.y && p.pos.x == pPiece[i].pos.x)	return false;
+
+					if (p.pos.y + PUZZLE_HEIGHT - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
+						p.pos.y + PUZZLE_HEIGHT + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&
+						p.pos.x - PUZZLE_WIDHT / 2 < pPiece[i].pos.x &&
+						p.pos.x + PUZZLE_WIDHT / 2 > pPiece[i].pos.x)
+					{
+						//return false;
+					}
+
+					break;
+				case LEFT:
+					//pの左に別のパズルがあるか
+					if (p.pos.x - PUZZLE_WIDHT == pPiece[i].pos.x && p.pos.y == pPiece[i].pos.y)	return false;
+
+					if (p.pos.y - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
+						p.pos.y + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&
+						p.pos.x - PUZZLE_WIDHT - PUZZLE_WIDHT / 2 < pPiece[i].pos.x &&
+						p.pos.x - PUZZLE_WIDHT + PUZZLE_WIDHT / 2 > pPiece[i].pos.x)
+					{
+						//return false;
+					}
+
+					break;
+				case RIGHT:
+					//pの右に別のパズルがあるか
+
+					if (p.pos.x + PUZZLE_WIDHT == pPiece[i].pos.x && p.pos.y == pPiece[i].pos.y)	return false;
+
+					if (p.pos.y - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
+						p.pos.y + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&
+						p.pos.x + PUZZLE_WIDHT - PUZZLE_WIDHT / 2 < pPiece[i].pos.x &&
+						p.pos.x + PUZZLE_WIDHT + PUZZLE_WIDHT / 2 > pPiece[i].pos.x)
+					{
+						//return false;
+					}
+
+
+					break;
+
+				}
+
+			}
+
+		}
+	}
+	return true;
+
+}
+//--------------------------------------------
 //4方向にパズルがあるかあったらピースの出っ張りが有っているか
 //----------------------------------------------
 bool fourPieceCollision(Piece piece, int index)
