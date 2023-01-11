@@ -203,13 +203,13 @@ void UpdateCollision()
 					//—v‰ü‘P
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
 						if (pSwitch[i].SwitchIndex == pSwitchWall[j].SwitchIndex) {
-							pSwitchWall[j].UseFlag = false;//‰Ÿ‚³‚ê‚½‚ç•Ç‚ª‚È‚­‚È‚é
+							pSwitchWall[j].UseFlag = false;	//‰Ÿ‚³‚ê‚½‚ç•Ç‚ª‚È‚­‚È‚é
 						}
 					}
 				}
 				else {
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
-						pSwitchWall[j].UseFlag = true;//•ÇoŒ»
+						pSwitchWall[j].UseFlag = true;		//•ÇoŒ»
 					}
 				}
 			}
