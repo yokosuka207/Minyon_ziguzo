@@ -199,6 +199,7 @@ void UpdateCollision()
 				if (pSwitch[i].PressFlag) {
 					//要改善
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
+						//インデックスがずれている
 						if (pSwitch[i].SwitchIndex == pSwitchWall[j].SwitchIndex) {
 							pSwitchWall[j].UseFlag = false;	//押されたら壁がなくなる
 						}
