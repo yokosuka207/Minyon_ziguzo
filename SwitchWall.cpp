@@ -19,6 +19,7 @@ static SWITCHWALL g_SwitchWall[SWITCHWALL_MAX];
 static ID3D11ShaderResourceView* g_SwitchWallTexture;	//画像一枚で一つの変数が必要
 static char* g_SwitchWallTextureName = (char*)"data\\texture\\RED.jpg";	//テクスチャファイルパス
 static int g_SwitchWallTextureNo = 0;
+
 HRESULT InitSwitchWall() {
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
 		g_SwitchWall[i].pos = D3DXVECTOR2(0.0f, 0.0f);

@@ -41,5 +41,6 @@ void UpdateEnemy();
 void DrawEnemy();
 void SetEnemy(D3DXVECTOR2 pos,D3DXVECTOR2 size,int index);
 ENEMY* GetEnemy();
+void DeleteEnemy(int index);
 
 #endif // !_ENEMY_H_

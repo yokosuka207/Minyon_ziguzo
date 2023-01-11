@@ -56,6 +56,8 @@ enum class MAPCHIP_TYPE{
 	TYPE_MIRROR,		//19	鏡
 	TYPE_SPWANPOINT,	//20	スポーンポイント
 	TYPE_MOVEBLOCK,		//21	動くブロック
+	TYPE_DOPPELGANGER,	//22	ドッペルゲンガー
+	TYPE_ENEMY,			//23	敵
 
 	TYPE_NUM		
 };

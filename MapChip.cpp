@@ -32,8 +32,10 @@
 #include "SheerFloors.h"
 #include "broken.h"
 #include "high_broken.h"
-#include"spawnpoint.h"
-#include "MoveBlock.h"	
+#include "spawnpoint.h"
+#include "MoveBlock.h"
+#include "doppelganger.h"
+#include "enemy.h"
 
 //**************************************************
 //　マクロ定義
@@ -209,7 +211,12 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEBLOCK)://21　動かすブロック
 				SetMoveBlock(position, DrawSize, no);
 				break;
-
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER)://22　ドッペルゲンガー
+				SetDoppelGanger(position, DrawSize, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY)://23　敵
+				SetEnemy(position, DrawSize, no);
+				break;
 			default:
 				break;
 			}
@@ -378,7 +385,9 @@ void DeleteMapChip(int PieceNo) {
 	DeleteSheet(g_PieceMapChip[PieceNo].no);
 	DeleteGoal(g_PieceMapChip[PieceNo].no);
 	DeleteSpawnPoint(g_PieceMapChip[PieceNo].no);
-	//Delete
+	DeleteDoppelGanger(g_PieceMapChip[PieceNo].no);
+	DeleteEnemy(g_PieceMapChip[PieceNo].no);
+
 }
 Piece* GetPiece() {
 	return g_PieceMapChip;
@@ -489,7 +498,12 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEBLOCK)://21　動かすブロック
 				SetMoveBlock(position, DrawSize, no);
 				break;
-
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER)://22　ドッペルゲンガー
+				SetDoppelGanger(position, DrawSize, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY)://23　敵
+				SetEnemy(position, DrawSize, no);
+				break;
 			default:
 				break;
 			}

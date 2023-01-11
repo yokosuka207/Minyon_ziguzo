@@ -92,3 +92,11 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index) {
 ENEMY* GetEnemy() {
 	return g_Enemy;
 }
+void DeleteEnemy(int index) {
+	for (int i = 0; i < ENEMY_MAX; i++) {
+		if (g_Enemy[i].UseFlag && g_Enemy[i].index == index) {
+			g_Enemy[i].UseFlag = false;
+		}
+	}
+}
+

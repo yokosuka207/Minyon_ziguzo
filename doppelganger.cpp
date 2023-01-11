@@ -881,3 +881,8 @@ void SetDoppelGanger(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index)
 		g_Doppel.UseFlag = true;
 	}
 }
+void DeleteDoppelGanger(int index) {
+	if (g_Doppel.UseFlag && g_Doppel.PieceIndex == index) {
+		g_Doppel.UseFlag = false;
+	}
+}
