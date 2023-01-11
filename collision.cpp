@@ -72,6 +72,9 @@ bool PlayerPuzzleOpen(PUZZLE puzzle, int index, DIRECSION direcsion);
 bool fourCollision(PUZZLE puzzle, int index);
 void PositionPlas(D3DXVECTOR2 num, int pinNo);
 bool PlayerPieceOpen(Piece p, int index, DIRECSION direcsion);
+
+bool DoppelPieceOpen(Piece pi, int index, DIRECSION direcsion);
+
 bool fourPieceCollision(Piece piece, int index);
 bool PieceOpen(Piece piece, int index, DIRECSION direcsion);
 bool fourNomalPieceCollision(Piece piece, int index);
@@ -2158,7 +2161,90 @@ bool PlayerPieceOpen(Piece p, int index, DIRECSION direcsion)
 	}
 	return true;
 
-}//--------------------------------------------
+}
+
+//--------------------------------------------
+//ドッペルゲンガーの移動先にピースがあるか
+//引数：元のピース、移動したいピースの添え字、移動したい場所
+//----------------------------------------------
+bool DoppelPieceOpen(Piece p, int index, DIRECSION direcsion)
+{
+	Piece* pPiece = GetPiece();
+
+
+	for (int i = 0; i < PUZZLE_MAX; i++)
+	{
+		if (pPiece[i].UseFlag)
+		{
+			if (i != index)
+			{
+				switch (direcsion)
+				{
+				case UP:
+					//puzzleの上に別のパズルがあるか
+					if (p.pos.y - PUZZLE_HEIGHT == pPiece[i].pos.y && p.pos.x == pPiece[i].pos.x)return false;
+
+					if (p.pos.y - PUZZLE_HEIGHT - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
+						p.pos.y - PUZZLE_HEIGHT + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&
+						p.pos.x - PUZZLE_WIDHT / 2 > pPiece[i].pos.x &&
+						p.pos.x + PUZZLE_WIDHT / 2 < pPiece[i].pos.x)
+					{
+						//return false;
+					}
+
+					break;
+				case DOWN:
+					//pの下に別のパズルがあるか
+					if (p.pos.y + PUZZLE_HEIGHT == pPiece[i].pos.y && p.pos.x == pPiece[i].pos.x)	return false;
+
+					if (p.pos.y + PUZZLE_HEIGHT - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
+						p.pos.y + PUZZLE_HEIGHT + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&
+						p.pos.x - PUZZLE_WIDHT / 2 < pPiece[i].pos.x &&
+						p.pos.x + PUZZLE_WIDHT / 2 > pPiece[i].pos.x)
+					{
+						//return false;
+					}
+
+					break;
+				case LEFT:
+					//pの左に別のパズルがあるか
+					if (p.pos.x - PUZZLE_WIDHT == pPiece[i].pos.x && p.pos.y == pPiece[i].pos.y)	return false;
+
+					if (p.pos.y - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
+						p.pos.y + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&
+						p.pos.x - PUZZLE_WIDHT - PUZZLE_WIDHT / 2 < pPiece[i].pos.x &&
+						p.pos.x - PUZZLE_WIDHT + PUZZLE_WIDHT / 2 > pPiece[i].pos.x)
+					{
+						//return false;
+					}
+
+					break;
+				case RIGHT:
+					//pの右に別のパズルがあるか
+
+					if (p.pos.x + PUZZLE_WIDHT == pPiece[i].pos.x && p.pos.y == pPiece[i].pos.y)	return false;
+
+					if (p.pos.y - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
+						p.pos.y + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&
+						p.pos.x + PUZZLE_WIDHT - PUZZLE_WIDHT / 2 < pPiece[i].pos.x &&
+						p.pos.x + PUZZLE_WIDHT + PUZZLE_WIDHT / 2 > pPiece[i].pos.x)
+					{
+						//return false;
+					}
+
+
+					break;
+
+				}
+
+			}
+
+		}
+	}
+	return true;
+
+}
+//--------------------------------------------
 //4方向にパズルがあるかあったらピースの出っ張りが有っているか
 //----------------------------------------------
 bool fourPieceCollision(Piece piece, int index)

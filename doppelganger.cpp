@@ -46,7 +46,7 @@
 #include "goal_key.h"
 //#include "pause.h"
 
-//#include"spawnpoint.h"
+#include"spawnpoint.h"
 
 #include "fade.h"
 #include "result.h"
@@ -64,7 +64,7 @@
 //グローバル変数
 //=============================================================================
 static DOPPELGANGER g_Doppel;
-static char* g_TextureNameBroken = (char*)"data\\texture\\waking_alpha.png";
+static char* g_TextureNameBroken = (char*)"data\\texture\\ドッペルゲンガー.png";
 
 static Time		g_Time;
 
@@ -717,6 +717,7 @@ void UpdateDoppelganger()
 					}
 				}
 
+
 			////------------------------------------
 			////ドッペルゲンガー弾用当たり判定
 			////------------------------------------
@@ -757,6 +758,100 @@ void UpdateDoppelganger()
 			//			}
 			//		}
 			//	}
+
+
+				Piece* pPiece = GetPiece();
+				SpawnPoint*pSpawnPoint = GetSpawnPoint();
+
+				for (int i = 0; i < PUZZLE_MAX; i++)
+				{
+					if (pPiece[i].UseFlag)
+					{
+						bool hitflag = CollisionBB(g_Doppel.Position, pPiece[i].pos, g_Doppel.size, pPiece[i].size);
+
+						if (hitflag)
+						{
+							if (g_Doppel.Position.y < pPiece[i].pos.y - PUZZLE_HEIGHT / 2)
+							{
+								bool hitflag2 = DoppelPieceOpen(pPiece[i], i, DOWN);
+
+								if (!hitflag2)
+								{
+									g_Doppel.sp.y -= 0.2;//加速
+								}
+								else
+								{//下に何もなく死亡する場合
+									for (int i = 0; i < SPAWN_POINT_MAX; i++)
+									{
+										if (pSpawnPoint[i].UseFlag)
+										{
+											if (g_Doppel.PieceIndex == pSpawnPoint[i].PieceIndex)
+											{
+												g_Doppel.Position = pSpawnPoint[i].Position;
+
+											}
+
+
+										}
+									}
+
+								}
+							}
+							else if (g_Doppel.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
+							{
+
+								bool hitflag2 = DoppelPieceOpen(pPiece[i], i, RIGHT);
+
+								if (!hitflag2)
+								{
+									//g_Player.sp.y += 0.2;//加速
+								}
+								else
+								{
+									g_Doppel.Position.x = g_Doppel.oldpos.x;
+								}
+
+
+							}
+							else if (g_Doppel.Position.x <= pPiece[i].pos.x - PUZZLE_WIDHT / 2)
+							{
+								bool hitflag2 = DoppelPieceOpen(pPiece[i], i, LEFT);
+
+								if (!hitflag2)
+								{
+									//g_Player.sp.y += 0.2;//加速
+								}
+								else
+								{
+									g_Doppel.Position.x = g_Doppel.oldpos.x;
+								}
+
+
+							}
+							else if (g_Doppel.Position.y >= pPiece[i].pos.y + PUZZLE_HEIGHT / 2)
+							{
+								bool hitflag2 = DoppelPieceOpen(pPiece[i], i, UP);
+
+								if (!hitflag2)
+								{
+									//g_Player.sp.y += 0.2;//加速
+								}
+								else
+								{
+
+									g_Doppel.fall = true;
+									//g_Player.sp.y = 0;
+									//g_Player.getfall = true;
+									g_Doppel.frame = 50;
+									//g_Player.sp.y += 0.2;//加速
+								}
+
+							}
+						}
+					}
+
+
+				}
 	}
 }
 
