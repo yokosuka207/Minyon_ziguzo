@@ -108,8 +108,8 @@ void UpdateInventory()
 		if (g_Inventory[i].IsUse) {
 			// 当たり判定用座標
 			D3DXVECTOR2 min, max;		// min左上, max右下
-			min = D3DXVECTOR2(g_Inventory[i].pos.x - g_Inventory[i].size.x / 2, g_Inventory[i].pos.y - g_Inventory[i].size.y / 2);
-			max = D3DXVECTOR2(g_Inventory[i].pos.x + g_Inventory[i].size.x / 2, g_Inventory[i].pos.y + g_Inventory[i].size.y / 2);
+			min = D3DXVECTOR2(g_Inventory[i].pos.x - g_Inventory[i].size.x, g_Inventory[i].pos.y - g_Inventory[i].size.y);
+			max = D3DXVECTOR2(g_Inventory[i].pos.x + g_Inventory[i].size.x, g_Inventory[i].pos.y + g_Inventory[i].size.y);
 
 			// マウスと所持パズルの当たり判定
 			if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y) {
@@ -129,10 +129,13 @@ void UpdateInventory()
 				//----------Trigger挙動----------
 				if (!g_Inventory[i].IsCatch) {
 					// マウスと所持パズルが当たっていたら
-					float x = MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x;
-					float y = MousePos.y - SCREEN_HEIGHT / 2 + g_Inventory[i].size.y;
-					y =y * -1;
-					if (min.x < (MousePos.x - SCREEN_WIDTH / 2+g_Inventory[i].size.x/2) && max.x >(MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x/2) && min.y < (y) && max.y >(y)) {
+					float x = MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x/2;
+					float y = MousePos.y - SCREEN_HEIGHT / 2 + g_Inventory[i].size.y/2;
+					if (MousePos.y < 400) {
+						y = y * -1;
+						y += 30.0f;
+					}
+					if (min.x < (MousePos.x - SCREEN_WIDTH / 2+g_Inventory[i].size.x) && max.x >(MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x) && min.y < (y) && max.y >(y)) {
 						// 所持ピースを全部調べて誰もつかまれていなかったら自分がつかまる
 						for (int j = 0; j < INVENTORY_MAX; j++) {
 							if (g_Inventory[j].IsCatch == true) {
