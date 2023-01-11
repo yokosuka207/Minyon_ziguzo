@@ -898,9 +898,6 @@ void PieceCollision()
 									{
 										colFlag2 = true;
 
-										// ヒバナエフェクト
-										SetEffectSpark(pJoint[j].pos, D3DXVECTOR2(300.0f, 300.0f));
-
 										//ジョイントが右だったら
 										if (pPiece[i].pos.x + pPiece[i].size.x / 3 < pJoint[j].pos.x)
 										{
@@ -918,7 +915,8 @@ void PieceCollision()
 												{
 													pPlayer->Position += temp;
 												}
-
+												// ヒバナエフェクト
+												SetEffectSpark(pJoint[j].pos, D3DXVECTOR2(300.0f, 300.0f));
 											}
 											else
 											{
@@ -954,7 +952,8 @@ void PieceCollision()
 													pPlayer->Position += temp;
 												}
 												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
-
+												// ヒバナエフェクト
+												SetEffectSpark(pJoint[j].pos, D3DXVECTOR2(300.0f, 300.0f));
 											}
 											else
 											{
@@ -987,7 +986,8 @@ void PieceCollision()
 												{
 													pPlayer->Position += temp;
 												}
-
+												// ヒバナエフェクト
+												SetEffectSpark(pJoint[j].pos, D3DXVECTOR2(300.0f, 300.0f));
 											}
 											else
 											{
@@ -1020,7 +1020,8 @@ void PieceCollision()
 												{
 													pPlayer->Position += temp;
 												}
-
+												// ヒバナエフェクト
+												SetEffectSpark(pJoint[j].pos, D3DXVECTOR2(300.0f, 300.0f));
 											}
 											else
 											{
@@ -1573,7 +1574,6 @@ void PuzzleCollision()
 												if (fourCollision(pPuzzle[i], i))
 												{
 													colFlag = true;
-
 												}
 												else
 												{
