@@ -44,7 +44,6 @@ void UninitFade() {
 void UpdateFade() {
 	if (g_FadeParam.state == FADE::FADE_OUT) {
 		g_FadeParam.size -= D3DXVECTOR2(FADE_SPEED_X, FADE_SPEED_Y);
-		//0‚æ‚è¬‚³‚­‚È‚Á‚Ä‚à“ü‚Á‚Ä‚±‚È‚¢
 		if (g_FadeParam.size.x < SCREEN_WIDTH ||
 			g_FadeParam.size.y < SCREEN_HEIGHT) {
 			g_FadeParam.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
