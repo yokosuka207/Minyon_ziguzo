@@ -40,6 +40,8 @@ static STAGESELECT_STAIRS g_StageSelectStairs[12];
 
 static ID3D11ShaderResourceView* g_StageSelectTexture;	//画像一枚で一つの変数が必要
 static char* g_StageSelectTextureName = (char*)"data\\texture\\ドア.png";	//テクスチャファイルパス
+static ID3D11ShaderResourceView* g_StageSelect2Texture;	//画像一枚で一つの変数が必要
+static char* g_StageSelect2TextureName = (char*)"data\\texture\\鍵付きドア.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelectTextureBg;	//画像一枚で一つの変数が必要
 static char* g_StageSelectBgTextureName = (char*)"data\\texture\\背景.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelectTextureBlock;	//画像一枚で一つの変数が必要
@@ -55,7 +57,11 @@ static ID3D11ShaderResourceView* g_StageSelectTexturePly;	//画像一枚で一つの変数
 
 static char* g_TextureNamePly = (char*)"data\\texture\\waking_alpha.png";
 
+static int TexNo;	//テクスチャ格納
+
 int StageNo = 0;
+
+static bool OneFlag =true;
 
 //-----------------------------------------------------------------------------
 //	初期化
@@ -121,31 +127,36 @@ HRESULT InitStageSelect() {
 	b = 0;
 
 
-
-	for (int i = 0; i < STAGE_MAX; i++)
+	if (OneFlag)
 	{
-		if (i % 9 == 0 && i != 0)
+
+
+		for (int i = 0; i < STAGE_MAX; i++)
 		{
-			a++;
-			b = 0;
+			if (i % 9 == 0 && i != 0)
+			{
+				a++;
+				b = 0;
+			}
+
+			g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (175.0f) + (250.0f * a));
+			g_StageSelect[i].size = D3DXVECTOR2(110.0f, 150.0f);
+			g_StageSelect[i].UseFlag = true;
+			g_StageSelect[i].StagePieceIndex = i;
+			g_StageSelect[i].StageUseFlag = false;
+			g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
+			b++;
+			if (i == 1)
+			{
+				g_StageSelect[i].StageUseFlag = true;
+
+			}
+
 		}
+		TexNo = LoadTexture(g_StageSelect2TextureName);
 
-		g_StageSelect[i].pos = D3DXVECTOR2((300.0f)+(120.0f*b), (175.0f)+(250.0f*a));
-		g_StageSelect[i].size = D3DXVECTOR2(110.0f, 150.0f);
-		g_StageSelect[i].UseFlag = true;
-		g_StageSelect[i].StagePieceIndex = i;
-		g_StageSelect[i].StageUseFlag = true;
-		g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
-		b++;
-		if (i == 0)
-		{
-			g_StageSelect[i].StageUseFlag = true;
-
-		}
-
+		OneFlag = false;
 	}
-
-	
 
 
 	ply.Position = D3DXVECTOR2(30.0f, 30.0f);
@@ -451,14 +462,14 @@ void DrawStageSelect() {
 
 		
 		SetWorldViewProjection2D();
-		if (g_StageSelect[i].UseFlag)
+		if (g_StageSelect[i].StageUseFlag)
 		{
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelect[i].texno));
 
 		}
 		else
 		{
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelect[i].texno));
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(TexNo));
 
 		}
 
@@ -505,7 +516,10 @@ void DrawStageSelect() {
 //-----------------------------------------------------------------------------
 //	ステージセット関数
 //-----------------------------------------------------------------------------
-void SetStageSelect() {
+void SetStageSelect(int a) {
+
+	
+
 }
 //-----------------------------------------------------------------------------
 //	ステージセレクトを外部で値を変えれるようにする関数
