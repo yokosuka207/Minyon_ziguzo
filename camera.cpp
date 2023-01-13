@@ -105,7 +105,7 @@ void UpdateCamera(void)
 	}
 	if (Keyboard_IsKeyDown(KK_UP))//W
 	{
-		g_Camera.fov -= 0.2f;
+		g_Camera.fov = 20.0f;
 		g_Camera.zoomFlag = true;
 		if (g_Camera.fov < 20.0f)
 		{
@@ -116,7 +116,7 @@ void UpdateCamera(void)
 	}
 	if (Keyboard_IsKeyDown(KK_DOWN))//S
 	{
-		g_Camera.fov += 0.2f;
+		g_Camera.fov = 48.0f;
 		if (g_Camera.fov > 47.0f)
 		{
 			InitCamera();
