@@ -55,7 +55,7 @@
 //グローバル変数
 //=============================================================================
 static PLAYER g_Player;
-static char* g_TextureNameBroken = (char*)"data\\texture\\waking_alpha.png";
+static char* g_TextureNameBroken = (char*)"data\\texture\\プレイヤー.png";
 
 static Time		g_Time;
 
@@ -149,8 +149,17 @@ void UpdatePlayer()
 			}
 			//fuck
 			// アニメーションパターン番号を0～15の範囲内にする
-			if (g_Player.PaternNo > 15) { g_Player.PaternNo -= 15; }
+			if (g_Player.PaternNo >= 15) { g_Player.PaternNo -= 15; }
 			if (g_Player.PaternNo < 0) { g_Player.PaternNo += 15; }
+
+			if (g_Player.sp.x == 0)
+			{
+				g_Player.PaternNo = 17;
+			}
+			if (g_Player.sp.y != 0)
+			{
+				g_Player.PaternNo = 16;
+			}
 
 			//----------------
 			//ジャンプ台の場合
