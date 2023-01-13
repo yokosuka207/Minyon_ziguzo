@@ -33,6 +33,7 @@
 //	ÉOÉçÅ[ÉoÉãïœêî
 //*****************************************************************************
 static STAGESELECT g_StageSelect[STAGE_MAX];
+static STAGESELECT g_StageSelectBlack[STAGE_MAX];
 static STAGESELECT_BG g_StageSelectBg;
 static STAGESELECT_BG g_StageSelectfence[21];
 static STAGESELECT_BLOCK g_StageSelectBlock[3];
@@ -145,6 +146,11 @@ HRESULT InitStageSelect() {
 			g_StageSelect[i].StagePieceIndex = i;
 			g_StageSelect[i].StageUseFlag = true;
 			g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
+
+
+			g_StageSelectBlack[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (175.0f) + (250.0f * a));
+			g_StageSelectBlack[i].size = D3DXVECTOR2(120.0f, 150.0f);
+			g_StageSelectBlack[i].texno = LoadTexture(g_StageSelect2TextureName);
 			b++;
 			if (i == 1)
 			{
