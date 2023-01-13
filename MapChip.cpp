@@ -36,6 +36,7 @@
 #include "MoveBlock.h"
 #include "doppelganger.h"
 #include "enemy.h"
+#include"player.h"
 
 //**************************************************
 //　マクロ定義
@@ -216,6 +217,9 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY)://23　敵
 				SetEnemy(position, DrawSize, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_PLAYER)://24　敵
+				SetPlayerPosition(position);
 				break;
 			default:
 				break;

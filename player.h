@@ -78,3 +78,4 @@ void UninitPlayer();
 void UpdatePlayer();
 void DrawPlayer();
 PLAYER* GetPlayer();//PLAYER構造体の先頭ポインタを取得
+void SetPlayerPosition(D3DXVECTOR2 pos);

@@ -1052,3 +1052,8 @@ PLAYER* GetPlayer()
 {
 	return &g_Player;
 }
+
+void SetPlayerPosition(D3DXVECTOR2 pos)
+{
+	g_Player.Position = pos;
+}

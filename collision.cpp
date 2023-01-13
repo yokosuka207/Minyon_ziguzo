@@ -2284,14 +2284,14 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
-				if (piece.pos.x + 180 / 3 < pJoint[i].pos.x)	//ジョイントがピースの右だったら
+				if (piece.pos.x + PIECE_SIZE / 3 < pJoint[i].pos.x)	//ジョイントがピースの右だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
 						if (pJoint[j].pieNo ==pPiece[punum].no)
 						{
-							if (pPiece[punum].pos.x - pPiece[punum].size.x / 3 > pJoint[j].pos.x)
+							if (pPiece[punum].pos.x - PIECE_SIZE / 3 > pJoint[j].pos.x)
 							{
 								JointFlag = true;
 
@@ -2337,14 +2337,14 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
-				if (piece.pos.x - 180 / 3 > pJoint[i].pos.x)	//ジョイントがピースの右だったら
+				if (piece.pos.x - PIECE_SIZE / 3 > pJoint[i].pos.x)	//ジョイントがピースの右だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
 						if (pJoint[j].pieNo == pPiece[punum].no)
 						{
-							if (pPiece[punum].pos.x + pPiece[punum].size.x / 3 < pJoint[j].pos.x)
+							if (pPiece[punum].pos.x + PIECE_SIZE / 3 < pJoint[j].pos.x)
 							{
 								JointFlag = true;
 
@@ -2388,7 +2388,7 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
-				if (piece.pos.y + 180 / 3 < pJoint[i].pos.y)	//ジョイントがピースの上だったら
+				if (piece.pos.y + PIECE_SIZE / 3 < pJoint[i].pos.y)	//ジョイントがピースの上だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
@@ -2396,7 +2396,7 @@ bool fourPieceCollision(Piece piece, int index)
 						if (pJoint[j].pieNo == pPiece[punum].no)
 						{
 
-							if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 < pJoint[j].pos.y)	//下
+							if (pPiece[punum].pos.y - PIECE_SIZE / 3 > pJoint[j].pos.y)	//下
 							{
 								JointFlag = true;
 
@@ -2445,14 +2445,14 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
-				if (piece.pos.y - 180 / 3 > pJoint[i].pos.y)	//ジョイントがピースの下だったら
+				if (piece.pos.y - PIECE_SIZE / 3 > pJoint[i].pos.y)	//ジョイントがピースの下だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
 						if (pJoint[j].pieNo == pPiece[punum].no)
 						{
-							if (pPiece[punum].pos.y + pPiece[punum].size.y / 3 > pJoint[j].pos.y)	//下
+							if (pPiece[punum].pos.y + PIECE_SIZE / 3 < pJoint[j].pos.y)	//下
 							{
 								JointFlag = true;
 								//パズルのチップの右と左が有っているか
