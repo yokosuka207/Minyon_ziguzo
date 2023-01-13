@@ -429,8 +429,16 @@ void DrawStageSelect() {
 
 		
 		SetWorldViewProjection2D();
+		if (g_StageSelect[i].UseFlag)
+		{
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelect[i].texno));
 
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelect[i].texno));
+		}
+		else
+		{
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelect[i].texno));
+
+		}
 
 		//g_StageSelect[i].pos.x = g_SelectDistance;
 
