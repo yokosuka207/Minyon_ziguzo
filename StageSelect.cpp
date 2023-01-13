@@ -61,7 +61,7 @@ static int TexNo;	//テクスチャ格納
 
 int StageNo = 0;
 
-static bool OneFlag =true;
+static bool OneFlag =true;	//geゲームの最初かどうか
 
 //-----------------------------------------------------------------------------
 //	初期化
