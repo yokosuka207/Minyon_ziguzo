@@ -2284,7 +2284,7 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
-				if (piece.pos.x + piece.size.x / 3 < pJoint[i].pos.x)	//ジョイントがピースの右だったら
+				if (piece.pos.x + 180 / 3 < pJoint[i].pos.x)	//ジョイントがピースの右だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
@@ -2337,7 +2337,7 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
-				if (piece.pos.x - piece.size.x / 3 > pJoint[i].pos.x)	//ジョイントがピースの右だったら
+				if (piece.pos.x - 180 / 3 > pJoint[i].pos.x)	//ジョイントがピースの右だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
@@ -2388,7 +2388,7 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
-				if (piece.pos.y - piece.size.y / 3 > pJoint[i].pos.y)	//ジョイントがピースの上だったら
+				if (piece.pos.y + 180 / 3 < pJoint[i].pos.y)	//ジョイントがピースの上だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
@@ -2396,7 +2396,7 @@ bool fourPieceCollision(Piece piece, int index)
 						if (pJoint[j].pieNo == pPiece[punum].no)
 						{
 
-							if (pPiece[punum].pos.y + pPiece[punum].size.y / 3 < pJoint[j].pos.y)	//下
+							if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 < pJoint[j].pos.y)	//下
 							{
 								JointFlag = true;
 
@@ -2445,14 +2445,14 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
-				if (piece.pos.y + piece.size.y / 3 < pJoint[i].pos.y)	//ジョイントがピースの上だったら
+				if (piece.pos.y - 180 / 3 > pJoint[i].pos.y)	//ジョイントがピースの下だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
 						if (pJoint[j].pieNo == pPiece[punum].no)
 						{
-							if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 > pJoint[j].pos.y)	//下
+							if (pPiece[punum].pos.y + pPiece[punum].size.y / 3 > pJoint[j].pos.y)	//下
 							{
 								JointFlag = true;
 								//パズルのチップの右と左が有っているか
@@ -2505,13 +2505,13 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
 
 				switch (direcsion)
 				{
-				case UP:
+				case DOWN:
 
 					//pieceの上に別のパズルがあるか
-					if (piece.pos.y - PUZZLE_SIZE - (PUZZLE_SIZE / 2) < pPiece[i].pos.y &&
-						piece.pos.y - PUZZLE_SIZE + (PUZZLE_SIZE / 2) > pPiece[i].pos.y &&
-						piece.pos.x - PUZZLE_SIZE / 3 <= pPiece[i].pos.x &&
-						piece.pos.x + PUZZLE_SIZE / 3 >= pPiece[i].pos.x)
+					if (piece.pos.y - PIECE_SIZE - (PIECE_SIZE / 2) < pPiece[i].pos.y &&
+						piece.pos.y - PIECE_SIZE + (PIECE_SIZE / 2) > pPiece[i].pos.y &&
+						piece.pos.x - PIECE_SIZE / 3 <= pPiece[i].pos.x &&
+						piece.pos.x + PIECE_SIZE / 3 >= pPiece[i].pos.x)
 					{
 
 						punum = i;
@@ -2519,14 +2519,14 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
 					}
 
 					break;
-				case DOWN:
+				case UP:
 					//if (piece.pos.y + PUZZLE_SIZE == pPiece[i].pos.y)	return false;
 										//pieceの下に別のパズルがあるか
 
-					if (piece.pos.y + PUZZLE_SIZE - PUZZLE_SIZE / 2 < pPiece[i].pos.y &&
-						piece.pos.y + PUZZLE_SIZE + PUZZLE_SIZE / 2 > pPiece[i].pos.y &&
-						piece.pos.x - PUZZLE_SIZE / 3 <= pPiece[i].pos.x &&
-						piece.pos.x + PUZZLE_SIZE / 3 >= pPiece[i].pos.x)
+					if (piece.pos.y + PIECE_SIZE - PIECE_SIZE / 2 < pPiece[i].pos.y &&
+						piece.pos.y + PIECE_SIZE + PIECE_SIZE / 2 > pPiece[i].pos.y &&
+						piece.pos.x - PIECE_SIZE / 3 <= pPiece[i].pos.x &&
+						piece.pos.x + PIECE_SIZE / 3 >= pPiece[i].pos.x)
 					{
 						punum = i;
 						return false;
@@ -2537,10 +2537,10 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
 					//if (piece.pos.x - PUZZLE_SIZE == pPiece[i].pos.x)	return false;
 										//pieceの左に別のパズルがあるか
 
-					if (piece.pos.y - PUZZLE_SIZE / 3 <= pPiece[i].pos.y &&
-						piece.pos.y + PUZZLE_SIZE / 3 >= pPiece[i].pos.y &&
-						piece.pos.x - PUZZLE_SIZE - PUZZLE_SIZE / 3 < pPiece[i].pos.x &&
-						piece.pos.x - PUZZLE_SIZE + PUZZLE_SIZE / 3 > pPiece[i].pos.x)
+					if (piece.pos.y - PIECE_SIZE / 3 <= pPiece[i].pos.y &&
+						piece.pos.y + PIECE_SIZE / 3 >= pPiece[i].pos.y &&
+						piece.pos.x - PIECE_SIZE - PIECE_SIZE / 3 < pPiece[i].pos.x &&
+						piece.pos.x - PIECE_SIZE + PIECE_SIZE / 3 > pPiece[i].pos.x)
 					{
 						punum = i;
 
@@ -2551,10 +2551,10 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
 				case RIGHT:
 					//if (piece.pos.x + PUZZLE_SIZE == pPiece[i].pos.x)	return false;
 					//pieceの右に別のパズルがあるか
-					if (piece.pos.y - PUZZLE_SIZE / 3 < pPiece[i].pos.y &&
-						piece.pos.y + PUZZLE_SIZE / 3 > pPiece[i].pos.y &&
-						piece.pos.x + PUZZLE_SIZE - PUZZLE_SIZE / 3 < pPiece[i].pos.x &&
-						piece.pos.x + PUZZLE_SIZE + PUZZLE_SIZE / 3 > pPiece[i].pos.x)
+					if (piece.pos.y - PIECE_SIZE / 3 < pPiece[i].pos.y &&
+						piece.pos.y + PIECE_SIZE / 3 > pPiece[i].pos.y &&
+						piece.pos.x + PIECE_SIZE - PIECE_SIZE / 3 < pPiece[i].pos.x &&
+						piece.pos.x + PIECE_SIZE + PIECE_SIZE / 3 > pPiece[i].pos.x)
 					{
 						punum = i;
 
@@ -2792,9 +2792,9 @@ bool SpritStageCollision(Piece p)
 	//左
 
 
-	if (x < left.x - SPLIT_SIZE / 2);
+	if (x < left.x - 240 / 2);
 	{
-		if (p.pos.x < left.x - SPLIT_SIZE / 2)
+		if (p.pos.x < left.x - 240 / 2)
 		{
 			return false;
 

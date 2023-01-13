@@ -39,7 +39,7 @@ void InitScene(SCENE no){
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		InitStageSelect();
-		SetStageSelect();
+		//SetStageSelect();
 		break;
 	case SCENE::SCENE_GAME :
 		pFade->ExceptFlag = false;

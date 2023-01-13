@@ -34,17 +34,22 @@
 //*****************************************************************************
 static STAGESELECT g_StageSelect[STAGE_MAX];
 static STAGESELECT_BG g_StageSelectBg;
+static STAGESELECT_BG g_StageSelectfence[21];
 static STAGESELECT_BLOCK g_StageSelectBlock[3];
 static STAGESELECT_STAIRS g_StageSelectStairs[12];
 
 static ID3D11ShaderResourceView* g_StageSelectTexture;	//画像一枚で一つの変数が必要
 static char* g_StageSelectTextureName = (char*)"data\\texture\\ドア.png";	//テクスチャファイルパス
+static ID3D11ShaderResourceView* g_StageSelect2Texture;	//画像一枚で一つの変数が必要
+static char* g_StageSelect2TextureName = (char*)"data\\texture\\鍵付きドア.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelectTextureBg;	//画像一枚で一つの変数が必要
-static char* g_StageSelectBgTextureName = (char*)"data\\texture\\スレージセレクト背景.png";	//テクスチャファイルパス
+static char* g_StageSelectBgTextureName = (char*)"data\\texture\\背景.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelectTextureBlock;	//画像一枚で一つの変数が必要
-static char* g_StageSelectBlockTextureName = (char*)"data\\texture\\gray.jpg";	//テクスチャファイルパス
+static char* g_StageSelectBlockTextureName = (char*)"data\\texture\\ステージ選択床.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelectTextureStairs;	//画像一枚で一つの変数が必要
 static char* g_StageSelectStairsTextureName = (char*)"data\\texture\\階段.png";	//テクスチャファイルパス
+static ID3D11ShaderResourceView* g_StageSelectTexturefence;	//画像一枚で一つの変数が必要
+static char* g_StageSelectfenceTextureName = (char*)"data\\texture\\柵.png";	//テクスチャファイルパス
 
 
 static PLAYER ply;
@@ -52,8 +57,12 @@ static ID3D11ShaderResourceView* g_StageSelectTexturePly;	//画像一枚で一つの変数
 
 static char* g_TextureNamePly = (char*)"data\\texture\\プレイヤー.png";
 
+static int TexNo;	//テクスチャ格納
+
 int StageNo = 0;
-//int g_Texturenumber = 0;
+
+static bool OneFlag =true;	//geゲームの最初かどうか
+
 //-----------------------------------------------------------------------------
 //	初期化
 //-----------------------------------------------------------------------------
@@ -65,6 +74,25 @@ HRESULT InitStageSelect() {
 	g_StageSelectBg.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_StageSelectBg.texno = LoadTexture(g_StageSelectBgTextureName);
 
+	int a = 0;
+	int b = 0;
+
+	for (int i = 0; i < 21; i++)
+	{
+		if (i % 7 == 0 && i != 0)
+		{
+			a++;
+			b = 0;
+		}
+
+		g_StageSelectfence[i].pos = D3DXVECTOR2(250.0f+(170.0f*b), 220.0f + (250 * a));
+		g_StageSelectfence[i].size = D3DXVECTOR2(170.0f, 110.0f);
+		g_StageSelectfence[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_StageSelectfence[i].texno = LoadTexture(g_StageSelectfenceTextureName);
+		b++;
+	}
+
+
 	for (int i = 0; i < 3; i++)
 	{
 		g_StageSelectBlock[i].pos = D3DXVECTOR2(SCREEN_WIDTH / 2, 250.0f + (250 * i));
@@ -73,8 +101,8 @@ HRESULT InitStageSelect() {
 		g_StageSelectBlock[i].texno = LoadTexture(g_StageSelectBlockTextureName);
 
 	}
-	int a = 0;
-	int b = 0;
+	 a = 0;
+	 b = 0;
 
 	for (int i = 0; i < 12; i++)
 	{
@@ -100,31 +128,36 @@ HRESULT InitStageSelect() {
 	b = 0;
 
 
-
-	for (int i = 0; i < STAGE_MAX; i++)
+	if (OneFlag)
 	{
-		if (i % 9 == 0 && i != 0)
-		{
-			a++;
-			b = 0;
-		}
 
-		g_StageSelect[i].pos = D3DXVECTOR2((300.0f)+(120.0f*b), (175.0f)+(250.0f*a));
-		g_StageSelect[i].size = D3DXVECTOR2(150.0f, 150.0f);
-		g_StageSelect[i].UseFlag = true;
-		g_StageSelect[i].StagePieceIndex = i;
-		g_StageSelect[i].StageUseFlag = true;
-		g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
-		b++;
-		if (i == 0)
+
+		for (int i = 0; i < STAGE_MAX; i++)
 		{
+			if (i % 9 == 0 && i != 0)
+			{
+				a++;
+				b = 0;
+			}
+
+			g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (175.0f) + (250.0f * a));
+			g_StageSelect[i].size = D3DXVECTOR2(110.0f, 150.0f);
+			g_StageSelect[i].UseFlag = true;
+			g_StageSelect[i].StagePieceIndex = i;
 			g_StageSelect[i].StageUseFlag = true;
+			g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
+			b++;
+			if (i == 1)
+			{
+				g_StageSelect[i].StageUseFlag = true;
+
+			}
 
 		}
+		TexNo = LoadTexture(g_StageSelect2TextureName);
 
+		OneFlag = false;
 	}
-
-	
 
 
 	ply.Position = D3DXVECTOR2(30.0f, 30.0f);
@@ -432,14 +465,14 @@ void DrawStageSelect() {
 
 		
 		SetWorldViewProjection2D();
-		if (g_StageSelect[i].UseFlag)
+		if (g_StageSelect[i].StageUseFlag)
 		{
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelect[i].texno));
 
 		}
 		else
 		{
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelect[i].texno));
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(TexNo));
 
 		}
 
@@ -470,13 +503,26 @@ void DrawStageSelect() {
 			SpriteDrawColorRotation(ply.Position.x, ply.Position.y, -0.0f, ply.size.x, ply.size.y, ply.rot, ply.col, ply.PaternNo, ply.uv_w, ply.uv_h, ply.NumPatern);
 		}
 
+		for (int i = 0; i < 21; i++)
+		{
+
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectfence[i].texno));
+			SpriteDrawColorRotation(
+				g_StageSelectfence[i].pos.x, g_StageSelectfence[i].pos.y, 0.5f, g_StageSelectfence[i].size.x, g_StageSelectfence[i].size.y
+				, 0.0f, g_StageSelectfence[i].color, 0, 1.0f, 1.0f, 1);
+
+		}
+
 	
 }
 
 //-----------------------------------------------------------------------------
 //	ステージセット関数
 //-----------------------------------------------------------------------------
-void SetStageSelect() {
+void SetStageSelect(int a) {
+
+	
+
 }
 //-----------------------------------------------------------------------------
 //	ステージセレクトを外部で値を変えれるようにする関数
