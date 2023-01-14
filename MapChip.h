@@ -28,6 +28,8 @@
 
 #define PUZZLE_SIZE (BLOCK_CHIP_ARRAY * BLOCK_CHIP_SIZE)	//16 * 15 (180 + 60) 
 #define PIECE_SIZE (180)
+#define INVENTORY_PUZZLE_SIZE (BLOCK_CHIP_ARRAY * 6.0f)	//16 * 15 (180 + 60) 
+
 //**************************************************
 // 構造体定義
 //**************************************************
@@ -54,6 +56,9 @@ enum class MAPCHIP_TYPE{
 	TYPE_MIRROR,		//19	鏡
 	TYPE_SPWANPOINT,	//20	スポーンポイント
 	TYPE_MOVEBLOCK,		//21	動くブロック
+	TYPE_DOPPELGANGER,	//22	ドッペルゲンガー
+	TYPE_ENEMY,			//23	敵
+	TYPE_PLAYER,			//24	敵
 
 	TYPE_NUM		
 };
@@ -69,6 +74,7 @@ typedef struct {
 	int			direction;	//パズルの方向
 	bool		MoveEndFlag;//動き終わった瞬間
 	bool		MoveFlag;//動いているか
+	bool		InventoryFlag;	//インベントリのパズルか
 	bool		UseFlag;//パズルが出現しているか否か
 }Piece;
 
@@ -98,5 +104,6 @@ void DeleteMapChip(int PieceNo);
 
 Piece* GetPiece();
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo);
+void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin);
 
 #endif // !_MAPCHIP_H_

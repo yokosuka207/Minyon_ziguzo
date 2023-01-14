@@ -9,6 +9,7 @@
 #include "time.h"
 #include "pause.h"
 #include "score.h"
+#include "tutorial.h"
 #include "fade.h"
 
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
@@ -30,13 +31,15 @@ void InitScene(SCENE no){
 	case SCENE::SCENE_TITLE:
 		InitTitle();
 		break;
+	case SCENE::SCENE_TUTORIAL:
+		InitTutorial();
+		break;
 	case SCENE::SCENE_DATASELECT:
-		pFade->ExceptFlag = false;
 		g_SaveScene.Init();
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		InitStageSelect();
-		SetStageSelect();
+		//SetStageSelect();
 		break;
 	case SCENE::SCENE_GAME :
 		pFade->ExceptFlag = false;
@@ -57,6 +60,9 @@ void UninitScene(){
 		break;
 	case SCENE::SCENE_TITLE:
 		UninitTitle();
+		break;
+	case SCENE::SCENE_TUTORIAL:
+		UninitTutorial();
 		break;
 	case SCENE::SCENE_DATASELECT:
 		g_SaveScene.Uninit();
@@ -85,6 +91,9 @@ void UpdateScene(){
 	case SCENE::SCENE_TITLE:
 		UpdateTitle();
 		break;
+	case SCENE::SCENE_TUTORIAL:
+		UpdateTutorial();
+		break;
 	case SCENE::SCENE_DATASELECT:
 		g_SaveScene.Update();
 		break;
@@ -108,6 +117,9 @@ void DrawScene(){
 		break;
 	case SCENE::SCENE_TITLE:
 		DrawTitle();
+		break;
+	case SCENE::SCENE_TUTORIAL:
+		DrawTutorial();
 		break;
 	case SCENE::SCENE_DATASELECT:
 		g_SaveScene.Draw();

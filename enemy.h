@@ -12,6 +12,8 @@
 #include "main.h"
 
 #define ENEMY_MAX (1)
+#define ENEMY_SIZE_W (10)
+#define ENEMY_SIZE_H (30)
 
 enum class ENEMY_DIRECTION {
 	DIRECTION_LEFT = 0,
@@ -30,6 +32,7 @@ typedef struct {
 	ENEMY_DIRECTION dir;
 
 	bool			UseFlag;
+	bool			AIFlag; //player ÉgÅ@Ç¶ÇÀÇÒÇ›Å@ìñÇΩÇËîªíË
 }ENEMY;
 
 HRESULT InitEnemy();
@@ -38,5 +41,6 @@ void UpdateEnemy();
 void DrawEnemy();
 void SetEnemy(D3DXVECTOR2 pos,D3DXVECTOR2 size,int index);
 ENEMY* GetEnemy();
+void DeleteEnemy(int index);
 
 #endif // !_ENEMY_H_

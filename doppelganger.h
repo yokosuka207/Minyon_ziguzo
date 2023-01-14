@@ -1,28 +1,30 @@
 //=============================================================================
 //
-//プレイヤー処理
+//ドッペルゲンガー処理(反プレイヤー)
 //
-//制作者/稲葉陸斗　制作日/2022/06/27
+//制作者/菊地空　制作日/2022/06/27
 //=============================================================================
 #pragma once
 
 #include "main.h"
 #include "renderer.h"
+#include "goal_key.h"
 
 //=============================================================================
 //マクロ定義
 //=============================================================================
 
-#define PLAYER_SIZE_W (10)
-#define PLAYER_SIZE_H (30)
+#define DOPPELGANGER_NUM (1)
+#define DOPPELGANGER_SIZE_W (10)
+#define DOPPELGANGER_SIZE_H (30)
 
-#define PLAYER_COOLTIME	(120)
+#define DOPPELGANGER_COOLTIME	(120)
 
-#define PLAYER_HP (3)
-#define PLAYER_UV_W (1.0f / 4)
-#define PLAYER_UV_H (1.0f / 5)
+#define DOPPELGANGER_HP (5)
+#define DOPPELGANGER_UV_W (1.0f / 4)
+#define DOPPELGANGER_UV_H (1.0f / 5)
 
-enum class PLAYER_DIRECTION
+enum class DOPPELGANGER_DIRECTION
 {
 	UP = 0,
 	DOWN,
@@ -30,29 +32,30 @@ enum class PLAYER_DIRECTION
 	LEFT
 };
 
-struct PLAYER
+struct DOPPELGANGER
 {
+	
 	bool UseFlag;//構造体利用中フラグ
+	//bool GetKey;
+
 	bool jump;//ジャンプ中
 	//bool getjump;//ジャンプの開始
 	bool fall;//落下中
 	bool getfall = false;//落下の開始
-	bool WarpFlag = false;//ワープしたか
+	
 	bool GetJumpStand;
 	bool isGround;	// 地に足をつけている
 	bool isSheerFloors;
 	bool isSheerFloorsUse;
-	bool isHigh;
 	bool isMoveBlock;
-	int	HaveKey; //鍵所持数
-	//int GHaveKey;
-	//int Hp;
+	bool isHigh;
+	bool WarpFlag;
 
 	D3DXVECTOR2 size;//BOXサイズ
 	D3DXVECTOR2 Drawsize;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
 	D3DXVECTOR2 oldpos;//1フレーム前の座標
-	D3DXVECTOR2 OneOldpos;//1フレーム前の座標
+	//D3DXVECTOR2 OneOldpos;//1フレーム前の座標
 
 	D3DXVECTOR2 sp;
 	float rot;//回転角度
@@ -62,10 +65,10 @@ struct PLAYER
 	float uv_w;//横サイズ
 	float uv_h;//縦サイズ
 	int NumPatern;//横枚数
-	int hp;
+	//int hp;
 	int frame;
 	int CoolTime;//クールタイム
-	PLAYER_DIRECTION dir;			// プレイヤーの向き
+	DOPPELGANGER_DIRECTION dir;			// 反プレイヤーの向き
 	int PieceIndex;	//動いでいるピースの番号
 
 };
@@ -73,9 +76,11 @@ struct PLAYER
 //=============================================================================
 //プロトタイプ宣言
 //=============================================================================
-HRESULT InitPlayer();
-void UninitPlayer();
-void UpdatePlayer();
-void DrawPlayer();
-PLAYER* GetPlayer();//PLAYER構造体の先頭ポインタを取得
-void SetPlayerPosition(D3DXVECTOR2 pos);
+HRESULT InitDoppelganger();
+void UninitDoppelganger();
+void UpdateDoppelganger();
+void DrawDoppelganger();
+DOPPELGANGER* GetDoppelganger();//DOPPELGANGER構造体の先頭ポインタを取得
+
+void SetDoppelGanger(D3DXVECTOR2 position, D3DXVECTOR2 size, int index);
+void DeleteDoppelGanger(int index);

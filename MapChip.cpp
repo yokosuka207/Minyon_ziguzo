@@ -32,8 +32,11 @@
 #include "SheerFloors.h"
 #include "broken.h"
 #include "high_broken.h"
-#include"spawnpoint.h"
-#include "MoveBlock.h"	
+#include "spawnpoint.h"
+#include "MoveBlock.h"
+#include "doppelganger.h"
+#include "enemy.h"
+#include"player.h"
 
 //**************************************************
 //　マクロ定義
@@ -82,6 +85,7 @@ HRESULT InitMapChip() {
 		//g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE + 16, PUZZLE_SIZE + 16);		// 256 x 256
 		g_PieceMapChip[p].MoveEndFlag = false;
 		g_PieceMapChip[p].MoveFlag = false;
+		g_PieceMapChip[p].InventoryFlag = false;
 		for (int d = 0; d < BLOCK_CHIP_DIRECTION; d++) {
 			for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
 				for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
@@ -97,7 +101,7 @@ HRESULT InitMapChip() {
 	RotateChipData();
 
 	SplitStage* pSplitStage = GetSplitStage();
-	SetPieceMapChip(pSplitStage->Split3[0][0], 0);
+	SetPieceMapChip(pSplitStage->Split34[0][0], 0);
 
 	//SetPieceMapChip(pSplitStage->Split3[1][2], 2);
 
@@ -131,6 +135,8 @@ void DrawMapChip() {
 	}
 }
 void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
+	g_PieceMapChip[Pin].size = D3DXVECTOR2(PUZZLE_SIZE, PUZZLE_SIZE);
+
 	//p=ブロック最大数
 		//i=y方向
 	for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
@@ -141,7 +147,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			D3DXVECTOR2 position = D3DXVECTOR2((pos.x + PUZZLE_SIZE / 2) - j * BLOCK_CHIP_SIZE - BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
 			D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
 
-			switch (g_PieceMapChip[no].chip[g_PieceMapChip[Pin].direction][i][j]) {
+			switch (g_PieceMapChip[Pin].chip[g_PieceMapChip[no].direction][i][j]) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK) :	//0				
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//1　凸
@@ -202,11 +208,19 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT)://20　スポーンポイント
 				SetSpawnPoint(position,DrawSize,no);
-					break;
+				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEBLOCK)://21　動かすブロック
 				SetMoveBlock(position, DrawSize, no);
 				break;
-
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER)://22　ドッペルゲンガー
+				SetDoppelGanger(position, DrawSize, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY)://23　敵
+				SetEnemy(position, DrawSize, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_PLAYER)://24　敵
+				SetPlayerPosition(position);
+				break;
 			default:
 				break;
 			}
@@ -375,7 +389,9 @@ void DeleteMapChip(int PieceNo) {
 	DeleteSheet(g_PieceMapChip[PieceNo].no);
 	DeleteGoal(g_PieceMapChip[PieceNo].no);
 	DeleteSpawnPoint(g_PieceMapChip[PieceNo].no);
-	//Delete
+	DeleteDoppelGanger(g_PieceMapChip[PieceNo].no);
+	DeleteEnemy(g_PieceMapChip[PieceNo].no);
+
 }
 Piece* GetPiece() {
 	return g_PieceMapChip;
@@ -396,4 +412,105 @@ void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
 		}
 	}
 }
+//--------------------------------
+//インベントリ内のマップチップ
+//--------------------------------
+void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
+	for (int p = 0; p < PUZZLE_MAX; p++) {
+		if (!g_PieceMapChip[p].UseFlag) {
 
+			g_PieceMapChip[p].size = D3DXVECTOR2(96.0f, 96.0f);
+			g_PieceMapChip[p].pos = pos;
+			g_PieceMapChip[p].no = no;
+			g_PieceMapChip[p].InventoryFlag = true;
+			no = p;
+			break;
+		}
+	}
+	//p=ブロック最大数
+		//i=y方向
+	for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
+		//j=x方向
+		for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
+			// 中心座標変数
+			//D3DXVECTOR2 position = D3DXVECTOR2((pos.x - PUZZLE_SIZE / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
+			D3DXVECTOR2 position = D3DXVECTOR2((pos.x + INVENTORY_PUZZLE_SIZE / 2) - j * 6.0f - 6.0f / 2, (pos.y - INVENTORY_PUZZLE_SIZE / 2) + i * 6.0f + 6.0f / 2);
+			D3DXVECTOR2 DrawSize = D3DXVECTOR2(6.0f, 6.0f);
+
+			switch (g_PieceMapChip[no].chip[g_PieceMapChip[Pin].direction][i][j]) {
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK):	//0				
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH):	//1　凸
+				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_BUMP, Pin);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_PULL):	//2　凹
+				SetJoint(position, DrawSize, no, JOINT_TYPE::TYPE_DIP, Pin);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_NONE):	//3　空白
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLOCK):	//4　床
+				SetBlock(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_CHIP):	//5　アイテムピース
+				SetChipPuzzuleChip(position, DrawSize, no + 1);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP):	//6　ワープ
+				SetWarp(position, DrawSize);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL):	//7　ゴール
+				SetGoal(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP):	//8　ジャンプ台
+				SetJumpStand(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE):	//9　トゲ
+				SetThornBlock(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL):	//10　乗ると落ちるブロック
+				SetFallBlock(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11　鍵
+				SetKey(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12　鍵付きの扉
+				SetOpenKey(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13　ボタン
+				SetSwitch(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14　ボタンで開く扉×3
+				SetSwitchWall(position, DrawSize, no, 3);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15　ボタンで開く扉×4
+				SetSwitchWall(position, DrawSize, no, 4);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
+				SetSheerFloors(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　着地で壊れる床
+				SetBroken(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18　ジャンプで壊れるブロック
+				SetHigh(position, DrawSize, no);
+				break;
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_MIRROR):	//19　鏡
+				//Set
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT)://20　スポーンポイント
+				SetSpawnPoint(position, DrawSize, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEBLOCK)://21　動かすブロック
+				SetMoveBlock(position, DrawSize, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER)://22　ドッペルゲンガー
+				SetDoppelGanger(position, DrawSize, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY)://23　敵
+				SetEnemy(position, DrawSize, no);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}

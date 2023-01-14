@@ -45,4 +45,6 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo);	//ピースの中のものを移動させる
 
 bool PlayerPieceOpen(Piece p, int index, DIRECSION direcsion);	//その方向のパズルが空いているか
 
+bool DoppelPieceOpen(Piece p, int index, DIRECSION direcsion);
+
 #endif // !COLLISION_H_

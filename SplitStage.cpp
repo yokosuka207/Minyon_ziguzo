@@ -6,7 +6,7 @@
 SplitStage g_splitStage;
 
 // テクスチャの名前
-static char* g_splitStageTextureName = (char*)"data\\texture\\split.png";
+static char* g_splitStageTextureName = (char*)"data\\texture\\split_4x3.png";
 
 void InitSplitStage()
 {
@@ -23,6 +23,15 @@ void InitSplitStage()
 		for (int j = 0; j < 3; j++)
 		{
 			g_splitStage.Split3[i][j] = D3DXVECTOR2(g_splitStage.pos.x - SPLIT_SIZE +(SPLIT_SIZE * i), g_splitStage.pos.y + SPLIT_SIZE - (SPLIT_SIZE * j));
+
+		}
+
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			g_splitStage.Split34[i][j] = D3DXVECTOR2(g_splitStage.pos.x - SPLIT_SIZE-SPLIT_SIZE/2 +(SPLIT_SIZE * i), g_splitStage.pos.y + SPLIT_SIZE - (SPLIT_SIZE * j));
 
 		}
 
@@ -53,7 +62,7 @@ void DrawSplitStage()
 		// テクスチャの設定
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_splitStage.texNo));
 		// 四角形の描画
-		SpriteDrawColorRotation(g_splitStage.pos.x, g_splitStage.pos.y,0.1f, (g_splitStage.size.x * 3), (g_splitStage.size.y * 3), 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0, 1.0f, 1.0f, 1);
+		SpriteDrawColorRotation(g_splitStage.pos.x, g_splitStage.pos.y,0.1f, (g_splitStage.size.x * 4), (g_splitStage.size.y * 3), 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0, 1.0f, 1.0f, 1);
 }
 
 SplitStage* GetSplitStage()

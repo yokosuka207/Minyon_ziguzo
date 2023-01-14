@@ -64,7 +64,7 @@ void DrawSwitch() {
 				g_Switch[i].pos.y,
 				-0.1f,
 				g_Switch[i].size.x,
-				g_Switch[i].size.y,
+				-g_Switch[i].size.y,
 				0.0f,
 				g_Switch[i].color,
 				g_Switch[i].PaternNo,
