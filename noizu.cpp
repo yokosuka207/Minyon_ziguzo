@@ -11,7 +11,7 @@ HRESULT InitNoizu()
 {
 	g_Noizu.Position = D3DXVECTOR2(0.0f, 0.0f);
 	g_Noizu.Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
-	g_Noizu.Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.05f);
+	g_Noizu.Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.03f);
 	g_Noizu.PaternNo = 0;
 	g_Noizu.NumPatern = 2;
 	g_Noizu.uv_w = NOIZU_UV_W;
@@ -31,7 +31,7 @@ void UninitNoizu()
 
 void UpdateNoizu()
 {
-	g_Noizu.PaternNo += 0.1f;
+	g_Noizu.PaternNo += 0.3f;
 	if (g_Noizu.PaternNo > 4.0f)
 	{
 		g_Noizu.PaternNo = 0.0f;
