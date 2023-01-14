@@ -40,6 +40,7 @@
 #include "doppelganger.h"
 #include "enemy.h"
 #include "bullet.h"
+#include"noizu.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -78,7 +79,7 @@ void InitGame()
 		InitSwitch();
 		InitSwitchWall();
 		InitMoveBlock();
-
+		InitNoizu();
 		InitDoppelganger();
 		SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1);
 		InitEnemy();
@@ -126,7 +127,7 @@ void UninitGame()
 	UninitHigh();
 	UninitSwitch();
 	UninitSwitchWall();
-
+	UninitNoizu();
 	UninitDoppelganger();
 	UninitEnemy();
 	UninitBullet();
@@ -161,7 +162,7 @@ void UpdateGame()
 		//UpdatePolygon();	//ポリゴンの更新
 		BgUpdate();
 		UpdatePlayer();
-
+		UpdateNoizu();
 		//PuzzleCollision();
 		UpdateCollision();
 		PieceCollision();
@@ -237,7 +238,7 @@ void DrawGame()
 		DrawDoppelganger();
 		DrawEnemy();
 		DrawBullet();
-
+		DrawNoizu();
 		DrawInventory();			// インベントリの描画
 		pTime->DrawGameTime();
 		DrawCursor();				// カーソルの描画

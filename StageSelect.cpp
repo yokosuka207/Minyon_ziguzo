@@ -42,7 +42,7 @@ static STAGESELECT_STAIRS g_StageSelectStairs[12];
 static ID3D11ShaderResourceView* g_StageSelectTexture;	//画像一枚で一つの変数が必要
 static char* g_StageSelectTextureName = (char*)"data\\texture\\ドア.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelect2Texture;	//画像一枚で一つの変数が必要
-static char* g_StageSelect2TextureName = (char*)"data\\texture\\鍵付きドア.png";	//テクスチャファイルパス
+static char* g_StageSelect2TextureName = (char*)"data\\texture\\black.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelectTextureBg;	//画像一枚で一つの変数が必要
 static char* g_StageSelectBgTextureName = (char*)"data\\texture\\背景.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelectTextureBlock;	//画像一枚で一つの変数が必要
@@ -142,7 +142,7 @@ HRESULT InitStageSelect() {
 			}
 
 			g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (175.0f) + (250.0f * a));
-			g_StageSelect[i].size = D3DXVECTOR2(110.0f, 150.0f);
+			g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
 			g_StageSelect[i].UseFlag = true;
 			g_StageSelect[i].StagePieceIndex = i;
 			g_StageSelect[i].StageUseFlag = true;
@@ -156,6 +156,7 @@ HRESULT InitStageSelect() {
 			if (i == 1)
 			{
 				g_StageSelect[i].StageUseFlag = true;
+				g_StageSelect[i].size = D3DXVECTOR2(120.0f, 150.0f);
 
 			}
 

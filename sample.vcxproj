@@ -162,6 +162,7 @@
     <ClCompile Include="MapChip.cpp" />
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="MoveBlock.cpp" />
+    <ClCompile Include="noizu.cpp" />
     <ClCompile Include="OpenKey.cpp" />
     <ClCompile Include="pause.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -222,6 +223,7 @@
     <ClInclude Include="MapChip.h" />
     <ClInclude Include="mouse.h" />
     <ClInclude Include="MoveBlock.h" />
+    <ClInclude Include="noizu.h" />
     <ClInclude Include="OpenKey.h" />
     <ClInclude Include="pause.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

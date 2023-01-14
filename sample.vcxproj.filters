@@ -55,6 +55,7 @@
     <ClCompile Include="doppelganger.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="noizu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -117,5 +118,6 @@
     <ClInclude Include="xkeyboard.h" />
     <ClInclude Include="xmouse.h" />
     <ClInclude Include="tutorial.h" />
+    <ClInclude Include="noizu.h" />
   </ItemGroup>
 </Project>
