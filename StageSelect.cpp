@@ -56,7 +56,7 @@ static char* g_StageSelectfenceTextureName = (char*)"data\\texture\\ò.png";	//ƒ
 static PLAYER ply;
 static ID3D11ShaderResourceView* g_StageSelectTexturePly;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
 
-static char* g_TextureNamePly = (char*)"data\\texture\\waking_alpha.png";
+static char* g_TextureNamePly = (char*)"data\\texture\\ƒvƒŒƒCƒ„[.png";
 
 static int TexNo;	//ƒeƒNƒXƒ`ƒƒŠi”[
 
@@ -119,9 +119,10 @@ HRESULT InitStageSelect() {
 		g_StageSelectStairs[i].texno = LoadTexture(g_StageSelectStairsTextureName);
 		b++;
 
+
 	}
 
-
+	//g_Texturenumber = LoadTexture(g_StageSelectStairsTextureName);
 
 
 	 a = 0;
@@ -452,17 +453,19 @@ void DrawStageSelect() {
 			, 0.0f, g_StageSelectBlock[i].color, 0, 1.0f, 1.0f, 1);
 
 	}
-	for (int i = 0; i < 12; i++)
-	{
-		SetWorldViewProjection2D();
+	//for (int i = 0; i < 12; i++)
+	//{
+	//	SetWorldViewProjection2D();
 
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairs[i].texno));
+	//	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairs[i].texno));
 
-		SpriteDrawColorRotation(
-			g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x, g_StageSelectStairs[i].size.y
-			, 0.0f, g_StageSelectStairs[i].color, 0, 1.0f, 1.0f, 1);
+	//	/*SpriteDrawColorRotation(
+	//		g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x+10, g_StageSelectStairs[i].size.y+10
+	//		, 0.0f, g_StageSelectStairs[i].color, 0, 1.0f, 1.0f, 1);*/
 
-	}
+	//}
+
+	
 
 		for (int i = 0; i < STAGE_MAX; i++)
 		{
@@ -483,8 +486,8 @@ void DrawStageSelect() {
 		//g_StageSelect[i].pos.x = g_SelectDistance;
 
 			SpriteDrawColorRotation(
-				g_StageSelect[i].pos.x, g_StageSelect[i].pos.y, 0.0f,
-				g_StageSelect[i].size.x, g_StageSelect[i].size.y,
+				g_StageSelect[i].pos.x, g_StageSelect[i].pos.y - 10, 0.0f,
+				g_StageSelect[i].size.x / 2, g_StageSelect[i].size.y,
 				0.0f,
 				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 				0,

@@ -182,9 +182,10 @@ void UpdateDoppelganger()
 				}
 				//fuck
 				// アニメーションパターン番号を0～15の範囲内にする
-				if (g_Doppel.PaternNo >= 16) { g_Doppel.PaternNo = 0; }
-				//if (g_Doppel.PaternNo < 0) { g_Doppel.PaternNo = -17; }
+				if (g_Doppel.PaternNo > 16) { g_Doppel.PaternNo -= 16; }
+				if (g_Doppel.PaternNo < 0) { g_Doppel.PaternNo += 16; }
 
+				
 
 				//ドッペルゲンガー弾発射
 				//SetBullet(g_Doppel.Position, D3DXVECTOR2(BULLET_SIZE_H, BULLET_SIZE_W), 1);
