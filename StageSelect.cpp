@@ -44,7 +44,7 @@ static char* g_StageSelectTextureName = (char*)"data\\texture\\ドア.png";	//テク
 static ID3D11ShaderResourceView* g_StageSelect2Texture;	//画像一枚で一つの変数が必要
 static char* g_StageSelect2TextureName = (char*)"data\\texture\\black.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelectTextureBg;	//画像一枚で一つの変数が必要
-static char* g_StageSelectBgTextureName = (char*)"data\\texture\\背景.png";	//テクスチャファイルパス
+static char* g_StageSelectBgTextureName = (char*)"data\\texture\\スレージセレクト背景.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelectTextureBlock;	//画像一枚で一つの変数が必要
 static char* g_StageSelectBlockTextureName = (char*)"data\\texture\\ステージ選択床.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelectTextureStairs;	//画像一枚で一つの変数が必要
