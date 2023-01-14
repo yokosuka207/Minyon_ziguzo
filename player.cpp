@@ -155,10 +155,22 @@ void UpdatePlayer()
 			if (g_Player.sp.x == 0)
 			{
 				g_Player.PaternNo = 17;
+
+				if (g_Player.uv_w < 0)
+				{
+					g_Player.PaternNo = 18;
+
+				}
 			}
 			if (g_Player.sp.y != 0)
 			{
 				g_Player.PaternNo = 16;
+				if (g_Player.uv_w < 0)
+				{
+					g_Player.PaternNo = 19;
+
+				}
+
 			}
 
 			//----------------
