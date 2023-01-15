@@ -16,6 +16,8 @@ Update:
 
 #include "cursor.h"
 #include "issuer.h"
+#include "block.h"
+#include "MapChip.h"
 
 //**************************************************
 // マクロ定義
@@ -64,6 +66,10 @@ void UninitRay()
 //==================================================
 void UpdateRay()
 {
+	// ブロックもらう
+	BLOCK* pBlock = GetBlock();
+	// ピースをもらう
+	Piece* pPiece = GetPiece();
 	// 全チェック
 	for (int i = 0; i < RAY_MAX; i++) {
 		// 使用中
@@ -72,9 +78,21 @@ void UpdateRay()
 			g_Ray[i].EndPos = g_Ray[i].StartPos;
 			while (1) {
 				g_Ray[i].EndPos += g_Ray[i].dir;
-				// 当たったら
+				// 画面外との判定
 				if (!CollisionBB(g_Ray[i].EndPos, D3DXVECTOR2(0.0f, 0.0f), D3DXVECTOR2(0.0f, 0.0f), D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT))){
 					break;
+				}
+				// ブロックとの当たり判定
+				for (int i = 0; i < BLOCK_MAX; i++){
+					if (CollisionBB(g_Ray[i].EndPos, pBlock[i].Position, D3DXVECTOR2(0.0f, 0.0f), pBlock[i].Size)) {
+						break;
+					}
+				}
+				// ピースとの当たり判定
+				for (int i = 0; i < PUZZLE_MAX; i++) {
+					if (!CollisionBB(g_Ray[i].EndPos, pPiece[i].pos, D3DXVECTOR2(0.0f, 0.0f), pPiece[i].size)) {
+						break;
+					}
 				}
 				j++;
 				if (j > 1000)break;

@@ -19,6 +19,7 @@ typedef struct
 	D3DXVECTOR2	pos;
 	D3DXVECTOR2	size;
 	D3DXCOLOR col;
+	float rot;
 	int	TexNo;
 	float PatternNo;
 
@@ -30,6 +31,6 @@ void UninitEffectSpark();
 void UpdateEffectSpark();
 void DrawEffectSpark();
 
-void SetEffectSpark(D3DXVECTOR2 pos, D3DXVECTOR2 size);
+void SetEffectSpark(D3DXVECTOR2 pos, float rot);
 
 #endif // !_EFFECTSPARK_H_

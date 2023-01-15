@@ -916,7 +916,7 @@ void PieceCollision()
 													pPlayer->Position += temp;
 												}
 												// ヒバナエフェクト
-												SetEffectSpark(pJoint[j].pos, D3DXVECTOR2(300.0f, 300.0f));
+												SetEffectSpark(pJoint[j].pos, 0.0f);
 											}
 											else
 											{
@@ -953,7 +953,7 @@ void PieceCollision()
 												}
 												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
 												// ヒバナエフェクト
-												SetEffectSpark(pJoint[j].pos, D3DXVECTOR2(300.0f, 300.0f));
+												SetEffectSpark(pJoint[j].pos, 0.0f);
 											}
 											else
 											{
@@ -987,7 +987,7 @@ void PieceCollision()
 													pPlayer->Position += temp;
 												}
 												// ヒバナエフェクト
-												SetEffectSpark(pJoint[j].pos, D3DXVECTOR2(300.0f, 300.0f));
+												SetEffectSpark(pJoint[j].pos, 0.0f);
 											}
 											else
 											{
@@ -1021,7 +1021,7 @@ void PieceCollision()
 													pPlayer->Position += temp;
 												}
 												// ヒバナエフェクト
-												SetEffectSpark(pJoint[j].pos, D3DXVECTOR2(300.0f, 300.0f));
+												SetEffectSpark(pJoint[j].pos, 0.0f);
 											}
 											else
 											{

@@ -248,8 +248,8 @@ void DrawGame()
 		DrawEnemy();
 		DrawBullet();
 
-		DrawRay();				// 光線の描画
-		DrawIssuer();			// 光線発射装置の描画
+		//DrawRay();				// 光線の描画
+		//DrawIssuer();			// 光線発射装置の描画
 		DrawInventory();			// インベントリの描画
 		pTime->DrawGameTime();
 		DrawCursor();				// カーソルの描画

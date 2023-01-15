@@ -25,6 +25,8 @@ Update:
 #define EFFECT_PATTERN_MAX	(EFFECT_NUM_X * EFFECT_NUM_Y)
 #define EFFECT_UV_W	(1.0f / EFFECT_NUM_X)
 #define EFFECT_UV_Y	(1.0f / EFFECT_NUM_Y)
+#define EFFECT_SIZE_X	100.0f
+#define EFFECT_SIZE_Y	100.0f
 
 //**************************************************
 // グローバル変数
@@ -39,8 +41,9 @@ void InitEffectSpark()
 {
 	for (int i = 0; i < EFFECT_MAX; i++) {
 		g_EffectSpark[i].pos = D3DXVECTOR2(0.0f, 0.0f);
-		g_EffectSpark[i].size = D3DXVECTOR2(240.0f, 240.0f);
+		g_EffectSpark[i].size = D3DXVECTOR2(EFFECT_SIZE_X, EFFECT_SIZE_Y);
 		g_EffectSpark[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_EffectSpark[i].rot = 0.0f;
 		g_EffectSpark[i].TexNo = LoadTexture(g_TextureName);
 		g_EffectSpark[i].PatternNo = 0.0f;
 
@@ -88,7 +91,7 @@ void DrawEffectSpark()
 
 			SpriteDrawColorRotation(
 				g_EffectSpark[i].pos.x, g_EffectSpark[i].pos.y, -0.1f,
-				g_EffectSpark[i].size.x, g_EffectSpark[i].size.y, 180.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+				g_EffectSpark[i].size.x, g_EffectSpark[i].size.y, 180.0f + g_EffectSpark[i].rot, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 				g_EffectSpark[i].PatternNo, EFFECT_UV_W, EFFECT_UV_Y, EFFECT_NUM_X
 			);
 		}
@@ -100,13 +103,12 @@ void DrawEffectSpark()
 //==================================================
 // セット関数
 //==================================================
-void SetEffectSpark(D3DXVECTOR2 pos, D3DXVECTOR2 size)
+void SetEffectSpark(D3DXVECTOR2 pos, float rot)
 {
 	for (int i = 0; i < EFFECT_MAX; i++) {
 		if (!g_EffectSpark[i].bUse) {
 			g_EffectSpark[i].pos = pos;
-			g_EffectSpark[i].size = size;
-
+			g_EffectSpark[i].rot = rot;
 			g_EffectSpark[i].bUse = true;
 			break;
 		}
