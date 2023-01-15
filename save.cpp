@@ -31,11 +31,11 @@ Update:
 // グローバル変数
 //**************************************************
 // 各テクスチャの名前
-static char* g_BGTextureFileName = (char*)"data/texture/JumpStand.jpg";				// 背景
+static char* g_BGTextureFileName = (char*)"data/texture/セーブ画面背景.png";				// 背景
 static char* g_TextureFileName0 = (char*)"data/texture/GameEnd_haikei.jpg";			// データなし
-static char* g_TextureFileName1 = (char*)"data/texture/gray.jpg";					// データ１
-static char* g_TextureFileName2 = (char*)"data/texture/green.png";					// データ２
-static char* g_TextureFileName3 = (char*)"data/texture/RED.jpg";					// データ３
+static char* g_TextureFileName1 = (char*)"data/texture/セーブデータテキスト１.png";					// データ１
+static char* g_TextureFileName2 = (char*)"data/texture/セーブデータテキスト２.png";					// データ２
+static char* g_TextureFileName3 = (char*)"data/texture/セーブデータテキスト３.png";					// データ３
 
 // セーブデータを保存するファイル名
 static char* g_saveFileName1 = (char*)"data/SaveData/Data1.bin";			// データ１

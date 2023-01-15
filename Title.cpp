@@ -15,7 +15,7 @@
 //グローバル変数
 //======================
 static	ID3D11ShaderResourceView	*g_TitleTexture1 = NULL;//テクスチャ情報
-static	char	*g_TitleTextureName1 = (char*)"data\\texture\\タイトル.jpg";
+static	char	*g_TitleTextureName1 = (char*)"data\\texture\\タイトル背景＃２.png";
 
 typedef	struct
 {

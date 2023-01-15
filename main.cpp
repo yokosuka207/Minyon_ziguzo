@@ -233,6 +233,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	//“ü—Íˆ—‚Ì‰Šú‰»
 	InitInput(hInstance,hWnd);
+	InitSound(hWnd);
 	SpriteInit();
 
 	// xinput‚Ì“ü—Íˆ—‚Ì‰Šú‰»
@@ -243,7 +244,6 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	InitScene(SCENE::SCENE_TITLE);
 	//InitScene(SCENE_RESULT);
 
-	InitSound(hWnd);
 	InitFade();
 	// ”w–Êƒ|ƒŠƒSƒ“‚ğƒJƒŠƒ“ƒO
 	SetCullingMode(CULL_MODE_NONE);

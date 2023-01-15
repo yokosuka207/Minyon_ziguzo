@@ -13,6 +13,8 @@
 #define CIP_MAX	(20)
 #define	CIP_SIZE_X	(20)
 #define	CIP_SIZE_Y	(20)
+#define CIP_UV_W (1.0f / 4)
+#define CIP_UV_H (1.0f / 4)
 
 typedef enum
 {
@@ -43,6 +45,7 @@ typedef struct
 {
 	D3DXVECTOR2	Position;	//チップの位置
 	D3DXVECTOR2	Size;	//大きさ
+	D3DXVECTOR2	DrawSize;	//大きさ
 	D3DXCOLOR		Col;	//色
 	float			texno;	//テクスチャインデックス
 	float			Rotation;	//角度
@@ -56,6 +59,11 @@ typedef struct
 	bool GoalFlag;	//ゴールのチップか
 	bool UseFlag;	//使用フラグ
 	bool GetFlag;	//取られたかどうか
+	float PaternNo;//パターン番号
+	float uv_w;//横サイズ
+	float uv_h;//縦サイズ
+	int NumPatern;//横枚数
+
 
 }PUZZLE_CIP;
 

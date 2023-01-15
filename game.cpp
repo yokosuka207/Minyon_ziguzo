@@ -40,6 +40,7 @@
 #include "doppelganger.h"
 #include "enemy.h"
 #include "bullet.h"
+#include"noizu.h"
 #include "issuer.h"		// 光線発射装置
 #include "ray.h"		// 光線
 #include "EffectSpark.h"	// ヒバナエフェクト
@@ -81,7 +82,7 @@ void InitGame()
 		InitSwitch();
 		InitSwitchWall();
 		InitMoveBlock();
-
+		InitNoizu();
 		InitDoppelganger();
 		SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1);
 		InitEnemy();
@@ -132,7 +133,7 @@ void UninitGame()
 	UninitHigh();
 	UninitSwitch();
 	UninitSwitchWall();
-
+	UninitNoizu();
 	UninitDoppelganger();
 	UninitEnemy();
 	UninitBullet();
@@ -170,7 +171,7 @@ void UpdateGame()
 		//UpdatePolygon();	//ポリゴンの更新
 		BgUpdate();
 		UpdatePlayer();
-
+		UpdateNoizu();
 		//PuzzleCollision();
 		UpdateCollision();
 		PieceCollision();
@@ -247,6 +248,7 @@ void DrawGame()
 		DrawDoppelganger();
 		DrawEnemy();
 		DrawBullet();
+		DrawNoizu();
 
 		//DrawRay();				// 光線の描画
 		//DrawIssuer();			// 光線発射装置の描画

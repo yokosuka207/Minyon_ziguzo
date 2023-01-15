@@ -18,7 +18,7 @@ PUZZLE_CIP	g_PuzzleCip[CIP_MAX];
 PUZZLE_CIP g_ChipPuzzleChip[BLOCK_CHIP_MAX];
 
 static ID3D11ShaderResourceView	*g_texturePuzzleCip;	//画像一枚で一つの変数が必要
-static char *g_textureName_PuzzleCip = (char*)"data\\texture\\blue.png";	//テクスチャファイルパス
+static char *g_textureName_PuzzleCip = (char*)"data\\texture\\ピースアイテム.png";	//テクスチャファイルパス
 
 
 void SetPuzzleCipCreate(CREATE_CIP_TYPE ctype,int u, int r, int d, int l, bool gflag);
@@ -27,10 +27,11 @@ HRESULT InitPuzzleCip()
 {
 	//マップチップ用初期化
 	for (int i = 0; i < PUZZLE_MAX; i++) {
-		g_PuzzleCip[i].texno = LoadTexture(g_textureName_PuzzleCip);
+		g_ChipPuzzleChip[i].texno = LoadTexture(g_textureName_PuzzleCip);
 
 		g_ChipPuzzleChip[i].Position = D3DXVECTOR2(0.0f, 0.0f);
 		g_ChipPuzzleChip[i].Size = D3DXVECTOR2(CIP_SIZE_X, CIP_SIZE_Y);
+		g_ChipPuzzleChip[i].DrawSize = D3DXVECTOR2(CIP_SIZE_X*2, CIP_SIZE_Y*2);
 		g_ChipPuzzleChip[i].Type = CIP_NONE;
 		g_ChipPuzzleChip[i].Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_ChipPuzzleChip[i].Rotation = 0.0f;
@@ -39,6 +40,11 @@ HRESULT InitPuzzleCip()
 		g_ChipPuzzleChip[i].GoalFlag = false;
 		g_ChipPuzzleChip[i].UseFlag = false;
 		g_ChipPuzzleChip[i].GetFlag = false;
+		g_ChipPuzzleChip[i].NumPatern = 4;
+		g_ChipPuzzleChip[i].PaternNo = 0;
+		g_ChipPuzzleChip[i].uv_w = CIP_UV_W;
+		g_ChipPuzzleChip[i].uv_h = CIP_UV_H;
+
 	}
 
 	return S_OK;
@@ -67,8 +73,11 @@ void UpdatePuzzleCip()
 			PUZZLE* pPuzzle = GetPuzzle();
 			if (!pMouse->UseFlag)
 			{
-
-
+				g_ChipPuzzleChip[i].PaternNo += 0.25f;
+				if (g_ChipPuzzleChip[i].PaternNo > 16.0f)
+				{
+					g_ChipPuzzleChip[i].PaternNo = 0;
+				}
 						if (g_ChipPuzzleChip[i].Position.x + g_ChipPuzzleChip[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2
 							&& g_ChipPuzzleChip[i].Position.x - g_ChipPuzzleChip[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2
 							&& g_ChipPuzzleChip[i].Position.y + g_ChipPuzzleChip[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2
@@ -111,8 +120,8 @@ void DrawPuzzleCip()
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ChipPuzzleChip[i].texno));
 
 			SpriteDrawColorRotation(g_ChipPuzzleChip[i].Position.x, g_ChipPuzzleChip[i].Position.y,-0.1f,
-				g_ChipPuzzleChip[i].Size.x, g_ChipPuzzleChip[i].Size.y, g_ChipPuzzleChip[i].Rotation, g_ChipPuzzleChip[i].Col,
-				0, 1.0f, 1.0f, 1);
+				g_ChipPuzzleChip[i].DrawSize.x, g_ChipPuzzleChip[i].DrawSize.y, g_ChipPuzzleChip[i].Rotation, g_ChipPuzzleChip[i].Col,
+				g_ChipPuzzleChip[i].PaternNo, g_ChipPuzzleChip[i].uv_w, g_ChipPuzzleChip[i].uv_h, g_ChipPuzzleChip[i].NumPatern);
 		}
 	}
 
@@ -177,6 +186,7 @@ int SetPuzzleCip(D3DXVECTOR2 pos, D3DXVECTOR2 size, CIP_TYPE type)
 		//	b++;
 			g_PuzzleCip[i].Position = pos;
 			g_PuzzleCip[i].Size = size;
+			g_PuzzleCip[i].DrawSize = size*2;
 			g_PuzzleCip[i].Type = type;
 			g_PuzzleCip[i].UseFlag = true;
 			return i;

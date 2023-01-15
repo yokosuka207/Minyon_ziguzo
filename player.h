@@ -20,7 +20,7 @@
 
 #define PLAYER_HP (3)
 #define PLAYER_UV_W (1.0f / 4)
-#define PLAYER_UV_H (1.0f / 4)
+#define PLAYER_UV_H (1.0f / 5)
 
 enum class PLAYER_DIRECTION
 {
@@ -78,3 +78,4 @@ void UninitPlayer();
 void UpdatePlayer();
 void DrawPlayer();
 PLAYER* GetPlayer();//PLAYER構造体の先頭ポインタを取得
+void SetPlayerPosition(D3DXVECTOR2 pos);

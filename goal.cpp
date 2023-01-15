@@ -9,6 +9,7 @@
 #include "result.h"
 #include "time.h"
 #include "fade.h"
+#include"StageSelect.h"
 
 GOAL g_Goal;
 GKey g_GKey;
@@ -52,8 +53,17 @@ void UpdateGoal()
 				&& g_Goal.Pos.y + g_Goal.Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2
 				&& g_Goal.Pos.y - g_Goal.Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2)
 			{
+				STAGESELECT* pStageSelect = GetSelect();
+
+				if (ReturnStageNo() != STAGE_MAX)
+				{
+					pStageSelect[ReturnStageNo() + 1].StageUseFlag = true;
+					pStageSelect[ReturnStageNo() + 1].size = D3DXVECTOR2(120.0f, 140.f);
+				}
+
 				g_Goal.UseFlag = false;
 				SetResultType(WIN);
+
 				//SetScene(SCENE_RESULT);
 				StartFade(FADE::FADE_OUT);
 				pTime->EndTime();
