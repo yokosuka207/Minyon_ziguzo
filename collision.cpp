@@ -206,7 +206,7 @@ void UpdateCollision()
 					//要改善
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
 						//インデックスがずれている
-						if (pSwitch[i].SwitchIndex == pSwitchWall[j].SwitchIndex) {
+						if (pSwitch[i].SwitchIndex + (pSwitchWall[i].WallMax) == pSwitchWall[j].SwitchIndex) {
 							pSwitchWall[j].UseFlag = false;	//押されたら壁がなくなる
 						}
 					}
