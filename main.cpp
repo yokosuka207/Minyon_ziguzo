@@ -314,4 +314,6 @@ long GetMousePosY(void)
 	return g_MouseY;
 }
 
-
+int Irand() {
+	return rand();
+}
