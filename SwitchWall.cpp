@@ -28,7 +28,7 @@ HRESULT InitSwitchWall() {
 		g_SwitchWall[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_SwitchWall[i].PaternNo = 0.0f;
 		g_SwitchWall[i].uv_w = 1.0f / 1.0f;
-		g_SwitchWall[i].uv_h = 1.0f / g_SwitchWall[i].WallMax;
+		g_SwitchWall[i].uv_h = 1.0f / 3.0f;
 		g_SwitchWall[i].PieceIndex = -1;
 		g_SwitchWall[i].SwitchIndex = -1;
 		g_SwitchWall[i].WallMax = 0;
@@ -53,24 +53,24 @@ void UpdateSwitchWall() {
 void DrawSwitchWall() {
 	//SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SwitchWallTextureNo));
-	//2ŒÂˆÈã•`‰æ‚Å‚«‚È‚¢H
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
 		for (int j = 0; j < g_SwitchWall[i].WallMax; j++) {
 			if (g_SwitchWall[i].UseFlag) {
+				g_SwitchWall[i + j].PaternNo = j;
+
 				SpriteDrawColorRotation(
-					g_SwitchWall[j].pos.x,
-					g_SwitchWall[j].pos.y,
+					g_SwitchWall[i + j].pos.x,
+					g_SwitchWall[i + j].pos.y,
 					-0.1f,
-					g_SwitchWall[j].size.x,
-					-g_SwitchWall[j].size.y,
+					g_SwitchWall[i + j].size.x,
+					-g_SwitchWall[i + j].size.y,
 					0.0f,
-					g_SwitchWall[j].color,
-					g_SwitchWall[j].PaternNo,
-					g_SwitchWall[j].uv_w,
-					g_SwitchWall[j].uv_h, 
+					g_SwitchWall[i + j].color,
+					g_SwitchWall[i + j].PaternNo,
+					g_SwitchWall[i + j].uv_w,
+					g_SwitchWall[i + j].uv_h, 
 					SWITCHWALL_NUMPATERN
 				);
-				
 			}
 		}
 	}
@@ -79,13 +79,15 @@ void DrawSwitchWall() {
 void SetSwitchWall(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo,int WallMax) {
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
 		if (!g_SwitchWall[i].UseFlag) {
+			g_SwitchWall[i].WallMax = 0;
+
 			for (int j = 0; j < WallMax; j++) {
-				g_SwitchWall[j].pos = D3DXVECTOR2(pos.x, pos.y - j * size.y);
-				g_SwitchWall[j].size = size;
-				g_SwitchWall[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-				g_SwitchWall[j].PieceIndex = PieceNo;
-				g_SwitchWall[j].SwitchIndex = i;
-				g_SwitchWall[j].UseFlag = true;
+				g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x, pos.y - j * size.y);
+				g_SwitchWall[i + j].size = size;
+				g_SwitchWall[i + j].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+				g_SwitchWall[i + j].PieceIndex = PieceNo;
+				g_SwitchWall[i + j].SwitchIndex = i;
+				g_SwitchWall[i + j].UseFlag = true;
 
 				g_SwitchWall[i].WallMax++;
 			}

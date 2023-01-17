@@ -126,6 +126,7 @@ void	UninitResult()
 //======================
 void	UpdateResult()
 {
+	FADEPARAM* pFadeParam = GetFadeParam();
 	if (ResultObject[0].type == WIN) 
 	{
 		//キー入力のチェック
@@ -157,6 +158,7 @@ void	UpdateResult()
 				pTime->StartTime();
 				//SetScene(SCENE::SCENE_GAME);
 				pFadeParam->ExceptFlag = true;
+				if (!pFadeParam->FadeFlag)
 				StartFade(FADE::FADE_OUT);
 			}
 		}
@@ -167,6 +169,7 @@ void	UpdateResult()
 			if (min2.x < MousePos.x && max2.x > MousePos.x && min2.y < MousePos.y && max2.y > MousePos.y)
 			{
 				//SetScene(SCENE::SCENE_TITLE);
+				if (!pFadeParam->FadeFlag)
 				StartFade(FADE::FADE_OUT);
 				pTimeParam->UseFlag = false;
 			}
