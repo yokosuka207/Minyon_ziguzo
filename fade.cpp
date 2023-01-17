@@ -83,7 +83,6 @@ void UpdateFade() {
 			default:
 				break;
 			}
-			g_FadeParam.FadeFlag = false;
 		}
 	}
 
@@ -94,13 +93,13 @@ void UpdateFade() {
 			fabsf(g_FadeParam.size.y) >= fabsf(g_FadeParam.scaling.y)) {
 			g_FadeParam.size = g_FadeParam.scaling;
 			g_FadeParam.state = FADE::FADE_NONE;
+			g_FadeParam.FadeFlag = false;
 		}
-		g_FadeParam.FadeFlag = false;
 	}
 
 	if (g_FadeParam.state == FADE::FADE_ALPHA_OUT) {
 		g_FadeParam.alpha += FADE_SPEED_ALPHA;
-		if(g_FadeParam.alpha >= 1.0f){
+		if (g_FadeParam.alpha >= 1.0f) {
 			g_FadeParam.alpha = 1.0f;
 			g_FadeParam.state = FADE::FADE_ALPHA_IN;
 			switch (*GetScene()) {
@@ -136,15 +135,14 @@ void UpdateFade() {
 			}
 
 		}
-		g_FadeParam.FadeFlag = false;
 	}
 	if (g_FadeParam.state == FADE::FADE_ALPHA_IN) {
 		g_FadeParam.alpha -= FADE_SPEED_ALPHA;
 		if (g_FadeParam.alpha <= 0.0f) {
 			g_FadeParam.alpha = 0.0f;
 			g_FadeParam.state = FADE::FADE_NONE;
+			g_FadeParam.FadeFlag = false;
 		}
-		g_FadeParam.FadeFlag = false;
 	}
 }
 void DrawFade() {
