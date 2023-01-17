@@ -44,7 +44,8 @@
 #include "enemy.h"			//エネミー
 
 #include "EffectSpark.h"	// ヒバナエフェクト
-
+#include"switch.h"	//スイッチ
+#include"SwitchWall.h"//switchの壁
 
 
 /*==============================================================================
@@ -2156,7 +2157,8 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	JUMPSTAND* pJumpStand = GetJumpStand();
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
-
+	SWITCH* pSwitch = GetSwitch();
+	SWITCHWALL* pSwitchWall = GetSwitchWall();
 
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
@@ -2236,6 +2238,28 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 
 		
 
+	}
+	for (int i = 0; i < SWITCH_MAX; i++)
+	{
+		if (pSwitch[i].UseFlag)
+		{
+			if (pSwitch[i].PieceIndex == pinNo)
+			{
+				pSwitch[i].pos += num;
+			}
+
+		}
+	}
+	for (int i = 0; i < SWITCHWALL_MAX; i++)
+	{
+		if (pSwitchWall[i].UseFlag)
+		{
+			if (pSwitchWall[i].PieceIndex == pinNo)
+			{
+				pSwitchWall[i].pos += num;
+			}
+
+		}
 	}
 
 }

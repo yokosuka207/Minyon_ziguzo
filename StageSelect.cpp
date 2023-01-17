@@ -135,7 +135,7 @@ HRESULT InitStageSelect() {
 
 		for (int i = 0; i < STAGE_MAX; i++)
 		{
-			if (i % 9 == 0 && i != 0)
+			if (i % 7 == 0 && i != 0)
 			{
 				a++;
 				b = 0;
