@@ -11,7 +11,7 @@ Update:
 #include "button.h"
 #include "sprite.h"
 #include "texture.h"
-//#include "input.h"
+#include "mouse.h"
 
 
 //==================================================
@@ -37,14 +37,13 @@ void Button::Uninit()
 //==================================================
 void Button::Update()
 {
-	//// 当たっている状態でマウスを押したら
-	//if (IsMouseLeftPressed() && CollisionMouse()) {
-	//	ChangeType(BUTTON_TYPE::TYPE_PRESSED);
-
-	//}
-	//else {			// 当たっていないし押されてもいない
-	//	ChangeType(BUTTON_TYPE::TYPE_NORMAL);
-	//}
+	// 当たっている状態でマウスを押したら
+	if (Mouse_IsLeftDown() && CollisionMouse()) {
+		ChangeType(BUTTON_TYPE::TYPE_PRESSED);
+	}
+	else {			// 当たっていないし押されてもいない
+		ChangeType(BUTTON_TYPE::TYPE_NORMAL);
+	}
 }
 
 
@@ -105,21 +104,12 @@ bool Button::CollisionMouse()
 //==================================================
 bool Button::ReleaseButton()
 {
-	// 仮のbool型
-	static bool bPress = false;
-
 	// 当たり判定
-	//if (CollisionMouse()) {
-	//	if (IsMouseLeftPressed()) {
-	//		bPress = true;
-	//	}
-	//	else {
-	//		if (bPress) {
-	//			bPress = false;
-	//			return true;
-	//		}
-	//	}
-	//}
+	if (CollisionMouse()) {
+		if (Mouse_IsLeftRelease()) {
+			return true;
+		}
+	}
 	return false;
 }
 

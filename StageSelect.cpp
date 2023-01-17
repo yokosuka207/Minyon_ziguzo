@@ -135,7 +135,7 @@ HRESULT InitStageSelect() {
 
 		for (int i = 0; i < STAGE_MAX; i++)
 		{
-			if (i % 9 == 0 && i != 0)
+			if (i % 7 == 0 && i != 0)
 			{
 				a++;
 				b = 0;
@@ -156,7 +156,7 @@ HRESULT InitStageSelect() {
 			if (i == 1)
 			{
 				g_StageSelect[i].StageUseFlag = true;
-				g_StageSelect[i].size = D3DXVECTOR2(120.0f, 150.0f);
+				//g_StageSelect[i].size = D3DXVECTOR2(120.0f, 150.0f);
 
 			}
 

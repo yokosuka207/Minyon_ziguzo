@@ -9,7 +9,7 @@ static NOIZU g_Noizu;
 
 HRESULT InitNoizu()
 {
-	g_Noizu.Position = D3DXVECTOR2(0.0f, 0.0f);
+	g_Noizu.Position = D3DXVECTOR2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
 	g_Noizu.Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	g_Noizu.Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.03f);
 	g_Noizu.PaternNo = 0;
@@ -40,7 +40,7 @@ void UpdateNoizu()
 
 void DrawNoizu()
 {	
-	//SetWorldViewProjection2D();
+	SetWorldViewProjection2D();
 
 
 	if (g_Noizu.UseFlag == true)
@@ -48,7 +48,7 @@ void DrawNoizu()
 		//テクスチャの設定
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Noizu.texno));
 		//スプライトを表示
-		SpriteDrawColorRotation(g_Noizu.Position.x, g_Noizu.Position.y, -1.5f, g_Noizu.Size.x, g_Noizu.Size.y, g_Noizu.Rotation, g_Noizu.Color, 
+		SpriteDrawColorRotation(g_Noizu.Position.x, g_Noizu.Position.y, 0.0f, g_Noizu.Size.x, g_Noizu.Size.y, g_Noizu.Rotation, g_Noizu.Color, 
 			g_Noizu.PaternNo, g_Noizu.uv_w, g_Noizu.uv_h, g_Noizu.NumPatern);
 	}
 

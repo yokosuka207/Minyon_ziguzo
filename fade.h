@@ -10,7 +10,7 @@
 #define _FADE_H_
 
 #include "main.h"
-
+#define FADE_SPEED_ALPHA (0.02f)
 #define FADE_SPEED_X (22.0f * 100)	//1422 / 60
 #define FADE_SPEED_Y (12.5f * 100)	//800 / 60
 
@@ -18,6 +18,8 @@ enum class FADE {
 	FADE_NONE = 0,
 	FADE_IN,
 	FADE_OUT,
+	FADE_ALPHA_IN,
+	FADE_ALPHA_OUT,
 
 	FADE_NUM
 };
@@ -28,7 +30,8 @@ typedef struct {
 	D3DXVECTOR2	scaling;		//ƒTƒCƒY‚Ì•Ï‰»
 	FADE	state;		
 
-	int				TexNo;
+	int				TexNo1;
+	int				TexNo2;
 	D3DXVECTOR2		pos;
 	D3DXVECTOR2		size;
 	int				PaternNo;
