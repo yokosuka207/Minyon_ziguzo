@@ -31,7 +31,7 @@ typedef struct {
 HRESULT InitSwitchWall();
 void UninitSwitchWall();
 void UpdateSwitchWall();
-void DrawSwitchwall();
+void DrawSwitchWall();
 void SetSwitchWall(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo,int WallMax);
 SWITCHWALL* GetSwitchWall();
 void DeleteSwitchWall(int PieceNo);

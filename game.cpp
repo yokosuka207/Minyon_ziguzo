@@ -50,6 +50,7 @@ static Score* pScore = pScore->GetScore();
 static PLAYER3D g_Player3D;
 static SCENE* p_Scene;
 static bool* pause = GetPause();
+static bool* pause2 = GetPauseMause();
 static TimeParam* pTimeParam = pTime->GetTimeParam();
 
 void InitGame()
@@ -157,16 +158,17 @@ void UpdateGame()
 			pTime->PauseStartTime();
 		}
 	}	
-	if(Keyboard_IsKeyTrigger(KK_Z)) {
+	if(*pause2) {
 		if ((*pause)) {
 			(*pause) = false;
+			(*pause2) = false;
 			pTime->PauseEndTime();
 			pTime->PauseElapsedTime();
 		}
 	}
-	if (Keyboard_IsKeyTrigger(KK_R)) {
-		ResetGame();
-	}
+	//if (Keyboard_IsKeyTrigger(KK_R)) {
+	//	ResetGame();
+	//}
 	if (!(*pause)) {
 		//UpdatePolygon();	//É|ÉäÉSÉìÇÃçXêV
 		BgUpdate();
@@ -240,7 +242,7 @@ void DrawGame()
 		DrawMoveBlock();
 		DrawHigh();
 		DrawSwitch();
-		DrawSwitchwall();
+		DrawSwitchWall();
 		DrawGoal();
 		DrawBroken();		
 		DrawThornBlock();

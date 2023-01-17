@@ -64,12 +64,14 @@ void	UninitTitle()
 //======================
 void	UpdateTitle()
 {
+	FADEPARAM* pFadeParam = GetFadeParam();
 	//キー入力のチェック
 	if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
 		Keyboard_IsKeyTrigger(KK_A))						// Keyboard	A
 	{
 		//SetScene(SCENE::SCENE_DATASELECT);
-		StartFade(FADE::FADE_OUT);
+		if(!pFadeParam->FadeFlag)
+		StartFade(FADE::FADE_ALPHA_OUT);
 		
 	}
 }

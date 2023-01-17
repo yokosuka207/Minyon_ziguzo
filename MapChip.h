@@ -59,7 +59,7 @@ enum class MAPCHIP_TYPE{
 	TYPE_MOVEBLOCK,		//21	動くブロック
 	TYPE_DOPPELGANGER,	//22	ドッペルゲンガー
 	TYPE_ENEMY,			//23	敵
-	TYPE_PLAYER,			//24	敵
+	TYPE_PLAYER,		//24	敵
 
 	TYPE_NUM		
 };
