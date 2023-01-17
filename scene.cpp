@@ -11,7 +11,8 @@
 #include "score.h"
 #include "tutorial.h"
 #include "fade.h"
-#include"noizu.h"
+#include "noizu.h"
+#include "sound.h"
 
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
@@ -24,6 +25,22 @@ static clock_t PauseElapsed = 0;
 static int	StageNo = 0;
 static Save g_SaveScene;				// セーブクラスのインスタンス
 
+//===================================================================
+// サウンド関連
+//===================================================================
+static int g_TitleSoundNo = 0;
+static char TitleSoundName[] = "data\\SoundData\\test\\魔王魂  アコースティック52.wav";
+
+static int g_StageSelectSoundNo = 0;
+static char* StageSelectName[4] = {
+	(char*)"data\\SoundData\\test\\in_scenery_of_early_summer.wav",
+	(char*)"data\\SoundData\\test\\kind.wav",
+	(char*)"data\\SoundData\\test\\こんとどぅふぇ素材No.0175-ここなっつかふぇ.wav",
+	(char*)"data\\SoundData\\test\\魔王魂  アコースティック29.wav"
+};
+
+static int g_ResultSoundNo = 0;
+
 void InitScene(SCENE no){
 	g_sceneIndex = g_sceneNextIndex = no;
 	switch (g_sceneIndex){
@@ -32,6 +49,8 @@ void InitScene(SCENE no){
 	case SCENE::SCENE_TITLE:
 		InitTitle();
 		InitNoizu();
+		g_TitleSoundNo = LoadSound(TitleSoundName);
+		PlaySound(g_TitleSoundNo, -1);
 		break;
 	case SCENE::SCENE_TUTORIAL:
 		InitTutorial();
@@ -45,6 +64,8 @@ void InitScene(SCENE no){
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		InitStageSelect();
+		//g_StageSelectSoundNo = LoadSound(StageSelectName[Irand(3)]);
+		PlaySound(g_StageSelectSoundNo, -1);
 		//SetStageSelect();
 		break;
 	case SCENE::SCENE_GAME :
@@ -78,12 +99,12 @@ void UninitScene(){
 	case SCENE::SCENE_DATASELECT:
 		g_SaveScene.Uninit();
 		UninitNoizu();
-
+		StopSound(g_TitleSoundNo);
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UninitStageSelect();
 		UninitNoizu();
-
+		StopSound(g_StageSelectSoundNo);
 		break;
 	case SCENE::SCENE_GAME:
 		Elapsedtime = pTime->SumTime();

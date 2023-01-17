@@ -46,6 +46,7 @@
 #include "EffectSpark.h"	// ヒバナエフェクト
 #include"switch.h"	//スイッチ
 #include"SwitchWall.h"//switchの壁
+#include"cursor.h"
 
 
 /*==============================================================================
@@ -108,24 +109,24 @@ void UpdateCollision()
 	Piece* pPiece = GetPiece();
 	ENEMY* pEnemy = GetEnemy();
 
-	//BLOCK* pBlock = GetBlock();
-	//BLOCK* pChipblock = GetChipBlock();
-	//THORNBLOCK* pThornBlock = GetThornBlock();
-	//MOVEBLOCK* pMoveBlock = GetMoveBlock();
-	//BROKEN* pBroken = GetBroken();
-	//FALLBLOCK* pFallBlock = GetFallBlock();
-	//HIGH* pHigh = GetHigh();
+	BLOCK* pBlock = GetBlock();
+	BLOCK* pChipblock = GetChipBlock();
+	THORNBLOCK* pThornBlock = GetThornBlock();
+	MOVEBLOCK* pMoveBlock = GetMoveBlock();
+	BROKEN* pBroken = GetBroken();
+	FALLBLOCK* pFallBlock = GetFallBlock();
+	HIGH* pHigh = GetHigh();
 
-	//SWITCH* pSwitch = GetSwitch();
-	//SWITCHWALL* pSwitchWall = GetSwitchWall();
+	SWITCH* pSwitch = GetSwitch();
+	SWITCHWALL* pSwitchWall = GetSwitchWall();
 
-	//JUMPSTAND* p_JumpStand = GetJumpStand();
+	JUMPSTAND* pJumpStand = GetJumpStand();
 
-	//KEY* pKey = GetKey();
-	//OPENKEY* pOpenKey = GetOpenKey();
+	KEY* pKey = GetKey();
+	OPENKEY* pOpenKey = GetOpenKey();
 
 	GKey* pGKey = GetGKey();
-	//GOAL* pGoal = GetGoal();
+	GOAL* pGoal = GetGoal();
 
 	RESULT* pResult = GetResult();
 
@@ -136,7 +137,7 @@ void UpdateCollision()
 	//プレーヤーが動いているピースの中にいるか
 
 		for (int i = 0; i < PUZZLE_MAX; i++) {
-			Piece* pPiece = GetPiece();
+			//Piece* pPiece = GetPiece();
 			if (pPiece[i].MoveFlag)
 			{
 				if (pPiece[i].pos.y - pPiece[i].size.y / 2 < pPlayer->Position.y &&
@@ -163,7 +164,7 @@ void UpdateCollision()
 		// ピースとインベントリ範囲の当たり判定
 		for (int i = 0; i < PUZZLE_MAX; i++) {
 
-			Piece* pPiece = GetPiece();
+			//Piece* pPiece = GetPiece();
 
 			// ピースをインベントリにしまう
 			if (pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X)) {
@@ -181,8 +182,8 @@ void UpdateCollision()
 
 		for (int i = 0; i < SWITCH_MAX; i++) {
 
-			SWITCH* pSwitch = GetSwitch();
-			SWITCHWALL* pSwitchWall = GetSwitchWall();
+			//SWITCH* pSwitch = GetSwitch();
+			//SWITCHWALL* pSwitchWall = GetSwitchWall();
 
 			if (pSwitch[i].UseFlag) {
 				//スイッチの左がプレイヤーの右よりも左にあるとき、
@@ -222,7 +223,7 @@ void UpdateCollision()
 		//プレーヤーと壁の判定
 		for (int i = 0; i < SWITCHWALL_MAX; i++) {
 
-			SWITCHWALL* pSwitchWall = GetSwitchWall();
+			//SWITCHWALL* pSwitchWall = GetSwitchWall();
 
 			if (pSwitchWall[i].UseFlag) {
 				if (
@@ -239,7 +240,7 @@ void UpdateCollision()
 		//スイッチと木箱の判定
 		for (int i = 0; i < SWITCHWALL_MAX; i++) {
 
-			SWITCHWALL* pSwitchWall = GetSwitchWall();
+			//SWITCHWALL* pSwitchWall = GetSwitchWall();
 
 			if (pSwitchWall[i].UseFlag) {
 
@@ -256,7 +257,7 @@ void UpdateCollision()
 		//プレイヤーとトゲブロックの判定
 		for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 
-			THORNBLOCK* pThornBlock = GetThornBlock();
+			//THORNBLOCK* pThornBlock = GetThornBlock();
 
 			if (pThornBlock[i].UseFlag) {
 
@@ -310,8 +311,8 @@ void UpdateCollision()
 	//=========================================================================
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
-		BLOCK* pBlock = GetBlock();
-		BLOCK* pChipblock = GetChipBlock();
+		//BLOCK* pBlock = GetBlock();
+		//BLOCK* pChipblock = GetChipBlock();
 
 		if ((pChipblock + i)->UseFlag == true)
 		{
@@ -441,7 +442,7 @@ void UpdateCollision()
 	for (int i = 0; i < BROKEN_MAX; i++)
 	{
 
-		BROKEN* pBroken = GetBroken();
+		//BROKEN* pBroken = GetBroken();
 
 		if ((pBroken + i)->UseFlag == true)
 		{
@@ -494,7 +495,7 @@ void UpdateCollision()
 
 	for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 
-		MOVEBLOCK* pMoveBlock = GetMoveBlock();
+		//MOVEBLOCK* pMoveBlock = GetMoveBlock();
 
 		if (pMoveBlock[i].bUse)
 		{
@@ -550,7 +551,7 @@ void UpdateCollision()
 	for (int i = 0; i < FALLBLOCK_MAX; i++)
 	{
 
-		FALLBLOCK* pFallBlock = GetFallBlock();
+		//FALLBLOCK* pFallBlock = GetFallBlock();
 
 
 		if ((pFallBlock + i)->UseFlag == true)
@@ -602,7 +603,7 @@ void UpdateCollision()
 	for (int i = 0; i < HIGH_MAX; i++)
 	{
 
-		HIGH* pHigh = GetHigh();
+		//HIGH* pHigh = GetHigh();
 
 		if ((pHigh + i)->UseFlag == true)
 		{
@@ -682,7 +683,7 @@ void UpdateCollision()
 	for (int i = 0; i < KEY_MAX; i++)
 	{
 
-		KEY* pKey = GetKey();
+		//KEY* pKey = GetKey();
 		if (pKey->GetKey == true)
 		{
 			if (CollisionBB(pKey[i].Position, pPlayer->Position, pKey[i].Size, pPlayer->size))
@@ -702,8 +703,8 @@ void UpdateCollision()
 
 	for (int i = 0; i < OPEN_KEY_MAX; i++)
 	{
-		OPENKEY* pOpenKey = GetOpenKey();
-		KEY* pKey = GetKey();
+		//OPENKEY* pOpenKey = GetOpenKey();
+		//KEY* pKey = GetKey();
 		if ((pOpenKey + i)->UseFlag == true)
 		{
 
@@ -747,10 +748,10 @@ void UpdateCollision()
 	//ゴール専用鍵取得プレイヤーと鍵で開く扉の当たり判定(PlayerとGoal)
 	//-------------------------------------------------------------------
 
-	GOAL* pGoal = GetGoal();
-	//GKey* pGKey = GetGKey();
-	if (pGoal->UseFlag == true)
-	{
+		//GOAL* pGoal = GetGoal();
+		//GKey* pGKey = GetGKey();
+		if (pGoal->UseFlag == true)
+		{
 
 		if (GetGoal()->UseFlag)
 		{
@@ -786,13 +787,13 @@ void UpdateCollision()
 		}
 	}
 
-	//------------------------------------
-	//動くブロックとバネ当たり判定
-	//-----------------------------------
-	for (int i = 0; i < MOVE_BLOCK_MAX; i++)
-	{
-		MOVEBLOCK* pMoveBlock = GetMoveBlock();
-		JUMPSTAND* pJumpStand = GetJumpStand();
+		//------------------------------------
+		//動くブロックとバネ当たり判定
+		//-----------------------------------
+		for (int i = 0; i < MOVE_BLOCK_MAX; i++)
+		{
+			//MOVEBLOCK* pMoveBlock = GetMoveBlock();
+			//JUMPSTAND* pJumpStand = GetJumpStand();
 
 		for (int j = 0; j < JUMPSTAND_MAX; j++)
 		{
@@ -805,13 +806,13 @@ void UpdateCollision()
 	}
 
 
-	//------------------------------------
-	//バネと下からこわすっブロッコ当たり判定
-	//-----------------------------------
-	for (int i = 0; i < THORN_BLOCK_MAX; i++)
-	{
-		THORNBLOCK* pThornBlock = GetThornBlock();
-		JUMPSTAND* pJumpStand = GetJumpStand();
+		//------------------------------------
+		//バネと下からこわすっブロッコ当たり判定
+		//-----------------------------------
+		for (int i = 0; i < THORN_BLOCK_MAX; i++)
+		{
+			//THORNBLOCK* pThornBlock = GetThornBlock();
+			//JUMPSTAND* pJumpStand = GetJumpStand();
 
 		for (int j = 0; j < JUMPSTAND_MAX; j++)
 		{
@@ -823,31 +824,31 @@ void UpdateCollision()
 		}
 	}
 
-	//------------------------------------
-	//バネと鍵付き扉当たり判定
-	//-----------------------------------
-	for (int i = 0; i < OPEN_KEY_MAX; i++)
-	{
-		OPENKEY* pOpenKey = GetOpenKey();
-		JUMPSTAND* pJumpStand = GetJumpStand();
-
-		for (int j = 0; j < JUMPSTAND_MAX; j++)
+		//------------------------------------
+		//バネと鍵付き扉当たり判定
+		//-----------------------------------
+		for (int i = 0; i < OPEN_KEY_MAX; i++)
 		{
-			if (CollisionBB(pOpenKey[i].Position, pJumpStand[j].pos, pOpenKey[j].Size, pJumpStand[j].size))
+			//OPENKEY* pOpenKey = GetOpenKey();
+			//JUMPSTAND* pJumpStand = GetJumpStand();
+
+			for (int j = 0; j < JUMPSTAND_MAX; j++)
 			{
-				//pThornBlock[i].pos = pThornBlock[i].oldpos;
-				pJumpStand[j].pos = pJumpStand[j].oldpos;
+				if (CollisionBB(pOpenKey[i].Position, pJumpStand[j].pos, pOpenKey[j].Size, pJumpStand[j].size))
+				{
+					//pThornBlock[i].pos = pThornBlock[i].oldpos;
+					pJumpStand[j].pos = pJumpStand[j].oldpos;
+				}
 			}
 		}
-	}
-	
-	//------------------------------------
-	//バネとトゲブロック当たり判定
-	//-----------------------------------
-	for (int i = 0; i < BROKEN_MAX; i++)
-	{
-		BROKEN* pBroken = GetBroken();
-		JUMPSTAND* pJumpStand = GetJumpStand();
+		
+		//------------------------------------
+		//バネとトゲブロック当たり判定
+		//-----------------------------------
+		for (int i = 0; i < BROKEN_MAX; i++)
+		{
+			//BROKEN* pBroken = GetBroken();
+			//JUMPSTAND* pJumpStand = GetJumpStand();
 
 		for (int j = 0; j < JUMPSTAND_MAX; j++)
 		{
@@ -859,13 +860,13 @@ void UpdateCollision()
 		}
 	}
 
-	//------------------------------------
-	//バネとトゲブロック当たり判定
-	//-----------------------------------
-	for (int i = 0; i < HIGH_MAX; i++)
-	{
-		HIGH* pHigh = GetHigh();
-		JUMPSTAND* pJumpStand = GetJumpStand();
+		//------------------------------------
+		//バネとトゲブロック当たり判定
+		//-----------------------------------
+		for (int i = 0; i < HIGH_MAX; i++)
+		{
+			//HIGH* pHigh = GetHigh();
+			//JUMPSTAND* pJumpStand = GetJumpStand();
 
 		for (int j = 0; j < JUMPSTAND_MAX; j++)
 		{
@@ -877,13 +878,13 @@ void UpdateCollision()
 		}
 	}
 
-	//------------------------------------
-	//動くブロックと鍵付き扉当たり判定
-	//-----------------------------------
-	for (int i = 0; i < MOVE_BLOCK_MAX; i++)
-	{
-		MOVEBLOCK* pMoveBlock = GetMoveBlock();
-		OPENKEY* pOpenKey = GetOpenKey();
+		//------------------------------------
+		//動くブロックと鍵付き扉当たり判定
+		//-----------------------------------
+		for (int i = 0; i < MOVE_BLOCK_MAX; i++)
+		{
+			//MOVEBLOCK* pMoveBlock = GetMoveBlock();
+			//OPENKEY* pOpenKey = GetOpenKey();
 
 		for (int j = 0; j < OPEN_KEY_MAX; j++)
 		{
@@ -894,13 +895,13 @@ void UpdateCollision()
 		}
 	}
 
-	//------------------------------------
-	//動くブロックとジャンプで壊す風呂当たり判定
-	//-----------------------------------
-	for (int i = 0; i < BROKEN_MAX; i++)
-	{
-		MOVEBLOCK* pMoveBlock = GetMoveBlock();
-		BROKEN* pBroken = GetBroken();
+		//------------------------------------
+		//動くブロックとジャンプで壊す風呂当たり判定
+		//-----------------------------------
+		for (int i = 0; i < BROKEN_MAX; i++)
+		{
+			//MOVEBLOCK* pMoveBlock = GetMoveBlock();
+			//BROKEN* pBroken = GetBroken();
 
 		for (int j = 0; j < MOVE_BLOCK_MAX; j++)
 		{
@@ -911,13 +912,13 @@ void UpdateCollision()
 		}
 	}
 
-	//------------------------------------
-	//動くブロックとトゲブロック当たり判定
-	//-----------------------------------
-	for (int i = 0; i < THORN_BLOCK_MAX; i++)
-	{
-		MOVEBLOCK* pMoveBlock = GetMoveBlock();
-		THORNBLOCK* pThorn = GetThornBlock();
+		//------------------------------------
+		//動くブロックとトゲブロック当たり判定
+		//-----------------------------------
+		for (int i = 0; i < THORN_BLOCK_MAX; i++)
+		{
+			//MOVEBLOCK* pMoveBlock = GetMoveBlock();
+			//THORNBLOCK* pThorn = GetThornBlock();
 
 		for (int j = 0; j < MOVE_BLOCK_MAX; j++)
 		{
@@ -2925,8 +2926,8 @@ bool fourNomalPieceCollision(Piece piece, int index)
 void Rotreturn(int index)
 {
 	MOUSE* pMouse = GetMouse();
-
-	for (int i = 0; i < pMouse->RotIndex; i++)
+	CURSOR* pCursor = GetCurso();
+	for (int i = 0; i < pCursor->RotIndex; i++)
 	{
 		RotateMapChipL(index);
 
