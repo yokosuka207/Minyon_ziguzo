@@ -24,3 +24,4 @@ void	UpdatePause();
 void	DrawPause();
 //void	SetPause(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col);
 bool*	GetPause();
+bool* GetPauseMause();
