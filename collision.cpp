@@ -855,10 +855,10 @@ void PieceCollision()
 
 				pPiece[i].MoveEndFlag = false;
 
-				if (pPiece[i].pos.y - pPiece[i].size.y / 2 < pPlayer->Position.y &&
-					pPiece[i].pos.y + pPiece[i].size.y / 2 > pPlayer->Position.y &&
-					pPiece[i].pos.x - pPiece[i].size.x / 2 < pPlayer->Position.x &&
-					pPiece[i].pos.x + pPiece[i].size.x / 2 > pPlayer->Position.x
+				if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pPlayer->Position.y &&
+					pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pPlayer->Position.y &&
+					pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pPlayer->Position.x &&
+					pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pPlayer->Position.x
 					)
 				{
 					pFlag = true;
