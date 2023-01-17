@@ -42,6 +42,9 @@ HRESULT InitGameMouse()
 	Mouse.RotIndex = 0;
 	Mouse.UseFlag = false;
 	Mouse.pFlag = false;
+
+	//Mouse_SetMode(MOUSE_POSITION_MODE_RELATIVE);		// ëäëŒÉÇÅ[ÉhÇ…Ç∑ÇÈ
+
 	return S_OK;
 }
 
@@ -362,6 +365,16 @@ void UpdateGameMouse()
 MOUSE * GetMouse()
 {
 	return &Mouse;
+}
+
+int GetXMousePosX() 
+{
+	return g_Mouse.x;
+}
+
+int GetXMousePosY() 
+{
+	return g_Mouse.y;
 }
 
 bool Mouse_IsLeftDown()

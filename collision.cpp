@@ -43,6 +43,9 @@
 #include "doppelganger.h"   //ドッペルゲンガー
 #include "enemy.h"			//エネミー
 
+#include "EffectSpark.h"	// ヒバナエフェクト
+
+
 
 /*==============================================================================
 
@@ -203,7 +206,7 @@ void UpdateCollision()
 					//要改善
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
 						//インデックスがずれている
-						if (pSwitch[i].SwitchIndex == pSwitchWall[j].SwitchIndex) {
+						if (pSwitch[i].SwitchIndex + (pSwitchWall[i].WallMax) == pSwitchWall[j].SwitchIndex) {
 							pSwitchWall[j].UseFlag = false;	//押されたら壁がなくなる
 						}
 					}
@@ -916,7 +919,8 @@ void PieceCollision()
 												{
 													pPlayer->Position += temp;
 												}
-
+												// ヒバナエフェクト
+												SetEffectSpark(pJoint[j].pos, 0.0f);
 											}
 											else
 											{
@@ -952,7 +956,8 @@ void PieceCollision()
 													pPlayer->Position += temp;
 												}
 												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
-
+												// ヒバナエフェクト
+												SetEffectSpark(pJoint[j].pos, 0.0f);
 											}
 											else
 											{
@@ -985,7 +990,8 @@ void PieceCollision()
 												{
 													pPlayer->Position += temp;
 												}
-
+												// ヒバナエフェクト
+												SetEffectSpark(pJoint[j].pos, 0.0f);
 											}
 											else
 											{
@@ -1018,7 +1024,8 @@ void PieceCollision()
 												{
 													pPlayer->Position += temp;
 												}
-
+												// ヒバナエフェクト
+												SetEffectSpark(pJoint[j].pos, 0.0f);
 											}
 											else
 											{
@@ -1571,7 +1578,6 @@ void PuzzleCollision()
 												if (fourCollision(pPuzzle[i], i))
 												{
 													colFlag = true;
-
 												}
 												else
 												{

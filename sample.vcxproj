@@ -143,6 +143,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="cursor.cpp" />
+    <ClCompile Include="EffectSpark.cpp" />
     <ClCompile Include="doppelganger.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="fade.cpp" />
@@ -155,6 +156,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="inventory.cpp" />
+    <ClCompile Include="issuer.cpp" />
     <ClCompile Include="joint.cpp" />
     <ClCompile Include="jump_stand.cpp" />
     <ClCompile Include="Key.cpp" />
@@ -172,6 +174,7 @@
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="puzzle.cpp" />
     <ClCompile Include="puzzlecip.cpp" />
+    <ClCompile Include="ray.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="save.cpp" />
@@ -204,6 +207,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="cursor.h" />
+    <ClInclude Include="EffectSpark.h" />
     <ClInclude Include="doppelganger.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="fade.h" />
@@ -216,6 +220,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="inventory.h" />
+    <ClInclude Include="issuer.h" />
     <ClInclude Include="joint.h" />
     <ClInclude Include="jump_stand.h" />
     <ClInclude Include="Key.h" />
@@ -233,6 +238,7 @@
     <ClInclude Include="polygon.h" />
     <ClInclude Include="puzzle.h" />
     <ClInclude Include="puzzlecip.h" />
+    <ClInclude Include="ray.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="save.h" />

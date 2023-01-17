@@ -94,7 +94,7 @@ void DrawThornBlock()
 			//スプライトを表示
 			D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 			SpriteDrawColorRotation(g_ThornBlock[i].Postion.x, g_ThornBlock[i].Postion.y, 0.0f,g_ThornBlock[i].Size.x, g_ThornBlock[i].Size.y,
-				g_ThornBlock[i].rot, g_ThornBlock[i].col, 0, 1.0f, 1.0f, 1);
+				g_ThornBlock[i].rot, g_ThornBlock[i].col, 0, 1.0f, -1.0f, 1);
 
 		}
 	}
