@@ -15,12 +15,15 @@
 
 static ID3D11ShaderResourceView* g_FadeTexture;	//画像一枚で一つの変数が必要
 static char* g_FadeTextureName = (char*)"data\\texture\\fade.png";	//テクスチャファイルパス
+static char* g_FadeAlphaTextureName = (char*)"data\\texture\\black.png";	//テクスチャファイルパス
 
 static FADEPARAM g_FadeParam;
 
 void InitFade() {
-	g_FadeParam.TexNo = LoadTexture(g_FadeTextureName);
-	g_FadeParam.alpha = 1.0f;
+	g_FadeParam.TexNo1 = LoadTexture(g_FadeTextureName);
+	g_FadeParam.TexNo2 = LoadTexture(g_FadeAlphaTextureName);
+
+	g_FadeParam.alpha = 0.0f;
 	g_FadeParam.scaling = D3DXVECTOR2(SCREEN_WIDTH * 100, SCREEN_HEIGHT * 100);
 	g_FadeParam.state = FADE::FADE_NONE;
 	g_FadeParam.FadeFlag = false;
@@ -33,7 +36,7 @@ void InitFade() {
 	g_FadeParam.uv_w = 1.0f / 1.0f;
 	g_FadeParam.uv_h = 1.0f / 1.0f;
 	g_FadeParam.NumPatern = 1;
-	StartFade(FADE::FADE_IN);
+	StartFade(FADE::FADE_ALPHA_IN);
 }
 void UninitFade() {
 	if (g_FadeTexture != NULL) {
@@ -94,11 +97,65 @@ void UpdateFade() {
 		}
 		g_FadeParam.FadeFlag = false;
 	}
+
+	if (g_FadeParam.state == FADE::FADE_ALPHA_OUT) {
+		g_FadeParam.alpha += FADE_SPEED_ALPHA;
+		if(g_FadeParam.alpha >= 1.0f){
+			g_FadeParam.alpha = 1.0f;
+			g_FadeParam.state = FADE::FADE_ALPHA_IN;
+			switch (*GetScene()) {
+			case SCENE::SCENE_NONE:
+				break;
+			case SCENE::SCENE_TITLE:
+				SetScene(SCENE::SCENE_TUTORIAL);
+				break;
+			case SCENE::SCENE_TUTORIAL:
+				SetScene(SCENE::SCENE_DATASELECT);
+				break;
+			case SCENE::SCENE_DATASELECT:
+				SetScene(SCENE::SCENE_STAGESELECT);
+				break;
+			case SCENE::SCENE_STAGESELECT:
+				SetScene(SCENE::SCENE_GAME);
+				break;
+			case SCENE::SCENE_GAME:
+				SetScene(SCENE::SCENE_RESULT);
+				break;
+			case SCENE::SCENE_RESULT:
+				//continue時
+				if (g_FadeParam.ExceptFlag) {
+					SetScene(SCENE::SCENE_GAME);
+				}
+				//通常
+				else {
+					SetScene(SCENE::SCENE_STAGESELECT);
+				}
+				break;
+			default:
+				break;
+			}
+
+		}
+		g_FadeParam.FadeFlag = false;
+	}
+	if (g_FadeParam.state == FADE::FADE_ALPHA_IN) {
+		g_FadeParam.alpha -= FADE_SPEED_ALPHA;
+		if (g_FadeParam.alpha <= 0.0f) {
+			g_FadeParam.alpha = 0.0f;
+			g_FadeParam.state = FADE::FADE_NONE;
+		}
+		g_FadeParam.FadeFlag = false;
+	}
 }
 void DrawFade() {
 	SetWorldViewProjection2D();
+	if (g_FadeParam.state == FADE::FADE_IN || g_FadeParam.state == FADE::FADE_OUT) {
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_FadeParam.TexNo1));
+	}
+	if (g_FadeParam.state == FADE::FADE_ALPHA_IN || g_FadeParam.state == FADE::FADE_ALPHA_OUT) {
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_FadeParam.TexNo2));
+	}
 
-	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_FadeParam.TexNo));
 	SpriteDrawColorRotation(
 		g_FadeParam.pos.x,
 		g_FadeParam.pos.y,
@@ -117,10 +174,20 @@ void StartFade(FADE state) {
 	if (!g_FadeParam.FadeFlag) {
 		g_FadeParam.state = state;
 		if (g_FadeParam.state == FADE::FADE_IN) {
+			g_FadeParam.alpha = 1.0f;
 			g_FadeParam.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 		}
 		if (g_FadeParam.state == FADE::FADE_OUT) {
+			g_FadeParam.alpha = 1.0f;
 			g_FadeParam.size = g_FadeParam.scaling;
+		}
+		if (g_FadeParam.state == FADE::FADE_ALPHA_IN) {
+			g_FadeParam.alpha = 1.0f;
+			g_FadeParam.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
+		}
+		if (g_FadeParam.state == FADE::FADE_ALPHA_OUT) {
+			g_FadeParam.alpha = 0.0f;
+			g_FadeParam.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 		}
 		g_FadeParam.FadeFlag = true;
 	}

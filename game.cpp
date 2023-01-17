@@ -240,7 +240,7 @@ void DrawGame()
 		DrawMoveBlock();
 		DrawHigh();
 		DrawSwitch();
-		DrawSwitchwall();
+		DrawSwitchWall();
 		DrawGoal();
 		DrawBroken();		
 		DrawThornBlock();

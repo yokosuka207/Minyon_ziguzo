@@ -54,7 +54,7 @@ void	UpdateTutorial() {
 		Keyboard_IsKeyTrigger(KK_A))						// Keyboard	A
 	{
 		//SetScene(SCENE::SCENE_DATASELECT);
-		StartFade(FADE::FADE_OUT);
+		StartFade(FADE::FADE_ALPHA_OUT);
 	}
 }
 void	DrawTutorial() {

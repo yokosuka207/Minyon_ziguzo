@@ -26,9 +26,9 @@ HRESULT InitSwitchWall() {
 		g_SwitchWall[i].size = D3DXVECTOR2(0.0f, 0.0f);
 		g_SwitchWall[i].sp = D3DXVECTOR2(0.0f, 0.0f);
 		g_SwitchWall[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		g_SwitchWall[i].PaternNo = 0;
+		g_SwitchWall[i].PaternNo = 0.0f;
 		g_SwitchWall[i].uv_w = 1.0f / 1.0f;
-		g_SwitchWall[i].uv_h = 1.0f / 1.0f;
+		g_SwitchWall[i].uv_h = 1.0f / g_SwitchWall[i].WallMax;
 		g_SwitchWall[i].PieceIndex = -1;
 		g_SwitchWall[i].SwitchIndex = -1;
 		g_SwitchWall[i].WallMax = 0;
@@ -44,9 +44,13 @@ void UninitSwitchWall(){
 	}
 }
 void UpdateSwitchWall() {
+	for (int i = 0; i < SWITCHWALL_MAX; i++) {
+		if (g_SwitchWall[i].UseFlag) {
 
+		}
+	}
 }
-void DrawSwitchwall() {
+void DrawSwitchWall() {
 	//SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SwitchWallTextureNo));
 	//2å¬à»è„ï`âÊÇ≈Ç´Ç»Ç¢ÅH
@@ -63,10 +67,10 @@ void DrawSwitchwall() {
 					g_SwitchWall[j].color,
 					g_SwitchWall[j].PaternNo,
 					g_SwitchWall[j].uv_w,
-					//Ç±Ç±ÇÊÇ≠ÇÌÇ©ÇÁÇÒ
-					j / g_SwitchWall[i].WallMax,
+					g_SwitchWall[j].uv_h, 
 					SWITCHWALL_NUMPATERN
 				);
+				
 			}
 		}
 	}
