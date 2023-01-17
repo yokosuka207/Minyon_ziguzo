@@ -11,6 +11,7 @@
 #include "score.h"
 #include "tutorial.h"
 #include "fade.h"
+#include"noizu.h"
 
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
@@ -30,16 +31,21 @@ void InitScene(SCENE no){
 		break;
 	case SCENE::SCENE_TITLE:
 		InitTitle();
+		InitNoizu();
 		break;
 	case SCENE::SCENE_TUTORIAL:
 		InitTutorial();
+		InitNoizu();
+
 		break;
 	case SCENE::SCENE_DATASELECT:
 		g_SaveScene.Init();
+		InitNoizu();
+
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		InitStageSelect();
-		SetStageSelect();
+		//SetStageSelect();
 		break;
 	case SCENE::SCENE_GAME :
 		pFade->ExceptFlag = false;
@@ -48,6 +54,8 @@ void InitScene(SCENE no){
 		break;
 	case SCENE::SCENE_RESULT:
 		InitResult();
+		InitNoizu();
+
 		break;
 	default:
 		break;
@@ -60,15 +68,22 @@ void UninitScene(){
 		break;
 	case SCENE::SCENE_TITLE:
 		UninitTitle();
+		UninitNoizu();
 		break;
 	case SCENE::SCENE_TUTORIAL:
 		UninitTutorial();
+		UninitNoizu();
+
 		break;
 	case SCENE::SCENE_DATASELECT:
 		g_SaveScene.Uninit();
+		UninitNoizu();
+
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UninitStageSelect();
+		UninitNoizu();
+
 		break;
 	case SCENE::SCENE_GAME:
 		Elapsedtime = pTime->SumTime();
@@ -78,6 +93,8 @@ void UninitScene(){
 		break;
 	case SCENE::SCENE_RESULT:
 		UninitResult();
+		UninitNoizu();
+
 		break;
 	default:
 		break;
@@ -90,21 +107,30 @@ void UpdateScene(){
 		break;
 	case SCENE::SCENE_TITLE:
 		UpdateTitle();
+		UpdateNoizu();
 		break;
 	case SCENE::SCENE_TUTORIAL:
 		UpdateTutorial();
+		UpdateNoizu();
+
 		break;
 	case SCENE::SCENE_DATASELECT:
 		g_SaveScene.Update();
+		UpdateNoizu();
+
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UpdateStageSelect();
+		UpdateNoizu();
+
 		break;
 	case SCENE::SCENE_GAME:
 		UpdateGame();
 		break;
 	case SCENE::SCENE_RESULT:
 		UpdateResult();
+		UpdateNoizu();
+
 		break;
 	default:
 		break;
@@ -116,25 +142,40 @@ void DrawScene(){
 	case SCENE::SCENE_NONE:
 		break;
 	case SCENE::SCENE_TITLE:
+
 		DrawTitle();
+		DrawNoizu();
+
 		break;
 	case SCENE::SCENE_TUTORIAL:
 		DrawTutorial();
+		DrawNoizu();
+
+
 		break;
 	case SCENE::SCENE_DATASELECT:
+
 		g_SaveScene.Draw();
+		DrawNoizu();
+
 		break;
 	case SCENE::SCENE_STAGESELECT:
+
 		DrawStageSelect();
+		DrawNoizu();
+
 		break;
 	case SCENE::SCENE_GAME:
 		DrawGame();
 		break;
 	case SCENE::SCENE_RESULT:
+
 		DrawResult();
 		pTime->DrawResultTime(Elapsedtime,PauseElapsed);
 		pScore->DrawScore();
 		pScore->SetStageNo(StageNo);
+		DrawNoizu();
+
 		break;
 	default:
 		break;

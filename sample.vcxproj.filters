@@ -55,6 +55,10 @@
     <ClCompile Include="doppelganger.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="noizu.cpp" />
+    <ClCompile Include="issuer.cpp" />
+    <ClCompile Include="ray.cpp" />
+    <ClCompile Include="EffectSpark.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -117,5 +121,15 @@
     <ClInclude Include="xkeyboard.h" />
     <ClInclude Include="xmouse.h" />
     <ClInclude Include="tutorial.h" />
+    <ClInclude Include="noizu.h" />
+    <ClInclude Include="fade.h" />
+    <ClInclude Include="sound.h" />
+    <ClInclude Include="spawnpoint.h" />
+    <ClInclude Include="xinput.h" />
+    <ClInclude Include="xkeyboard.h" />
+    <ClInclude Include="xmouse.h" />
+    <ClInclude Include="issuer.h" />
+    <ClInclude Include="ray.h" />
+    <ClInclude Include="EffectSpark.h" />
   </ItemGroup>
 </Project>

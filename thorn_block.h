@@ -3,7 +3,7 @@
    トゲブロックヘッダー [thorn_block.h]
 														 Author		:座間研佑
 														 Date		:2022/11/09
-														 最終更新	:2022/11/224
+														 最終更新	:2022/11/24
 ==============================================================================*/
 
 #pragma once
@@ -18,8 +18,8 @@
 
 
 #define	THORN_BLOCK_MAX (20)
-#define THORN_BLOCK_H		30	//ブロックの縦サイズ
-#define THORN_BLOCK_W		30	//ブロックの横サイズ
+#define THORN_BLOCK_H		25	//ブロックの縦サイズ
+#define THORN_BLOCK_W		25	//ブロックの横サイズ
 
 struct THORNBLOCK
 {

@@ -22,6 +22,7 @@ Update:
 
 #include "input.h"
 #include "fade.h"
+#include "mouse.h"
 //**************************************************
 // マクロ定義
 //**************************************************
@@ -31,11 +32,10 @@ Update:
 // グローバル変数
 //**************************************************
 // 各テクスチャの名前
-static char* g_BGTextureFileName = (char*)"data/texture/JumpStand.jpg";				// 背景
-static char* g_TextureFileName0 = (char*)"data/texture/GameEnd_haikei.jpg";			// データなし
-static char* g_TextureFileName1 = (char*)"data/texture/gray.jpg";					// データ１
-static char* g_TextureFileName2 = (char*)"data/texture/green.png";					// データ２
-static char* g_TextureFileName3 = (char*)"data/texture/RED.jpg";					// データ３
+static char* g_BGTextureFileName = (char*)"data/texture/セーブ画面背景.png";				// 背景
+static char* g_TextureFileName1 = (char*)"data/texture/セーブデータテキスト１.png";					// データ１
+static char* g_TextureFileName2 = (char*)"data/texture/セーブデータテキスト２.png";					// データ２
+static char* g_TextureFileName3 = (char*)"data/texture/セーブデータテキスト３.png";					// データ３
 
 // セーブデータを保存するファイル名
 static char* g_saveFileName1 = (char*)"data/SaveData/Data1.bin";			// データ１
@@ -50,6 +50,8 @@ Button g_DataButton[BUTTON_NUM];
 //==================================================
 void Save::Init()
 {
+	// マウスの初期化
+	InitGameMouse();
 	// 各ボタンの初期化
 	for (auto& b : g_DataButton) {
 		b.Init();
@@ -92,9 +94,6 @@ void Save::Init()
 			}
 			break;
 		}
-
-		// ファイルがないやつのセット
-		b.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * i), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName0));
 	}
 }
 
@@ -114,6 +113,8 @@ void Save::Uninit()
 //==================================================
 void Save::Update()
 {
+	// マウスの更新
+	UpdateGameMouse();
 	//[----------とりあえずまだ残しておきます----------
 	//[----------入力----------
 	if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
@@ -127,10 +128,6 @@ void Save::Update()
 		Keyboard_IsKeyTrigger(KK_Z)) {						// Keyboard	Z
 		// 全データ削除
 		DeleteSaveData();
-		// テクスチャを変える
-		for (auto& b : g_DataButton) {
-			b.SetButtonTexNo(LoadTexture(g_TextureFileName0));
-		}
 	}
 	//----------入力----------]
 	//----------とりあえずまだ残しておきます----------]
@@ -160,7 +157,7 @@ void Save::Update()
 			}
 
 
-			//SetScene(SCENE_STAGESELECT);			// ステージセレクトシーンに切り替わる
+			SetScene(SCENE_STAGESELECT);			// ステージセレクトシーンに切り替わる
 		}
 	}
 }

@@ -66,7 +66,7 @@ HRESULT InitStageSelect();
 void UninitStageSelect();
 void UpdateStageSelect();
 void DrawStageSelect();
-void SetStageSelect();
+void SetStageSelect(int a);
 STAGESELECT* GetSelect();
 
 int ReturnStageNo();

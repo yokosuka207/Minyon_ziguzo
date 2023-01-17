@@ -34,6 +34,9 @@ void UpdateGameMouse();
 //void DrawMouse();
 MOUSE* GetMouse();
 
+int GetXMousePosX();
+int GetXMousePosY();
+
 // ƒ}ƒEƒX“ü—ÍŠÖ”
 // ¶
 bool Mouse_IsLeftDown();

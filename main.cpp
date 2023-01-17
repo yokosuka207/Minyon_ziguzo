@@ -29,6 +29,8 @@
 #include"scene.h"
 #include "sound.h"
 #include "fade.h"
+#include"camera.h"
+#include"noizu.h"
 
 
 //*****************************************************************************
@@ -233,17 +235,16 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	//入力処理の初期化
 	InitInput(hInstance,hWnd);
+	InitSound(hWnd);
 	SpriteInit();
 
 	// xinputの入力処理の初期化
 	Mouse_Initialize(hWnd);
 	Keyboard_Initialize();
-
 	//InitGame();
 	InitScene(SCENE::SCENE_TITLE);
 	//InitScene(SCENE_RESULT);
 
-	InitSound(hWnd);
 	InitFade();
 	// 背面ポリゴンをカリング
 	SetCullingMode(CULL_MODE_NONE);
@@ -291,6 +292,7 @@ void Draw(void)
 {
 	// バックバッファクリア
 	Clear();
+
 
 	// 2D描画なので深度無効
 	SetDepthEnable(false);

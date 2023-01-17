@@ -40,6 +40,10 @@
 #include "doppelganger.h"
 #include "enemy.h"
 #include "bullet.h"
+#include"noizu.h"
+#include "issuer.h"		// 光線発射装置
+#include "ray.h"		// 光線
+#include "EffectSpark.h"	// ヒバナエフェクト
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -78,11 +82,14 @@ void InitGame()
 		InitSwitch();
 		InitSwitchWall();
 		InitMoveBlock();
-
+		InitNoizu();
 		InitDoppelganger();
 		SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1);
 		InitEnemy();
 		InitPause();
+		InitRay();				// 光線の初期化
+		InitIssuer();			// 光線発射装置の初期化
+		InitEffectSpark();		// ヒバナエフェクト
 		InitBullet();
 
 	}
@@ -126,7 +133,7 @@ void UninitGame()
 	UninitHigh();
 	UninitSwitch();
 	UninitSwitchWall();
-
+	UninitNoizu();
 	UninitDoppelganger();
 	UninitEnemy();
 	UninitBullet();
@@ -135,6 +142,9 @@ void UninitGame()
 	pScore->UninitScore();
 	pTime->UninitTime();
 	g_Player3D.Uninit();
+	UninitRay();				// 光線の終了
+	UninitIssuer();				// 光線発射装置の終了
+	UninitEffectSpark();		// ヒバナエフェクト
 }
 
 void UpdateGame()
@@ -161,7 +171,7 @@ void UpdateGame()
 		//UpdatePolygon();	//ポリゴンの更新
 		BgUpdate();
 		UpdatePlayer();
-
+		UpdateNoizu();
 		//PuzzleCollision();
 		UpdateCollision();
 		PieceCollision();
@@ -193,7 +203,9 @@ void UpdateGame()
 		UpdateCursor();				// カーソルの更新
 		g_Player3D.Update();
 		UpdateCamera();
-
+		UpdateRay();			// 光線の更新
+		UpdateIssuer();			// 光線発射装置の更新
+		UpdateEffectSpark();	// ヒバナエフェクト
 	}
 	else {
 		UpdatePause();
@@ -230,20 +242,22 @@ void DrawGame()
 		DrawSwitch();
 		DrawSwitchwall();
 		DrawGoal();
-		DrawBroken();
-
+		DrawBroken();		
 		DrawThornBlock();
 
 		DrawDoppelganger();
 		DrawEnemy();
 		DrawBullet();
+		DrawNoizu();
 
+		//DrawRay();				// 光線の描画
+		//DrawIssuer();			// 光線発射装置の描画
 		DrawInventory();			// インベントリの描画
 		pTime->DrawGameTime();
 		DrawCursor();				// カーソルの描画
 		g_Player3D.Draw();
+		DrawEffectSpark();		// ヒバナエフェクト
 		SetCamera();
-
 	}
 	else {
 		BgDraw();

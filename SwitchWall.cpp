@@ -17,7 +17,7 @@
 static SWITCHWALL g_SwitchWall[SWITCHWALL_MAX];
 
 static ID3D11ShaderResourceView* g_SwitchWallTexture;	//画像一枚で一つの変数が必要
-static char* g_SwitchWallTextureName = (char*)"data\\texture\\RED.jpg";	//テクスチャファイルパス
+static char* g_SwitchWallTextureName = (char*)"data\\texture\\鉄格子.png";	//テクスチャファイルパス
 static int g_SwitchWallTextureNo = 0;
 
 HRESULT InitSwitchWall() {
@@ -27,8 +27,8 @@ HRESULT InitSwitchWall() {
 		g_SwitchWall[i].sp = D3DXVECTOR2(0.0f, 0.0f);
 		g_SwitchWall[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_SwitchWall[i].PaternNo = 0;
-		g_SwitchWall[i].uv_w = 0.0f;
-		g_SwitchWall[i].uv_h = 0.0f;
+		g_SwitchWall[i].uv_w = 1.0f / 1.0f;
+		g_SwitchWall[i].uv_h = 1.0f / 1.0f;
 		g_SwitchWall[i].PieceIndex = -1;
 		g_SwitchWall[i].SwitchIndex = -1;
 		g_SwitchWall[i].WallMax = 0;
@@ -49,21 +49,22 @@ void UpdateSwitchWall() {
 void DrawSwitchwall() {
 	//SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SwitchWallTextureNo));
-
+	//2個以上描画できない？
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
-		if (g_SwitchWall[i].UseFlag) {
+		for (int j = 0; j < g_SwitchWall[i].WallMax; j++) {
 			if (g_SwitchWall[i].UseFlag) {
 				SpriteDrawColorRotation(
-					g_SwitchWall[i].pos.x,
-					g_SwitchWall[i].pos.y,
+					g_SwitchWall[j].pos.x,
+					g_SwitchWall[j].pos.y,
 					-0.1f,
-					g_SwitchWall[i].size.x,
-					-g_SwitchWall[i].size.y,
+					g_SwitchWall[j].size.x,
+					-g_SwitchWall[j].size.y,
 					0.0f,
-					g_SwitchWall[i].color,
-					g_SwitchWall[i].PaternNo,
-					g_SwitchWall[i].uv_w,
-					g_SwitchWall[i].uv_h,
+					g_SwitchWall[j].color,
+					g_SwitchWall[j].PaternNo,
+					g_SwitchWall[j].uv_w,
+					//ここよくわからん
+					j / g_SwitchWall[i].WallMax,
 					SWITCHWALL_NUMPATERN
 				);
 			}
