@@ -149,12 +149,13 @@ void UpdateFade() {
 }
 void DrawFade() {
 	SetWorldViewProjection2D();
-	if (g_FadeParam.state == FADE::FADE_IN || g_FadeParam.state == FADE::FADE_OUT) {
+	if (g_FadeParam.state == FADE::FADE_IN || g_FadeParam.state == FADE::FADE_OUT || g_FadeParam.state == FADE::FADE_NONE) {
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_FadeParam.TexNo1));
 	}
 	if (g_FadeParam.state == FADE::FADE_ALPHA_IN || g_FadeParam.state == FADE::FADE_ALPHA_OUT) {
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_FadeParam.TexNo2));
 	}
+
 
 	SpriteDrawColorRotation(
 		g_FadeParam.pos.x,
