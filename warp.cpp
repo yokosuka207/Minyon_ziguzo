@@ -29,7 +29,7 @@
 static WARP g_Warp[WARP_MAX];
 static ID3D11ShaderResourceView	*g_textureWarp;	//画像一枚で一つの変数が必要
 
-static char* g_TextureNameWarp= (char*)"data\\texture\\warp.png";
+static char* g_TextureNameWarp= (char*)"data\\texture\\ワープ.png";
 
 WARP InitData[]=
 {
@@ -53,6 +53,13 @@ HRESULT InitWarp()
 		g_Warp[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_Warp[i].texno = LoadTexture(g_TextureNameWarp);
 		
+		//アニメーション系
+		g_Warp[i].uv_w = WARP_UV_W; //ワープ横
+		g_Warp[i].uv_h = WARP_UV_H; //ワープ縦
+		g_Warp[i].PaternNo = 0; //パターン番号
+		g_Warp[i].NumPatern = 4; //ヨコの枚数
+		
+		//使用フラグ
 		g_Warp[i].UseFlag = false;
 	}
 	return S_OK;
@@ -74,6 +81,17 @@ void UninitWarp()
 //=============================================================================
 void UpdateWarp()
 {
+	for (int i = 0; i < WARP_MAX; i++)
+	{
+		if (g_Warp[i].UseFlag == true)
+		{
+			g_Warp[i].PaternNo += 0.25f;
+
+			if (g_Warp[i].PaternNo >= 16) { g_Warp[i].PaternNo -= 16; }
+			if (g_Warp[i].PaternNo < 0) { g_Warp[i].PaternNo += 16; }
+		}
+	}
+	
 }
 
 //=============================================================================
@@ -91,9 +109,13 @@ void DrawWarp()
 				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Warp[i].texno));
 				//スプライトを表示
 				//D3DXCOLOR col = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
-				SpriteDrawColorRotation(g_Warp[i].Position.x, g_Warp[i].Position.y,-0.1f, g_Warp[i].Size.x, g_Warp[i].Size.y,
+				/*SpriteDrawColorRotation(g_Warp[i].Position.x, g_Warp[i].Position.y,-0.1f, g_Warp[i].Size.x, g_Warp[i].Size.y,
 					g_Warp[i].rot, g_Warp[i].col, 0, 1.0f, 1.0f, 1);
-			
+			*/
+
+				SpriteDrawColorRotation(g_Warp[i].Position.x, g_Warp[i].Position.y, -0.1f, g_Warp[i].Size.x, g_Warp[i].Size.y,
+					g_Warp[i].rot, g_Warp[i].col, g_Warp[i].PaternNo, g_Warp[i].uv_w, g_Warp[i].uv_h, g_Warp[i].NumPatern);
+
 		}
 	}
 }
