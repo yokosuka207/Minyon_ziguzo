@@ -27,6 +27,7 @@
 #define BLOCK_CHIP_DIRECTION (4)//チップの回転4方向分
 
 #define PUZZLE_SIZE (BLOCK_CHIP_ARRAY * BLOCK_CHIP_SIZE)	//16 * 15 (180 + 60) 
+#define PUZZLE_DRAW_SIZE (220)	// パズルの表示サイズ
 #define PIECE_SIZE (180)
 #define INVENTORY_PUZZLE_SIZE (BLOCK_CHIP_ARRAY * 6.0f)	//16 * 15 (180 + 60) 
 

@@ -52,23 +52,49 @@ Piece g_PieceMapChip[PUZZLE_MAX];
 static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
 //static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
 static char* g_MapChipTextureName = (char*)"data\\texture\\パズルピース修正版\\16.png";	//テクスチャファイルパス
+// 各ピースのテクスチャファイル名
 static char* g_MCTNArray[16] = {
-	(char*)"data\\texture\\パズルピース修正版\\01.png",
-	(char*)"data\\texture\\パズルピース修正版\\02.png",
-	(char*)"data\\texture\\パズルピース修正版\\03.png",
-	(char*)"data\\texture\\パズルピース修正版\\04.png",
-	(char*)"data\\texture\\パズルピース修正版\\05.png",
-	(char*)"data\\texture\\パズルピース修正版\\06.png",
-	(char*)"data\\texture\\パズルピース修正版\\07.png",
-	(char*)"data\\texture\\パズルピース修正版\\08.png",
-	(char*)"data\\texture\\パズルピース修正版\\09.png",
-	(char*)"data\\texture\\パズルピース修正版\\10.png",
-	(char*)"data\\texture\\パズルピース修正版\\11.png",
-	(char*)"data\\texture\\パズルピース修正版\\12.png",
-	(char*)"data\\texture\\パズルピース修正版\\13.png",
-	(char*)"data\\texture\\パズルピース修正版\\14.png",
-	(char*)"data\\texture\\パズルピース修正版\\15.png",
-	(char*)"data\\texture\\パズルピース修正版\\16.png"};
+	(char*)"data\\texture\\パズルピース_スプライトシート\\01.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\02.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\03.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\04.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\05.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\06.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\07.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\08.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\09.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\10.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\11.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\12.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\13.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\14.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\15.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\16.png"};
+
+// ステージ情報が入っているファイルの名前
+static char* g_StageFileName[21] = {
+	(char*)"data/MapData/Stage01.txt",
+	(char*)"data/MapData/Stage02.txt",
+	(char*)"data/MapData/Stage03.txt",
+	(char*)"data/MapData/Stage04.txt",
+	(char*)"data/MapData/Stage05.txt",
+	(char*)"data/MapData/Stage06.txt",
+	(char*)"data/MapData/Stage07.txt",
+	(char*)"data/MapData/Stage08.txt",
+	(char*)"data/MapData/Stage09.txt",
+	(char*)"data/MapData/Stage10.txt",
+	(char*)"data/MapData/Stage11.txt",
+	(char*)"data/MapData/Stage12.txt",
+	(char*)"data/MapData/Stage13.txt",
+	(char*)"data/MapData/Stage14.txt",
+	(char*)"data/MapData/Stage15.txt",
+	(char*)"data/MapData/Stage16.txt",
+	(char*)"data/MapData/Stage17.txt",
+	(char*)"data/MapData/Stage18.txt",
+	(char*)"data/MapData/Stage19.txt",
+	(char*)"data/MapData/Stage20.txt",
+	(char*)"data/MapData/Stage21.txt"
+};
 
 HRESULT InitMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
@@ -79,10 +105,7 @@ HRESULT InitMapChip() {
 		g_PieceMapChip[p].direction = 2;
 		g_PieceMapChip[p].pos = D3DXVECTOR2(0.0f,0.0f);
 		g_PieceMapChip[p].OldMovePos = g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
-		//g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);		// 180 x 180
-		g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE, PUZZLE_SIZE);		// 240 x 240
-		//g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE + 20, PUZZLE_SIZE + 20);		// 260 x 260
-		//g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_SIZE + 16, PUZZLE_SIZE + 16);		// 256 x 256
+		g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_DRAW_SIZE, PUZZLE_DRAW_SIZE);		// 180 x 180
 		g_PieceMapChip[p].MoveEndFlag = false;
 		g_PieceMapChip[p].MoveFlag = false;
 		g_PieceMapChip[p].InventoryFlag = false;
@@ -135,7 +158,7 @@ void DrawMapChip() {
 	}
 }
 void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
-	g_PieceMapChip[Pin].size = D3DXVECTOR2(PUZZLE_SIZE, PUZZLE_SIZE);
+	g_PieceMapChip[Pin].size = D3DXVECTOR2(PUZZLE_DRAW_SIZE, PUZZLE_DRAW_SIZE);
 
 	//p=ブロック最大数
 		//i=y方向
@@ -228,61 +251,9 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 	}
 }
 void FileLoad(int StageNo) {
-	const char* filename;
-	switch (StageNo)
-	{
-	case 0:
-		filename = "data/MapData/map0.txt";
-		break;
-	case 1:
-		filename = "data/MapData/map.txt"; 
-		break;
-	case 2:
-		filename = "data/MapData/Stage01.txt";
-		break;
-	case 3:
-		filename = "data/MapData/Stage02.txt";
-		break;
-	case 4:
-		filename = "data/MapData/Stage03.txt";
-		break;
-	case 5:
-		filename = "data/MapData/Stage04.txt";
-		break;
-	case 6:
-		filename = "data/MapData/Stage05.txt";
-		break;
-	case 7:
-		filename = "data/MapData/Stage07.txt";
-		break;
-	case 8:
-		filename = "data/MapData/Stage08.txt";
-		break;
-	case 9:
-		filename = "data/MapData/Stage09.txt";
-		break;
-	case 10:
-		filename = "data/MapData/Stage10.txt";
-	//	break;
-	//case 11:
-	//	filename = "data/MapData/Stage06.txt";
-	//	break;
-	//case 12:
-	//	filename = "data/MapData/Stage06.txt";
-	//	break;
-	//case 13:
-	//	filename = "data/MapData/Stage06.txt";
-	//	break;
-	//case 14:
-	//	filename = "data/MapData/Stage06.txt";
-	//	break;
-	//case 15:
-	//	filename = "data/MapData/Stage06.txt";
-	//	break;
-	}
 	FILE* fp;
 	//オープン
-	fp = fopen(filename, "r");
+	fp = fopen(g_StageFileName[StageNo], "r");
 	if (!fp) {
 		exit(999);
 	}

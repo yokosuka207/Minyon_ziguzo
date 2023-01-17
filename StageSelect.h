@@ -12,7 +12,7 @@
 #include "main.h"
 #include "renderer.h"
 
-#define STAGE_MAX (27)
+#define STAGE_MAX (21)
 //#define STAGE_MAX (8)
 
 #define SELECT_MAX (2)//2Œ…
