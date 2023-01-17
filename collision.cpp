@@ -43,6 +43,9 @@
 #include "doppelganger.h"   //ドッペルゲンガー
 #include "enemy.h"			//エネミー
 
+#include "EffectSpark.h"	// ヒバナエフェクト
+
+
 
 /*==============================================================================
 
@@ -203,7 +206,7 @@ void UpdateCollision()
 					//要改善
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
 						//インデックスがずれている
-						if (pSwitch[i].SwitchIndex == pSwitchWall[j].SwitchIndex) {
+						if (pSwitch[i].SwitchIndex + (pSwitchWall[i].WallMax) == pSwitchWall[j].SwitchIndex) {
 							pSwitchWall[j].UseFlag = false;	//押されたら壁がなくなる
 						}
 					}
@@ -997,10 +1000,10 @@ void PieceCollision()
 
 				pPiece[i].MoveEndFlag = false;
 
-				if (pPiece[i].pos.y - pPiece[i].size.y / 2 < pPlayer->Position.y &&
-					pPiece[i].pos.y + pPiece[i].size.y / 2 > pPlayer->Position.y &&
-					pPiece[i].pos.x - pPiece[i].size.x / 2 < pPlayer->Position.x &&
-					pPiece[i].pos.x + pPiece[i].size.x / 2 > pPlayer->Position.x
+				if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pPlayer->Position.y &&
+					pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pPlayer->Position.y &&
+					pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pPlayer->Position.x &&
+					pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pPlayer->Position.x
 					)
 				{
 					pFlag = true;
@@ -1061,7 +1064,8 @@ void PieceCollision()
 												{
 													pPlayer->Position += temp;
 												}
-
+												// ヒバナエフェクト
+												SetEffectSpark(pJoint[j].pos, 0.0f);
 											}
 											else
 											{
@@ -1097,7 +1101,8 @@ void PieceCollision()
 													pPlayer->Position += temp;
 												}
 												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
-
+												// ヒバナエフェクト
+												SetEffectSpark(pJoint[j].pos, 0.0f);
 											}
 											else
 											{
@@ -1130,7 +1135,8 @@ void PieceCollision()
 												{
 													pPlayer->Position += temp;
 												}
-
+												// ヒバナエフェクト
+												SetEffectSpark(pJoint[j].pos, 0.0f);
 											}
 											else
 											{
@@ -1163,7 +1169,8 @@ void PieceCollision()
 												{
 													pPlayer->Position += temp;
 												}
-
+												// ヒバナエフェクト
+												SetEffectSpark(pJoint[j].pos, 0.0f);
 											}
 											else
 											{
@@ -1716,7 +1723,6 @@ void PuzzleCollision()
 												if (fourCollision(pPuzzle[i], i))
 												{
 													colFlag = true;
-
 												}
 												else
 												{
@@ -2429,14 +2435,14 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
-				if (piece.pos.x + piece.size.x / 3 < pJoint[i].pos.x)	//ジョイントがピースの右だったら
+				if (piece.pos.x + PIECE_SIZE / 3 < pJoint[i].pos.x)	//ジョイントがピースの右だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
 						if (pJoint[j].pieNo ==pPiece[punum].no)
 						{
-							if (pPiece[punum].pos.x - pPiece[punum].size.x / 3 > pJoint[j].pos.x)
+							if (pPiece[punum].pos.x - PIECE_SIZE / 3 > pJoint[j].pos.x)
 							{
 								JointFlag = true;
 
@@ -2482,14 +2488,14 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
-				if (piece.pos.x - piece.size.x / 3 > pJoint[i].pos.x)	//ジョイントがピースの右だったら
+				if (piece.pos.x - PIECE_SIZE / 3 > pJoint[i].pos.x)	//ジョイントがピースの右だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
 						if (pJoint[j].pieNo == pPiece[punum].no)
 						{
-							if (pPiece[punum].pos.x + pPiece[punum].size.x / 3 < pJoint[j].pos.x)
+							if (pPiece[punum].pos.x + PIECE_SIZE / 3 < pJoint[j].pos.x)
 							{
 								JointFlag = true;
 
@@ -2533,7 +2539,7 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
-				if (piece.pos.y - piece.size.y / 3 > pJoint[i].pos.y)	//ジョイントがピースの上だったら
+				if (piece.pos.y + PIECE_SIZE / 3 < pJoint[i].pos.y)	//ジョイントがピースの上だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
@@ -2541,7 +2547,7 @@ bool fourPieceCollision(Piece piece, int index)
 						if (pJoint[j].pieNo == pPiece[punum].no)
 						{
 
-							if (pPiece[punum].pos.y + pPiece[punum].size.y / 3 < pJoint[j].pos.y)	//下
+							if (pPiece[punum].pos.y - PIECE_SIZE / 3 > pJoint[j].pos.y)	//下
 							{
 								JointFlag = true;
 
@@ -2590,14 +2596,14 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
-				if (piece.pos.y + piece.size.y / 3 < pJoint[i].pos.y)	//ジョイントがピースの上だったら
+				if (piece.pos.y - PIECE_SIZE / 3 > pJoint[i].pos.y)	//ジョイントがピースの下だったら
 				{
 
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
 						if (pJoint[j].pieNo == pPiece[punum].no)
 						{
-							if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 > pJoint[j].pos.y)	//下
+							if (pPiece[punum].pos.y + PIECE_SIZE / 3 < pJoint[j].pos.y)	//下
 							{
 								JointFlag = true;
 								//パズルのチップの右と左が有っているか
@@ -2650,13 +2656,13 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
 
 				switch (direcsion)
 				{
-				case UP:
+				case DOWN:
 
 					//pieceの上に別のパズルがあるか
-					if (piece.pos.y - PUZZLE_SIZE - (PUZZLE_SIZE / 2) < pPiece[i].pos.y &&
-						piece.pos.y - PUZZLE_SIZE + (PUZZLE_SIZE / 2) > pPiece[i].pos.y &&
-						piece.pos.x - PUZZLE_SIZE / 3 <= pPiece[i].pos.x &&
-						piece.pos.x + PUZZLE_SIZE / 3 >= pPiece[i].pos.x)
+					if (piece.pos.y - PIECE_SIZE - (PIECE_SIZE / 2) < pPiece[i].pos.y &&
+						piece.pos.y - PIECE_SIZE + (PIECE_SIZE / 2) > pPiece[i].pos.y &&
+						piece.pos.x - PIECE_SIZE / 3 <= pPiece[i].pos.x &&
+						piece.pos.x + PIECE_SIZE / 3 >= pPiece[i].pos.x)
 					{
 
 						punum = i;
@@ -2664,14 +2670,14 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
 					}
 
 					break;
-				case DOWN:
+				case UP:
 					//if (piece.pos.y + PUZZLE_SIZE == pPiece[i].pos.y)	return false;
 										//pieceの下に別のパズルがあるか
 
-					if (piece.pos.y + PUZZLE_SIZE - PUZZLE_SIZE / 2 < pPiece[i].pos.y &&
-						piece.pos.y + PUZZLE_SIZE + PUZZLE_SIZE / 2 > pPiece[i].pos.y &&
-						piece.pos.x - PUZZLE_SIZE / 3 <= pPiece[i].pos.x &&
-						piece.pos.x + PUZZLE_SIZE / 3 >= pPiece[i].pos.x)
+					if (piece.pos.y + PIECE_SIZE - PIECE_SIZE / 2 < pPiece[i].pos.y &&
+						piece.pos.y + PIECE_SIZE + PIECE_SIZE / 2 > pPiece[i].pos.y &&
+						piece.pos.x - PIECE_SIZE / 3 <= pPiece[i].pos.x &&
+						piece.pos.x + PIECE_SIZE / 3 >= pPiece[i].pos.x)
 					{
 						punum = i;
 						return false;
@@ -2682,10 +2688,10 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
 					//if (piece.pos.x - PUZZLE_SIZE == pPiece[i].pos.x)	return false;
 										//pieceの左に別のパズルがあるか
 
-					if (piece.pos.y - PUZZLE_SIZE / 3 <= pPiece[i].pos.y &&
-						piece.pos.y + PUZZLE_SIZE / 3 >= pPiece[i].pos.y &&
-						piece.pos.x - PUZZLE_SIZE - PUZZLE_SIZE / 3 < pPiece[i].pos.x &&
-						piece.pos.x - PUZZLE_SIZE + PUZZLE_SIZE / 3 > pPiece[i].pos.x)
+					if (piece.pos.y - PIECE_SIZE / 3 <= pPiece[i].pos.y &&
+						piece.pos.y + PIECE_SIZE / 3 >= pPiece[i].pos.y &&
+						piece.pos.x - PIECE_SIZE - PIECE_SIZE / 3 < pPiece[i].pos.x &&
+						piece.pos.x - PIECE_SIZE + PIECE_SIZE / 3 > pPiece[i].pos.x)
 					{
 						punum = i;
 
@@ -2696,10 +2702,10 @@ bool PieceOpen(Piece piece, int index, DIRECSION direcsion)
 				case RIGHT:
 					//if (piece.pos.x + PUZZLE_SIZE == pPiece[i].pos.x)	return false;
 					//pieceの右に別のパズルがあるか
-					if (piece.pos.y - PUZZLE_SIZE / 3 < pPiece[i].pos.y &&
-						piece.pos.y + PUZZLE_SIZE / 3 > pPiece[i].pos.y &&
-						piece.pos.x + PUZZLE_SIZE - PUZZLE_SIZE / 3 < pPiece[i].pos.x &&
-						piece.pos.x + PUZZLE_SIZE + PUZZLE_SIZE / 3 > pPiece[i].pos.x)
+					if (piece.pos.y - PIECE_SIZE / 3 < pPiece[i].pos.y &&
+						piece.pos.y + PIECE_SIZE / 3 > pPiece[i].pos.y &&
+						piece.pos.x + PIECE_SIZE - PIECE_SIZE / 3 < pPiece[i].pos.x &&
+						piece.pos.x + PIECE_SIZE + PIECE_SIZE / 3 > pPiece[i].pos.x)
 					{
 						punum = i;
 
@@ -2937,9 +2943,9 @@ bool SpritStageCollision(Piece p)
 	//左
 
 
-	if (x < left.x - SPLIT_SIZE / 2);
+	if (x < left.x - 240 / 2);
 	{
-		if (p.pos.x < left.x - SPLIT_SIZE / 2)
+		if (p.pos.x < left.x - 240 / 2)
 		{
 			return false;
 
