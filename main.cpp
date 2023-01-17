@@ -315,10 +315,10 @@ long GetMousePosY(void)
 	return g_MouseY;
 }
 
-//int Irand(int max) {
-//	std::random_device rd;
-//	std::mt19937 mt(rd);
-//	std::uniform_int_distribution<> dist(0, max);
-//
-//	return dist(mt);
-//}
+int Irand(int max) {
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<> dist(0, max);
+
+	return dist(mt);
+}
