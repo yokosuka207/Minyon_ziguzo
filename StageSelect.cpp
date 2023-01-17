@@ -156,7 +156,7 @@ HRESULT InitStageSelect() {
 			if (i == 1)
 			{
 				g_StageSelect[i].StageUseFlag = true;
-				g_StageSelect[i].size = D3DXVECTOR2(120.0f, 150.0f);
+				//g_StageSelect[i].size = D3DXVECTOR2(120.0f, 150.0f);
 
 			}
 
