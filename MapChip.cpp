@@ -487,10 +487,10 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
 				SetSheerFloors(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　着地で壊れる床
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　ジャンプで壊れるブロック
 				SetBroken(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18　ジャンプで壊れるブロック
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18　着地で壊れる床
 				SetHigh(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_MIRROR):	//19　鏡
