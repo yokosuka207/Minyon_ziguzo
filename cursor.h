@@ -26,7 +26,8 @@ typedef struct
 	D3DXVECTOR2 sp;				// スピード
 	D3DXCOLOR color;			// 色
 	float texNo;				// テクスチャインデックス
-
+	int RotIndex;	//回転した数
+	bool pFlag;	//プレーヤーがいるかどうか
 	bool useFlag;				// 使用中フラグ
 }CURSOR;
 

@@ -46,6 +46,7 @@
 #include "EffectSpark.h"	// ヒバナエフェクト
 #include"switch.h"	//スイッチ
 #include"SwitchWall.h"//switchの壁
+#include"cursor.h"
 
 
 /*==============================================================================
@@ -2926,8 +2927,8 @@ bool fourNomalPieceCollision(Piece piece, int index)
 void Rotreturn(int index)
 {
 	MOUSE* pMouse = GetMouse();
-
-	for (int i = 0; i < pMouse->RotIndex; i++)
+	CURSOR* pCursor = GetCurso();
+	for (int i = 0; i < pCursor->RotIndex; i++)
 	{
 		RotateMapChipL(index);
 
