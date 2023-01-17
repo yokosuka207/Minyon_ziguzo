@@ -18,6 +18,10 @@
 #define WARP_MAX (2)
 #define WARP_SPEED (2.0f)
 
+//ワープ アニメーション
+#define WARP_UV_W (1.0f / 4)
+#define WARP_UV_H (1.0f / 4)
+
 struct WARP
 {
 	bool UseFlag;//構造体利用中フラグ
