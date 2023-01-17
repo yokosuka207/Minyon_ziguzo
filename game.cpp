@@ -172,10 +172,10 @@ void UpdateGame()
 	if (!(*pause)) {
 		//UpdatePolygon();	//ƒ|ƒŠƒSƒ“‚ÌXV
 		BgUpdate();
-		UpdatePlayer();
 		UpdateNoizu();
 		//PuzzleCollision();
 		UpdateCollision();
+		UpdatePlayer();
 		PieceCollision();
 
 		UpdateBlock();

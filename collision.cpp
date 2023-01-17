@@ -543,7 +543,6 @@ void UpdateCollision()
 		}
 	}
 
-
 	//====================================================================
 	//プレイヤーと落ちるブロックの当たり判定(PlayerとFallBlockの当たり判定)
 	//====================================================================
@@ -748,229 +747,229 @@ void UpdateCollision()
 	//ゴール専用鍵取得プレイヤーと鍵で開く扉の当たり判定(PlayerとGoal)
 	//-------------------------------------------------------------------
 
-		GOAL* pGoal = GetGoal();
-		//GKey* pGKey = GetGKey();
-		if (pGoal->UseFlag == true)
+	GOAL* pGoal = GetGoal();
+	//GKey* pGKey = GetGKey();
+	if (pGoal->UseFlag == true)
+	{
+
+		if (GetGoal()->UseFlag)
 		{
-
-			if (GetGoal()->UseFlag)
+			if (!pMouse->UseFlag && pGKey->GetGKey)
 			{
-				if (!pMouse->UseFlag && pGKey->GetGKey)
+
+				if (CollisionBB(GetGoal()->Pos, pPlayer->Position, GetGoal()->Size, pPlayer->size))
 				{
-
-					if (CollisionBB(GetGoal()->Pos, pPlayer->Position, GetGoal()->Size, pPlayer->size))
-					{
-						GetGoal()->UseFlag = false;
-						SetResultType(WIN);
-						//SetScene(SCENE_RESULT);
-						StartFade(FADE::FADE_OUT);
-						pTime->EndTime();
-						pTimeParam->EndFlag = true;
-					}
-				}
-			}
-
-			
-		}
-
-		//------------------------------------
-		//敵の目の前とプレイヤー当たり判定
-		//------------------------------------
-		for (int i = 0; i < ENEMY_MAX; i++)
-		{
-			if (pEnemy[i].UseFlag == true)
-			{
-				if (CollisionBB(pEnemy[i].pos, pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x * 1000, pEnemy[i].size.y), pPlayer->size))
-				{
-					pEnemy[i].AIFlag = true;
+					GetGoal()->UseFlag = false;
+					SetResultType(WIN);
+					//SetScene(SCENE_RESULT);
+					StartFade(FADE::FADE_OUT);
+					pTime->EndTime();
+					pTimeParam->EndFlag = true;
 				}
 			}
 		}
 
-		//------------------------------------
-		//動くブロックとバネ当たり判定
-		//-----------------------------------
-		for (int i = 0; i < MOVE_BLOCK_MAX; i++)
-		{
-			MOVEBLOCK* pMoveBlock = GetMoveBlock();
-			JUMPSTAND* pJumpStand = GetJumpStand();
-
-			for (int j = 0; j < JUMPSTAND_MAX; j++)
-			{
-				if (CollisionBB(pMoveBlock[i].pos, pJumpStand[j].pos, pMoveBlock[j].size, pJumpStand[j].size))
-				{
-					//pMoveBlock[i].pos = pMoveBlock[i].oldpos;
-					pJumpStand[j].pos = pJumpStand[j].oldpos;
-				}
-			}
-		}
-
-
-		//------------------------------------
-		//バネと下からこわすっブロッコ当たり判定
-		//-----------------------------------
-		for (int i = 0; i < THORN_BLOCK_MAX; i++)
-		{
-			THORNBLOCK* pThornBlock = GetThornBlock();
-			JUMPSTAND* pJumpStand = GetJumpStand();
-
-			for (int j = 0; j < JUMPSTAND_MAX; j++)
-			{
-				if (CollisionBB(pThornBlock[i].Postion, pJumpStand[j].pos, pThornBlock[j].Size, pJumpStand[j].size))
-				{
-					//pThornBlock[i].pos = pThornBlock[i].oldpos;
-					pJumpStand[j].pos = pJumpStand[j].oldpos;
-				}
-			}
-		}
-
-		//------------------------------------
-		//バネと鍵付き扉当たり判定
-		//-----------------------------------
-		for (int i = 0; i < OPEN_KEY_MAX; i++)
-		{
-			OPENKEY* pOpenKey = GetOpenKey();
-			JUMPSTAND* pJumpStand = GetJumpStand();
-
-			for (int j = 0; j < JUMPSTAND_MAX; j++)
-			{
-				if (CollisionBB(pOpenKey[i].Position, pJumpStand[j].pos, pOpenKey[j].Size, pJumpStand[j].size))
-				{
-					//pThornBlock[i].pos = pThornBlock[i].oldpos;
-					pJumpStand[j].pos = pJumpStand[j].oldpos;
-				}
-			}
-		}
 		
-		//------------------------------------
-		//バネとトゲブロック当たり判定
-		//-----------------------------------
-		for (int i = 0; i < BROKEN_MAX; i++)
-		{
-			BROKEN* pBroken = GetBroken();
-			JUMPSTAND* pJumpStand = GetJumpStand();
+	}
 
-			for (int j = 0; j < JUMPSTAND_MAX; j++)
+	//------------------------------------
+	//敵の目の前とプレイヤー当たり判定
+	//------------------------------------
+	for (int i = 0; i < ENEMY_MAX; i++)
+	{
+		if (pEnemy[i].UseFlag == true)
+		{
+			if (CollisionBB(pEnemy[i].pos, pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x * 1000, pEnemy[i].size.y), pPlayer->size))
 			{
-				if (CollisionBB(pBroken[i].Postion, pJumpStand[j].pos, pBroken[j].Size, pJumpStand[j].size))
-				{
-					//pThornBlock[i].pos = pThornBlock[i].oldpos;
-					pJumpStand[j].pos = pJumpStand[j].oldpos;
-				}
+				pEnemy[i].AIFlag = true;
 			}
 		}
+	}
 
-		//------------------------------------
-		//バネとトゲブロック当たり判定
-		//-----------------------------------
-		for (int i = 0; i < HIGH_MAX; i++)
+	//------------------------------------
+	//動くブロックとバネ当たり判定
+	//-----------------------------------
+	for (int i = 0; i < MOVE_BLOCK_MAX; i++)
+	{
+		MOVEBLOCK* pMoveBlock = GetMoveBlock();
+		JUMPSTAND* pJumpStand = GetJumpStand();
+
+		for (int j = 0; j < JUMPSTAND_MAX; j++)
 		{
-			HIGH* pHigh = GetHigh();
-			JUMPSTAND* pJumpStand = GetJumpStand();
-
-			for (int j = 0; j < JUMPSTAND_MAX; j++)
+			if (CollisionBB(pMoveBlock[i].pos, pJumpStand[j].pos, pMoveBlock[j].size, pJumpStand[j].size))
 			{
-				if (CollisionBB(pHigh[i].Postion, pJumpStand[j].pos, pHigh[j].Size, pJumpStand[j].size))
-				{
-					//pThornBlock[i].pos = pThornBlock[i].oldpos;
-					pJumpStand[j].pos = pJumpStand[j].oldpos;
-				}
+				//pMoveBlock[i].pos = pMoveBlock[i].oldpos;
+				pJumpStand[j].pos = pJumpStand[j].oldpos;
 			}
 		}
+	}
 
-		//------------------------------------
-		//動くブロックと鍵付き扉当たり判定
-		//-----------------------------------
-		for (int i = 0; i < MOVE_BLOCK_MAX; i++)
+
+	//------------------------------------
+	//バネと下からこわすっブロッコ当たり判定
+	//-----------------------------------
+	for (int i = 0; i < THORN_BLOCK_MAX; i++)
+	{
+		THORNBLOCK* pThornBlock = GetThornBlock();
+		JUMPSTAND* pJumpStand = GetJumpStand();
+
+		for (int j = 0; j < JUMPSTAND_MAX; j++)
 		{
-			MOVEBLOCK* pMoveBlock = GetMoveBlock();
-			OPENKEY* pOpenKey = GetOpenKey();
-
-			for (int j = 0; j < OPEN_KEY_MAX; j++)
+			if (CollisionBB(pThornBlock[i].Postion, pJumpStand[j].pos, pThornBlock[j].Size, pJumpStand[j].size))
 			{
-				if (CollisionBB(pMoveBlock[i].pos, pOpenKey[j].Position, pMoveBlock[j].size, pOpenKey[j].Size))
-				{
-					pMoveBlock[i].pos = pMoveBlock[i].oldpos;
-				}
+				//pThornBlock[i].pos = pThornBlock[i].oldpos;
+				pJumpStand[j].pos = pJumpStand[j].oldpos;
 			}
 		}
+	}
 
-		//------------------------------------
-		//動くブロックとジャンプで壊す風呂当たり判定
-		//-----------------------------------
-		for (int i = 0; i < BROKEN_MAX; i++)
+	//------------------------------------
+	//バネと鍵付き扉当たり判定
+	//-----------------------------------
+	for (int i = 0; i < OPEN_KEY_MAX; i++)
+	{
+		OPENKEY* pOpenKey = GetOpenKey();
+		JUMPSTAND* pJumpStand = GetJumpStand();
+
+		for (int j = 0; j < JUMPSTAND_MAX; j++)
 		{
-			MOVEBLOCK* pMoveBlock = GetMoveBlock();
-			BROKEN* pBroken = GetBroken();
-
-			for (int j = 0; j < MOVE_BLOCK_MAX; j++)
+			if (CollisionBB(pOpenKey[i].Position, pJumpStand[j].pos, pOpenKey[j].Size, pJumpStand[j].size))
 			{
-				if (CollisionBB(pMoveBlock[i].pos, pBroken[j].Postion, pMoveBlock[j].size, pBroken[j].Size))
-				{
-					pMoveBlock[i].pos = pMoveBlock[i].oldpos;
-				}
+				//pThornBlock[i].pos = pThornBlock[i].oldpos;
+				pJumpStand[j].pos = pJumpStand[j].oldpos;
 			}
 		}
+	}
+	
+	//------------------------------------
+	//バネとトゲブロック当たり判定
+	//-----------------------------------
+	for (int i = 0; i < BROKEN_MAX; i++)
+	{
+		BROKEN* pBroken = GetBroken();
+		JUMPSTAND* pJumpStand = GetJumpStand();
 
-		//------------------------------------
-		//動くブロックとトゲブロック当たり判定
-		//-----------------------------------
-		for (int i = 0; i < THORN_BLOCK_MAX; i++)
+		for (int j = 0; j < JUMPSTAND_MAX; j++)
 		{
-			MOVEBLOCK* pMoveBlock = GetMoveBlock();
-			THORNBLOCK* pThorn = GetThornBlock();
-
-			for (int j = 0; j < MOVE_BLOCK_MAX; j++)
+			if (CollisionBB(pBroken[i].Postion, pJumpStand[j].pos, pBroken[j].Size, pJumpStand[j].size))
 			{
-				if (CollisionBB(pMoveBlock[i].pos, pThorn[j].Postion, pMoveBlock[j].size, pThorn[j].Size))
-				{
-					pMoveBlock[i].pos = pMoveBlock[i].oldpos;
-				}
+				//pThornBlock[i].pos = pThornBlock[i].oldpos;
+				pJumpStand[j].pos = pJumpStand[j].oldpos;
 			}
 		}
+	}
+
+	//------------------------------------
+	//バネとトゲブロック当たり判定
+	//-----------------------------------
+	for (int i = 0; i < HIGH_MAX; i++)
+	{
+		HIGH* pHigh = GetHigh();
+		JUMPSTAND* pJumpStand = GetJumpStand();
+
+		for (int j = 0; j < JUMPSTAND_MAX; j++)
+		{
+			if (CollisionBB(pHigh[i].Postion, pJumpStand[j].pos, pHigh[j].Size, pJumpStand[j].size))
+			{
+				//pThornBlock[i].pos = pThornBlock[i].oldpos;
+				pJumpStand[j].pos = pJumpStand[j].oldpos;
+			}
+		}
+	}
+
+	//------------------------------------
+	//動くブロックと鍵付き扉当たり判定
+	//-----------------------------------
+	for (int i = 0; i < MOVE_BLOCK_MAX; i++)
+	{
+		MOVEBLOCK* pMoveBlock = GetMoveBlock();
+		OPENKEY* pOpenKey = GetOpenKey();
+
+		for (int j = 0; j < OPEN_KEY_MAX; j++)
+		{
+			if (CollisionBB(pMoveBlock[i].pos, pOpenKey[j].Position, pMoveBlock[j].size, pOpenKey[j].Size))
+			{
+				pMoveBlock[i].pos = pMoveBlock[i].oldpos;
+			}
+		}
+	}
+
+	//------------------------------------
+	//動くブロックとジャンプで壊す風呂当たり判定
+	//-----------------------------------
+	for (int i = 0; i < BROKEN_MAX; i++)
+	{
+		MOVEBLOCK* pMoveBlock = GetMoveBlock();
+		BROKEN* pBroken = GetBroken();
+
+		for (int j = 0; j < MOVE_BLOCK_MAX; j++)
+		{
+			if (CollisionBB(pMoveBlock[i].pos, pBroken[j].Postion, pMoveBlock[j].size, pBroken[j].Size))
+			{
+				pMoveBlock[i].pos = pMoveBlock[i].oldpos;
+			}
+		}
+	}
+
+	//------------------------------------
+	//動くブロックとトゲブロック当たり判定
+	//-----------------------------------
+	for (int i = 0; i < THORN_BLOCK_MAX; i++)
+	{
+		MOVEBLOCK* pMoveBlock = GetMoveBlock();
+		THORNBLOCK* pThorn = GetThornBlock();
+
+		for (int j = 0; j < MOVE_BLOCK_MAX; j++)
+		{
+			if (CollisionBB(pMoveBlock[j].pos, pThorn[i].Postion, pMoveBlock[j].size, pThorn[i].Size))
+			{
+				pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+			}
+		}
+	}
 
 
-		//------------------------------------
-		//ドッペルゲンガー弾用当たり判定
-		//------------------------------------
-		//DOPPELGANGER* pDoppel = GetDoppelganger();
-		//BULLET* pBullet = GetBullet();
+	//------------------------------------
+	//ドッペルゲンガー弾用当たり判定
+	//------------------------------------
+	//DOPPELGANGER* pDoppel = GetDoppelganger();
+	//BULLET* pBullet = GetBullet();
 
-		//反プレイヤー弾 と 敵キャラ
-		//if(pDoppel->UseFlag == true)
-		//{ 
-		//	pBullet->use = true;
+	//反プレイヤー弾 と 敵キャラ
+	//if(pDoppel->UseFlag == true)
+	//{ 
+	//	pBullet->use = true;
 
-		//	if (pBullet->use == true)
-		//	{
-		//		if (pPlayer->UseFlag)
-		//		{
-		//			bool hit = CollisionBB(pBullet->pos, pPlayer->Position, D3DXVECTOR2(pBullet->w, pBullet->h), D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H));
+	//	if (pBullet->use == true)
+	//	{
+	//		if (pPlayer->UseFlag)
+	//		{
+	//			bool hit = CollisionBB(pBullet->pos, pPlayer->Position, D3DXVECTOR2(pBullet->w, pBullet->h), D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H));
 
-		//			if (hit == true)//当たっている
-		//			{
-		//				if (pBullet->hit)
-		//				{
-		//					pPlayer->hp - (pBullet->Damage);
-		//					if (pPlayer->hp <= 0)
-		//					{
-		//						pPlayer->UseFlag = false;
-		//						StartFade(FADE::FADE_OUT);
-		//						SetResultType(LOSE);
-		//						pTime->EndTime();
-		//						pTimeParam->EndFlag = true;
-		//					}
-		//					
-		//				}
-		//			}
-		//			else//当っていない
-		//			{
+	//			if (hit == true)//当たっている
+	//			{
+	//				if (pBullet->hit)
+	//				{
+	//					pPlayer->hp - (pBullet->Damage);
+	//					if (pPlayer->hp <= 0)
+	//					{
+	//						pPlayer->UseFlag = false;
+	//						StartFade(FADE::FADE_OUT);
+	//						SetResultType(LOSE);
+	//						pTime->EndTime();
+	//						pTimeParam->EndFlag = true;
+	//					}
+	//					
+	//				}
+	//			}
+	//			else//当っていない
+	//			{
 
-		//			}
-		//		}
-		//	}
-		//}
-		
+	//			}
+	//		}
+	//	}
+	//}
+	
 }
 //----------------------------------------------------------------------------------------------------------
 

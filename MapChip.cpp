@@ -51,25 +51,25 @@ Piece g_PieceMapChip[PUZZLE_MAX];
 //**************************************************
 static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
 //static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
-static char* g_MapChipTextureName = (char*)"data\\texture\\パズルピース修正版\\16.png";	//テクスチャファイルパス
+//static char* g_MapChipTextureName = (char*)"data\\texture\\パズルピース修正版\\16.png";	//テクスチャファイルパス
 // 各ピースのテクスチャファイル名
 static char* g_MCTNArray[16] = {
-	(char*)"data\\texture\\パズルピース_スプライトシート\\01.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\02.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\03.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\04.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\05.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\06.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\07.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\08.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\09.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\10.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\11.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\12.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\13.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\14.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\15.png",
-	(char*)"data\\texture\\パズルピース_スプライトシート\\16.png"};
+	(char*)"data\\texture\\パズルピース修正版\\01.png",
+	(char*)"data\\texture\\パズルピース修正版\\02.png",
+	(char*)"data\\texture\\パズルピース修正版\\03.png",
+	(char*)"data\\texture\\パズルピース修正版\\04.png",
+	(char*)"data\\texture\\パズルピース修正版\\05.png",
+	(char*)"data\\texture\\パズルピース修正版\\06.png",
+	(char*)"data\\texture\\パズルピース修正版\\07.png",
+	(char*)"data\\texture\\パズルピース修正版\\08.png",
+	(char*)"data\\texture\\パズルピース修正版\\09.png",
+	(char*)"data\\texture\\パズルピース修正版\\10.png",
+	(char*)"data\\texture\\パズルピース修正版\\11.png",
+	(char*)"data\\texture\\パズルピース修正版\\12.png",
+	(char*)"data\\texture\\パズルピース修正版\\13.png",
+	(char*)"data\\texture\\パズルピース修正版\\14.png",
+	(char*)"data\\texture\\パズルピース修正版\\15.png",
+	(char*)"data\\texture\\パズルピース修正版\\16.png"};
 
 // ステージ情報が入っているファイルの名前
 static char* g_StageFileName[21] = {
