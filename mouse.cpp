@@ -163,17 +163,17 @@ void UpdateGameMouse()
 				if (pPiece[i].UseFlag)
 				{
 
-					if (pPiece[i].pos.y - pPiece[i].size.y / 3 < -Mouse.PosY &&
-						pPiece[i].pos.y + pPiece[i].size.y / 3 > -Mouse.PosY &&
-						pPiece[i].pos.x - pPiece[i].size.x / 3 <Mouse.PosX &&
-						pPiece[i].pos.x + pPiece[i].size.x / 3 > Mouse.PosX &&
+					if (pPiece[i].pos.y - PUZZLE_HEIGHT / 3 < -Mouse.PosY &&
+						pPiece[i].pos.y + PUZZLE_HEIGHT / 3 > -Mouse.PosY &&
+						pPiece[i].pos.x - PUZZLE_WIDHT / 3 <Mouse.PosX &&
+						pPiece[i].pos.x + PUZZLE_WIDHT / 3 > Mouse.PosX &&
 						!oneFlag)
 					{
 						//プレーヤーが持ったピースの中にいたら
-						if (pPiece[i].pos.y - pPiece[i].size.y / 2 < pPlayer->Position.y &&
-							pPiece[i].pos.y + pPiece[i].size.y / 2 > pPlayer->Position.y &&
-							pPiece[i].pos.x - pPiece[i].size.x / 2 < pPlayer->Position.x &&
-							pPiece[i].pos.x + pPiece[i].size.x / 2 > pPlayer->Position.x
+						if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pPlayer->Position.y &&
+							pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pPlayer->Position.y &&
+							pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pPlayer->Position.x &&
+							pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pPlayer->Position.x
 							)
 						{
 							Mouse.pFlag = true;

@@ -29,6 +29,8 @@
 #include"scene.h"
 #include "sound.h"
 #include "fade.h"
+#include"camera.h"
+#include"noizu.h"
 
 
 //*****************************************************************************
@@ -239,7 +241,6 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	// xinputの入力処理の初期化
 	Mouse_Initialize(hWnd);
 	Keyboard_Initialize();
-
 	//InitGame();
 	InitScene(SCENE::SCENE_TITLE);
 	//InitScene(SCENE_RESULT);
@@ -291,6 +292,7 @@ void Draw(void)
 {
 	// バックバッファクリア
 	Clear();
+
 
 	// 2D描画なので深度無効
 	SetDepthEnable(false);
