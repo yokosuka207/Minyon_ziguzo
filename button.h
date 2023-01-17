@@ -14,6 +14,8 @@ Update:
 
 #include "main.h"
 
+#define BUTTON_MAX (10)
+
 enum class BUTTON_TYPE
 {
 	TYPE_NORMAL = 0,					// ‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢
