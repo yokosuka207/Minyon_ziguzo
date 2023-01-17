@@ -104,14 +104,14 @@ void UpdateCursor()
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 	SWITCH* pSwitch = GetSwitch();
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
-	g_Cursor.useFlag = Mouse_IsLeftDown();
+	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	g_Cursor.pos.x = GetXMousePosX();
 	g_Cursor.pos.y = GetXMousePosY();
-	g_Cursor.oldPos.x = g_Cursor.pos.x -= SCREEN_WIDTH / 2;
+	//g_Cursor.oldPos.x = g_Cursor.pos.x -= SCREEN_WIDTH / 2;
 	//g_Cursor.pos.y = -g_Cursor.pos.y + SCREEN_HEIGHT / 2;
 
-	if (g_Cursor.useFlag) {
+	if (Mouse_IsLeftDown()) {
 		g_Cursor.oldPos = g_Cursor.pos;
 		//[----------移動----------
 		if (GetThumbRightX(0) < -0.2f || GetThumbRightX(0) > 0.2f) {				// 右スティック	左右
@@ -131,20 +131,20 @@ void UpdateCursor()
 
 		//[----------壁判定 (壁の上下左右)----------
 		// 上下
-		//if (g_Cursor.pos.y - g_Cursor.size.y / 2 < SCREEN_LIMIT_UP ||
-		//	g_Cursor.pos.y + g_Cursor.size.y / 2 > SCREEN_LIMIT_DOWN) 
-		//{
-		//	g_Cursor.pos.y = g_Cursor.oldPos.y;
-		//}
-		//// 左右
-		//if(	g_Cursor.pos.x - g_Cursor.size.x / 2 < SCREEN_LIMIT_LEFT ||
-		//	g_Cursor.pos.x + g_Cursor.size.x / 2 > SCREEN_LIMIT_RIGHT) 
-		//{
-		//	g_Cursor.pos.x = g_Cursor.oldPos.x;
-		//}
+		if (g_Cursor.pos.y - g_Cursor.size.y / 2 < SCREEN_LIMIT_UP ||
+			g_Cursor.pos.y + g_Cursor.size.y / 2 > SCREEN_LIMIT_DOWN) 
+		{
+			g_Cursor.pos.y = g_Cursor.oldPos.y;
+		}
+		// 左右
+		if(	g_Cursor.pos.x - g_Cursor.size.x / 2 < SCREEN_LIMIT_LEFT ||
+			g_Cursor.pos.x + g_Cursor.size.x / 2 > SCREEN_LIMIT_RIGHT) 
+		{
+			g_Cursor.pos.x = g_Cursor.oldPos.x;
+		}
 		//-----------------------------------------]
 
-		if (g_Cursor.useFlag)
+		if (Mouse_IsLeftDown())
 		{
 
 			for (int i = 0; i < PUZZLE_MAX; i++)
@@ -358,7 +358,7 @@ void UpdateCursor()
 		}
 
 	}
-	if (!g_Cursor.useFlag)
+	if (!Mouse_IsLeftDown())
 	{
 		if (g_CursorIndex != -1)
 		{

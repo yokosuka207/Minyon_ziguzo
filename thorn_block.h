@@ -18,8 +18,8 @@
 
 
 #define	THORN_BLOCK_MAX (20)
-#define THORN_BLOCK_H		25	//ブロックの縦サイズ
-#define THORN_BLOCK_W		25	//ブロックの横サイズ
+#define THORN_BLOCK_H		20	//ブロックの縦サイズ
+#define THORN_BLOCK_W		20	//ブロックの横サイズ
 
 struct THORNBLOCK
 {
