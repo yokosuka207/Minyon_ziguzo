@@ -83,6 +83,7 @@ void UpdateFade() {
 			default:
 				break;
 			}
+			g_FadeParam.FadeFlag = false;
 		}
 	}
 
@@ -133,7 +134,7 @@ void UpdateFade() {
 			default:
 				break;
 			}
-
+			g_FadeParam.FadeFlag = false;
 		}
 	}
 	if (g_FadeParam.state == FADE::FADE_ALPHA_IN) {
