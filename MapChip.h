@@ -27,6 +27,7 @@
 #define BLOCK_CHIP_DIRECTION (4)//チップの回転4方向分
 
 #define PUZZLE_SIZE (BLOCK_CHIP_ARRAY * BLOCK_CHIP_SIZE)	//16 * 15 (180 + 60) 
+#define PUZZLE_DRAW_SIZE (220)	// パズルの表示サイズ
 #define PIECE_SIZE (180)
 #define INVENTORY_PUZZLE_SIZE (BLOCK_CHIP_ARRAY * 6.0f)	//16 * 15 (180 + 60) 
 
@@ -51,8 +52,8 @@ enum class MAPCHIP_TYPE{
 	TYPE_SWITCHWALL3,	//14	Switch壁3
 	TYPE_SWITCHWALL4,	//15	Switch壁4
 	TYPE_SHEET,			//16	透ける床
-	TYPE_BROKEN,		//17	壊れる床
-	TYPE_HIGHBROKEN,	//18	ジャンプで壊れる床
+	TYPE_BROKEN,		//17	ジャンプで壊すブロック
+	TYPE_HIGHBROKEN,	//18	着地で壊れる床
 	TYPE_MIRROR,		//19	鏡
 	TYPE_SPWANPOINT,	//20	スポーンポイント
 	TYPE_MOVEBLOCK,		//21	動くブロック

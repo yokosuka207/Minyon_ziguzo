@@ -33,7 +33,7 @@ HRESULT BgInit()
 	}
 	Bg = new BG;	//動的インスタンス化
 	Bg->Position = D3DXVECTOR3(0.0f, 0.0f, 0);
-	Bg->Size = D3DXVECTOR2(SCREEN_WIDTH*2, SCREEN_HEIGHT*2);
+	Bg->Size = D3DXVECTOR2(SCREEN_WIDTH-100, SCREEN_HEIGHT-100);
 	Bg->Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	Bg->Rotation = 0.0f;
 
@@ -78,7 +78,7 @@ void BgDraw()
 		D3DXCOLOR	col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f);
 		SpriteDrawColorRotation(
 			Bg->Position.x, Bg->Position.y,0.5f, Bg->Size.x, Bg->Size.y
-			, Bg->Rotation, Bg->Color, 0, 1.0f, 1.0f, 1);
+			, Bg->Rotation, Bg->Color, 0, 1.0f, -1.0f, 1);
 	}
 
 }

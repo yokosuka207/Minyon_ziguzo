@@ -128,7 +128,7 @@ void UpdatePlayer()
 			if (GetThumbLeftX(0) > 0.3f ||					// GamePad	右スティック	右
 				Keyboard_IsKeyDown(KK_RIGHT))				// Keyboard	右
 			{//押されているときの処理
-				g_Player.sp.x = 1.0f;
+				g_Player.sp.x = 1.3f;
 				g_Player.PaternNo -= 0.25f;
 
 				// 向きを変える
@@ -138,7 +138,7 @@ void UpdatePlayer()
 			else if (GetThumbLeftX(0) < -0.3f ||			// GamePad	右スティック	左
 				Keyboard_IsKeyDown(KK_LEFT))				// Keyboard	左
 			{//押されているときの処理
-				g_Player.sp.x = -1.0f;
+				g_Player.sp.x = -1.3f;
 				g_Player.PaternNo += 0.25f;
 
 				// 向きを変える

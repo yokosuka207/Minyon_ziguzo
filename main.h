@@ -45,4 +45,4 @@
 //*****************************************************************************
 long GetMousePosX(void);
 long GetMousePosY(void);
-
+int Irand(int max);

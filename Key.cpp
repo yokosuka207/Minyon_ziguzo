@@ -27,7 +27,7 @@
 static KEY g_Key[KEY_MAX];
 static ID3D11ShaderResourceView	*g_textureKey;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
 
-static char* g_TextureNameKey = (char*)"data\\texture\\key-1.png";
+static char* g_TextureNameKey = (char*)"data\\texture\\Œ®.png";
 
 
 

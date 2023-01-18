@@ -23,15 +23,16 @@
 //#include"explosion.h"
 //#include"score.h"
 //#include"life.h"
-#include"sprite.h"
-#include"texture.h"
-#include"game.h"
-#include"scene.h"
+#include "sprite.h"
+#include "texture.h"
+#include "game.h"
+#include "scene.h"
 #include "sound.h"
 #include "fade.h"
-#include"camera.h"
-#include"noizu.h"
-
+#include "camera.h"
+#include "noizu.h"
+#include <iostream>
+#include <random>
 
 //*****************************************************************************
 // ƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒŠƒ“ƒN
@@ -314,4 +315,10 @@ long GetMousePosY(void)
 	return g_MouseY;
 }
 
+int Irand(int max) {
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<> dist(0, max);
 
+	return dist(mt);
+}

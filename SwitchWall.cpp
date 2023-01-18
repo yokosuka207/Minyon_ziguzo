@@ -55,7 +55,7 @@ void DrawSwitchWall() {
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SwitchWallTextureNo));
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
 		for (int j = 0; j < g_SwitchWall[i].WallMax; j++) {
-			if (g_SwitchWall[i].UseFlag) {
+			if (g_SwitchWall[i + j].UseFlag) {
 				g_SwitchWall[i + j].PaternNo = j;
 
 				SpriteDrawColorRotation(
