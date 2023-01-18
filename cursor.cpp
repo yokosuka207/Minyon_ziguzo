@@ -26,6 +26,7 @@
 #include"spawnpoint.h"
 #include "switch.h"
 #include "SwitchWall.h"
+#include"warp.h"
 
 //--------------------------------------------------
 // マクロ定義
@@ -104,6 +105,7 @@ void UpdateCursor()
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 	SWITCH* pSwitch = GetSwitch();
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
+	WARP* pWarp = GetWarp();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	g_Cursor.pos.x = GetXMousePosX();
@@ -333,6 +335,17 @@ void UpdateCursor()
 
 							}
 						}
+						for (int i = 0; i < WARP_MAX; i++)
+						{//ワープ
+							if (pWarp[i].UseFlag)
+							{
+								if (pWarp[i].PieceIndex == NoIndex)
+								{
+									pWarp[i].Position += temp;
+								}
+
+							}
+						}
 
 						if (!g_Cursor.pFlag)
 						{
@@ -346,6 +359,7 @@ void UpdateCursor()
 						else
 						{
 							pPlayer->Position += temp;
+							pPlayer->oldpos = pPlayer->Position;
 						}
 					}
 
