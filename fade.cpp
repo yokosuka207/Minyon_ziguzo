@@ -56,11 +56,11 @@ void UpdateFade() {
 			case SCENE::SCENE_NONE:
 				break;
 			case SCENE::SCENE_TITLE:
-				SetScene(SCENE::SCENE_TUTORIAL);
-				break;
-			case SCENE::SCENE_TUTORIAL:
 				SetScene(SCENE::SCENE_DATASELECT);
 				break;
+			//case SCENE::SCENE_TUTORIAL:
+			//	SetScene(SCENE::SCENE_DATASELECT);
+			//	break;
 			case SCENE::SCENE_DATASELECT:
 				SetScene(SCENE::SCENE_STAGESELECT);
 				break;
@@ -106,11 +106,11 @@ void UpdateFade() {
 			case SCENE::SCENE_NONE:
 				break;
 			case SCENE::SCENE_TITLE:
-				SetScene(SCENE::SCENE_TUTORIAL);
-				break;
-			case SCENE::SCENE_TUTORIAL:
 				SetScene(SCENE::SCENE_DATASELECT);
 				break;
+			//case SCENE::SCENE_TUTORIAL:
+			//	SetScene(SCENE::SCENE_DATASELECT);
+			//	break;
 			case SCENE::SCENE_DATASELECT:
 				SetScene(SCENE::SCENE_STAGESELECT);
 				break;
