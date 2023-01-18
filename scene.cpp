@@ -31,7 +31,7 @@ static Save g_SaveScene;				// セーブクラスのインスタンス
 // サウンド関連
 //===================================================================
 static int g_TitleSoundNo = 0;
-static char TitleSoundName[] = "data\\SoundData\\BGM\\タイトル.wav";
+static char TitleSoundName[] = "data\\SoundData\\BGM\\タイトル②.wav";
 
 static int g_StageSelectSoundNo = 0;
 static char* StageSelectName[4] = {
@@ -40,6 +40,9 @@ static char* StageSelectName[4] = {
 	(char*)"data\\SoundData\\BGM\\ステージセレクト③.wav",
 	(char*)"data\\SoundData\\BGM\\ステージセレクト④.wav",
 };
+static int g_GameSoundNo = 0;
+static char GameSoundName[] = "data\\SoundData\\BGM\\環境音.wav";
+
 static int g_ResultSoundNo = 0;
 //static char ResultSoundName[] = "data\\SoundData\\BGM\\.wav";
 
@@ -71,13 +74,16 @@ void InitScene(SCENE no){
 		InitStageSelect();
 		g_StageSelectSoundNo = LoadSound(StageSelectName[Irand(3)]);
 		PlaySound(g_StageSelectSoundNo, -1);
-		SetVolume(g_StageSelectSoundNo, 1.0f);
+		SetVolume(g_StageSelectSoundNo, 0.5f);
 		//SetStageSelect();
 		break;
 	case SCENE::SCENE_GAME :
 		pFade->ExceptFlag = false;
 		pTime->StartTime();
 		InitGame();
+		g_GameSoundNo = LoadSound(GameSoundName);
+		PlaySound(g_GameSoundNo, -1);
+		SetVolume(g_GameSoundNo, 1.0f);
 		break;
 	case SCENE::SCENE_RESULT:
 		InitResult();
@@ -159,16 +165,23 @@ void UpdateScene(){
 		UpdateStageSelect();
 		UpdateNoizu();
 		if (pFade->FadeFlag) {
-			SetVolume(g_StageSelectSoundNo, 1.0f - g_SoundFadeOutVolume);
-			g_SoundFadeOutVolume += SOUND_FADE_OUT_VOLUME;
-			if (g_SoundFadeOutVolume > 1.0f) {
-				g_SoundFadeOutVolume = 1.0f;
+			SetVolume(g_StageSelectSoundNo, 0.5f - g_SoundFadeOutVolume);
+			g_SoundFadeOutVolume += SOUND_FADE_OUT_VOLUME / 2;
+			if (g_SoundFadeOutVolume > 0.5f) {
+				g_SoundFadeOutVolume = 0.5f;
 			}
 		}
 
 		break;
 	case SCENE::SCENE_GAME:
 		UpdateGame();
+		if (pFade->FadeFlag) {
+			SetVolume(g_GameSoundNo, 1.0f - g_SoundFadeOutVolume);
+			g_SoundFadeOutVolume += SOUND_FADE_OUT_VOLUME;
+			if (g_SoundFadeOutVolume > 1.0f) {
+				g_SoundFadeOutVolume = 1.0f;
+			}
+		}
 		break;
 	case SCENE::SCENE_RESULT:
 		UpdateResult();
