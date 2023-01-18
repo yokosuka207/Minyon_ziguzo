@@ -61,6 +61,7 @@ HRESULT InitWarp()
 		
 		//使用フラグ
 		g_Warp[i].UseFlag = false;
+		g_Warp[i].InventoryFlag = false;
 	}
 	return S_OK;
 }
@@ -123,7 +124,7 @@ void DrawWarp()
 //ピースのセットワープ
 //引数：ポジション、サイズ、ピースの番号
 //--------------------------------------------------
-void cipSetWarp(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index)
+void cipSetWarp(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index,bool in)
 {
 	for (int i = 0; i < WARP_MAX; i++)
 	{
@@ -134,6 +135,7 @@ void cipSetWarp(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index)
 			g_Warp[i].Size = size;
 			g_Warp[i].PieceIndex = index;
 			g_Warp[i].UseFlag = true;
+			g_Warp[i].InventoryFlag = in;
 			break;
 
 		}
@@ -159,6 +161,18 @@ int SetWarp(D3DXVECTOR2 pos, D3DXVECTOR2 size)
 		}
 
 
+	}
+
+}
+
+void DeleteWarp(int PieceNo)
+{
+	for (int i = 0; i < WARP_MAX; i++) {
+		if (g_Warp[i].UseFlag) {
+			if (g_Warp[i].PieceIndex == PieceNo) {
+				g_Warp[i].UseFlag = false;
+			}
+		}
 	}
 
 }

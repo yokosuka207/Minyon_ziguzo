@@ -19,7 +19,7 @@
 static ENEMY g_Enemy[ENEMY_MAX];
 
 static ID3D11ShaderResourceView* g_EnemyTexture;	//画像一枚で一つの変数が必要
-static char* g_EnemyTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
+static char* g_EnemyTextureName = (char*)"data\\texture\\敵.png";	//テクスチャファイルパス
 
 BULLET* bullet = GetBullet();
 

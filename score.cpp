@@ -50,7 +50,7 @@ void Score::InitScore() {
 		g_AnimeParam[i].num = 0;
 		g_AnimeParam[i].index = -1;
 	}
-	char filename[] = "data\\SoundData\\meka_ge_type_chin_kaigyo01.wav";
+	char filename[] = "data\\SoundData\\SE\\meka_ge_type_chin_kaigyo01.wav";
 	g_ScoreSoundNo = LoadSound(filename);
 }
 void Score::UninitScore() {
@@ -124,13 +124,13 @@ int Score::CulcScore() {
 
 	switch (g_ScoreParam.rank) {
 	case (SCORE_RANK::RANK_S):
-		m_score = m_TimeScore * 10;
+		m_score = m_TimeScore * 999;
 		break;
 	case (SCORE_RANK::RANK_A):
-		m_score = m_TimeScore * 5;
+		m_score = m_TimeScore * 555;
 		break;
 	case (SCORE_RANK::RANK_B):
-		m_score = m_TimeScore;
+		m_score = m_TimeScore * 222;
 		break;
 	case (SCORE_RANK::RANK_C):
 		m_score = m_TimeScore / 2;
@@ -143,6 +143,18 @@ int Score::CulcScore() {
 void Score::RankScore(int score) {
 	switch (StageNo) {
 	case 0:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 1:
 		if (score < 30 && pResult[0].type == WIN) {
@@ -159,42 +171,284 @@ void Score::RankScore(int score) {
 		}
 		break;
 	case 2:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 3:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 4:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 5:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 6:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 7:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 8:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 9:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 10:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 11:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 12:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 13:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 14:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 15:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 16:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 17:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 18:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 19:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	case 20:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
+		break;
+	case 21:
+		if (score < 30 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		}
+		else if (score < 45 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		}
+		else if (score < 60 && pResult[0].type == WIN) {
+			g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		}
+		else {
+			g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		}
 		break;
 	default:
 		break;

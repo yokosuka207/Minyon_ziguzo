@@ -128,7 +128,7 @@ void UninitDoppelganger()
 void UpdateDoppelganger()
 {	
 	MOUSE* pMouse = GetMouse();
-	if (!pMouse->UseFlag)
+	if (!Mouse_IsLeftDown())
 	{
 		PLAYER* pPlayer = GetPlayer();
 		//-------------------------------------------------

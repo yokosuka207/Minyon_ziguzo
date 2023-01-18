@@ -60,7 +60,9 @@ void UninitBlock()
 
 }
 
-void UpdateBlock(){}
+void UpdateBlock(){
+
+}
 
 void DrawBlock()
 {

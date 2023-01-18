@@ -14,14 +14,14 @@
 #include "sprite.h"
 #include "player.h"
 
-#define SWITCH_UV_W (1.0f / 4.0f)
-#define SWITCH_UV_H (1.0f / 4.0f)
-#define SWITCH_NUMPATERN (4)
+#define SWITCH_UV_W (1.0f / 2.0f)
+#define SWITCH_UV_H (1.0f / 1.0f)
+#define SWITCH_NUMPATERN (2)
 
 SWITCH g_Switch[SWITCH_MAX];
 
 static ID3D11ShaderResourceView* g_SwitchTexture;	//画像一枚で一つの変数が必要
-static char* g_SwitchTextureName = (char*)"data\\texture\\button_press.png";	//テクスチャファイルパス
+static char* g_SwitchTextureName = (char*)"data\\texture\\ボタン.png";	//テクスチャファイルパス
 static int g_SwitchTextureNo = 0;
 
 HRESULT InitSwitch() {
@@ -47,8 +47,8 @@ void UninitSwitch() {
 void UpdateSwitch() {
 	for (int i = 0; i < SWITCH_MAX; i++) {
 		if (g_Switch[i].UseFlag) {
-			if (g_Switch[i].PaternNo > 15) {
-				g_Switch[i].PaternNo -= 15;
+			if (g_Switch[i].PaternNo > 1) {
+				g_Switch[i].PaternNo -= 1;
 			}
 		}
 	}
