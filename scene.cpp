@@ -14,7 +14,7 @@
 #include "noizu.h"
 #include "sound.h"
 
-#define SOUND_FADE_OUT_SPEED (0.02f)
+#define SOUND_FADE_OUT_VOLUME (0.02f)
 
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
@@ -41,8 +41,9 @@ static char* StageSelectName[4] = {
 	(char*)"data\\SoundData\\BGM\\ステージセレクト④.wav",
 };
 static int g_ResultSoundNo = 0;
+//static char ResultSoundName[] = "data\\SoundData\\BGM\\.wav";
 
-static float g_SoundFadeOutSpeed = 0.0f;
+static float g_SoundFadeOutVolume = 0.0f;
 
 void InitScene(SCENE no){
 	g_sceneIndex = g_sceneNextIndex = no;
@@ -53,8 +54,8 @@ void InitScene(SCENE no){
 		InitTitle();
 		InitNoizu();
 		g_TitleSoundNo = LoadSound(TitleSoundName);
-		PlaySound(g_TitleSoundNo, -1);
-		SetVolume(g_TitleSoundNo, 1.0f);
+		PlaySound(g_TitleSoundNo, -1);	//-1はloop
+		SetVolume(g_TitleSoundNo, 1.0f);//通常はvolume 1.0f
 		break;
 	case SCENE::SCENE_TUTORIAL:
 		InitTutorial();
@@ -105,13 +106,13 @@ void UninitScene(){
 		g_SaveScene.Uninit();
 		UninitNoizu();
 		StopSound(g_TitleSoundNo);
-		g_SoundFadeOutSpeed = 0.0f;
+		g_SoundFadeOutVolume = 0.0f;
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UninitStageSelect();
 		UninitNoizu();
 		StopSound(g_StageSelectSoundNo);
-		g_SoundFadeOutSpeed = 0.0f;
+		g_SoundFadeOutVolume = 0.0f;
 		break;
 	case SCENE::SCENE_GAME:
 		Elapsedtime = pTime->SumTime();
@@ -146,10 +147,10 @@ void UpdateScene(){
 		g_SaveScene.Update();
 		UpdateNoizu();
 		if (pFade->FadeFlag) {
-			SetVolume(g_TitleSoundNo, 1.0f - g_SoundFadeOutSpeed);
-			g_SoundFadeOutSpeed += SOUND_FADE_OUT_SPEED;
-			if (g_SoundFadeOutSpeed > 1.0f) {
-				g_SoundFadeOutSpeed = 1.0f;
+			SetVolume(g_TitleSoundNo, 1.0f - g_SoundFadeOutVolume);
+			g_SoundFadeOutVolume += SOUND_FADE_OUT_VOLUME;
+			if (g_SoundFadeOutVolume > 1.0f) {
+				g_SoundFadeOutVolume = 1.0f;
 			}
 		}
 
@@ -158,10 +159,10 @@ void UpdateScene(){
 		UpdateStageSelect();
 		UpdateNoizu();
 		if (pFade->FadeFlag) {
-			SetVolume(g_StageSelectSoundNo, 1.0f - g_SoundFadeOutSpeed);
-			g_SoundFadeOutSpeed += SOUND_FADE_OUT_SPEED;
-			if (g_SoundFadeOutSpeed > 1.0f) {
-				g_SoundFadeOutSpeed = 1.0f;
+			SetVolume(g_StageSelectSoundNo, 1.0f - g_SoundFadeOutVolume);
+			g_SoundFadeOutVolume += SOUND_FADE_OUT_VOLUME;
+			if (g_SoundFadeOutVolume > 1.0f) {
+				g_SoundFadeOutVolume = 1.0f;
 			}
 		}
 
