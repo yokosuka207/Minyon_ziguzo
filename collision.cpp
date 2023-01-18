@@ -244,8 +244,7 @@ void UpdateCollision(){
 				}
 			}
 			//ƒvƒŒƒCƒ„[‚ª—Ž‰ºŽ€‚µ‚½‚ç
-			if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT)
-			{
+			if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT){
 				pResult[0].type = LOSE;
 				pTime->EndTime();
 				pTimeParam->EndFlag = true;
