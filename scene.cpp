@@ -41,7 +41,7 @@ static int g_StageSelectSoundNo = 0;
 //	(char*)"data\\SoundData\\BGM\\ステージセレクト④.wav",
 //};
 //fuck
-static char* StageSelectName = (char*)"data\\SoundData\\BGM\\ステージセレクト④.wav";
+static char StageSelectName[] = "data\\SoundData\\BGM\\ステージセレクト④.wav";
 static int g_GameSoundNo = 0;
 static char GameSoundName[] = "data\\SoundData\\BGM\\環境音.wav";
 
@@ -168,10 +168,10 @@ void UpdateScene(){
 		UpdateStageSelect();
 		UpdateNoizu();
 		if (pFade->FadeFlag) {
-			SetVolume(g_StageSelectSoundNo, 0.5f - g_SoundFadeOutVolume);
+			SetVolume(g_StageSelectSoundNo, 0.4f - g_SoundFadeOutVolume);
 			g_SoundFadeOutVolume += SOUND_FADE_OUT_VOLUME / 2;
-			if (g_SoundFadeOutVolume > 0.5f) {
-				g_SoundFadeOutVolume = 0.5f;
+			if (g_SoundFadeOutVolume > 0.4f) {
+				g_SoundFadeOutVolume = 0.4f;
 			}
 		}
 
