@@ -18,7 +18,7 @@
 //グローバル変数
 //======================
 static	ID3D11ShaderResourceView* g_ResultTexture = NULL;//テクスチャ情報
-static	char* g_ResultTextureName = (char*)"data\\texture\\リザルト.jpg";
+static	char* g_ResultTextureName = (char*)"data\\texture\\セーブ画面背景.png";
 
 static	ID3D11ShaderResourceView* g_ResultGameEndTexture = NULL;//テクスチャ情報
 static	char* g_ResultGameEndTextureName = (char*)"data\\texture\\GameEnd_haikei.jpg";

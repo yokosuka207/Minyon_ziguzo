@@ -161,6 +161,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 	g_PieceMapChip[Pin].size = D3DXVECTOR2(PUZZLE_DRAW_SIZE, PUZZLE_DRAW_SIZE);
 
 	int brokenIndex = 0;	//壊れるブロックの個数
+	int HighbrokenIndex = 0;	//高い壊れるブロックの個数
 	//p=ブロック最大数
 		//i=y方向
 	for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
@@ -227,7 +228,9 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				brokenIndex++;
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18　ジャンプで壊れるブロック
-				SetHigh(position, DrawSize, no);
+				SetHigh(position, DrawSize, no,HighbrokenIndex);
+				HighbrokenIndex++;
+
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_MIRROR):	//19　鏡
 				//Set
@@ -405,6 +408,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 		}
 	}
 	int brokenIndex = 0;
+	int HighbrokenIndex = 0;
 	//p=ブロック最大数
 		//i=y方向
 	for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
@@ -470,7 +474,8 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				brokenIndex++;
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18　着地で壊れる床
-				SetHigh(position, DrawSize, no);
+				SetHigh(position, DrawSize, no, HighbrokenIndex);
+				HighbrokenIndex++;
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_MIRROR):	//19　鏡
 				//Set

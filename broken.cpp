@@ -37,13 +37,14 @@ BROKEN InitData[]=
 {
 	{true,D3DXVECTOR2(BROKEN_SIZE_W,BROKEN_SIZE_H),D3DXVECTOR2(400,100),D3DXVECTOR2(0,2),0,0,D3DXCOLOR(1,0,0,1),1,8,16,8,60 * 0},
 };
-
+static int BrokenIndex;
 
 //=============================================================================
 //èâä˙âªèàóù
 //=============================================================================
 HRESULT InitBroken()
 {
+	BrokenIndex = 0;
 	srand(time(NULL));
 
 	for (int i = 0; i < BROKEN_MAX; i++)
@@ -138,13 +139,18 @@ void SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index, int number){
 
 	if (!MatchFlag)
 	{
-		for (int i = 0; i < BROKEN_MAX; i++) {
+		for (int i = BrokenIndex; i < BROKEN_MAX; i++) {
 			if (!g_Broken[i].UseFlag) {
 				g_Broken[i].Postion = Pos;
 				g_Broken[i].Size = s;
 				g_Broken[i].index = index;
 				g_Broken[i].Number = number;
 				g_Broken[i].UseFlag = true;
+				BrokenIndex++;
+				if (BrokenIndex == BROKEN_MAX)
+				{
+					BrokenIndex = 0;
+				}
 				break;
 			}
 		}
