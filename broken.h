@@ -15,7 +15,7 @@
 
 #define BROKEN_SIZE_W (50)
 #define BROKEN_SIZE_H (10)
-#define BROKEN_MAX (10)
+#define BROKEN_MAX (20)
 #define BROKEN_SPEED (2.0f)
 
 struct BROKEN

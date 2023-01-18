@@ -71,6 +71,9 @@ void Draw(void);
 // グローバル変数:
 //*****************************************************************************
 
+static int g_NoiseSoundNo = 0;
+static char NoiseSoundName[] = "data\\SoundData\\BGM\\ノイズ.wav";
+
 long g_MouseX = 0;
 long g_MouseY = 0;
 
@@ -250,6 +253,9 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	// 背面ポリゴンをカリング
 	SetCullingMode(CULL_MODE_NONE);
 
+	g_NoiseSoundNo = LoadSound(NoiseSoundName);
+	PlaySound(g_NoiseSoundNo, -1);
+	SetVolume(g_NoiseSoundNo, 0.01f);
 
 	return S_OK;
 }
@@ -260,7 +266,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 //=============================================================================
 void Uninit(void)
 {
-
+	StopSoundAll();
 	UninitScene();
 
 	Uninittexture();

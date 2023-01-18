@@ -152,9 +152,10 @@ void UpdateCollision(){
 		// ピースとインベントリ範囲の当たり判定
 		for (int i = 0; i < PUZZLE_MAX; i++) {
 			// ピースをインベントリにしまう
-			if (pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X)) {
+			if (!pPiece[i].InventoryFlag&&pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X*2)) {
 				DeleteMapChip(i);
 				SetInventory(pPiece[i].no);
+				break;
 			}
 		}
 
@@ -239,8 +240,7 @@ void UpdateCollision(){
 				}
 			}
 			//プレイヤーが落下死したら
-			if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT)
-			{
+			if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT){
 				pResult[0].type = LOSE;
 				pTime->EndTime();
 				pTimeParam->EndFlag = true;
@@ -1956,6 +1956,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	SWITCH* pSwitch = GetSwitch();
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
 	WARP* pWarp = GetWarp();
+	BROKEN* pBroken = GetBroken();
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
@@ -1965,6 +1966,21 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 			{
 
 				pBlock[i].Position += num;
+
+			}
+
+		}
+
+	}
+	for (int i = 0; i < BROKEN_MAX; i++)
+	{
+		if (pBroken[i].UseFlag)
+		{
+
+			if (pBroken[i].index == pinNo)
+			{
+
+				pBroken[i].Postion += num;
 
 			}
 

@@ -122,20 +122,20 @@ void UpdateInventory()
 			}
 
 			// 左に置くバージョン
-			float bgmax_x = -SCREEN_WIDTH/2 +INVENTORYBG_POS_X + INVENTORYBG_SIZE_X*2;
+			float bgmax_x = -INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X * 2.5f;
 
 			// 入力(マウス左Press)
 			if (Mouse_IsLeftDown()) {
 				//----------Trigger挙動----------
 				if (!g_Inventory[i].IsCatch) {
 					// マウスと所持パズルが当たっていたら
-					float x = MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x/2;
-					float y = MousePos.y - SCREEN_HEIGHT / 2 + g_Inventory[i].size.y/2;
-					if (MousePos.y < 400) {
-						y = y * -1;
-						y += 30.0f;
-					}
-					if (min.x < (MousePos.x - SCREEN_WIDTH / 2+g_Inventory[i].size.x) && max.x >(MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x) && min.y < (y) && max.y >(y)) {
+					float x = MousePos.x - SCREEN_WIDTH / 2 ;
+					float y = -MousePos.y + SCREEN_HEIGHT / 2;
+					//if (MousePos.y < 400) {
+					//	y = y * -1;
+					//	y += 30.0f;
+					//}
+					if (min.x < (x) && max.x >(x) && min.y < (y) && max.y >(y)) {
 						// 所持ピースを全部調べて誰もつかまれていなかったら自分がつかまる
 						for (int j = 0; j < INVENTORY_MAX; j++) {
 							if (g_Inventory[j].IsCatch == true) {
@@ -154,9 +154,9 @@ void UpdateInventory()
 				// つかまれていたら
 				if (g_Inventory[i].IsCatch) {
 					// パズルをマウスの位置に移動
-					float x = MousePos.x - SCREEN_WIDTH / 2 + g_Inventory[i].size.x/2;
-					float y = MousePos.y - SCREEN_HEIGHT / 2 + g_Inventory[i].size.y;
-					y = y * -1;
+					float x = MousePos.x - SCREEN_WIDTH / 2 ;
+					float y = -MousePos.y + SCREEN_HEIGHT / 2;
+					//y = y * -1;
 
 					g_Inventory[i].pos.x = x;
 					g_Inventory[i].pos.y = y;
