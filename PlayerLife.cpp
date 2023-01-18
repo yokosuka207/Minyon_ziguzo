@@ -76,14 +76,15 @@ void UpdatePlayerLife()
 void DrawPlayerLife()
 {
 
-	for (int i = 0; i < LIFE_MAX; i++) 
+
+	for (int i = 0; i < LIFE_MAX; i++)
 	{
-		if(gPlayerLife[i].bUse)
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(gPlayerLifeNo));
-
-		if (!gPlayerLife[i].bUse)
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(gPlayerLifeNo2));
-
+		if (gPlayerLife[i].bUse){
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(gPlayerLifeNo));
+		}
+		if (!gPlayerLife[i].bUse){
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(gPlayerLifeNo2));
+		}
 
 		SpriteDrawColorRotation(gPlayerLife[i].pos.x, gPlayerLife[i].pos.y + 20.0f, 0.0f,
 			gPlayerLife[i].size.x, gPlayerLife[i].size.y, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),
