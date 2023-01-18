@@ -77,6 +77,7 @@ void Score::DrawScore() {
 			if (!g_AnimeParam[0].AnimeFlag && frame == 10) {
 				SetAnimeParam(score / pow(10, 0));
 				PlaySound(g_ScoreSoundNo, 0);				//0 = àÍâÒÇæÇØçƒê∂ sound.héQè∆
+				SetVolume(g_ScoreSoundNo, 0.5f);
 			}
 			if (!g_AnimeParam[1].AnimeFlag && frame == 30) {
 				SetAnimeParam(score / pow(10, 1));
