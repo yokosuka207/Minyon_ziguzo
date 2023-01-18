@@ -28,7 +28,7 @@ static FALLBLOCK g_FallBlock[FALLBLOCK_MAX];
 
 static ID3D11ShaderResourceView	*g_textureBroken;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
 
-static char* g_TextureNameBroken = (char*)"data\\texture\\green.png";
+static char* g_TextureNameBroken = (char*)"data\\texture\\fall_block.png";
 
 
 HRESULT InitFallBlock()

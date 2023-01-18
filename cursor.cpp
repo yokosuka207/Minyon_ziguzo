@@ -27,6 +27,7 @@
 #include "switch.h"
 #include "SwitchWall.h"
 #include"warp.h"
+#include"broken.h"
 
 //--------------------------------------------------
 // マクロ定義
@@ -44,7 +45,7 @@
 // グローバル変数
 //--------------------------------------------------
 static CURSOR g_Cursor;
-static char *g_TextureName = (char*)"data\\texture\\cursor.png";
+static char *g_TextureName = (char*)"data\\texture\\cursor_default.png";
 
 static bool oneFlag = false;	//マウスでパズルを一つ持っているか
 static int g_CursorIndex = -1;	//マウスの掴んだパズルの番号入れ
@@ -106,6 +107,7 @@ void UpdateCursor()
 	SWITCH* pSwitch = GetSwitch();
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
 	WARP* pWarp = GetWarp();
+	BROKEN* pBroken = GetBroken();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	g_Cursor.pos.x = GetXMousePosX();
@@ -247,6 +249,18 @@ void UpdateCursor()
 								if (pCipBlock[i].PieceIndex == NoIndex)
 								{
 									pCipBlock[i].Position += temp;
+								}
+
+							}
+
+						}
+						for (int i = 0; i < BROKEN_MAX; i++)
+						{//ブロック動かす
+							if (pBroken[i].UseFlag)
+							{
+								if (pBroken[i].index == NoIndex)
+								{
+									pBroken[i].Postion += temp;
 								}
 
 							}
