@@ -244,8 +244,7 @@ void UpdateCollision(){
 				}
 			}
 			//プレイヤーが落下死したら
-			if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT)
-			{
+			if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT){
 				pResult[0].type = LOSE;
 				pTime->EndTime();
 				pTimeParam->EndFlag = true;
@@ -1962,6 +1961,9 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	SWITCH* pSwitch = GetSwitch();
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
 	WARP* pWarp = GetWarp();
+	BROKEN* pBroken = GetBroken();
+	SHEERFLOORS* pSheerFloors = GetSheerFloors();
+
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
@@ -1977,6 +1979,34 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 		}
 
 	}
+	for (int i = 0; i < BROKEN_MAX; i++)
+	{
+		if (pBroken[i].UseFlag)
+		{
+
+			if (pBroken[i].index == pinNo)
+			{
+
+				pBroken[i].Postion += num;
+
+			}
+
+		}
+
+	}
+	for (int i = 0; i < SHEERFLOORS_NUM; i++)
+	{//ブロック動かす
+		if (pSheerFloors[i].use)
+		{
+			if (pSheerFloors[i].index == pinNo)
+			{
+				pSheerFloors[i].pos += num;
+			}
+
+		}
+
+	}
+
 	for (int i = 0; i < JOINT_MAX; i++)
 	{
 		if (pJoint[i].useFlag)
