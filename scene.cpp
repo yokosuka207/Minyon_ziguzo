@@ -31,15 +31,16 @@ static Save g_SaveScene;				// セーブクラスのインスタンス
 // サウンド関連
 //===================================================================
 static int g_TitleSoundNo = 0;
-static char TitleSoundName[] = "data\\SoundData\\BGM\\タイトル②.wav";
+static char TitleSoundName[] = "data\\SoundData\\BGM\\タイトル.wav";
 
 static int g_StageSelectSoundNo = 0;
-static char* StageSelectName[4] = {
-	(char*)"data\\SoundData\\BGM\\ステージセレクト①.wav",
-	(char*)"data\\SoundData\\BGM\\ステージセレクト②.wav",
-	(char*)"data\\SoundData\\BGM\\ステージセレクト③.wav",
-	(char*)"data\\SoundData\\BGM\\ステージセレクト④.wav",
-};
+//static char* StageSelectName[4] = {
+//	(char*)"data\\SoundData\\BGM\\ステージセレクト①.wav",
+//	(char*)"data\\SoundData\\BGM\\ステージセレクト②.wav",
+//	(char*)"data\\SoundData\\BGM\\ステージセレクト③.wav",
+//	(char*)"data\\SoundData\\BGM\\ステージセレクト④.wav",
+//};
+static char* StageSelectName = (char*)"data\\SoundData\\BGM\\ステージセレクト④.wav";
 static int g_GameSoundNo = 0;
 static char GameSoundName[] = "data\\SoundData\\BGM\\環境音.wav";
 
@@ -72,9 +73,10 @@ void InitScene(SCENE no){
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		InitStageSelect();
-		g_StageSelectSoundNo = LoadSound(StageSelectName[Irand(3)]);
+		//g_StageSelectSoundNo = LoadSound(StageSelectName[Irand(3)]);
+		g_StageSelectSoundNo = LoadSound(StageSelectName);
 		PlaySound(g_StageSelectSoundNo, -1);
-		SetVolume(g_StageSelectSoundNo, 0.5f);
+		SetVolume(g_StageSelectSoundNo, 0.4f);
 		//SetStageSelect();
 		break;
 	case SCENE::SCENE_GAME :
