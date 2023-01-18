@@ -155,10 +155,10 @@ HRESULT InitStageSelect() {
 			g_StageSelectBlack[i].size = D3DXVECTOR2(120.0f, 150.0f);
 			g_StageSelectBlack[i].texno = LoadTexture(g_StageSelect2TextureName);
 			b++;
-			if (i == 1)
+			if (i == 0)
 			{
 				g_StageSelect[i].StageUseFlag = true;
-				//g_StageSelect[i].size = D3DXVECTOR2(120.0f, 150.0f);
+				g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
 
 			}
 

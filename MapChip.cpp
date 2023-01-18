@@ -83,7 +83,7 @@ static char* g_MapChipTextureName[PIECE_TEX_MAX] = {
 static int g_MapChipTextureNo[PIECE_TEX_MAX];
 // ステージ情報が入っているファイルの名前
 static char* g_StageFileName[21] = {
-	(char*)"data/MapData/Stage01.txt",
+	(char*)"data/MapData/map0.txt",
 	(char*)"data/MapData/Stage02.txt",
 	(char*)"data/MapData/Stage03.txt",
 	(char*)"data/MapData/Stage04.txt",
@@ -211,6 +211,7 @@ void DrawMapChip() {
 void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 	g_PieceMapChip[Pin].size = D3DXVECTOR2(PUZZLE_DRAW_SIZE, PUZZLE_DRAW_SIZE);
 
+	int brokenIndex = 0;	//壊れるブロックの個数
 	//p=ブロック最大数
 		//i=y方向
 	for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
@@ -239,7 +240,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetChipPuzzuleChip(position, DrawSize, no + 1);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//6　ワープ
-				SetWarp(position, DrawSize);
+				cipSetWarp(position, DrawSize,no,false);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL) :	//7　ゴール
 				SetGoal(position, DrawSize, no);
@@ -272,7 +273,9 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetSheerFloors(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　着地で壊れる床
-				SetBroken(position, DrawSize, no);
+				
+				SetBroken(position, DrawSize, no,brokenIndex);
+				brokenIndex++;
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18　ジャンプで壊れるブロック
 				SetHigh(position, DrawSize, no);
@@ -413,6 +416,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteSpawnPoint(g_PieceMapChip[PieceNo].no);
 	DeleteDoppelGanger(g_PieceMapChip[PieceNo].no);
 	DeleteEnemy(g_PieceMapChip[PieceNo].no);
+	DeleteWarp(g_PieceMapChip[PieceNo].no);
 
 }
 Piece* GetPiece() {
@@ -456,9 +460,11 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			g_PieceMapChip[p].no = no;
 			g_PieceMapChip[p].InventoryFlag = true;
 			no = p;
+			g_PieceMapChip[p].UseFlag = true;
 			break;
 		}
 	}
+	int brokenIndex = 0;
 	//p=ブロック最大数
 		//i=y方向
 	for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
@@ -487,7 +493,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetChipPuzzuleChip(position, DrawSize, no + 1);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP):	//6　ワープ
-				SetWarp(position, DrawSize);
+				cipSetWarp(position, DrawSize,no,true);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL):	//7　ゴール
 				SetGoal(position, DrawSize, no);
@@ -519,8 +525,9 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
 				SetSheerFloors(position, DrawSize, no);
 				break;
-			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　ジャンプで壊れるブロック
-				SetBroken(position, DrawSize, no);
+			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　着地で壊れる床
+				SetBroken(position, DrawSize, no, brokenIndex);
+				brokenIndex++;
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18　着地で壊れる床
 				SetHigh(position, DrawSize, no);

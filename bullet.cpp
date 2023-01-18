@@ -28,7 +28,7 @@
 //グローバル変数
 //=============================================================================
 static BULLET g_Bullet[BULLET_MAX];
-static char* g_TextureName = (char*)"data\\texture\\ドッペルのたま.png";
+static char* g_TextureName = (char*)"data\\texture\\弾.png";
 
 
 
