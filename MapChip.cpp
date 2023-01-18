@@ -381,6 +381,7 @@ void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
 			g_PieceMapChip[p].pos = pos;
 			g_PieceMapChip[p].no = PieceNo;
 			SetMapChip(pos, PieceNo, p);
+			g_PieceMapChip[p].InventoryFlag = false;
 
 			g_PieceMapChip[p].UseFlag = true;
 			break;
@@ -398,7 +399,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			g_PieceMapChip[p].pos = pos;
 			g_PieceMapChip[p].no = no;
 			g_PieceMapChip[p].InventoryFlag = true;
-			no = p;
+			Pin = p;
 			g_PieceMapChip[p].UseFlag = true;
 			break;
 		}
@@ -414,7 +415,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			D3DXVECTOR2 position = D3DXVECTOR2((pos.x + INVENTORY_PUZZLE_SIZE / 2) - j * 6.0f - 6.0f / 2, (pos.y - INVENTORY_PUZZLE_SIZE / 2) + i * 6.0f + 6.0f / 2);
 			D3DXVECTOR2 DrawSize = D3DXVECTOR2(6.0f, 6.0f);
 
-			switch (g_PieceMapChip[no].chip[g_PieceMapChip[Pin].direction][i][j]) {
+			switch (g_PieceMapChip[Pin].chip[g_PieceMapChip[no].direction][i][j]) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK):	//0				
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH):	//1Å@ì 

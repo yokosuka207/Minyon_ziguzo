@@ -156,9 +156,10 @@ void UpdateCollision(){
 		// ピースとインベントリ範囲の当たり判定
 		for (int i = 0; i < PUZZLE_MAX; i++) {
 			// ピースをインベントリにしまう
-			if (pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X)) {
+			if (!pPiece[i].InventoryFlag&&pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X*2)) {
 				DeleteMapChip(i);
 				SetInventory(pPiece[i].no);
+				break;
 			}
 		}
 
