@@ -83,7 +83,8 @@ static char* g_MapChipTextureName[PIECE_TEX_MAX] = {
 static int g_MapChipTextureNo[PIECE_TEX_MAX];
 // ステージ情報が入っているファイルの名前
 static char* g_StageFileName[21] = {
-	(char*)"data/MapData/map0.txt",
+	//(char*)"data/MapData/map0.txt",			// デバッグ用マップ
+	(char*)"data/MapData/Stage01.txt",
 	(char*)"data/MapData/Stage02.txt",
 	(char*)"data/MapData/Stage03.txt",
 	(char*)"data/MapData/Stage04.txt",
@@ -108,27 +109,27 @@ static char* g_StageFileName[21] = {
 
 // 各ステージ各ピースの情報
 static int g_StagePieceInfo[21][12] = {
-	{  82,  180,   01,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1},			// 21ステージ
-	{  92,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},			// 各ステージ最大ピース数12
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},			
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},			// テクスチャの名前からした値が
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},			//				十と百の位の数字
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},			// 一の位は回転回数
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},			// 				テクスチャを参考に左(反時計)回り
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},				
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},			// UVを反転させたい場合は -(マイナス) にする
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},				
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},									
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},									
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},									
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},									
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},									
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},									
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},									
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},									
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},									
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},									
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},									
+	{  82,  180,   01,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 1		 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
+	{  90,   61,   61,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 2		 ┃・21ステージ									 ┃
+	{  82,   93,  132,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 3		 ┃・各ステージ最大ピース数12					 ┃
+	{  00, -130,  143,   00,    0,    0,    0,    0,    0,    0,    0,    0},	// 4		 ┃・テクスチャの名前からした値が				 ┃
+	{ 190,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 5		 ┃			十と百の位の数字					 ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 6		 ┃・一の位は回転回数							 ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 7		 ┃				テクスチャを参考に左(反時計)回り ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 8		 ┃・テクスチャが上下反転しているので注意	     ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 9		 ┃・左右を反転させたい場合は -(マイナス) にする ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 10		 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 11								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 12							
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 13						
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 14					
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 15								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 16								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 17								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 18								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 19								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 20								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 21								
 };										 
 
 /*　　　　						／＼
@@ -161,6 +162,7 @@ HRESULT InitMapChip() {
 		g_PieceMapChip[p].uvW = PIECE_UV_W;
 		g_PieceMapChip[p].PatNo = 0;
 		g_PieceMapChip[p].startAngle = 0;
+		g_PieceMapChip[p].texDir = 2;
 		for (int d = 0; d < BLOCK_CHIP_DIRECTION; d++) {
 			for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
 				for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
@@ -202,7 +204,7 @@ void DrawMapChip() {
 
 			SpriteDrawColorRotation(
 				g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,0.0f,
-				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].direction) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
 				16, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
 			);
 		}
@@ -348,9 +350,14 @@ void RotateMapChipR(int PieceNo) {
 		if (g_PieceMapChip[i].no == PieceNo)
 		{
 			g_PieceMapChip[i].direction++;
+			g_PieceMapChip[i].texDir--;
 			// 0～3の範囲から出ないようにする
 			if (g_PieceMapChip[i].direction >= 4) {
 				g_PieceMapChip[i].direction = 0;
+			}
+			// 0～3の範囲から出ないようにする
+			if (g_PieceMapChip[i].texDir <= -1) {
+				g_PieceMapChip[i].texDir = 3;
 			}
 
 			// 各種デリート
@@ -375,9 +382,14 @@ void RotateMapChipL(int PieceNo) {
 		{
 
 			g_PieceMapChip[i].direction--;
+			g_PieceMapChip[i].texDir++;
 			// 0～3の範囲から出ないようにする
 			if (g_PieceMapChip[i].direction <= -1) {
 				g_PieceMapChip[i].direction = 3;
+			}
+			// 0～3の範囲から出ないようにする
+			if (g_PieceMapChip[i].texDir >= 4) {
+				g_PieceMapChip[i].texDir = 0;
 			}
 
 			// 各種デリート

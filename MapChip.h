@@ -77,6 +77,7 @@ typedef struct {
 	float		uvW;		// テクスチャのUV値　横
 	float		PatNo;		// アニメーションパターンナンバー
 	int			direction;	//パズルの方向
+	int			texDir;		// テクスチャの方向
 	bool		MoveEndFlag;//動き終わった瞬間
 	bool		MoveFlag;//動いているか
 	bool		InventoryFlag;	//インベントリのパズルか
