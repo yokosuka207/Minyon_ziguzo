@@ -32,7 +32,7 @@ Update:
 // ƒOƒ[ƒoƒ‹•Ï”
 //**************************************************
 static EFFECT_SPARK g_EffectSpark[EFFECT_MAX];
-static char* g_TextureName = (char*)"data\\texture\\test_SparkEffect.png";
+static char* g_TextureName = (char*)"data\\texture\\explosion.png";
 
 //==================================================
 // ‰Šú‰»

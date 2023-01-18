@@ -30,7 +30,7 @@
 static BROKEN g_Broken[BROKEN_MAX];
 static ID3D11ShaderResourceView	*g_textureBroken;	//画像一枚で一つの変数が必要
 
-static char* g_TextureNameBroken = (char*)"data\\texture\\下から上にジャンプで壊れるブロック.png";
+static char* g_TextureNameBroken = (char*)"data\\texture\\jump_break.png";
 
 
 BROKEN InitData[]=
