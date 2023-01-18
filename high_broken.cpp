@@ -30,7 +30,7 @@
 static HIGH g_High[HIGH_MAX];
 static ID3D11ShaderResourceView* g_textureHigh;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
 
-static char* g_TextureNameHigh = (char*)"data\\texture\\green.png";
+static char* g_TextureNameHigh = (char*)"data\\texture\\high_broken.png";
 
 HIGH InitData[] =
 {

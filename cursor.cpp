@@ -44,7 +44,7 @@
 // グローバル変数
 //--------------------------------------------------
 static CURSOR g_Cursor;
-static char *g_TextureName = (char*)"data\\texture\\cursor.png";
+static char *g_TextureName = (char*)"data\\texture\\cursor_default.png";
 
 static bool oneFlag = false;	//マウスでパズルを一つ持っているか
 static int g_CursorIndex = -1;	//マウスの掴んだパズルの番号入れ
