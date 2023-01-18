@@ -189,7 +189,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetChipPuzzuleChip(position, DrawSize, no + 1);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP) :	//6　ワープ
-				SetWarp(position, DrawSize);
+				cipSetWarp(position, DrawSize,no,false);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL) :	//7　ゴール
 				SetGoal(position, DrawSize, no);
@@ -365,6 +365,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteSpawnPoint(g_PieceMapChip[PieceNo].no);
 	DeleteDoppelGanger(g_PieceMapChip[PieceNo].no);
 	DeleteEnemy(g_PieceMapChip[PieceNo].no);
+	DeleteWarp(g_PieceMapChip[PieceNo].no);
 
 }
 Piece* GetPiece() {
@@ -398,6 +399,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			g_PieceMapChip[p].no = no;
 			g_PieceMapChip[p].InventoryFlag = true;
 			no = p;
+			g_PieceMapChip[p].UseFlag = true;
 			break;
 		}
 	}
@@ -430,7 +432,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetChipPuzzuleChip(position, DrawSize, no + 1);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_WARP):	//6　ワープ
-				SetWarp(position, DrawSize);
+				cipSetWarp(position, DrawSize,no,true);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_GOAL):	//7　ゴール
 				SetGoal(position, DrawSize, no);

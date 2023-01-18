@@ -65,6 +65,7 @@ void DrawInventory();
 void SetInventory(int PieNo);
 KEEP_PUZZLE* GetInventory();
 void DeleteInventory(int PieNo);
+void DeleteInventoryMapCip(int PieNo);
 
 
 #endif // !_INVENTORY_H_

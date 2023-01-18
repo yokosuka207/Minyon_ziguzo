@@ -318,11 +318,14 @@ void UpdateCollision(){
 						{
 							if (pWarp[i + 1].UseFlag)
 							{
-								if (!pPlayer->WarpFlag)
+								if (!pWarp[i + 1].InventoryFlag)
 								{
-									pPlayer->Position = (pWarp + i + 1)->Position;
-									pPlayer->CoolTime = PLAYER_COOLTIME;
-									pPlayer->WarpFlag = true;
+									if (!pPlayer->WarpFlag)
+									{
+										pPlayer->Position = (pWarp + i + 1)->Position;
+										pPlayer->CoolTime = PLAYER_COOLTIME;
+										pPlayer->WarpFlag = true;
+									}
 								}
 							}
 
@@ -331,13 +334,16 @@ void UpdateCollision(){
 						{
 							if (pWarp[i - 1].UseFlag)
 							{
-								if (!pPlayer->WarpFlag)
+								if (!pWarp[i - 1].InventoryFlag)
 								{
-									pPlayer->Position = (pWarp + i - 1)->Position;
-									pPlayer->CoolTime = PLAYER_COOLTIME;
+									if (!pPlayer->WarpFlag)
+									{
+										pPlayer->Position = (pWarp + i - 1)->Position;
+										pPlayer->CoolTime = PLAYER_COOLTIME;
 
-									pPlayer->WarpFlag = true;
+										pPlayer->WarpFlag = true;
 
+									}
 								}
 							}
 						}

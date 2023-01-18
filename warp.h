@@ -36,7 +36,7 @@ struct WARP
 	float uv_h;//縦サイズ
 	int NumPatern;//横枚数
 
-
+	bool InventoryFlag;
 	int		PieceIndex; //ピースの添え字格納
 
 	int FrameWait;
@@ -50,9 +50,10 @@ void UninitWarp();
 void UpdateWarp();
 void DrawWarp();
 
-void cipSetWarp(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index);
+void cipSetWarp(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index,bool in);
 
 
 int SetWarp(D3DXVECTOR2 pos, D3DXVECTOR2 size);
+void DeleteWarp(int PieceNo);
 
 WARP* GetWarp();//WARP構造体の先頭ポインタを取得
