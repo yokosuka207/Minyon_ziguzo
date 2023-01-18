@@ -156,8 +156,11 @@ void Save::Update()
 				break;
 			}
 
+			FADEPARAM* pFadeParam = GetFadeParam();
 
-			SetScene(SCENE_STAGESELECT);			// ステージセレクトシーンに切り替わる
+			//SetScene(SCENE_STAGESELECT);			// ステージセレクトシーンに切り替わる
+			if(!pFadeParam->FadeFlag)
+			StartFade(FADE::FADE_OUT);
 		}
 	}
 }

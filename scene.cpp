@@ -14,6 +14,8 @@
 #include "noizu.h"
 #include "sound.h"
 
+#define SOUND_FADE_OUT_VOLUME (0.02f)
+
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
 
@@ -38,8 +40,10 @@ static char* StageSelectName[4] = {
 	(char*)"data\\SoundData\\BGM\\ステージセレクト③.wav",
 	(char*)"data\\SoundData\\BGM\\ステージセレクト④.wav",
 };
-
 static int g_ResultSoundNo = 0;
+//static char ResultSoundName[] = "data\\SoundData\\BGM\\.wav";
+
+static float g_SoundFadeOutVolume = 0.0f;
 
 void InitScene(SCENE no){
 	g_sceneIndex = g_sceneNextIndex = no;
@@ -50,7 +54,8 @@ void InitScene(SCENE no){
 		InitTitle();
 		InitNoizu();
 		g_TitleSoundNo = LoadSound(TitleSoundName);
-		PlaySound(g_TitleSoundNo, -1);
+		PlaySound(g_TitleSoundNo, -1);	//-1はloop
+		SetVolume(g_TitleSoundNo, 1.0f);//通常はvolume 1.0f
 		break;
 	case SCENE::SCENE_TUTORIAL:
 		InitTutorial();
@@ -66,6 +71,7 @@ void InitScene(SCENE no){
 		InitStageSelect();
 		g_StageSelectSoundNo = LoadSound(StageSelectName[Irand(3)]);
 		PlaySound(g_StageSelectSoundNo, -1);
+		SetVolume(g_StageSelectSoundNo, 1.0f);
 		//SetStageSelect();
 		break;
 	case SCENE::SCENE_GAME :
@@ -100,11 +106,13 @@ void UninitScene(){
 		g_SaveScene.Uninit();
 		UninitNoizu();
 		StopSound(g_TitleSoundNo);
+		g_SoundFadeOutVolume = 0.0f;
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UninitStageSelect();
 		UninitNoizu();
 		StopSound(g_StageSelectSoundNo);
+		g_SoundFadeOutVolume = 0.0f;
 		break;
 	case SCENE::SCENE_GAME:
 		Elapsedtime = pTime->SumTime();
@@ -138,11 +146,25 @@ void UpdateScene(){
 	case SCENE::SCENE_DATASELECT:
 		g_SaveScene.Update();
 		UpdateNoizu();
+		if (pFade->FadeFlag) {
+			SetVolume(g_TitleSoundNo, 1.0f - g_SoundFadeOutVolume);
+			g_SoundFadeOutVolume += SOUND_FADE_OUT_VOLUME;
+			if (g_SoundFadeOutVolume > 1.0f) {
+				g_SoundFadeOutVolume = 1.0f;
+			}
+		}
 
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UpdateStageSelect();
 		UpdateNoizu();
+		if (pFade->FadeFlag) {
+			SetVolume(g_StageSelectSoundNo, 1.0f - g_SoundFadeOutVolume);
+			g_SoundFadeOutVolume += SOUND_FADE_OUT_VOLUME;
+			if (g_SoundFadeOutVolume > 1.0f) {
+				g_SoundFadeOutVolume = 1.0f;
+			}
+		}
 
 		break;
 	case SCENE::SCENE_GAME:

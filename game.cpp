@@ -174,9 +174,9 @@ void UpdateGame()
 		BgUpdate();
 		UpdateNoizu();
 		//PuzzleCollision();
-		UpdateCollision();
 		UpdatePlayer();
 		PieceCollision();
+		UpdateCollision();
 
 		UpdateBlock();
 		UpdateJoint();
