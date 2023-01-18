@@ -29,7 +29,7 @@
 static WARP g_Warp[WARP_MAX];
 static ID3D11ShaderResourceView	*g_textureWarp;	//画像一枚で一つの変数が必要
 
-static char* g_TextureNameWarp= (char*)"data\\texture\\ワープ.png";
+static char* g_TextureNameWarp= (char*)"data\\texture\\warp.png";
 
 WARP InitData[]=
 {
