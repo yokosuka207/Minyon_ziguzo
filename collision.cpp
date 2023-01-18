@@ -1962,6 +1962,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	SWITCH* pSwitch = GetSwitch();
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
 	WARP* pWarp = GetWarp();
+	BROKEN* pBroken = GetBroken();
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
@@ -1971,6 +1972,21 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 			{
 
 				pBlock[i].Position += num;
+
+			}
+
+		}
+
+	}
+	for (int i = 0; i < BROKEN_MAX; i++)
+	{
+		if (pBroken[i].UseFlag)
+		{
+
+			if (pBroken[i].index == pinNo)
+			{
+
+				pBroken[i].Postion += num;
 
 			}
 

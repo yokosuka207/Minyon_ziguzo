@@ -14,7 +14,7 @@ PLAYER* pPlayer;
 
 static ID3D11Buffer* gSheerFloorsVertexBuffer = NULL;	//ポリゴン用
 static ID3D11ShaderResourceView* gSheerFloorsTexture;	//画像一枚で一つの変数が必要
-static char* gSheerFloorsTextureName = (char*)"data\\texture\\RED.jpg";	//テクスチャファイルパス
+static char* gSheerFloorsTextureName = (char*)"data\\texture\\透ける床.png";	//テクスチャファイルパス
 
 int gSheerFloorsNo;		//テクスチャナンバ
 

@@ -50,9 +50,11 @@ HRESULT InitHigh()
 		g_High[i].Postion = D3DXVECTOR2(0.0f, 0.0f);
 		g_High[i].Size = D3DXVECTOR2(HIGH_SIZE_W, HIGH_SIZE_H);
 		g_High[i].index = -1;
+		g_High[i].Number = -1;
 		g_High[i].texno = LoadTexture(g_TextureNameHigh);
 		g_High[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_High[i].UseFlag = false;
+		g_High[i].breakFlag = false;
 	}
 	return S_OK;
 }
@@ -97,14 +99,52 @@ void DrawHigh()
 	}
 }
 
-void SetHigh(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index){
-	for (int i = 0; i < HIGH_MAX; i++){
-		if (!g_High[i].UseFlag){
-			g_High[i].Postion = Pos;
-			g_High[i].Size = s;
-			g_High[i].index = index;
-			g_High[i].UseFlag = true;
-			break;
+void SetHigh(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index, int number){
+	bool MatchFlag = false;
+
+	for (int i = 0; i < HIGH_MAX; i++)
+	{
+		if (!g_High[i].UseFlag)
+		{
+			if (g_High[i].index == index)
+			{
+				if (g_High[i].Number == number)
+				{
+					MatchFlag = true;
+					if (!g_High[i].breakFlag)
+					{
+						g_High[i].Postion = Pos;
+						g_High[i].Size = s;
+						g_High[i].index = index;
+						g_High[i].Number = number;
+						g_High[i].UseFlag = true;
+						break;
+
+					}
+					else {
+
+						break;
+
+					}
+				}
+			}
+
+		}
+
+
+	}
+
+	if (!MatchFlag)
+	{
+		for (int i = 0; i < HIGH_MAX; i++) {
+			if (!g_High[i].UseFlag) {
+				g_High[i].Postion = Pos;
+				g_High[i].Size = s;
+				g_High[i].index = index;
+				g_High[i].Number = number;
+				g_High[i].UseFlag = true;
+				break;
+			}
 		}
 	}
 }
