@@ -85,7 +85,7 @@ void DrawPlayerLife()
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(gPlayerLifeNo2));
 
 
-		SpriteDrawColorRotation(gPlayerLife[i].pos.x, gPlayerLife[i].pos.y + 25.0f, 0.0f,
+		SpriteDrawColorRotation(gPlayerLife[i].pos.x, gPlayerLife[i].pos.y + 20.0f, 0.0f,
 			gPlayerLife[i].size.x, gPlayerLife[i].size.y, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),
 			0, 1.0f, 1.0f, 1);
 
