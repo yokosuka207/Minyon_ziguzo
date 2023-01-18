@@ -28,7 +28,7 @@
 #include "SwitchWall.h"
 #include"warp.h"
 #include"broken.h"
-
+#include"SheerFloors.h"
 //--------------------------------------------------
 // マクロ定義
 //--------------------------------------------------
@@ -108,6 +108,7 @@ void UpdateCursor()
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
 	WARP* pWarp = GetWarp();
 	BROKEN* pBroken = GetBroken();
+	SHEERFLOORS* pSheerFloors = GetSheerFloors();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	g_Cursor.pos.x = GetXMousePosX();
@@ -261,6 +262,18 @@ void UpdateCursor()
 								if (pBroken[i].index == NoIndex)
 								{
 									pBroken[i].Postion += temp;
+								}
+
+							}
+
+						}
+						for (int i = 0; i < SHEERFLOORS_NUM; i++)
+						{//ブロック動かす
+							if (pSheerFloors[i].use)
+							{
+								if (pSheerFloors[i].index == NoIndex)
+								{
+									pSheerFloors[i].pos += temp;
 								}
 
 							}

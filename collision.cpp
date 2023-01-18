@@ -1963,6 +1963,8 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
 	WARP* pWarp = GetWarp();
 	BROKEN* pBroken = GetBroken();
+	SHEERFLOORS* pSheerFloors = GetSheerFloors();
+
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
@@ -1993,6 +1995,19 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 		}
 
 	}
+	for (int i = 0; i < SHEERFLOORS_NUM; i++)
+	{//ƒuƒƒbƒN“®‚©‚·
+		if (pSheerFloors[i].use)
+		{
+			if (pSheerFloors[i].index == pinNo)
+			{
+				pSheerFloors[i].pos += num;
+			}
+
+		}
+
+	}
+
 	for (int i = 0; i < JOINT_MAX; i++)
 	{
 		if (pJoint[i].useFlag)
