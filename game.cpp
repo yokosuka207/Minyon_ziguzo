@@ -229,7 +229,7 @@ void DrawGame()
 		DrawPuzzle();
 		DrawMapChip();
 
-		DrawJoint();
+		//DrawJoint();				// ‚¢‚¸‚ê•K‚¸‚±‚Ì¢‚©‚çÁ‚µ‚Ä‚â‚éI
 		DrawBlock();
 
 		DrawPuzzleCip();

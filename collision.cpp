@@ -102,13 +102,11 @@ void UpdateCollision()
 {
 	
 	// 使用ゲット一覧-----------------------------
-
 	PLAYER* pPlayer = GetPlayer();
 	MOUSE* pMouse = GetMouse();
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 	Piece* pPiece = GetPiece();
 	ENEMY* pEnemy = GetEnemy();
-
 	BLOCK* pBlock = GetBlock();
 	BLOCK* pChipblock = GetChipBlock();
 	THORNBLOCK* pThornBlock = GetThornBlock();
@@ -116,18 +114,13 @@ void UpdateCollision()
 	BROKEN* pBroken = GetBroken();
 	FALLBLOCK* pFallBlock = GetFallBlock();
 	HIGH* pHigh = GetHigh();
-
 	SWITCH* pSwitch = GetSwitch();
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
-
 	JUMPSTAND* pJumpStand = GetJumpStand();
-
 	KEY* pKey = GetKey();
 	OPENKEY* pOpenKey = GetOpenKey();
-
 	GKey* pGKey = GetGKey();
 	GOAL* pGoal = GetGoal();
-
 	RESULT* pResult = GetResult();
 
 	//-------------------------------------
@@ -912,17 +905,17 @@ void UpdateCollision()
 		}
 	}
 
-		//------------------------------------
-		//動くブロックとトゲブロック当たり判定
-		//-----------------------------------
-		for (int i = 0; i < THORN_BLOCK_MAX; i++)
-		{
-			//MOVEBLOCK* pMoveBlock = GetMoveBlock();
-			//THORNBLOCK* pThorn = GetThornBlock();
+	//------------------------------------
+	//動くブロックとトゲブロック当たり判定
+	//-----------------------------------
+	for (int i = 0; i < THORN_BLOCK_MAX; i++)
+	{
+		//MOVEBLOCK* pMoveBlock = GetMoveBlock();
+		//THORNBLOCK* pThorn = GetThornBlock();
 
 		for (int j = 0; j < MOVE_BLOCK_MAX; j++)
 		{
-			if (CollisionBB(pMoveBlock[j].pos, pThorn[i].Postion, pMoveBlock[j].size, pThorn[i].Size))
+			if (CollisionBB(pMoveBlock[j].pos, pThornBlock[i].Postion, pMoveBlock[j].size, pThornBlock[i].Size))
 			{
 				pMoveBlock[j].pos = pMoveBlock[j].oldpos;
 			}
