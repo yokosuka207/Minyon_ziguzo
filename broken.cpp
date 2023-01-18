@@ -32,6 +32,7 @@ static ID3D11ShaderResourceView	*g_textureBroken;	//âÊëúàÍñáÇ≈àÍÇ¬ÇÃïœêîÇ™ïKóv
 
 static char* g_TextureNameBroken = (char*)"data\\texture\\green.png";
 
+
 BROKEN InitData[]=
 {
 	{true,D3DXVECTOR2(BROKEN_SIZE_W,BROKEN_SIZE_H),D3DXVECTOR2(400,100),D3DXVECTOR2(0,2),0,0,D3DXCOLOR(1,0,0,1),1,8,16,8,60 * 0},
@@ -50,9 +51,11 @@ HRESULT InitBroken()
 		g_Broken[i].Postion = D3DXVECTOR2(SCREEN_WIDTH / 2 - 50.0f, 600.0f);
 		g_Broken[i].Size = D3DXVECTOR2(BROKEN_SIZE_W, BROKEN_SIZE_H);
 		g_Broken[i].index = -1;
+		g_Broken[i].Number = -1;
 		g_Broken[i].texno = LoadTexture(g_TextureNameBroken);
-		g_Broken[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);;
+		g_Broken[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_Broken[i].UseFlag = false;
+		g_Broken[i].breakFlag = false;
 	}
 	return S_OK;
 }
@@ -97,14 +100,53 @@ void DrawBroken()
 	}
 }
 
-void SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index){
-	for (int i = 0; i < BROKEN_MAX; i++){
-		if (!g_Broken[i].UseFlag){
-			g_Broken[i].Postion = Pos;
-			g_Broken[i].Size = s;
-			g_Broken[i].index = index;
-			g_Broken[i].UseFlag = true;
-			break;
+void SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index, int number){
+
+	bool MatchFlag = false;
+
+	for (int i = 0; i < BROKEN_MAX; i++)
+	{
+		if (!g_Broken[i].UseFlag) 
+		{
+			if (g_Broken[i].index == index)
+			{
+				if (g_Broken[i].Number == number)
+				{
+					MatchFlag = true;
+					if (!g_Broken[i].breakFlag)
+					{
+						g_Broken[i].Postion = Pos;
+						g_Broken[i].Size = s;
+						g_Broken[i].index = index;
+						g_Broken[i].Number = number;
+						g_Broken[i].UseFlag = true;
+						break;
+
+					}
+					else {
+
+						break;
+
+					}
+				}
+			}
+
+		}
+
+
+	}
+
+	if (!MatchFlag)
+	{
+		for (int i = 0; i < BROKEN_MAX; i++) {
+			if (!g_Broken[i].UseFlag) {
+				g_Broken[i].Postion = Pos;
+				g_Broken[i].Size = s;
+				g_Broken[i].index = index;
+				g_Broken[i].Number = number;
+				g_Broken[i].UseFlag = true;
+				break;
+			}
 		}
 	}
 }

@@ -136,7 +136,7 @@ void DrawMapChip() {
 }
 void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 	g_PieceMapChip[Pin].size = D3DXVECTOR2(PUZZLE_SIZE, PUZZLE_SIZE);
-
+	int brokenIndex = 0;	//壊れるブロックの個数
 	//p=ブロック最大数
 		//i=y方向
 	for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
@@ -198,7 +198,9 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetSheerFloors(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　着地で壊れる床
-				SetBroken(position, DrawSize, no);
+				
+				SetBroken(position, DrawSize, no,brokenIndex);
+				brokenIndex++;
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18　ジャンプで壊れるブロック
 				SetHigh(position, DrawSize, no);
@@ -427,6 +429,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			break;
 		}
 	}
+	int brokenIndex = 0;
 	//p=ブロック最大数
 		//i=y方向
 	for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
@@ -488,7 +491,8 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetSheerFloors(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　着地で壊れる床
-				SetBroken(position, DrawSize, no);
+				SetBroken(position, DrawSize, no, brokenIndex);
+				brokenIndex++;
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_HIGHBROKEN):	//18　ジャンプで壊れるブロック
 				SetHigh(position, DrawSize, no);

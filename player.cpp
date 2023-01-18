@@ -43,6 +43,7 @@
 #include "pause.h"
 #include "goal_key.h"
 #include"spawnpoint.h"
+#include"cursor.h"
 //=============================================================================
 //ƒ}ƒNƒ’è‹`
 //=============================================================================
@@ -118,8 +119,9 @@ void UpdatePlayer()
 	//-------------------------------------------------
 
 	MOUSE* pMouse = GetMouse();
-	if (!pMouse->UseFlag)
+	if (!Mouse_IsLeftDown())
 	{
+
 		if (g_Player.UseFlag == true)
 		{
 			//ˆÚ“®
