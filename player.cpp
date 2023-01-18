@@ -1049,9 +1049,113 @@ void UpdatePlayer()
 
 
 			}
+			if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_THUMB) || 	// GamePad	Lタブ
+				Keyboard_IsKeyTrigger(KK_R))						// Keyboard	R
+			{
+				ResetGame();
+			}
+
+			//プレイヤーとパズルの画面外判定
+			Piece* pPiece = GetPiece();
+
+			for (int i = 0; i < PUZZLE_MAX; i++)
+			{
+				if (pPiece[i].UseFlag)
+				{
+					bool hitflag = CollisionBB(g_Player.Position, pPiece[i].pos, g_Player.size, pPiece[i].size);
+
+					if (hitflag)
+					{
+						if (g_Player.Position.y < pPiece[i].pos.y - PUZZLE_HEIGHT / 2)
+						{
+							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, DOWN);
+
+							if (!hitflag2)
+							{
+								g_Player.sp.y -= 0.2;//加速
+							}
+							else
+							{//下に何もなく死亡する場合
+								for (int i = 0; i < SPAWN_POINT_MAX; i++)
+								{
+									if (pSpawnPoint[i].UseFlag)
+									{
+										if (g_Player.PieceIndex == pSpawnPoint[i].PieceIndex)
+										{
+											g_Player.Position = pSpawnPoint[i].Position;
+
+										}
+
+
+									}
+								}
+
+							}
+						}
+						else if (g_Player.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
+						{
+
+							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, RIGHT);
+
+							if (!hitflag2)
+							{
+								//g_Player.sp.y += 0.2;//加速
+							}
+							else
+							{
+								g_Player.Position.x = g_Player.oldpos.x;
+							}
+
+
+						}
+						else if (g_Player.Position.x <= pPiece[i].pos.x - PUZZLE_WIDHT / 2)
+						{
+							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, LEFT);
+
+							if (!hitflag2)
+							{
+								//g_Player.sp.y += 0.2;//加速
+							}
+							else
+							{
+								g_Player.Position.x = g_Player.oldpos.x;
+							}
+
+
+						}
+						else if (g_Player.Position.y >= pPiece[i].pos.y + PUZZLE_HEIGHT / 2)
+						{
+							bool hitflag2 = PlayerPieceOpen(pPiece[i], i, UP);
+
+							if (!hitflag2)
+							{
+								//g_Player.sp.y += 0.2;//加速
+							}
+							else
+							{
+
+								g_Player.fall = true;
+								//g_Player.sp.y = 0;
+								//g_Player.getfall = true;
+								g_Player.frame = 50;
+								//g_Player.sp.y += 0.2;//加速
+							}
+
+						}
+					}
+				}
+
+
+			}
+
+
+			}
 
 		}
-	}
+
+
+		
+	
 }
 //=============================================================================
 //描画処理
