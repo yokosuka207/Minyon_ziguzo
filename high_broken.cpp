@@ -37,12 +37,13 @@ HIGH InitData[] =
 	{true,D3DXVECTOR2(HIGH_SIZE_W,HIGH_SIZE_H),D3DXVECTOR2(400,100),D3DXVECTOR2(0,2),0,0,D3DXCOLOR(1,0,0,1),1,8,16,8,60 * 0},
 };
 
-
+static int HighBrokenIndex;
 //=============================================================================
 //èâä˙âªèàóù
 //=============================================================================
 HRESULT InitHigh()
 {
+	HighBrokenIndex = 0;
 	srand(time(NULL));
 
 	for (int i = 0; i < HIGH_MAX; i++)
@@ -136,13 +137,19 @@ void SetHigh(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index, int number){
 
 	if (!MatchFlag)
 	{
-		for (int i = 0; i < HIGH_MAX; i++) {
+		for (int i = HighBrokenIndex; i < HIGH_MAX; i++) {
 			if (!g_High[i].UseFlag) {
 				g_High[i].Postion = Pos;
 				g_High[i].Size = s;
 				g_High[i].index = index;
 				g_High[i].Number = number;
 				g_High[i].UseFlag = true;
+				HighBrokenIndex++;
+				if (HighBrokenIndex== HIGH_MAX)
+				{
+					HighBrokenIndex = 0;
+
+				}
 				break;
 			}
 		}

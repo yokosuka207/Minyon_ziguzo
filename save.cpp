@@ -75,21 +75,21 @@ void Save::Init()
 		case 1:
 			// ファイルがあったら
 			if (ExistFile(g_saveFileName1)) {
-				b.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * i), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName1));
+				b.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * i), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName1));
 				continue;
 			}
 			break;
 		case 2:
 			// ファイルがあったら
 			if (ExistFile(g_saveFileName2)) {
-				b.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * i), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName2));
+				b.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * i), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName2));
 				continue;
 			}
 			break;
 		case 3:
 			// ファイルがあったら
 			if (ExistFile(g_saveFileName3)) {
-				b.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * i), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName3));
+				b.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * i), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName3));
 				continue;
 			}
 			break;

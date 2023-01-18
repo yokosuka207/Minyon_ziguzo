@@ -44,6 +44,7 @@
 #include "issuer.h"		// 光線発射装置
 #include "ray.h"		// 光線
 #include "EffectSpark.h"	// ヒバナエフェクト
+#include "PlayerLife.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -92,6 +93,7 @@ void InitGame()
 		InitIssuer();			// 光線発射装置の初期化
 		InitEffectSpark();		// ヒバナエフェクト
 		InitBullet();
+		InitPlayerLife();
 
 	}
 	InitMapChip();
@@ -138,6 +140,7 @@ void UninitGame()
 	UninitDoppelganger();
 	UninitEnemy();
 	UninitBullet();
+	UninitPlayerLife();
 
 	UninitPause();
 	pScore->UninitScore();
@@ -208,6 +211,8 @@ void UpdateGame()
 		UpdateRay();			// 光線の更新
 		UpdateIssuer();			// 光線発射装置の更新
 		UpdateEffectSpark();	// ヒバナエフェクト
+
+		UpdatePlayerLife();
 	}
 	else {
 		UpdatePause();
@@ -251,6 +256,8 @@ void DrawGame()
 		DrawEnemy();
 		DrawBullet();
 		DrawNoizu();
+
+		DrawPlayerLife();
 
 		//DrawRay();				// 光線の描画
 		//DrawIssuer();			// 光線発射装置の描画
