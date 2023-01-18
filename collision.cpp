@@ -146,7 +146,7 @@ void UpdateCollision(){
 				pFlag = true;
 				break;
 			}
-			break;
+			//break;
 		}
 	}
 	//============================
@@ -218,7 +218,7 @@ void UpdateCollision(){
 		//=====================================
 		//死亡判定（トゲ、落下死,thornBlock）
 		//=====================================
-		if (!pMouse->UseFlag) {
+		if (!Mouse_IsLeftDown) {
 			//プレイヤーとトゲブロックの判定
 			for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 				if (pThornBlock[i].UseFlag) {
@@ -307,7 +307,7 @@ void UpdateCollision(){
 		if (pPlayer->CoolTime < 0) {
 			pPlayer->CoolTime = 0;
 			//プレイヤー・ワープ　当たり判定
-			for (int i = 0; i < BLOCK_MAX; i++) {
+			for (int i = 0; i < WARP_MAX; i++) {
 				if ((pWarp + i)->UseFlag) {
 					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pWarp + i)->Position.x - (pWarp + i)->Size.x / 2 &&
 						pPlayer->Position.x - pPlayer->size.x / 2 < (pWarp + i)->Position.x + (pWarp + i)->Size.x / 2 &&
@@ -316,23 +316,29 @@ void UpdateCollision(){
 					{
 						if (i % 2 == 0)
 						{
-							if (!pPlayer->WarpFlag)
+							if (pWarp[i + 1].UseFlag)
 							{
-								pPlayer->Position = (pWarp + i + 1)->Position;
-								pPlayer->CoolTime = PLAYER_COOLTIME;
-								pPlayer->WarpFlag = true;
+								if (!pPlayer->WarpFlag)
+								{
+									pPlayer->Position = (pWarp + i + 1)->Position;
+									pPlayer->CoolTime = PLAYER_COOLTIME;
+									pPlayer->WarpFlag = true;
+								}
 							}
 
 						}
 						else if (i % 2 == 1)
 						{
-							if (!pPlayer->WarpFlag)
+							if (pWarp[i - 1].UseFlag)
 							{
-								pPlayer->Position = (pWarp + i - 1)->Position;
-								pPlayer->CoolTime = PLAYER_COOLTIME;
+								if (!pPlayer->WarpFlag)
+								{
+									pPlayer->Position = (pWarp + i - 1)->Position;
+									pPlayer->CoolTime = PLAYER_COOLTIME;
 
-								pPlayer->WarpFlag = true;
+									pPlayer->WarpFlag = true;
 
+								}
 							}
 						}
 					}
@@ -773,6 +779,7 @@ void PieceCollision()
 	bool pFlag =false;
 	for (int i = 0; i < PUZZLE_MAX; i++)
 	{
+
 		if (pPiece[i].UseFlag)
 		{
 			if (pPiece[i].MoveEndFlag)	//動き終わったら
@@ -843,6 +850,7 @@ void PieceCollision()
 												if (pFlag)
 												{
 													pPlayer->Position += temp;
+													pPlayer->oldpos = pPlayer->Position;
 												}
 												// ヒバナエフェクト
 												SetEffectSpark(pJoint[j].pos, 0.0f);
@@ -879,6 +887,8 @@ void PieceCollision()
 												if (pFlag)
 												{
 													pPlayer->Position += temp;
+													pPlayer->oldpos = pPlayer->Position;
+
 												}
 												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
 												// ヒバナエフェクト
@@ -914,6 +924,8 @@ void PieceCollision()
 												if (pFlag)
 												{
 													pPlayer->Position += temp;
+													pPlayer->oldpos = pPlayer->Position;
+
 												}
 												// ヒバナエフェクト
 												SetEffectSpark(pJoint[j].pos, 0.0f);
@@ -948,6 +960,8 @@ void PieceCollision()
 												if (pFlag)
 												{
 													pPlayer->Position += temp;
+													pPlayer->oldpos = pPlayer->Position;
+
 												}
 												// ヒバナエフェクト
 												SetEffectSpark(pJoint[j].pos, 0.0f);
@@ -1029,6 +1043,8 @@ void PieceCollision()
 										if (pFlag)
 										{
 											pPlayer->Position += temp;
+											pPlayer->oldpos = pPlayer->Position;
+
 										}
 
 									}
@@ -1938,7 +1954,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
 	SWITCH* pSwitch = GetSwitch();
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
-
+	WARP* pWarp = GetWarp();
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
@@ -2036,6 +2052,18 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 			if (pSwitchWall[i].PieceIndex == pinNo)
 			{
 				pSwitchWall[i].pos += num;
+			}
+
+		}
+	}
+	//ワープ
+	for (int i = 0; i < WARP_MAX; i++)
+	{
+		if (pWarp[i].UseFlag)
+		{
+			if (pWarp[i].PieceIndex == pinNo)
+			{
+				pWarp[i].Position += num;
 			}
 
 		}
