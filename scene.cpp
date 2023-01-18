@@ -14,6 +14,8 @@
 #include "noizu.h"
 #include "sound.h"
 
+#define SOUND_FADE_OUT_SPEED (0.02f)
+
 static SCENE g_sceneIndex = SCENE::SCENE_NONE;
 static SCENE g_sceneNextIndex = g_sceneIndex;
 
@@ -38,8 +40,9 @@ static char* StageSelectName[4] = {
 	(char*)"data\\SoundData\\BGM\\ステージセレクト③.wav",
 	(char*)"data\\SoundData\\BGM\\ステージセレクト④.wav",
 };
-
 static int g_ResultSoundNo = 0;
+
+static float g_SoundFadeOutSpeed = 0.0f;
 
 void InitScene(SCENE no){
 	g_sceneIndex = g_sceneNextIndex = no;
@@ -51,6 +54,7 @@ void InitScene(SCENE no){
 		InitNoizu();
 		g_TitleSoundNo = LoadSound(TitleSoundName);
 		PlaySound(g_TitleSoundNo, -1);
+		SetVolume(g_TitleSoundNo, 1.0f);
 		break;
 	case SCENE::SCENE_TUTORIAL:
 		InitTutorial();
@@ -66,6 +70,7 @@ void InitScene(SCENE no){
 		InitStageSelect();
 		g_StageSelectSoundNo = LoadSound(StageSelectName[Irand(3)]);
 		PlaySound(g_StageSelectSoundNo, -1);
+		SetVolume(g_StageSelectSoundNo, 1.0f);
 		//SetStageSelect();
 		break;
 	case SCENE::SCENE_GAME :
@@ -100,11 +105,13 @@ void UninitScene(){
 		g_SaveScene.Uninit();
 		UninitNoizu();
 		StopSound(g_TitleSoundNo);
+		g_SoundFadeOutSpeed = 0.0f;
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UninitStageSelect();
 		UninitNoizu();
 		StopSound(g_StageSelectSoundNo);
+		g_SoundFadeOutSpeed = 0.0f;
 		break;
 	case SCENE::SCENE_GAME:
 		Elapsedtime = pTime->SumTime();
@@ -138,11 +145,25 @@ void UpdateScene(){
 	case SCENE::SCENE_DATASELECT:
 		g_SaveScene.Update();
 		UpdateNoizu();
+		if (pFade->FadeFlag) {
+			SetVolume(g_TitleSoundNo, 1.0f - g_SoundFadeOutSpeed);
+			g_SoundFadeOutSpeed += SOUND_FADE_OUT_SPEED;
+			if (g_SoundFadeOutSpeed > 1.0f) {
+				g_SoundFadeOutSpeed = 1.0f;
+			}
+		}
 
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UpdateStageSelect();
 		UpdateNoizu();
+		if (pFade->FadeFlag) {
+			SetVolume(g_StageSelectSoundNo, 1.0f - g_SoundFadeOutSpeed);
+			g_SoundFadeOutSpeed += SOUND_FADE_OUT_SPEED;
+			if (g_SoundFadeOutSpeed > 1.0f) {
+				g_SoundFadeOutSpeed = 1.0f;
+			}
+		}
 
 		break;
 	case SCENE::SCENE_GAME:
