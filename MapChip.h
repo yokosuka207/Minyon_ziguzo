@@ -82,6 +82,7 @@ typedef struct {
 	bool		MoveFlag;//動いているか
 	bool		InventoryFlag;	//インベントリのパズルか
 	bool		UseFlag;//パズルが出現しているか否か
+	bool		bAnim;	// アニメーション中か
 }Piece;
 
 //**************************************************
@@ -111,5 +112,8 @@ void DeleteMapChip(int PieceNo);
 Piece* GetPiece();
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo);
 void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin);
+
+// ピースのアニメーションスタート
+void StartPieceAnimation(int PieceNo);
 
 #endif // !_MAPCHIP_H_

@@ -109,16 +109,16 @@ static char* g_StageFileName[21] = {
 
 // 各ステージ各ピースの情報
 static int g_StagePieceInfo[21][12] = {
-	{  82,  180,   01,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 1		 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
-	{  90,   61,   61,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 2		 ┃・21ステージ									 ┃
-	{  82,   93,  132,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 3		 ┃・各ステージ最大ピース数12					 ┃
-	{  00, -130,  143,   00,    0,    0,    0,    0,    0,    0,    0,    0},	// 4		 ┃・テクスチャの名前からした値が				 ┃
-	{ 190,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 5		 ┃			十と百の位の数字					 ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 6		 ┃・一の位は回転回数							 ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 7		 ┃				テクスチャを参考に左(反時計)回り ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 8		 ┃・テクスチャが上下反転しているので注意	     ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 9		 ┃・左右を反転させたい場合は -(マイナス) にする ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 10		 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
+	{  82,  180,   01,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 1				 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
+	{  92,   61,   61,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 2  ←ここまで	 ┃・21ステージ									 ┃
+	{  82,   93,  132,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 3  				 ┃・各ステージ最大ピース数12					 ┃
+	{  00, -130,  143,   00,    0,    0,    0,    0,    0,    0,    0,    0},	// 4				 ┃・テクスチャの名前からした値が				 ┃
+	{ 190,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 5				 ┃			十と百の位の数字					 ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 6				 ┃・一の位は回転回数							 ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 7				 ┃				テクスチャを参考に左(反時計)回り ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 8				 ┃											     ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 9				 ┃・左右を反転させたい場合は -(マイナス) にする ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 10				 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
 	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 11								
 	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 12							
 	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 13						
@@ -132,7 +132,7 @@ static int g_StagePieceInfo[21][12] = {
 	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 21								
 };										 
 
-/*　　　　						／＼
+/*　　　				　		／＼			↑触るな危険！  不用意に踏み込まない方がいいぞ！
 *							　／	＼				
 *							／・　・　＼		
 *						　／＿_	　　 _＿＼		
@@ -143,7 +143,7 @@ static int g_StagePieceInfo[21][12] = {
 *							　｜ ス ｜			
 *							　｜＿＿｜					
 *							    || ||
-*							   || ||
+*							   || ||		
 */
 
 HRESULT InitMapChip() {
@@ -163,6 +163,7 @@ HRESULT InitMapChip() {
 		g_PieceMapChip[p].PatNo = 0;
 		g_PieceMapChip[p].startAngle = 0;
 		g_PieceMapChip[p].texDir = 2;
+		g_PieceMapChip[p].bAnim = false;
 		for (int d = 0; d < BLOCK_CHIP_DIRECTION; d++) {
 			for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
 				for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
@@ -193,7 +194,16 @@ void UninitMapChip() {
 	}
 }
 void UpdateMapChip() {
-
+	// アニメーション
+	for (Piece& p : g_PieceMapChip) {
+		if (p.UseFlag &&
+			p.bAnim) {
+			p.PatNo += 0.1f;
+			if (p.PatNo >= 16) {
+				p.bAnim = false;
+			}
+		}
+	}
 }
 void DrawMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
@@ -202,9 +212,17 @@ void DrawMapChip() {
 
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_PieceMapChip[p].TexNo));
 
+			// アニメーション部分を被せる
+			if (g_PieceMapChip[p].bAnim) {
+				SpriteDrawColorRotation(
+					g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
+					g_PieceMapChip[p].size.x, -g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+					g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
+				);
+			}
 			SpriteDrawColorRotation(
 				g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,0.0f,
-				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+				g_PieceMapChip[p].size.x,-g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
 				16, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
 			);
 		}
@@ -568,6 +586,18 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			default:
 				break;
 			}
+		}
+	}
+}
+
+void StartPieceAnimation(int PieceNo)
+{
+	for (Piece& p : g_PieceMapChip) {
+		if (p.no == PieceNo &&
+			p.UseFlag) {
+			p.bAnim = true;
+			p.PatNo = 0;
+			break;
 		}
 	}
 }
