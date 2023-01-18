@@ -21,9 +21,9 @@ static int	  gPlayerLifeNo2 = 0;
 
 HRESULT InitPlayerLife()
 {
-	for (int i = 0; i < LIFE_MAX; i++) 
+	for (int i = 0; i < LIFE_MAX; i++)
 	{
-		gPlayerLifeNo  = LoadTexture(gLifeName);
+		gPlayerLifeNo = LoadTexture(gLifeName);
 		gPlayerLifeNo2 = LoadTexture(gLifeName2);
 
 		gPlayerLife[i].pos = D3DXVECTOR2(0.0f, 0.0f);
@@ -77,19 +77,19 @@ void DrawPlayerLife()
 {
 
 
-	for (int i = 0; i < LIFE_MAX; i++)
-	{
-		if (gPlayerLife[i].bUse){
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(gPlayerLifeNo));
-		}
-		if (!gPlayerLife[i].bUse){
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(gPlayerLifeNo2));
-		}
+	//for (int i = 0; i < LIFE_MAX; i++)
+	//{
+	//	if (gPlayerLife[i].bUse) {
+	//		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(gPlayerLifeNo));
+	//	}
+	//	if (!gPlayerLife[i].bUse) {
+	//		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(gPlayerLifeNo2));
+	//	}
 
-		SpriteDrawColorRotation(gPlayerLife[i].pos.x, gPlayerLife[i].pos.y + 20.0f, 0.0f,
-			gPlayerLife[i].size.x, gPlayerLife[i].size.y, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),
-			0, 1.0f, 1.0f, 1);
+	//	SpriteDrawColorRotation(gPlayerLife[i].pos.x, gPlayerLife[i].pos.y + 20.0f, 0.0f,
+	//		gPlayerLife[i].size.x, gPlayerLife[i].size.y, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),
+	//		0, 1.0f, 1.0f, 1);
 
-	}
-	
+	//}
+
 }
