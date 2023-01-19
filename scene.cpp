@@ -40,7 +40,6 @@ static int g_StageSelectSoundNo = 0;
 //	(char*)"data\\SoundData\\BGM\\ステージセレクト③.wav",
 //	(char*)"data\\SoundData\\BGM\\ステージセレクト④.wav",
 //};
-//fuck
 static char StageSelectName[] = "data\\SoundData\\BGM\\ステージセレクト④.wav";
 static int g_GameSoundNo = 0;
 static char GameSoundName[] = "data\\SoundData\\BGM\\環境音.wav";
