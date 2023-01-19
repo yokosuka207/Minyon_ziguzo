@@ -818,6 +818,8 @@ void PieceCollision()
 						if (pFlag)
 						{
 							pPlayer->Position = pPlayer->OneOldpos;
+							pPlayer->oldpos = pPlayer->Position;
+
 							pPlayer->hp--;
 						}
 
