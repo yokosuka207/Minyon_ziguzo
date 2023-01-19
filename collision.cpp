@@ -796,8 +796,8 @@ void PieceCollision()
 				if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pPlayer->Position.y &&
 					pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pPlayer->Position.y &&
 					pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pPlayer->Position.x &&
-					pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pPlayer->Position.x
-					)
+					pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pPlayer->Position.x &&
+					pPiece[i].no == pPlayer->PieceIndex)
 				{
 					pFlag = true;
 				}
@@ -1021,6 +1021,7 @@ void PieceCollision()
 						if (pFlag)
 						{
 							pPlayer->Position = pPlayer->OneOldpos;
+							pPlayer->oldpos = pPlayer->Position;
 						}
 
 					}
