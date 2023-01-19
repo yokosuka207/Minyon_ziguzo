@@ -172,7 +172,7 @@ HRESULT InitStageSelect() {
 	}
 
 
-	ply.Position = D3DXVECTOR2(30.0f, 30.0f);
+	ply.Position = D3DXVECTOR2(30.0f, 180.0f);
 	ply.OneOldpos = ply.oldpos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	ply.sp = D3DXVECTOR2(0.0f, 8.0f);
 	ply.size = D3DXVECTOR2(100.0f, 117.0f);
@@ -553,3 +553,10 @@ int ReturnStageNo()
 	return StageNo;
 }
 
+//-----------------------------------------------------------------------------
+//	ステージセレクトのプレイヤーのゲット関数
+//-----------------------------------------------------------------------------
+PLAYER* GetSelectPlayer()
+{
+	return &ply;
+}
