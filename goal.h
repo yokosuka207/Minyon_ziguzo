@@ -14,6 +14,8 @@
 
 #define GOAL_SIEZX	20
 #define GOAL_SIZEY	20
+#define GOAL_UV_W 1.0f / 4
+#define GOAL_UV_H 1.0f / 4
 typedef struct
 {
 	D3DXVECTOR2		Pos;
@@ -21,6 +23,10 @@ typedef struct
 	D3DXCOLOR		Col;	//色
 	float			texno;	//テクスチャインデックス
 	float			Rotation;	//角度
+	float PaternNo;//パターン番号
+	float uv_w;//横サイズ
+	float uv_h;//縦サイズ
+	int NumPatern;//横枚数
 
 	int pieceIndex;	//ピースの添え字格納
 

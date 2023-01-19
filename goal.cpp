@@ -15,16 +15,22 @@
 GOAL g_Goal;
 GKey g_GKey;
 static ID3D11ShaderResourceView	*g_textureGoal;	//画像一枚で一つの変数が必要
-static char *g_textureName_Goal = (char*)"data\\texture\\yello.jpg";	//テクスチャファイルパス
+static char *g_textureName_Goal = (char*)"data\\texture\\ピース取得アイテム.png";	//テクスチャファイルパス
 static Time* pTime = pTime->GetTime();
 static TimeParam* pTimeParam = pTime->GetTimeParam();
 HRESULT InitGoal(){
 	g_Goal.texno = LoadTexture(g_textureName_Goal);
 	g_Goal.Pos = D3DXVECTOR2(0.0f, 0.0f);
 	g_Goal.Size = D3DXVECTOR2(GOAL_SIEZX, GOAL_SIZEY);
-	g_Goal.Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	g_Goal.Rotation = 180.0f;
+	g_Goal.Col = D3DXCOLOR(0.7f, 1.0f, 0.7f, 1.0f);
+	g_Goal.Rotation = 0.0f;
 	g_Goal.pieceIndex = -1;
+
+	g_Goal.NumPatern = 4;
+	g_Goal.PaternNo = 0;
+	g_Goal.uv_w = CIP_UV_W;
+	g_Goal.uv_h = CIP_UV_H;
+
 	g_Goal.UseFlag = false;
 	return S_OK;
 }
@@ -49,6 +55,12 @@ void UpdateGoal()
 		START* pStart = GetStart();
 		if (!pMouse->UseFlag)// && pGKey->GetGKey)
 		{
+			g_Goal.PaternNo += 0.25f;
+			if (g_Goal.PaternNo > 16.0f)
+			{
+				g_Goal.PaternNo = 0;
+			}
+
 
 			if (g_Goal.Pos.x + g_Goal.Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2
 				&& g_Goal.Pos.x - g_Goal.Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2
@@ -87,9 +99,9 @@ void DrawGoal()
 		//D3DXCOLOR	col = D3DXCOLOR(1.0f, 0.8f, 0.8f, 0.5f);
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Goal.texno));
 
-		SpriteDrawColorRotation(g_Goal.Pos.x, g_Goal.Pos.y,-0.2f,
-			g_Goal.Size.x, g_Goal.Size.y, g_Goal.Rotation, g_Goal.Col,
-			0, 1.0f, 1.0f, 1);
+		SpriteDrawColorRotation(g_Goal.Pos.x, g_Goal.Pos.y,-0.1f,
+			g_Goal.Size.x + 10.0f, g_Goal.Size.y + 10.0f, g_Goal.Rotation, g_Goal.Col,
+			g_Goal.PaternNo, g_Goal.uv_w, g_Goal.uv_h, g_Goal.NumPatern);
 	}
 
 }
