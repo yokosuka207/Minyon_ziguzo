@@ -60,6 +60,7 @@ enum class MAPCHIP_TYPE{
 	TYPE_DOPPELGANGER,	//22	ドッペルゲンガー
 	TYPE_ENEMY,			//23	敵
 	TYPE_PLAYER,		//24	敵
+	TYPE_START,			//25
 
 	TYPE_NUM		
 };

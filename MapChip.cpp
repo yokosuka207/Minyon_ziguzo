@@ -37,7 +37,7 @@
 #include "doppelganger.h"
 #include "enemy.h"
 #include "player.h"
-
+#include "start.h"
 
 #include "xkeyboard.h"
 
@@ -86,8 +86,8 @@ static char* g_MapChipTextureName[PIECE_TEX_MAX] = {
 static int g_MapChipTextureNo[PIECE_TEX_MAX];
 // ステージ情報が入っているファイルの名前
 static char* g_StageFileName[21] = {
-	//(char*)"data/MapData/map0.txt",			// デバッグ用マップ
-	(char*)"data/MapData/Stage01.txt",
+	(char*)"data/MapData/map.txt",			// デバッグ用マップ
+	//(char*)"data/MapData/Stage01.txt",
 	(char*)"data/MapData/Stage02.txt",
 	(char*)"data/MapData/Stage03.txt",
 	(char*)"data/MapData/Stage04.txt",
@@ -344,6 +344,9 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_PLAYER)://24　敵
 				SetPlayerPosition(position);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
+				SetStart(position, DrawSize, no);
 				break;
 			default:
 				break;
@@ -619,6 +622,9 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY)://23　敵
 				SetEnemy(position, DrawSize, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
+				SetStart(position, DrawSize, no);
 				break;
 			default:
 				break;

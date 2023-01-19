@@ -45,6 +45,7 @@
 #include "ray.h"		// 光線
 #include "EffectSpark.h"	// ヒバナエフェクト
 #include "PlayerLife.h"
+#include "start.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -70,6 +71,7 @@ void InitGame()
 		InitJoint();
 		InitGameMouse();
 		InitGoal();
+		InitStart();
 		InitGKey();
 		InitBroken();
 		InitWarp();
@@ -121,6 +123,7 @@ void UninitGame()
 	UninitPuzzle();
 	UninitGameMouse();
 	UninitGoal();
+	UninitStart();
 	UninitGKey();
 	UninitPuzzleCip();
 	UninitBroken();
@@ -187,6 +190,7 @@ void UpdateGame()
 		UpdatePuzzleCip();
 
 		UpdateGoal();
+		UpdateStart();
 		UpdateGKey();
 		UpdateBroken();
 		UpdateWarp();
@@ -238,6 +242,7 @@ void DrawGame()
 		DrawBlock();
 
 		DrawPuzzleCip();
+		DrawStart();
 		DrawPlayer();
 		DrawGKey();
 		DrawWarp();

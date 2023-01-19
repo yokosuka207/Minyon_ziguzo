@@ -93,6 +93,7 @@ void Score::DrawScore() {
 			}
 			if (!g_AnimeParam[5].AnimeFlag && frame == 110) {
 				SetAnimeParam(score / pow(10, 5));
+				frame = 0;
 			}
 			if (g_AnimeParam[i].AnimeFlag) {
 				SpriteDrawColorRotation

@@ -22,6 +22,7 @@
 #include "result.h"
 #include "scene.h"
 #include "goal.h"
+#include "start.h"
 
 #include "button.h"
 #include "time.h"
@@ -121,6 +122,7 @@ void UpdateCollision(){
 	GKey* pGKey = GetGKey();
 
 	GOAL* pGoal = GetGoal();
+	START* pStart = GetStart();
 	RESULT* pResult = GetResult();
 
 	Piece* pPiece = GetPiece();
@@ -212,6 +214,22 @@ void UpdateCollision(){
 
 			}
 		}
+		//=====================================
+		// start
+		//=====================================
+		for (int i = 0; i < START_MAX; i++) {
+			if (pStart[i].UseFlag) {
+				if (pStart[i].GoalFlag) {
+					if (CollisionBB(pPlayer->Position, pStart[i].pos, pPlayer->size, pStart[i].size)) {
+						SetResultType(WIN);
+						StartFade(FADE::FADE_OUT);
+						pTime->EndTime();
+						pTimeParam->EndFlag = true;
+					}
+				}
+			}
+		}
+
 		//=====================================
 		//死亡判定（トゲ、落下死,thornBlock）
 		//=====================================
@@ -618,14 +636,20 @@ void UpdateCollision(){
 		//-------------------------------------------------------------------
 		//ゴール専用鍵取得プレイヤーと鍵で開く扉の当たり判定(PlayerとGoal)
 		//-------------------------------------------------------------------
+
 		if (pGoal->UseFlag) {
 			if (!pMouse->UseFlag && pGKey->GetGKey) {
 				if (CollisionBB(pGoal->Pos, pPlayer->Position, pGoal->Size, pPlayer->size)) {
 					pGoal->UseFlag = false;
-					SetResultType(WIN);
-					StartFade(FADE::FADE_OUT);
-					pTime->EndTime();
-					pTimeParam->EndFlag = true;
+					//
+					for (int i = 0; i < START_MAX; i++) {
+						pStart[i].GoalFlag = true;
+					}
+					//
+					//SetResultType(WIN);
+					//StartFade(FADE::FADE_OUT);
+					//pTime->EndTime();
+					//pTimeParam->EndFlag = true;
 				}
 			}
 		}
@@ -1975,6 +1999,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	WARP* pWarp = GetWarp();
 	BROKEN* pBroken = GetBroken();
 	SHEERFLOORS* pSheerFloors = GetSheerFloors();
+	START* pStart = GetStart();
 
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
@@ -2017,6 +2042,13 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 
 		}
 
+	}
+	for (int i = 0; i < START_MAX; i++) {
+		if (pStart[i].UseFlag) {
+			if (pStart[i].PieceIndex == pinNo) {
+				pStart[i].pos += num;
+			}
+		}
 	}
 
 	for (int i = 0; i < JOINT_MAX; i++)

@@ -187,6 +187,7 @@
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="SplitStage.cpp" />
     <ClCompile Include="StageSelect.cpp" />
+    <ClCompile Include="start.cpp" />
     <ClCompile Include="switch.cpp" />
     <ClCompile Include="SwitchWall.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -252,6 +253,7 @@
     <ClInclude Include="sprite.h" />
     <ClInclude Include="SplitStage.h" />
     <ClInclude Include="StageSelect.h" />
+    <ClInclude Include="start.h" />
     <ClInclude Include="switch.h" />
     <ClInclude Include="SwitchWall.h" />
     <ClInclude Include="texture.h" />

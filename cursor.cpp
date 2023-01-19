@@ -30,6 +30,7 @@
 #include"broken.h"
 #include"SheerFloors.h"
 #include"goal_key.h"
+#include "start.h"
 //--------------------------------------------------
 // ƒ}ƒNƒ’è‹`
 //--------------------------------------------------
@@ -111,6 +112,7 @@ void UpdateCursor()
 	BROKEN* pBroken = GetBroken();
 	SHEERFLOORS* pSheerFloors = GetSheerFloors();
 	GKey* pGkey = GetGKey();
+	START* pStart = GetStart();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	g_Cursor.pos.x = GetXMousePosX();
@@ -307,6 +309,13 @@ void UpdateCursor()
 							if (pGoal->pieceIndex == NoIndex)
 							{
 								pGoal->Pos += temp;
+							}
+						}
+						for (int i = 0; i < START_MAX; i++) {
+							if (pStart[i].UseFlag) {
+								if (pStart[i].PieceIndex == NoIndex) {
+									pStart[i].pos += temp;
+								}
 							}
 						}
 						//if (pGkey->UseFlag)
