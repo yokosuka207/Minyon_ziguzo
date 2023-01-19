@@ -36,16 +36,21 @@
 #include "MoveBlock.h"
 #include "doppelganger.h"
 #include "enemy.h"
-#include"player.h"
+#include "player.h"
 
 //**************************************************
 //　マクロ定義
 //**************************************************
+#define PIECE_TEX_MAX	20
+#define PIECE_NUMPATTERN	4
+#define PIECE_UV_H	1.0f / 5
+#define PIECE_UV_W	1.0f / PIECE_NUMPATTERN
 
 //**************************************************
 // 構造体定義
 //**************************************************
 Piece g_PieceMapChip[PUZZLE_MAX];
+
 //**************************************************
 // グローバル変数:
 //**************************************************
@@ -53,27 +58,33 @@ static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
 //static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
 //static char* g_MapChipTextureName = (char*)"data\\texture\\パズルピース修正版\\16.png";	//テクスチャファイルパス
 // 各ピースのテクスチャファイル名
-static char* g_MCTNArray[16] = {
-	(char*)"data\\texture\\パズルピース修正版\\01.png",
-	(char*)"data\\texture\\パズルピース修正版\\02.png",
-	(char*)"data\\texture\\パズルピース修正版\\03.png",
-	(char*)"data\\texture\\パズルピース修正版\\04.png",
-	(char*)"data\\texture\\パズルピース修正版\\05.png",
-	(char*)"data\\texture\\パズルピース修正版\\06.png",
-	(char*)"data\\texture\\パズルピース修正版\\07.png",
-	(char*)"data\\texture\\パズルピース修正版\\08.png",
-	(char*)"data\\texture\\パズルピース修正版\\09.png",
-	(char*)"data\\texture\\パズルピース修正版\\10.png",
-	(char*)"data\\texture\\パズルピース修正版\\11.png",
-	(char*)"data\\texture\\パズルピース修正版\\12.png",
-	(char*)"data\\texture\\パズルピース修正版\\13.png",
-	(char*)"data\\texture\\パズルピース修正版\\14.png",
-	(char*)"data\\texture\\パズルピース修正版\\15.png",
-	(char*)"data\\texture\\パズルピース修正版\\16.png"};
-
+static char* g_MapChipTextureName[PIECE_TEX_MAX] = {
+	(char*)"data\\texture\\パズルピース_スプライトシート\\00.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\01.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\02.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\03.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\04.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\05.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\06.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\07.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\08.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\09.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\10.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\11.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\12.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\13.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\14.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\15.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\16.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\17.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\18.png",
+	(char*)"data\\texture\\パズルピース_スプライトシート\\19.png"};
+// 各テクスチャの番号
+static int g_MapChipTextureNo[PIECE_TEX_MAX];
 // ステージ情報が入っているファイルの名前
 static char* g_StageFileName[21] = {
-	(char*)"data/MapData/map0.txt",
+	//(char*)"data/MapData/map0.txt",			// デバッグ用マップ
+	(char*)"data/MapData/Stage01.txt",
 	(char*)"data/MapData/Stage02.txt",
 	(char*)"data/MapData/Stage03.txt",
 	(char*)"data/MapData/Stage04.txt",
@@ -96,12 +107,50 @@ static char* g_StageFileName[21] = {
 	(char*)"data/MapData/Stage21.txt"
 };
 
+// 各ステージ各ピースの情報
+static int g_StagePieceInfo[21][12] = {
+	{  82,  180,   01,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 1				 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
+	{  92,   61,   61,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 2  				 ┃・21ステージ									 ┃
+	{  82,   91,  133,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 3  ←ここまで	 ┃・各ステージ最大ピース数12					 ┃
+	{  00, -130,  143,   00,    0,    0,    0,    0,    0,    0,    0,    0},	// 4				 ┃・テクスチャの名前からした値が				 ┃
+	{ 190,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 5				 ┃			十と百の位の数字					 ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 6				 ┃・一の位は回転回数							 ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 7				 ┃				テクスチャを参考に左(反時計)回り ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 8				 ┃											     ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 9				 ┃・左右を反転させたい場合は -(マイナス) にする ┃
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 10				 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 11								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 12							
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 13						
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 14					
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 15								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 16								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 17								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 18								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 19								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 20								
+	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 21								
+};										 
+
+/*　　　				　		／＼			↑触るな危険！  不用意に踏み込まない方がいいぞ！
+*							　／	＼				
+*							／・　・　＼		
+*						　／＿_	　　 _＿＼		
+*							　｜ マ ｜			
+*							　｜ ジ	｜			
+*							　｜ で ｜			
+*							　｜ カ ｜			
+*							　｜ ス ｜			
+*							　｜＿＿｜					
+*							    || ||
+*							   || ||		
+*/
+
 HRESULT InitMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		g_PieceMapChip[p].UseFlag = false;
 		g_PieceMapChip[p].no = -1;
-		//g_PieceMapChip[p].TexNo = LoadTexture(g_MapChipTextureName);
-		g_PieceMapChip[p].TexNo = LoadTexture(g_MCTNArray[1]);
+		g_PieceMapChip[p].TexNo = 0;
 		g_PieceMapChip[p].direction = 2;
 		g_PieceMapChip[p].pos = D3DXVECTOR2(0.0f,0.0f);
 		g_PieceMapChip[p].OldMovePos = g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
@@ -109,6 +158,12 @@ HRESULT InitMapChip() {
 		g_PieceMapChip[p].MoveEndFlag = false;
 		g_PieceMapChip[p].MoveFlag = false;
 		g_PieceMapChip[p].InventoryFlag = false;
+		g_PieceMapChip[p].uvH = PIECE_UV_H;
+		g_PieceMapChip[p].uvW = PIECE_UV_W;
+		g_PieceMapChip[p].PatNo = 0;
+		g_PieceMapChip[p].startAngle = 0;
+		g_PieceMapChip[p].texDir = 2;
+		g_PieceMapChip[p].bAnim = false;
 		for (int d = 0; d < BLOCK_CHIP_DIRECTION; d++) {
 			for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
 				for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
@@ -116,6 +171,10 @@ HRESULT InitMapChip() {
 				}
 			}
 		}
+	}
+	// テクスチャ読み込み
+	for (int i = 0; i < PIECE_TEX_MAX; i++) {
+		g_MapChipTextureNo[i] = LoadTexture(g_MapChipTextureName[i]);
 	}
 
 	STAGESELECT* pStageSelect = GetSelect();
@@ -126,11 +185,6 @@ HRESULT InitMapChip() {
 	SplitStage* pSplitStage = GetSplitStage();
 	SetPieceMapChip(pSplitStage->Split34[0][0], 0);
 
-	//SetPieceMapChip(pSplitStage->Split3[1][2], 2);
-
-	//SetPieceMapChip(pSplitStage->Split3[1][0], 1);
-	//SetPieceMapChip(pSplitStage->Split3[2][1], 2);
-
 	return S_OK;
 }
 void UninitMapChip() {
@@ -140,7 +194,16 @@ void UninitMapChip() {
 	}
 }
 void UpdateMapChip() {
-
+	// アニメーション
+	for (Piece& p : g_PieceMapChip) {
+		if (p.UseFlag &&
+			p.bAnim) {
+			p.PatNo += 0.1f;
+			if (p.PatNo >= 16) {
+				p.bAnim = false;
+			}
+		}
+	}
 }
 void DrawMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
@@ -149,11 +212,28 @@ void DrawMapChip() {
 
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_PieceMapChip[p].TexNo));
 
-			SpriteDrawColorRotation(
-				g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,0.0f,
-				g_PieceMapChip[p].size.x, g_PieceMapChip[p].size.y, g_PieceMapChip[p].direction * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
-				1, 1.0f, 1.0f, 1
-			);
+			// アニメーション部分を被せる
+			if (g_PieceMapChip[p].bAnim) {
+				SpriteDrawColorRotation(
+					g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
+					g_PieceMapChip[p].size.x, -g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+					g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
+				);
+			}
+			if (g_PieceMapChip[p].uvW > 0) {
+				SpriteDrawColorRotation(
+					g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
+					g_PieceMapChip[p].size.x, -g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+					16, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
+				);
+			}
+			else {
+				SpriteDrawColorRotation(
+					g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
+					g_PieceMapChip[p].size.x, -g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+					19, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
+				);
+			}
 		}
 	}
 }
@@ -300,9 +380,14 @@ void RotateMapChipR(int PieceNo) {
 		if (g_PieceMapChip[i].no == PieceNo)
 		{
 			g_PieceMapChip[i].direction++;
+			g_PieceMapChip[i].texDir--;
 			// 0～3の範囲から出ないようにする
 			if (g_PieceMapChip[i].direction >= 4) {
 				g_PieceMapChip[i].direction = 0;
+			}
+			// 0～3の範囲から出ないようにする
+			if (g_PieceMapChip[i].texDir <= -1) {
+				g_PieceMapChip[i].texDir = 3;
 			}
 
 			// 各種デリート
@@ -327,9 +412,14 @@ void RotateMapChipL(int PieceNo) {
 		{
 
 			g_PieceMapChip[i].direction--;
+			g_PieceMapChip[i].texDir++;
 			// 0～3の範囲から出ないようにする
 			if (g_PieceMapChip[i].direction <= -1) {
 				g_PieceMapChip[i].direction = 3;
+			}
+			// 0～3の範囲から出ないようにする
+			if (g_PieceMapChip[i].texDir >= 4) {
+				g_PieceMapChip[i].texDir = 0;
 			}
 
 			// 各種デリート
@@ -379,11 +469,21 @@ Piece* GetPiece() {
 // ピースのセット
 //========================================
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
+	int stageNo = ReturnStageNo();
+	int PieceInfo = g_StagePieceInfo[stageNo][PieceNo];
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (!g_PieceMapChip[p].UseFlag) {
 			g_PieceMapChip[p].pos = pos;
 			g_PieceMapChip[p].no = PieceNo;
 			SetMapChip(pos, PieceNo, p);
+			if (PieceInfo < 0) {
+				g_PieceMapChip[p].uvW = -PIECE_UV_W;
+			}
+			else {
+				g_PieceMapChip[p].uvW = PIECE_UV_W;
+			}
+			g_PieceMapChip[p].TexNo = g_MapChipTextureNo[abs(PieceInfo / 10)];
+			g_PieceMapChip[p].startAngle = abs(PieceInfo % 10) - 2;
 			g_PieceMapChip[p].InventoryFlag = false;
 
 			g_PieceMapChip[p].UseFlag = true;
@@ -495,6 +595,18 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			default:
 				break;
 			}
+		}
+	}
+}
+
+void StartPieceAnimation(int PieceNo)
+{
+	for (Piece& p : g_PieceMapChip) {
+		if (p.no == PieceNo &&
+			p.UseFlag) {
+			p.bAnim = true;
+			p.PatNo = 0;
+			break;
 		}
 	}
 }

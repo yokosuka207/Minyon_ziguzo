@@ -171,6 +171,7 @@
     </ClCompile>
     <ClCompile Include="player.cpp" />
     <ClCompile Include="player3D.cpp" />
+    <ClCompile Include="PlayerLife.cpp" />
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="puzzle.cpp" />
     <ClCompile Include="puzzlecip.cpp" />
@@ -235,6 +236,7 @@
     </ClInclude>
     <ClInclude Include="player.h" />
     <ClInclude Include="player3D.h" />
+    <ClInclude Include="PlayerLife.h" />
     <ClInclude Include="polygon.h" />
     <ClInclude Include="puzzle.h" />
     <ClInclude Include="puzzlecip.h" />

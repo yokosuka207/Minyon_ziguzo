@@ -29,6 +29,7 @@
 #include"warp.h"
 #include"broken.h"
 #include"SheerFloors.h"
+#include"goal_key.h"
 //--------------------------------------------------
 // マクロ定義
 //--------------------------------------------------
@@ -109,6 +110,7 @@ void UpdateCursor()
 	WARP* pWarp = GetWarp();
 	BROKEN* pBroken = GetBroken();
 	SHEERFLOORS* pSheerFloors = GetSheerFloors();
+	GKey* pGkey = GetGKey();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	g_Cursor.pos.x = GetXMousePosX();
@@ -307,6 +309,13 @@ void UpdateCursor()
 								pGoal->Pos += temp;
 							}
 						}
+						//if (pGkey->UseFlag)
+						//{//ゴール
+						//	if (pGkey-> == NoIndex)
+						//	{
+						//		pGkey->Pos += temp;
+						//	}
+						//}
 						for (int i = 0; i < THORN_BLOCK_MAX; i++)
 						{//とげ
 							if (pThornBlock[i].UseFlag)

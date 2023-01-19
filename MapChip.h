@@ -27,7 +27,7 @@
 #define BLOCK_CHIP_DIRECTION (4)//チップの回転4方向分
 
 #define PUZZLE_SIZE (BLOCK_CHIP_ARRAY * BLOCK_CHIP_SIZE)	//16 * 15 (180 + 60) 
-#define PUZZLE_DRAW_SIZE (220)	// パズルの表示サイズ
+#define PUZZLE_DRAW_SIZE (360)	// パズルの表示サイズ
 #define PIECE_SIZE (180)
 #define INVENTORY_PUZZLE_SIZE (BLOCK_CHIP_ARRAY * 6.0f)	//16 * 15 (180 + 60) 
 
@@ -71,12 +71,18 @@ typedef struct {
 	D3DXVECTOR2 OldMovePos;//動く前の座標
 	D3DXVECTOR2 size;	//パズルのサイズ
 	int			chip[BLOCK_CHIP_DIRECTION][BLOCK_CHIP_ARRAY][BLOCK_CHIP_ARRAY];	//パズルの中のブロックの個数
+	int			startAngle;		// 初期角度
 	float		TexNo;
+	float		uvH;		// テクスチャのUV値　縦
+	float		uvW;		// テクスチャのUV値　横
+	float		PatNo;		// アニメーションパターンナンバー
 	int			direction;	//パズルの方向
+	int			texDir;		// テクスチャの方向
 	bool		MoveEndFlag;//動き終わった瞬間
 	bool		MoveFlag;//動いているか
 	bool		InventoryFlag;	//インベントリのパズルか
 	bool		UseFlag;//パズルが出現しているか否か
+	bool		bAnim;	// アニメーション中か
 }Piece;
 
 //**************************************************
@@ -106,5 +112,8 @@ void DeleteMapChip(int PieceNo);
 Piece* GetPiece();
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo);
 void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin);
+
+// ピースのアニメーションスタート
+void StartPieceAnimation(int PieceNo);
 
 #endif // !_MAPCHIP_H_

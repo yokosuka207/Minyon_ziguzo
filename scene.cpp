@@ -167,10 +167,10 @@ void UpdateScene(){
 		UpdateStageSelect();
 		UpdateNoizu();
 		if (pFade->FadeFlag) {
-			SetVolume(g_StageSelectSoundNo, 0.5f - g_SoundFadeOutVolume);
+			SetVolume(g_StageSelectSoundNo, 0.4f - g_SoundFadeOutVolume);
 			g_SoundFadeOutVolume += SOUND_FADE_OUT_VOLUME / 2;
-			if (g_SoundFadeOutVolume > 0.5f) {
-				g_SoundFadeOutVolume = 0.5f;
+			if (g_SoundFadeOutVolume > 0.4f) {
+				g_SoundFadeOutVolume = 0.4f;
 			}
 		}
 

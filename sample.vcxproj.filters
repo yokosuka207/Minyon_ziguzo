@@ -59,6 +59,7 @@
     <ClCompile Include="issuer.cpp" />
     <ClCompile Include="ray.cpp" />
     <ClCompile Include="EffectSpark.cpp" />
+    <ClCompile Include="PlayerLife.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -131,5 +132,6 @@
     <ClInclude Include="issuer.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="EffectSpark.h" />
+    <ClInclude Include="PlayerLife.h" />
   </ItemGroup>
 </Project>
