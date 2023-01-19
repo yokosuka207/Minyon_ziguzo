@@ -216,7 +216,6 @@ void DrawMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (g_PieceMapChip[p].UseFlag) {
 			//SetWorldViewProjection2D();
-			D3DXVECTOR2 DrawSize = D3DXVECTOR2(96.0f, 96.0f);
 
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_PieceMapChip[p].TexNo));
 			if (g_PieceMapChip[p].InventoryFlag) {
