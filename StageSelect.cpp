@@ -49,7 +49,7 @@ static char* g_StageSelectBgTextureName = (char*)"data\\texture\\ƒXƒŒ[ƒWƒZƒŒƒNƒ
 static ID3D11ShaderResourceView* g_StageSelectTextureBlock;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
 static char* g_StageSelectBlockTextureName = (char*)"data\\texture\\ƒXƒe[ƒW‘I‘ğ°.png";	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
 static ID3D11ShaderResourceView* g_StageSelectTextureStairs;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
-static char* g_StageSelectStairsTextureName = (char*)"data\\texture\\ŠK’i.png";	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
+static char* g_StageSelectStairsTextureName = (char*)"data\\texture\\jumpstand.png";	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
 static ID3D11ShaderResourceView* g_StageSelectTexturefence;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
 static char* g_StageSelectfenceTextureName = (char*)"data\\texture\\ò.png";	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
 
@@ -145,8 +145,8 @@ HRESULT InitStageSelect() {
 				a++;
 				b = 0;
 			}
-
-			g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (175.0f) + (250.0f * a));
+			//ƒhƒA
+			g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (180.0f) + (250.0f * a));
 			g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
 			g_StageSelect[i].UseFlag = true;
 			g_StageSelect[i].StagePieceIndex = i;
@@ -462,17 +462,19 @@ void DrawStageSelect() {
 			, 0.0f, g_StageSelectBlock[i].color, 0, 1.0f, 1.0f, 1);
 
 	}
-	//for (int i = 0; i < 12; i++)
-	//{
-	//	SetWorldViewProjection2D();
 
-	//	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairs[i].texno));
+	//ŠK’i
+	for (int i = 0; i < 12; i++)
+	{
+		SetWorldViewProjection2D();
 
-	//	/*SpriteDrawColorRotation(
-	//		g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x+10, g_StageSelectStairs[i].size.y+10
-	//		, 0.0f, g_StageSelectStairs[i].color, 0, 1.0f, 1.0f, 1);*/
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairs[i].texno));
 
-	//}
+		SpriteDrawColorRotation(
+			g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x+10, g_StageSelectStairs[i].size.y+10
+			, 0.0f, g_StageSelectStairs[i].color, 0, 1.0f, 1.0f, 1);
+
+	}
 
 	
 
