@@ -840,7 +840,7 @@ void PieceCollision()
 										colFlag2 = true;
 
 										//ジョイントが右だったら
-										if (pPiece[i].pos.x + pPiece[i].size.x / 3 < pJoint[j].pos.x)
+										if (pPiece[i].pos.x + PUZZLE_WIDHT / 3 < pJoint[j].pos.x)
 										{
 
 
@@ -880,7 +880,7 @@ void PieceCollision()
 
 										}
 										//ジョイントが左だったら
-										else if (pPiece[i].pos.x - pPiece[i].size.x / 3 > pJoint[j].pos.x)
+										else if (pPiece[i].pos.x - PUZZLE_WIDHT / 3 > pJoint[j].pos.x)
 										{
 											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
 
@@ -922,7 +922,7 @@ void PieceCollision()
 
 										}
 										//ジョイントが上だったら
-										else if (pPiece[i].pos.y - pPiece[i].size.y / 3 > pJoint[j].pos.y)
+										else if (pPiece[i].pos.y - PUZZLE_HEIGHT / 3 > pJoint[j].pos.y)
 										{
 											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT) - pPiece[i].pos;
 
@@ -961,7 +961,7 @@ void PieceCollision()
 
 										}
 										//ジョイントが下だったら
-										else if (pPiece[i].pos.y + pPiece[i].size.y / 3 < pJoint[j].pos.y)
+										else if (pPiece[i].pos.y + PUZZLE_HEIGHT / 3 < pJoint[j].pos.y)
 										{
 											D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT) - pPiece[i].pos;
 
