@@ -110,8 +110,8 @@ static char* g_StageFileName[21] = {
 // 各ステージ各ピースの情報
 static int g_StagePieceInfo[21][12] = {
 	{  82,  180,   01,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 1				 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
-	{  92,   61,   61,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 2  ←ここまで	 ┃・21ステージ									 ┃
-	{  82,   93,  132,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 3  				 ┃・各ステージ最大ピース数12					 ┃
+	{  92,   61,   61,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 2  				 ┃・21ステージ									 ┃
+	{  82,   91,  133,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 3  ←ここまで	 ┃・各ステージ最大ピース数12					 ┃
 	{  00, -130,  143,   00,    0,    0,    0,    0,    0,    0,    0,    0},	// 4				 ┃・テクスチャの名前からした値が				 ┃
 	{ 190,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 5				 ┃			十と百の位の数字					 ┃
 	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 6				 ┃・一の位は回転回数							 ┃
@@ -220,11 +220,20 @@ void DrawMapChip() {
 					g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
 				);
 			}
-			SpriteDrawColorRotation(
-				g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y,0.0f,
-				g_PieceMapChip[p].size.x,-g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
-				16, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
-			);
+			if (g_PieceMapChip[p].uvW > 0) {
+				SpriteDrawColorRotation(
+					g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
+					g_PieceMapChip[p].size.x, -g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+					16, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
+				);
+			}
+			else {
+				SpriteDrawColorRotation(
+					g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
+					g_PieceMapChip[p].size.x, -g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+					19, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
+				);
+			}
 		}
 	}
 }
