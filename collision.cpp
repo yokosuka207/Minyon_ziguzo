@@ -2708,7 +2708,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 			{
 				//ジョイントがなかったら
 
-				if (pPiece[punum].pos.y + pPiece[punum].size.y / 3 < pJoint[i].pos.y)	//下
+				if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 > pJoint[i].pos.y)	//下
 				{
 					{
 						//合っていなかったら
@@ -2749,7 +2749,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 			if (pJoint[i].pieNo == pPiece[punum].no)
 			{
 				//ジョイントがなかったら
-				if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 > pJoint[i].pos.y)	//下
+				if (pPiece[punum].pos.y + pPiece[punum].size.y / 3 < pJoint[i].pos.y)	//下
 				{
 					//合っていなかったら
 					return false;
