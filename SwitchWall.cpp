@@ -11,6 +11,7 @@
 #include "texture.h"
 #include "sprite.h"
 #include "renderer.h"
+#include "MapChip.h"
 
 #define SWITCHWALL_NUMPATERN (1)
 
@@ -76,13 +77,22 @@ void DrawSwitchWall() {
 	}
 }
 
-void SetSwitchWall(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo,int WallMax) {
+void SetSwitchWall(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo, int direction, int WallMax) {
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
 		if (!g_SwitchWall[i].UseFlag) {
 			g_SwitchWall[i].WallMax = 0;
-
+			//方向変換できればドアもできる(0,2しか来ない)、あとはインデックスだけ
 			for (int j = 0; j < WallMax; j++) {
-				g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x, pos.y - j * size.y);
+				switch (direction) {
+				case 0:g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x, pos.y + j * size.y);//↑
+					break;
+				case 1:g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x + j * size.x, pos.y);//→
+					break;
+				case 2:g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x, pos.y - j * size.y);//↓
+					break;
+				case 3:g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x - j * size.x, pos.y);//←
+					break;
+				}
 				g_SwitchWall[i + j].size = size;
 				g_SwitchWall[i + j].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 				g_SwitchWall[i + j].PieceIndex = PieceNo;

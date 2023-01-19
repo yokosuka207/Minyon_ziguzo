@@ -133,7 +133,7 @@ void	UpdateResult()
 		if (Keyboard_IsKeyTrigger(KK_SPACE))
 		{
 			//SetScene(SCENE::SCENE_TITLE);
-			StartFade(FADE::FADE_OUT);
+			StartFade(FADE::FADE_ALPHA_OUT);
 		}
 	}
 	else if (ResultObject[0].type == LOSE)
@@ -159,7 +159,7 @@ void	UpdateResult()
 				//SetScene(SCENE::SCENE_GAME);
 				pFadeParam->ExceptFlag = true;
 				if (!pFadeParam->FadeFlag)
-				StartFade(FADE::FADE_OUT);
+				StartFade(FADE::FADE_ALPHA_OUT);
 			}
 		}
 		
