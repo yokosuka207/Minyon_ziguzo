@@ -18,7 +18,7 @@ PUZZLE_CIP	g_PuzzleCip[CIP_MAX];
 PUZZLE_CIP g_ChipPuzzleChip[BLOCK_CHIP_MAX];
 
 static ID3D11ShaderResourceView	*g_texturePuzzleCip;	//画像一枚で一つの変数が必要
-static char *g_textureName_PuzzleCip = (char*)"data\\texture\\ピースアイテム.png";	//テクスチャファイルパス
+static char *g_textureName_PuzzleCip = (char*)"data\\texture\\ピース取得アイテム.png";	//テクスチャファイルパス
 
 
 void SetPuzzleCipCreate(CREATE_CIP_TYPE ctype,int u, int r, int d, int l, bool gflag);

@@ -20,6 +20,7 @@
 #include "scene.h"
 #include "player.h"
 #include "fade.h"
+#include "sound.h"
 //*****************************************************************************
 //	マクロ定義
 //*****************************************************************************
@@ -64,6 +65,8 @@ int StageNo = 0;
 
 static bool OneFlag =true;	//geゲームの最初かどうか
 
+static int g_StageSelectPlayerSoundNo = 0;
+static char g_StageSelectPlayerSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
 
 
 //-----------------------------------------------------------------------------
@@ -199,7 +202,7 @@ HRESULT InitStageSelect() {
 	ply.CoolTime = PLAYER_COOLTIME;
 	ply.PieceIndex = 0;
 
-
+	g_StageSelectPlayerSoundNo = LoadSound(g_StageSelectPlayerSoundName);
 
 	return S_OK;
 }
@@ -284,6 +287,10 @@ void UpdateStageSelect() {
 		// アニメーションパターン番号を0～15の範囲内にする
 		if (ply.PaternNo > 15) { ply.PaternNo -= 15; }
 		if (ply.PaternNo < 0) { ply.PaternNo += 15; }
+		if (ply.PaternNo == 4.0f || ply.PaternNo == 12.0f) {
+			PlaySound(g_StageSelectPlayerSoundNo, 0);
+			SetVolume(g_StageSelectPlayerSoundNo, 0.5f);
+		}
 
 		ply.oldpos = ply.Position;
 		ply.Position += ply.sp;

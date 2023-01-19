@@ -38,6 +38,9 @@
 #include "enemy.h"
 #include "player.h"
 
+
+#include "xkeyboard.h"
+
 //**************************************************
 //　マクロ定義
 //**************************************************
@@ -154,7 +157,7 @@ HRESULT InitMapChip() {
 		g_PieceMapChip[p].direction = 2;
 		g_PieceMapChip[p].pos = D3DXVECTOR2(0.0f,0.0f);
 		g_PieceMapChip[p].OldMovePos = g_PieceMapChip[p].OldPos = g_PieceMapChip[p].pos;
-		g_PieceMapChip[p].size = D3DXVECTOR2(PUZZLE_DRAW_SIZE, PUZZLE_DRAW_SIZE);		// 180 x 180
+		g_PieceMapChip[p].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);		// 180 x 180
 		g_PieceMapChip[p].MoveEndFlag = false;
 		g_PieceMapChip[p].MoveFlag = false;
 		g_PieceMapChip[p].InventoryFlag = false;
@@ -198,49 +201,54 @@ void UpdateMapChip() {
 	for (Piece& p : g_PieceMapChip) {
 		if (p.UseFlag &&
 			p.bAnim) {
-			p.PatNo += 0.1f;
+			p.PatNo += 0.5f;
 			if (p.PatNo >= 16) {
 				p.bAnim = false;
 			}
 		}
 	}
+	if (Keyboard_IsKeyTrigger(KK_S)) {
+		StartPieceAnimation(0);
+	}
 }
 void DrawMapChip() {
+	float DrawSize;
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (g_PieceMapChip[p].UseFlag) {
 			//SetWorldViewProjection2D();
 			D3DXVECTOR2 DrawSize = D3DXVECTOR2(96.0f, 96.0f);
 
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_PieceMapChip[p].TexNo));
-			if (g_PieceMapChip[p].InventoryFlag)
-			{
-
+			if (g_PieceMapChip[p].InventoryFlag) {
+				DrawSize = 150.0f;
 			}
 			else {
-				DrawSize = D3DXVECTOR2(PUZZLE_DRAW_SIZE, PUZZLE_DRAW_SIZE);
+				DrawSize = PUZZLE_DRAW_SIZE;
 			}
 
-			// アニメーション部分を被せる
-			if (g_PieceMapChip[p].bAnim) {
-				SpriteDrawColorRotation(
-					g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
-					DrawSize.x, -DrawSize.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
-					g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
-				);
-			}
 			if (g_PieceMapChip[p].uvW > 0) {
 				SpriteDrawColorRotation(
 					g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
-					DrawSize.x, -DrawSize.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+					DrawSize, -DrawSize, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
 					16, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
 				);
 			}
 			else {
 				SpriteDrawColorRotation(
 					g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
-					DrawSize.x, -DrawSize.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+					DrawSize, -DrawSize, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
 					19, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
 				);
+			}
+			// アニメーション部分を被せる
+			if (g_PieceMapChip[p].bAnim) {
+				SetBlendState(BLEND_MODE_ADD);
+				SpriteDrawColorRotation(
+					g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
+					DrawSize, -DrawSize, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f),
+					g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
+				);
+				SetBlendState(BLEND_MODE_ALPHABLEND);
 			}
 		}
 	}
@@ -503,6 +511,9 @@ void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
 //インベントリ内のマップチップ
 //--------------------------------
 void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
+	int stageNo = ReturnStageNo();
+	int PieceInfo = g_StagePieceInfo[stageNo][no];
+
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (!g_PieceMapChip[p].UseFlag) {
 
@@ -511,6 +522,16 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			g_PieceMapChip[p].no = no;
 			g_PieceMapChip[p].InventoryFlag = true;
 			Pin = p;
+
+			if (PieceInfo < 0) {
+				g_PieceMapChip[p].uvW = -PIECE_UV_W;
+			}
+			else {
+				g_PieceMapChip[p].uvW = PIECE_UV_W;
+			}
+			g_PieceMapChip[p].TexNo = g_MapChipTextureNo[abs(PieceInfo / 10)];
+			g_PieceMapChip[p].startAngle = abs(PieceInfo % 10) - 2;
+
 			g_PieceMapChip[p].UseFlag = true;
 			break;
 		}

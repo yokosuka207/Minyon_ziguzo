@@ -32,7 +32,7 @@ Update:
 // グローバル変数
 //**************************************************
 // 各テクスチャの名前
-static char* g_BGTextureFileName = (char*)"data/texture/セーブ画面背景.png";				// 背景
+static char* g_BGTextureFileName = (char*)"data/texture/black.png";				// 背景
 static char* g_TextureFileName1 = (char*)"data/texture/セーブデータテキスト１.png";					// データ１
 static char* g_TextureFileName2 = (char*)"data/texture/セーブデータテキスト２.png";					// データ２
 static char* g_TextureFileName3 = (char*)"data/texture/セーブデータテキスト３.png";					// データ３
@@ -121,7 +121,7 @@ void Save::Update()
 		Keyboard_IsKeyTrigger(KK_A)) {						// Keyboard	A
 		// ステージセレクトシーンへ
 		//SetScene(SCENE_STAGESELECT);
-		StartFade(FADE::FADE_OUT);
+		StartFade(FADE::FADE_ALPHA_OUT);
 	}
 	// Zボタンを押したら
 	if (IsButtonTriggered(0, XINPUT_GAMEPAD_X) ||			// GamePad	X
@@ -160,7 +160,7 @@ void Save::Update()
 
 			//SetScene(SCENE_STAGESELECT);			// ステージセレクトシーンに切り替わる
 			if(!pFadeParam->FadeFlag)
-			StartFade(FADE::FADE_OUT);
+			StartFade(FADE::FADE_ALPHA_OUT);
 		}
 	}
 }
