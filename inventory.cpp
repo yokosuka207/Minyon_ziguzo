@@ -122,7 +122,7 @@ void UpdateInventory()
 			}
 
 			// 左に置くバージョン
-			float bgmax_x = -INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X * 2.5f;
+			float bgmax_x = -INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X * 2.3f;
 
 			// 入力(マウス左Press)
 			if (Mouse_IsLeftDown()) {
@@ -241,6 +241,7 @@ void SetInventory(int PieNo)
 				g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f*2 - i * 150.0f);
 				SetInventoryMapChip(g_Inventory[i].pos, PieNo, PieNo);
 				g_Inventory[i].IsUse = true;
+				g_Inventory[i].IsCatch = true;
 
 				break;
 			}

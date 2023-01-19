@@ -209,28 +209,36 @@ void DrawMapChip() {
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (g_PieceMapChip[p].UseFlag) {
 			//SetWorldViewProjection2D();
+			D3DXVECTOR2 DrawSize = D3DXVECTOR2(96.0f, 96.0f);
 
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_PieceMapChip[p].TexNo));
+			if (g_PieceMapChip[p].InventoryFlag)
+			{
+
+			}
+			else {
+				DrawSize = D3DXVECTOR2(PUZZLE_DRAW_SIZE, PUZZLE_DRAW_SIZE);
+			}
 
 			// アニメーション部分を被せる
 			if (g_PieceMapChip[p].bAnim) {
 				SpriteDrawColorRotation(
 					g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
-					g_PieceMapChip[p].size.x, -g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+					DrawSize.x, -DrawSize.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
 					g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
 				);
 			}
 			if (g_PieceMapChip[p].uvW > 0) {
 				SpriteDrawColorRotation(
 					g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
-					g_PieceMapChip[p].size.x, -g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+					DrawSize.x, -DrawSize.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
 					16, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
 				);
 			}
 			else {
 				SpriteDrawColorRotation(
 					g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
-					g_PieceMapChip[p].size.x, -g_PieceMapChip[p].size.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
+					DrawSize.x, -DrawSize.y, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f),
 					19, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
 				);
 			}
@@ -238,7 +246,7 @@ void DrawMapChip() {
 	}
 }
 void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
-	g_PieceMapChip[Pin].size = D3DXVECTOR2(PUZZLE_DRAW_SIZE, PUZZLE_DRAW_SIZE);
+	g_PieceMapChip[Pin].size = D3DXVECTOR2(PIECE_SIZE, PIECE_SIZE);
 
 	int brokenIndex = 0;	//壊れるブロックの個数
 	int HighbrokenIndex = 0;	//高い壊れるブロックの個数
