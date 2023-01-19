@@ -218,7 +218,8 @@ void UpdateCollision(){
 		//=====================================
 		//死亡判定（トゲ、落下死,thornBlock）
 		//=====================================
-		if (!Mouse_IsLeftDown) {
+		if (!Mouse_IsLeftDown)
+		{
 			//プレイヤーとトゲブロックの判定
 			for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 				if (pThornBlock[i].UseFlag) {
@@ -244,15 +245,16 @@ void UpdateCollision(){
 					}
 				}
 			}
-			//プレイヤーが落下死したら
-			if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT){
-				pPlayer->hp--;
-				pResult[0].type = LOSE;
-				pTime->EndTime();
-				pTimeParam->EndFlag = true;
-				StartFade(FADE::FADE_ALPHA_OUT);
-			}
 		}
+		//プレイヤーが落下死したら
+		if (pPlayer->Position.y - pPlayer->size.y < -SCREEN_HEIGHT / 2) {
+			pPlayer->hp--;
+			pResult[0].type = LOSE;
+			pTime->EndTime();
+			pTimeParam->EndFlag = true;
+			StartFade(FADE::FADE_ALPHA_OUT);
+		}
+
 		//========================================================================
 		//プレイヤー・チップブロック　当たり判定(PlayerとChipBlockの当たり判定)
 		//=========================================================================
@@ -894,7 +896,6 @@ void PieceCollision()
 
 												if (fourPieceCollision(pPiece[i], i))
 												{
-													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_SIZE, pPiece[pJoint[k].indexno].pos.y);
 
 													PositionPlas(temp, pPiece[i].no);
 													pPiece[i].OldMovePos = pPiece[i].pos;
@@ -2143,7 +2144,7 @@ bool PlayerPieceOpen(Piece p, int index, DIRECSION direcsion)
 				{
 				case UP:
 					//puzzleの上に別のパズルがあるか
-					if (p.pos.y - PUZZLE_HEIGHT == pPiece[i].pos.y && p.pos.x == pPiece[i].pos.x)return false;
+					if (p.pos.y + PUZZLE_HEIGHT == pPiece[i].pos.y && p.pos.x == pPiece[i].pos.x)return false;
 
 					if (p.pos.y - PUZZLE_HEIGHT - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
 						p.pos.y - PUZZLE_HEIGHT + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&
@@ -2156,7 +2157,7 @@ bool PlayerPieceOpen(Piece p, int index, DIRECSION direcsion)
 					break;
 				case DOWN:
 					//pの下に別のパズルがあるか
-					if (p.pos.y + PUZZLE_HEIGHT == pPiece[i].pos.y && p.pos.x == pPiece[i].pos.x)	return false;
+					if (p.pos.y - PUZZLE_HEIGHT == pPiece[i].pos.y && p.pos.x == pPiece[i].pos.x)	return false;
 
 					if (p.pos.y + PUZZLE_HEIGHT - PUZZLE_HEIGHT / 2 < pPiece[i].pos.y &&
 						p.pos.y + PUZZLE_HEIGHT + PUZZLE_HEIGHT / 2 > pPiece[i].pos.y &&

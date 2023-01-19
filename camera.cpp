@@ -96,14 +96,14 @@ void UpdateCamera(void)
 	}
 
 	// ‹–ìŠp‚ğ•ÏX‚·‚é
-	if (Keyboard_IsKeyTrigger(KK_O))
-	{// Šp“x‚ğ‘å‚«‚­‚·‚é
-		g_Camera.fov += 1.0f;
-	}
-	else if (Keyboard_IsKeyTrigger(KK_L))
-	{// Šp“x‚ğ¬‚³‚­‚·‚é
-		g_Camera.fov -= 1.0f;
-	}
+	//if (Keyboard_IsKeyTrigger(KK_O))
+	//{// Šp“x‚ğ‘å‚«‚­‚·‚é
+	//	g_Camera.fov += 1.0f;
+	//}
+	//else if (Keyboard_IsKeyTrigger(KK_L))
+	//{// Šp“x‚ğ¬‚³‚­‚·‚é
+	//	g_Camera.fov -= 1.0f;
+	//}
 	if (Keyboard_IsKeyDown(KK_UP))//W
 	{
 		g_Camera.fov = 20.0f;
