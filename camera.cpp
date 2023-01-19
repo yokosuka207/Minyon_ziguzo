@@ -141,7 +141,7 @@ void UpdateCamera(void)
 
 
 
-	if (GetThumbLeftX(0) != 0|| GetThumbLeftY(0) != 0)
+	if (GetThumbLeftX(0) != 0|| GetThumbLeftY(0) != 0|| IsButtonPressed(0, XINPUT_GAMEPAD_A))
 	{
 		g_Camera.fov = 20.0f;
 		g_Camera.zoomFlag = true;

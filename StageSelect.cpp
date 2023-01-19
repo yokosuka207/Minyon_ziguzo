@@ -227,9 +227,10 @@ void UpdateStageSelect() {
 		if (ply.isGround)
 		{
 
-
+			
 			//移動
-			if (Keyboard_IsKeyDown(KK_RIGHT))//右キー
+			if (GetThumbLeftX(0) > 0.3f ||					// GamePad	右スティック	右
+				Keyboard_IsKeyDown(KK_RIGHT))				// Keyboard	右
 			{//押されているときの処理
 				ply.sp.x = 2.0f;
 				ply.PaternNo += 0.25f;
@@ -244,7 +245,8 @@ void UpdateStageSelect() {
 				ply.dir = PLAYER_DIRECTION::RIGHT;
 				ply.uv_w = PLAYER_UV_W;
 			}
-			else if (Keyboard_IsKeyDown(KK_LEFT))//左キー
+			else if (GetThumbLeftX(0) < -0.3f ||			// GamePad	右スティック	左
+				Keyboard_IsKeyDown(KK_LEFT))				// Keyboard	左
 			{//押されているときの処理
 				ply.sp.x = -2.0f;
 				ply.PaternNo -= 0.25f;
@@ -426,7 +428,7 @@ void UpdateStageSelect() {
 			{
 
 
-				if (Keyboard_IsKeyTrigger(KK_A)) {
+				if (Keyboard_IsKeyTrigger(KK_A) || IsButtonPressed(0, XINPUT_GAMEPAD_A)) {
 					StageNo = i;
 					//SetScene(SCENE::SCENE_GAME);
 					StartFade(FADE::FADE_OUT);
