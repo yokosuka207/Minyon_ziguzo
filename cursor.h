@@ -25,6 +25,7 @@ typedef struct
 	D3DXVECTOR2 oldPos;			// 1フレーム前の座標
 	D3DXVECTOR2 sp;				// スピード
 	D3DXCOLOR color;			// 色
+	int	type;					// テクスチャの状態
 	float texNo;				// テクスチャインデックス
 	int RotIndex;	//回転した数
 	bool pFlag;	//プレーヤーがいるかどうか

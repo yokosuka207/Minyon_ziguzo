@@ -46,7 +46,9 @@
 // グローバル変数
 //--------------------------------------------------
 static CURSOR g_Cursor;
-static char *g_TextureName = (char*)"data\\texture\\cursor_default.png";
+static char *g_CursorTextureName = (char*)"data\\texture\\cursor_default.png";
+static char* g_CursorCatchTextureName = (char*)"data\\texture\\cursor_catch.png";
+static int g_CursorTextureNo[2];
 
 static bool oneFlag = false;	//マウスでパズルを一つ持っているか
 static int g_CursorIndex = -1;	//マウスの掴んだパズルの番号入れ
@@ -70,11 +72,14 @@ HRESULT InitCursor()
 		g_Cursor.pos = g_Cursor.oldPos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 		g_Cursor.sp = D3DXVECTOR2(1.0f, 1.0f);
 		g_Cursor.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		g_Cursor.texNo = LoadTexture(g_TextureName);
+		g_Cursor.texNo = LoadTexture(g_CursorTextureName);
 		g_Cursor.RotIndex = 0;
 		g_Cursor.pFlag = false;
 		g_Cursor.useFlag = false;
+		g_Cursor.type = 0;
 	}
+	g_CursorTextureNo[0] = LoadTexture(g_CursorTextureName);
+	g_CursorTextureNo[1] = LoadTexture(g_CursorCatchTextureName);
 
 	return S_OK;
 }
@@ -153,7 +158,6 @@ void UpdateCursor()
 
 		if (Mouse_IsLeftDown())
 		{
-
 			for (int i = 0; i < PUZZLE_MAX; i++)
 			{
 				//if (pPuzzle[i].UseFlag)
@@ -234,7 +238,7 @@ void UpdateCursor()
 						g_CursorIndex = i;
 						NoIndex = pPiece[i].no;
 						pPiece[i].OldMovePos = pPiece[i].pos;
-
+						g_Cursor.type = 1;
 					}
 					else if (oneFlag && i == g_CursorIndex)
 					{
@@ -398,15 +402,12 @@ void UpdateCursor()
 							pPlayer->oldpos = pPlayer->Position;
 						}
 					}
-
-
-
+					else {
+						g_Cursor.type = 0;
+					}
 				}
-
 			}
-
 		}
-
 	}
 	if (!Mouse_IsLeftDown())
 	{
@@ -419,15 +420,12 @@ void UpdateCursor()
 
 			//g_Cursor.RotIndex = 0;
 			g_Cursor.pFlag = false;
-
-
 		}
 		oneFlag = false;
 		g_CursorIndex = -1;
 		NoIndex = -1;
-
+		g_Cursor.type = 0;
 	}
-
 }
 
 //==================================================
@@ -439,7 +437,7 @@ void DrawCursor()
 
 	if (g_Cursor.useFlag) {
 		// テクスチャの設定
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Cursor.texNo));
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_CursorTextureNo[g_Cursor.type]));
 		// ポリゴンの描画
 		SpriteDrawColorRotation(g_Cursor.pos.x, g_Cursor.pos.y, 0.0f, g_Cursor.size.x, g_Cursor.size.y, 0.0f, g_Cursor.color, 1.0f, 1.0f, 1.0f, 1);
 	}
@@ -452,7 +450,8 @@ void DrawCursor()
 void SetCursor(D3DXVECTOR2 pos, D3DXVECTOR2 size)
 {
 	g_Cursor.pos = g_Cursor.oldPos = pos;
-	g_Cursor.size = size;
+	g_Cursor.size = D3DXVECTOR2(CURSOR_SIZE_W, CURSOR_SIZE_H);
+	//g_Cursor.size = size;
 
 	g_Cursor.useFlag = true;
 }

@@ -883,10 +883,7 @@ void PieceCollision()
 													{
 														pPlayer->Position = pPlayer->OneOldpos;
 													}
-
 												}
-
-
 											}
 											//ジョイントが左だったら
 											else if (pPiece[i].pos.x - pPiece[i].size.x / 3 > pJoint[j].pos.x)
@@ -926,9 +923,7 @@ void PieceCollision()
 													{
 														pPlayer->Position = pPlayer->OneOldpos;
 													}
-
 												}
-
 											}
 											//ジョイントが上だったら
 											else if (pPiece[i].pos.y - pPiece[i].size.y / 3 > pJoint[j].pos.y)
