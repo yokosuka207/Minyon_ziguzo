@@ -220,7 +220,9 @@ void UpdateCollision(){
 			for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 				if (pThornBlock[i].UseFlag) {
 					if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
+						
 						pPlayer->hp--;
+
 						if (pPlayer->hp <= 0) {
 							SetResultType(LOSE);
 							StartFade(FADE::FADE_OUT);
@@ -241,6 +243,7 @@ void UpdateCollision(){
 			}
 			//プレイヤーが落下死したら
 			if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT){
+				pPlayer->hp--;
 				pResult[0].type = LOSE;
 				pTime->EndTime();
 				pTimeParam->EndFlag = true;
@@ -808,6 +811,7 @@ void PieceCollision()
 					if (pFlag)
 					{
 						pPlayer->Position = pPlayer->OneOldpos;
+						pPlayer->hp--;
 					}
 
 					break;
@@ -2711,7 +2715,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 			{
 				//ジョイントがなかったら
 
-				if (pPiece[punum].pos.y + pPiece[punum].size.y / 3 < pJoint[i].pos.y)	//下
+				if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 > pJoint[i].pos.y)	//下
 				{
 					{
 						//合っていなかったら
@@ -2752,7 +2756,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 			if (pJoint[i].pieNo == pPiece[punum].no)
 			{
 				//ジョイントがなかったら
-				if (pPiece[punum].pos.y - pPiece[punum].size.y / 3 > pJoint[i].pos.y)	//下
+				if (pPiece[punum].pos.y + pPiece[punum].size.y / 3 < pJoint[i].pos.y)	//下
 				{
 					//合っていなかったら
 					return false;
