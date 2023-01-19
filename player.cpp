@@ -983,7 +983,7 @@ void UpdatePlayer()
 
 								if (!hitflag2)
 								{
-									g_Player.sp.y -= 0.2;//â¡ë¨
+									g_Player.sp.y -= 0.2f;//â¡ë¨
 								}
 								else
 								{//â∫Ç…âΩÇ‡Ç»Ç≠éÄñSÇ∑ÇÈèÍçá

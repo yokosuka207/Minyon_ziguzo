@@ -11,6 +11,7 @@
 #include "mouse.h"
 #include "camera.h"
 #include"player.h"
+#include"xinput.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -95,14 +96,14 @@ void UpdateCamera(void)
 	}
 
 	// 視野角を変更する
-	if (Keyboard_IsKeyTrigger(KK_O))
-	{// 角度を大きくする
-		g_Camera.fov += 1.0f;
-	}
-	else if (Keyboard_IsKeyTrigger(KK_L))
-	{// 角度を小さくする
-		g_Camera.fov -= 1.0f;
-	}
+	//if (Keyboard_IsKeyTrigger(KK_O))
+	//{// 角度を大きくする
+	//	g_Camera.fov += 1.0f;
+	//}
+	//else if (Keyboard_IsKeyTrigger(KK_L))
+	//{// 角度を小さくする
+	//	g_Camera.fov -= 1.0f;
+	//}
 	if (Keyboard_IsKeyDown(KK_UP))//W
 	{
 		g_Camera.fov = 20.0f;
@@ -138,6 +139,19 @@ void UpdateCamera(void)
 	}
 
 
+
+
+	if (GetThumbLeftX(0) != 0|| GetThumbLeftY(0) != 0)
+	{
+		g_Camera.fov = 20.0f;
+		g_Camera.zoomFlag = true;
+	}
+	if (GetThumbRightX(0) != 0 || GetThumbRightY(0) != 0)
+	{
+		InitCamera();
+		g_Camera.fov = 45.0f;
+		g_Camera.zoomFlag = false;
+	}
 }
 
 
