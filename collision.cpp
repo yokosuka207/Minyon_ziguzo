@@ -224,7 +224,9 @@ void UpdateCollision(){
 			for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 				if (pThornBlock[i].UseFlag) {
 					if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
+						
 						pPlayer->hp--;
+
 						if (pPlayer->hp <= 0) {
 							SetResultType(LOSE);
 							StartFade(FADE::FADE_OUT);
@@ -245,6 +247,7 @@ void UpdateCollision(){
 			}
 			//ƒvƒŒƒCƒ„[‚ª—Ž‰ºŽ€‚µ‚½‚ç
 			if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT){
+				pPlayer->hp--;
 				pResult[0].type = LOSE;
 				pTime->EndTime();
 				pTimeParam->EndFlag = true;
@@ -813,6 +816,7 @@ void PieceCollision()
 					if (pFlag)
 					{
 						pPlayer->Position = pPlayer->OneOldpos;
+						pPlayer->hp--;
 					}
 
 					break;
