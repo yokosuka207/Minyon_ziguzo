@@ -11,6 +11,7 @@
 
 #include "main.h"
 #include "renderer.h"
+#include "player.h"
 
 #define STAGE_MAX (21)
 
@@ -67,6 +68,7 @@ void UpdateStageSelect();
 void DrawStageSelect();
 void SetStageSelect(int a);
 STAGESELECT* GetSelect();
+PLAYER* GetSelectPlayer();
 
 int ReturnStageNo();
 

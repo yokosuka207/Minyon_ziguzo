@@ -12,6 +12,9 @@
 #include "texture.h"
 #include "renderer.h"
 #include "scene.h"
+#include "StageSelect.h"
+#include "goal.h"
+
 
 static ID3D11ShaderResourceView* g_FadeTexture;	//画像一枚で一つの変数が必要
 static char* g_FadeTextureName = (char*)"data\\texture\\puzzlepiece_item.png";	//テクスチャファイルパス
@@ -178,14 +181,28 @@ void StartFade(FADE state) {
 			g_FadeParam.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 		}
 		if (g_FadeParam.state == FADE::FADE_OUT) {
+			SCENE* scene = GetScene();
+			if (*scene == SCENE_STAGESELECT)//ステージセレクト画面のプレイヤーの位置にアイリスイン
+			{ 
+				PLAYER* player = GetSelectPlayer();
+				g_FadeParam.pos = player->Position;
+			}
+			else//プレイ画面のゴールの位置にアイリスイン
+			{ 
+				GOAL* goal = GetGoal();
+				g_FadeParam.pos = goal->Pos;
+			}
+
 			g_FadeParam.alpha = 1.0f;
 			g_FadeParam.size = g_FadeParam.scaling;
 		}
 		if (g_FadeParam.state == FADE::FADE_ALPHA_IN) {
+			g_FadeParam.pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 			g_FadeParam.alpha = 1.0f;
 			g_FadeParam.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 		}
 		if (g_FadeParam.state == FADE::FADE_ALPHA_OUT) {
+			g_FadeParam.pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 			g_FadeParam.alpha = 0.0f;
 			g_FadeParam.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 		}
