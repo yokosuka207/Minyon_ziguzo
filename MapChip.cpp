@@ -486,7 +486,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteDoppelGanger(g_PieceMapChip[PieceNo].no);
 	DeleteEnemy(g_PieceMapChip[PieceNo].no);
 	DeleteWarp(g_PieceMapChip[PieceNo].no);
-
+	DeleteStart(g_PieceMapChip[PieceNo].no);
 }
 Piece* GetPiece() {
 	return g_PieceMapChip;

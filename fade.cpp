@@ -14,6 +14,7 @@
 #include "scene.h"
 #include "StageSelect.h"
 #include "goal.h"
+#include "start.h"
 
 
 static ID3D11ShaderResourceView* g_FadeTexture;	//画像一枚で一つの変数が必要
@@ -184,13 +185,16 @@ void StartFade(FADE state) {
 			SCENE* scene = GetScene();
 			if (*scene == SCENE_STAGESELECT)//ステージセレクト画面のプレイヤーの位置にアイリスイン
 			{ 
-				PLAYER* player = GetSelectPlayer();
-				g_FadeParam.pos = player->Position;
+				PLAYER* pPlayer = GetSelectPlayer();
+				g_FadeParam.pos = pPlayer->Position;
 			}
 			else//プレイ画面のゴールの位置にアイリスイン
 			{ 
-				GOAL* goal = GetGoal();
-				g_FadeParam.pos = goal->Pos;
+				START* pStart = GetStart();
+				g_FadeParam.pos = D3DXVECTOR2(pStart[0].pos.x - pStart[0].size.x * 3 + SCREEN_WIDTH / 2, pStart[0].pos.y + SCREEN_HEIGHT / 6);
+
+				//GOAL* goal = GetGoal();
+				//g_FadeParam.pos = goal->Pos;
 			}
 
 			g_FadeParam.alpha = 1.0f;
