@@ -10,6 +10,7 @@
 #include "time.h"
 #include "fade.h"
 #include"StageSelect.h"
+#include "start.h"
 
 GOAL g_Goal;
 GKey g_GKey;
@@ -45,6 +46,7 @@ void UpdateGoal()
 		GKey* pGKey = GetGKey();
 		MOUSE* pMouse = GetMouse();
 		RESULT* pResult = GetResult();
+		START* pStart = GetStart();
 		if (!pMouse->UseFlag)// && pGKey->GetGKey)
 		{
 
@@ -60,14 +62,16 @@ void UpdateGoal()
 					pStageSelect[ReturnStageNo() + 1].StageUseFlag = true;
 					pStageSelect[ReturnStageNo() + 1].size = D3DXVECTOR2(120.0f, 140.f);
 				}
-
-				g_Goal.UseFlag = false;
-				SetResultType(WIN);
-
-				//SetScene(SCENE_RESULT);
-				StartFade(FADE::FADE_OUT);
-				pTime->EndTime();
-				pTimeParam->EndFlag = true;
+				for (int i = 0; i < START_MAX; i++) {
+					if (pStart[i].UseFlag) {
+						g_Goal.UseFlag = false;
+						pStart[i].GoalFlag = true;
+						//SetResultType(WIN);
+						//StartFade(FADE::FADE_ALPHA_OUT);
+						//pTime->EndTime();
+						//pTimeParam->EndFlag = true;
+					}
+				}
 			}
 		}
 	}

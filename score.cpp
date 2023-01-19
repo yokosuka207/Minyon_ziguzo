@@ -74,24 +74,24 @@ void Score::DrawScore() {
 		frame++;
 
 		for (int i = 0; i < SCORE_MAX; i++) {
-			if (!g_AnimeParam[0].AnimeFlag && frame == 10) {
+			if (!g_AnimeParam[5].AnimeFlag && frame == 10) {
 				SetAnimeParam(score / pow(10, 0));
 				PlaySound(g_ScoreSoundNo, 0);				//0 = ˆê‰ñ‚¾‚¯Ä¶ sound.hŽQÆ
 				SetVolume(g_ScoreSoundNo, 0.5f);
 			}
-			if (!g_AnimeParam[1].AnimeFlag && frame == 30) {
+			if (!g_AnimeParam[4].AnimeFlag && frame == 30) {
 				SetAnimeParam(score / pow(10, 1));
 			}
-			if (!g_AnimeParam[2].AnimeFlag && frame == 50) {
+			if (!g_AnimeParam[3].AnimeFlag && frame == 50) {
 				SetAnimeParam(score / pow(10, 2));
 			}
-			if (!g_AnimeParam[3].AnimeFlag && frame == 80) {
+			if (!g_AnimeParam[2].AnimeFlag && frame == 80) {
 				SetAnimeParam(score / pow(10, 3));
 			}
-			if (!g_AnimeParam[4].AnimeFlag && frame == 90) {
+			if (!g_AnimeParam[1].AnimeFlag && frame == 90) {
 				SetAnimeParam(score / pow(10, 4));
 			}
-			if (!g_AnimeParam[5].AnimeFlag && frame == 110) {
+			if (!g_AnimeParam[0].AnimeFlag && frame == 110) {
 				SetAnimeParam(score / pow(10, 5));
 				frame = 0;
 			}
