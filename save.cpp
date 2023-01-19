@@ -121,7 +121,7 @@ void Save::Update()
 		Keyboard_IsKeyTrigger(KK_A)) {						// Keyboard	A
 		// ステージセレクトシーンへ
 		//SetScene(SCENE_STAGESELECT);
-		StartFade(FADE::FADE_OUT);
+		StartFade(FADE::FADE_ALPHA_OUT);
 	}
 	// Zボタンを押したら
 	if (IsButtonTriggered(0, XINPUT_GAMEPAD_X) ||			// GamePad	X
