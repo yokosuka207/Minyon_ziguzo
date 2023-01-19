@@ -32,7 +32,7 @@ Update:
 // グローバル変数
 //**************************************************
 // 各テクスチャの名前
-static char* g_BGTextureFileName = (char*)"data/texture/セーブ画面背景.png";				// 背景
+static char* g_BGTextureFileName = (char*)"data/texture/black.png";				// 背景
 static char* g_TextureFileName1 = (char*)"data/texture/セーブデータテキスト１.png";					// データ１
 static char* g_TextureFileName2 = (char*)"data/texture/セーブデータテキスト２.png";					// データ２
 static char* g_TextureFileName3 = (char*)"data/texture/セーブデータテキスト３.png";					// データ３
