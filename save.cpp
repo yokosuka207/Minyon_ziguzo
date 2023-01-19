@@ -160,7 +160,7 @@ void Save::Update()
 
 			//SetScene(SCENE_STAGESELECT);			// ステージセレクトシーンに切り替わる
 			if(!pFadeParam->FadeFlag)
-			StartFade(FADE::FADE_OUT);
+			StartFade(FADE::FADE_ALPHA_OUT);
 		}
 	}
 }

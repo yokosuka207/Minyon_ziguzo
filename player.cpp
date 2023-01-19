@@ -44,6 +44,7 @@
 #include "goal_key.h"
 #include"spawnpoint.h"
 #include"cursor.h"
+#include "sound.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -57,6 +58,9 @@
 //=============================================================================
 static PLAYER g_Player;
 static char* g_TextureNameBroken = (char*)"data\\texture\\プレイヤー.png";
+
+static int g_PlayerSoundNo = 0;
+static char g_PlayerSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
 
 static Time		g_Time;
 
@@ -99,6 +103,8 @@ HRESULT InitPlayer()
 	g_Player.CoolTime = PLAYER_COOLTIME;
 	g_Player.PieceIndex = 0;
 
+	g_PlayerSoundNo = LoadSound(g_PlayerSoundName);
+
 	return S_OK;
 }
 
@@ -107,7 +113,7 @@ HRESULT InitPlayer()
 //=============================================================================
 void UninitPlayer()
 {
-
+	StopSound(g_PlayerSoundNo);
 }
 
 //=============================================================================
@@ -153,6 +159,10 @@ void UpdatePlayer()
 			// アニメーションパターン番号を0～15の範囲内にする
 			if (g_Player.PaternNo >= 15) { g_Player.PaternNo -= 15; }
 			if (g_Player.PaternNo < 0) { g_Player.PaternNo += 15; }
+			if (g_Player.PaternNo == 4.0f || g_Player.PaternNo == 12.0f) {
+				PlaySound(g_PlayerSoundNo, 0);
+				SetVolume(g_PlayerSoundNo, 0.5f);
+			}
 
 			if (g_Player.sp.x == 0)
 			{

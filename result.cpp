@@ -170,7 +170,7 @@ void	UpdateResult()
 			{
 				//SetScene(SCENE::SCENE_TITLE);
 				if (!pFadeParam->FadeFlag)
-				StartFade(FADE::FADE_OUT);
+				StartFade(FADE::FADE_ALPHA_OUT);
 				pTimeParam->UseFlag = false;
 			}
 		}
