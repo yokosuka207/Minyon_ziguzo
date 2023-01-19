@@ -113,18 +113,14 @@ void UpdateCollision(){
 
 	BROKEN* pBroken = GetBroken();
 	HIGH* pHigh = GetHigh();
-
 	SWITCH* pSwitch = GetSwitch();
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
-
 	JUMPSTAND* pJumpStand = GetJumpStand();
-
 	KEY* pKey = GetKey();
 	OPENKEY* pOpenKey = GetOpenKey();
 	GKey* pGKey = GetGKey();
 
 	GOAL* pGoal = GetGoal();
-
 	RESULT* pResult = GetResult();
 
 	Piece* pPiece = GetPiece();
@@ -224,7 +220,9 @@ void UpdateCollision(){
 			for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 				if (pThornBlock[i].UseFlag) {
 					if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
+						
 						pPlayer->hp--;
+
 						if (pPlayer->hp <= 0) {
 							SetResultType(LOSE);
 							StartFade(FADE::FADE_OUT);
@@ -245,6 +243,7 @@ void UpdateCollision(){
 			}
 			//プレイヤーが落下死したら
 			if (pPlayer->Position.y - pPlayer->size.y > SCREEN_HEIGHT){
+				pPlayer->hp--;
 				pResult[0].type = LOSE;
 				pTime->EndTime();
 				pTimeParam->EndFlag = true;
@@ -785,7 +784,6 @@ void PieceCollision()
 	bool pFlag =false;
 	for (int i = 0; i < PUZZLE_MAX; i++)
 	{
-
 		if (pPiece[i].UseFlag)
 		{
 			if (pPiece[i].MoveEndFlag)	//動き終わったら
@@ -813,6 +811,7 @@ void PieceCollision()
 					if (pFlag)
 					{
 						pPlayer->Position = pPlayer->OneOldpos;
+						pPlayer->hp--;
 					}
 
 					break;
@@ -860,6 +859,9 @@ void PieceCollision()
 												}
 												// ヒバナエフェクト
 												SetEffectSpark(pJoint[j].pos, 0.0f);
+												// ピースのアニメーション
+												StartPieceAnimation(pJoint[k].indexno);
+												StartPieceAnimation(pJoint[j].indexno);
 											}
 											else
 											{
@@ -899,6 +901,9 @@ void PieceCollision()
 												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
 												// ヒバナエフェクト
 												SetEffectSpark(pJoint[j].pos, 0.0f);
+												// ピースのアニメーション
+												StartPieceAnimation(pJoint[k].indexno);
+												StartPieceAnimation(pJoint[j].indexno);
 											}
 											else
 											{
@@ -935,6 +940,9 @@ void PieceCollision()
 												}
 												// ヒバナエフェクト
 												SetEffectSpark(pJoint[j].pos, 0.0f);
+												// ピースのアニメーション
+												StartPieceAnimation(pJoint[k].indexno);
+												StartPieceAnimation(pJoint[j].indexno);
 											}
 											else
 											{
@@ -971,6 +979,9 @@ void PieceCollision()
 												}
 												// ヒバナエフェクト
 												SetEffectSpark(pJoint[j].pos, 0.0f);
+												// ピースのアニメーション
+												StartPieceAnimation(pJoint[k].indexno);
+												StartPieceAnimation(pJoint[j].indexno);
 											}
 											else
 											{
