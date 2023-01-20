@@ -57,7 +57,11 @@ void UninitKey()
 
 void UpdateKey()
 {
-	
+	for (int i = 0; i < KEY_MAX; i++){
+		if (g_Key[i].rot == 90 || g_Key[i].rot == 270) {
+			g_Key[i].rot = 0.0f;
+		}
+	}	
 }
 
 void DrawKey()
