@@ -160,6 +160,7 @@ void	UpdateResult()
 				pTime->StartTime();
 				//SetScene(SCENE::SCENE_GAME);
 				pFadeParam->ExceptFlag = true;
+				pFadeParam->TitleFlag = false;
 				if (!pFadeParam->FadeFlag)
 				StartFade(FADE::FADE_ALPHA_OUT);
 			}
@@ -173,6 +174,7 @@ void	UpdateResult()
 				//DestroyWindow(GetHwnd());
 				//SetScene(SCENE::SCENE_TITLE);
 				pFadeParam->ExceptFlag = false;
+				pFadeParam->TitleFlag = true;
 				if (!pFadeParam->FadeFlag) {
 					StartFade(FADE::FADE_ALPHA_OUT);
 				}

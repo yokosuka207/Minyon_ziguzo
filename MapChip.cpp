@@ -300,10 +300,10 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetGoal(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP) :	//8　ジャンプ台
-				SetJumpStand(position, DrawSize, no);
+				SetJumpStand(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9　トゲ
-				SetThornBlock(position, DrawSize, no);
+				SetThornBlock(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL) :	//10　乗ると落ちるブロック
 				SetFallBlock(position, DrawSize, no);
@@ -315,7 +315,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetOpenKey(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13　ボタン
-				SetSwitch(position, DrawSize, no);
+				SetSwitch(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14　ボタンで開く扉×3
 				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 3);
@@ -583,10 +583,10 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetGoal(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP):	//8　ジャンプ台
-				SetJumpStand(position, DrawSize, no);
+				SetJumpStand(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE):	//9　トゲ
-				SetThornBlock(position, DrawSize, no);
+				SetThornBlock(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL):	//10　乗ると落ちるブロック
 				SetFallBlock(position, DrawSize, no);
@@ -598,7 +598,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetOpenKey(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13　ボタン
-				SetSwitch(position, DrawSize, no);
+				SetSwitch(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14　ボタンで開く扉×3
 				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 3);
