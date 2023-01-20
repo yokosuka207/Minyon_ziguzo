@@ -99,7 +99,15 @@ static bool InventoryFlag = false;
 
 
 static int g_BrokenSoundNo = 0;
-static char g_BrokenSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
+static char g_BrokenSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+
+static int g_WarpSoundNo = 0;
+static char g_WarpSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+
+static int g_HighSoundNo = 0;
+static char g_HighSoundName[] = "data\\SoundData\\SE\\タイプライター..wav";
+
+
 
 
 
@@ -108,7 +116,9 @@ static char g_BrokenSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
 //================================
 void InitCollision()
 {
-
+	g_BrokenSoundNo = LoadSound(g_BrokenSoundName);
+	g_WarpSoundNo = LoadSound(g_WarpSoundName);
+	g_HighSoundNo = LoadSound(g_HighSoundName);
 }
 
 
@@ -117,7 +127,9 @@ void InitCollision()
 //================================
 void UninitCollision()
 {
-
+	StopSound(g_BrokenSoundNo);
+	StopSound(g_WarpSoundNo);
+	StopSound(g_HighSoundNo);
 }
 
 
@@ -374,6 +386,12 @@ void UpdateCollision(){
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2)
 				{
 					pPlayer->Position.y = (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2 - pPlayer->size.y / 2 - 0.02f;
+					pPlayer->sp.y = 0;
+					for (int i = 0; i < JUMPSTAND_MAX; i++)
+					{
+						pJumpStand[i].JumpStandFlag = false;
+
+					}
 
 					pPlayer->fall = true;
 					pPlayer->getfall = true;
@@ -405,6 +423,8 @@ void UpdateCollision(){
 									{
 										pPlayer->Position = (pWarp + i + 1)->Position;
 										pPlayer->CoolTime = PLAYER_COOLTIME;
+										//SetVolume(g_BrokenSoundNo, 0.5f);
+										PlaySound(g_WarpSoundNo, 0);
 										pPlayer->WarpFlag = true;
 									}
 								}
@@ -421,7 +441,8 @@ void UpdateCollision(){
 									{
 										pPlayer->Position = (pWarp + i - 1)->Position;
 										pPlayer->CoolTime = PLAYER_COOLTIME;
-
+										//SetVolume(g_BrokenSoundNo, 0.5f);
+										PlaySound(g_WarpSoundNo, 0);
 										pPlayer->WarpFlag = true;
 
 									}
@@ -491,8 +512,8 @@ void UpdateCollision(){
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2)
 				{
 					(pBroken + i)->breakFlag = true;
+					//SetVolume(g_BrokenSoundNo, 0.5f);
 					PlaySound(g_BrokenSoundNo, 0);
-					SetVolume(g_BrokenSoundNo, 0.5f);
 					(pBroken + i)->UseFlag = false;
 					pPlayer->fall = true;
 					pPlayer->getfall = true;
@@ -621,12 +642,14 @@ void UpdateCollision(){
 					if (pPlayer->sp.y >= -10.0f) {
 						//pPlayer->isHigh = false;
 						(pHigh + i)->UseFlag = false;
+						//SetVolume(g_BrokenSoundNo, 0.5f);
+						PlaySound(g_HighSoundNo, 0);
 						pPlayer->frame = 50;
 					}
 					else {
 						//pPlayer->isHigh = true;
 						pPlayer->sp.y = 0.0f;
-						pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
+						pPlayer->Position.y = (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 - pPlayer->size.y / 2;
 					}
 
 				}/*
@@ -2072,7 +2095,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	BROKEN* pBroken = GetBroken();
 	SHEERFLOORS* pSheerFloors = GetSheerFloors();
 	START* pStart = GetStart();
-
+	HIGH* pHigh = GetHigh();
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
@@ -2103,6 +2126,19 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 		}
 
 	}
+	for (int i = 0; i < HIGH_MAX; i++)
+	{//ブロック動かす
+		if (pHigh[i].UseFlag)
+		{
+			if (pHigh[i].index == pinNo)
+			{
+				pHigh[i].Postion += num;
+			}
+
+		}
+
+	}
+
 	for (int i = 0; i < SHEERFLOORS_NUM; i++)
 	{//ブロック動かす
 		if (pSheerFloors[i].use)
@@ -2902,10 +2938,10 @@ bool SpritStageCollision(Piece p)
 {
 	SplitStage* pSprit = GetSplitStage();
 
-	D3DXVECTOR2 up = pSprit->Split3[0][0];
-	D3DXVECTOR2 down = pSprit->Split3[0][2];
-	D3DXVECTOR2 right = pSprit->Split3[2][0];
-	D3DXVECTOR2 left = pSprit->Split3[0][1];
+	D3DXVECTOR2 up = pSprit->Split34[0][0];
+	D3DXVECTOR2 down = pSprit->Split34[0][2];
+	D3DXVECTOR2 right = pSprit->Split34[3][0];
+	D3DXVECTOR2 left = pSprit->Split34[0][1];
 
 	float x = p.pos.x;
 

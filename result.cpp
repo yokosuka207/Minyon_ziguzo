@@ -21,7 +21,7 @@ static	ID3D11ShaderResourceView* g_ResultTexture = NULL;//テクスチャ情報
 static	char* g_ResultTextureName = (char*)"data\\texture\\セーブ画面背景.png";
 
 static	ID3D11ShaderResourceView* g_ResultGameEndTexture = NULL;//テクスチャ情報
-static	char* g_ResultGameEndTextureName = (char*)"data\\texture\\GameEnd_haikei.jpg";
+static	char* g_ResultGameEndTextureName = (char*)"data\\texture\\black.png";
 
 static	ID3D11ShaderResourceView* g_ResultTextureButton = NULL;//テクスチャ情報
 static	char* g_ResultButtonTextureName = (char*)"data\\texture\\GameEnd_contie_button.jpg";
@@ -166,7 +166,11 @@ void	UpdateResult()
 				pFadeParam->ExceptFlag = true;
 				pFadeParam->TitleFlag = false;
 				if (!pFadeParam->FadeFlag)
-				StartFade(FADE::FADE_ALPHA_OUT);
+				{
+					StartFade(FADE::FADE_ALPHA_OUT);
+					//SetScene(SCENE::SCENE_GAME);
+				}
+				
 			}
 		}
 		
