@@ -101,7 +101,7 @@ static bool InventoryFlag = false;
 //壊れるブロック
 static int g_BrokenSoundNo = 0;
 static char g_BrokenSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
-static char g_BrokenSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
+//static char g_BrokenSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
 //スイッチ
 static int g_SwitchSoundNo = 0;
 static char g_SwitchSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
@@ -288,8 +288,24 @@ void UpdateCollision(){
 					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
 					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
 				{
-					pPlayer->Position = pPlayer->oldpos;
+					if (pSwitchWall[i].rot == 0.0f) {
+						pPlayer->Position.x = pPlayer->oldpos.x;
+						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2;
+					}
+					else if (pSwitchWall[i].rot == 90.0f) {
+						pPlayer->Position = pPlayer->oldpos;
+						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2;
+					}
+					else if (pSwitchWall[i].rot == 180.0f) {
+						pPlayer->Position = pPlayer->oldpos;
+						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2;
+					}
+					else if (pSwitchWall[i].rot == 270.0f) {
+						pPlayer->Position = pPlayer->oldpos;
+						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2;
+					}
 				}
+
 			}
 		}
 		//スイッチと木箱の判定
