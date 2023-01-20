@@ -45,6 +45,7 @@ void Score::InitScore() {
 	g_ScoreParam.UseFlag = false;
 	g_ScoreParam.CalcFlag = false;
 	g_ScoreParam.rank = SCORE_RANK::RANK_NONE;
+	frame = 0;
 	for (int i = 0; i < SCORE_MAX; i++) {
 		g_AnimeParam[i].AnimeFlag = false;
 		g_AnimeParam[i].num = 0;

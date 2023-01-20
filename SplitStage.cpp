@@ -62,7 +62,7 @@ void DrawSplitStage()
 		// テクスチャの設定
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_splitStage.texNo));
 		// 四角形の描画
-		SpriteDrawColorRotation(g_splitStage.pos.x, g_splitStage.pos.y,0.1f, (g_splitStage.size.x * 4), (g_splitStage.size.y * 3), 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0, 1.0f, 1.0f, 1);
+		SpriteDrawColorRotation(g_splitStage.pos.x, g_splitStage.pos.y,0.1f, (g_splitStage.size.x * 4), (g_splitStage.size.y * 3), 0.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f), 0, 1.0f, 1.0f, 1);
 }
 
 SplitStage* GetSplitStage()
