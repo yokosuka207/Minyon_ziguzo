@@ -45,6 +45,7 @@ static Time* pTime = pTime->GetTime();
 static TimeParam*	pTimeParam = pTime->GetTimeParam();
 static Score* pScore = pScore->GetScore();
 static FADEPARAM* pFadeParam = GetFadeParam();
+static ANIMEPARAM* pAnimeParam = pScore->GetAnimeParam();
 //======================
 //‰Šú‰»
 //======================
@@ -158,7 +159,12 @@ void	UpdateResult()
 			{
 				pTimeParam->UseFlag = false;
 				pTime->StartTime();
+				for (int i = 0; i < SCORE_MAX; i++) {
+					pAnimeParam[i].AnimeFlag = false;
+				}
+				//SetScene(SCENE::SCENE_GAME);
 				pFadeParam->ExceptFlag = true;
+				pFadeParam->TitleFlag = false;
 				if (!pFadeParam->FadeFlag)
 				{
 					StartFade(FADE::FADE_ALPHA_OUT);
@@ -175,13 +181,12 @@ void	UpdateResult()
 			{
 				//DestroyWindow(GetHwnd());
 				//SetScene(SCENE::SCENE_TITLE);
-				pTimeParam->UseFlag = false;
-				if (!pFadeParam->FadeFlag)
-				{
-					//StartFade(FADE::FADE_ALPHA_OUT);
-					SetScene(SCENE::SCENE_TITLE);
+				pFadeParam->ExceptFlag = false;
+				pFadeParam->TitleFlag = true;
+				if (!pFadeParam->FadeFlag) {
+					StartFade(FADE::FADE_ALPHA_OUT);
 				}
-				
+				pTimeParam->UseFlag = false;
 			}
 		}
 		

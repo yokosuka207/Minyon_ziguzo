@@ -29,6 +29,7 @@ HRESULT InitSwitch() {
 		g_Switch[i].pos = D3DXVECTOR2(0.0f, 0.0f);
 		g_Switch[i].size = D3DXVECTOR2(0.0f, 0.0f);
 		g_Switch[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_Switch[i].rot = 0;
 		g_Switch[i].PieceIndex = -1;
 		g_Switch[i].SwitchIndex = -1;
 		g_Switch[i].PaternNo = 0;
@@ -65,7 +66,7 @@ void DrawSwitch() {
 				-0.1f,
 				g_Switch[i].size.x,
 				-g_Switch[i].size.y,
-				0.0f,
+				g_Switch[i].rot,
 				g_Switch[i].color,
 				g_Switch[i].PaternNo,
 				SWITCH_UV_W,
@@ -75,9 +76,22 @@ void DrawSwitch() {
 		}
 	}
 }
-void SetSwitch(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
+void SetSwitch(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction ,int PieceNo) {
 	for (int i = 0; i < SWITCH_MAX; i++) {
 		if (!g_Switch[i].UseFlag) {
+			switch (direction)
+			{
+			case 0:g_Switch[i].rot = (direction + 2) * 90;
+				break;
+			case 1:g_Switch[i].rot = direction * 90;
+				break;
+			case 2:g_Switch[i].rot = (direction - 2) * 90;
+				break;
+			case 3:g_Switch[i].rot = direction * 90;
+				break;
+			default:
+				break;
+			}
 			g_Switch[i].pos = pos;
 			g_Switch[i].size = size;
 			g_Switch[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);

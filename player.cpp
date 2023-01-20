@@ -160,6 +160,9 @@ void UpdatePlayer()
 			// アニメーションパターン番号を0～15の範囲内にする
 			if (g_Player.PaternNo >= 15) { g_Player.PaternNo -= 15; }
 			if (g_Player.PaternNo < 0) { g_Player.PaternNo += 15; }
+			//============================================================
+			//	足音
+			//============================================================
 			if (g_Player.PaternNo == 4.0f || g_Player.PaternNo == 12.0f) {
 				PlaySound(g_PlayerSoundNo, 0);
 				SetVolume(g_PlayerSoundNo, 0.5f);
@@ -311,12 +314,12 @@ void UpdatePlayer()
 					!Keyboard_IsKeyDown(KK_DOWN))				// Keyboard	下
 				{
 					// プレイヤーの下にブロックがあったら
-					if ((g_Player.Position.y - g_Player.size.y / 2 - 0.05f > pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2) &&
-						(g_Player.Position.y + g_Player.size.y / 2 < pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
+					if ((g_Player.Position.y - g_Player.size.y / 2 - 0.05f < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2) &&
+						(g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
 						(g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2) &&
 						(g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2))
 					{	// 着地中にする
-						//g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 - g_Player.size.y / 2 - 0.02f;
+						g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2 + 0.02f;
 
 						if (!g_Player.isSheerFloors) {
 							g_Player.sp.y = 0.0f;

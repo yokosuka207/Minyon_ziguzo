@@ -32,6 +32,7 @@ void InitFade() {
 	g_FadeParam.state = FADE::FADE_NONE;
 	g_FadeParam.FadeFlag = false;
 	g_FadeParam.ExceptFlag = false;
+	g_FadeParam.TitleFlag = false;
 
 	g_FadeParam.pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	g_FadeParam.size = D3DXVECTOR2(0.0f, 0.0f);
@@ -131,8 +132,11 @@ void UpdateFade() {
 					SetScene(SCENE::SCENE_GAME);
 				}
 				//í èÌ
-				else {
+				else if(!g_FadeParam.ExceptFlag && !g_FadeParam.TitleFlag){
 					SetScene(SCENE::SCENE_STAGESELECT);
+				}
+				else if(g_FadeParam.TitleFlag){
+					SetScene(SCENE::SCENE_TITLE);
 				}
 				break;
 			default:
