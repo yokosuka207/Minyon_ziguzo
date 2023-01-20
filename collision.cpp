@@ -386,6 +386,12 @@ void UpdateCollision(){
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2)
 				{
 					pPlayer->Position.y = (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2 - pPlayer->size.y / 2 - 0.02f;
+					pPlayer->sp.y = 0;
+					for (int i = 0; i < JUMPSTAND_MAX; i++)
+					{
+						pJumpStand[i].JumpStandFlag = false;
+
+					}
 
 					pPlayer->fall = true;
 					pPlayer->getfall = true;
@@ -643,7 +649,7 @@ void UpdateCollision(){
 					else {
 						//pPlayer->isHigh = true;
 						pPlayer->sp.y = 0.0f;
-						pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
+						pPlayer->Position.y = (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 - pPlayer->size.y / 2;
 					}
 
 				}/*
@@ -2089,7 +2095,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	BROKEN* pBroken = GetBroken();
 	SHEERFLOORS* pSheerFloors = GetSheerFloors();
 	START* pStart = GetStart();
-
+	HIGH* pHigh = GetHigh();
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
@@ -2120,6 +2126,19 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 		}
 
 	}
+	for (int i = 0; i < HIGH_MAX; i++)
+	{//ブロック動かす
+		if (pHigh[i].UseFlag)
+		{
+			if (pHigh[i].index == pinNo)
+			{
+				pHigh[i].Postion += num;
+			}
+
+		}
+
+	}
+
 	for (int i = 0; i < SHEERFLOORS_NUM; i++)
 	{//ブロック動かす
 		if (pSheerFloors[i].use)
@@ -2919,10 +2938,10 @@ bool SpritStageCollision(Piece p)
 {
 	SplitStage* pSprit = GetSplitStage();
 
-	D3DXVECTOR2 up = pSprit->Split3[0][0];
-	D3DXVECTOR2 down = pSprit->Split3[0][2];
-	D3DXVECTOR2 right = pSprit->Split3[2][0];
-	D3DXVECTOR2 left = pSprit->Split3[0][1];
+	D3DXVECTOR2 up = pSprit->Split34[0][0];
+	D3DXVECTOR2 down = pSprit->Split34[0][2];
+	D3DXVECTOR2 right = pSprit->Split34[3][0];
+	D3DXVECTOR2 left = pSprit->Split34[0][1];
 
 	float x = p.pos.x;
 
