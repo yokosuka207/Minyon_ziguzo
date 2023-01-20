@@ -891,182 +891,187 @@ void PieceCollision()
 						{
 							for (int k = 0; k < JOINT_MAX; k++)
 							{
-								if (pJoint[j].pieNo != pJoint[k].pieNo)//ピース番号が違ったら
+								if (pJoint[k].useFlag)
 								{
 
-									//ジョイントが重なっていたら
-									colFlag = CollisionBB(pJoint[j].pos, pJoint[k].pos, pJoint[j].size, pJoint[k].size);
-
-									if (colFlag)
+								
+									if (pJoint[j].pieNo != pJoint[k].pieNo)//ピース番号が違ったら
 									{
 
-										//凹凸が合っていたら
-										if (pJoint[j].type == JOINT_TYPE::TYPE_BUMP && pJoint[k].type == JOINT_TYPE::TYPE_DIP ||
-											pJoint[k].type == JOINT_TYPE::TYPE_BUMP && pJoint[j].type == JOINT_TYPE::TYPE_DIP)
+
+										//ジョイントが重なっていたら
+										colFlag = CollisionBB(pJoint[j].pos, pJoint[k].pos, pJoint[j].size, pJoint[k].size);
+
+										if (colFlag)
 										{
-											colFlag2 = true;
 
-											//ジョイントが右だったら
-											if (pPiece[i].pos.x + pPiece[i].size.x / 3 < pJoint[j].pos.x)
+											//凹凸が合っていたら
+											if (pJoint[j].type == JOINT_TYPE::TYPE_BUMP && pJoint[k].type == JOINT_TYPE::TYPE_DIP ||
+												pJoint[k].type == JOINT_TYPE::TYPE_BUMP && pJoint[j].type == JOINT_TYPE::TYPE_DIP)
 											{
+												colFlag2 = true;
 
-
-												D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
-
-												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
-
-												if (fourPieceCollision(pPiece[i], i))
+												//ジョイントが右だったら
+												if (pPiece[i].pos.x + pPiece[i].size.x / 3 < pJoint[j].pos.x)
 												{
-													PositionPlas(temp, pPiece[i].no);
-													pPiece[i].OldMovePos = pPiece[i].pos;
-													if (pFlag)
+
+
+													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
+
+													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
+
+													if (fourPieceCollision(pPiece[i], i))
 													{
-														pPlayer->Position += temp;
-														pPlayer->oldpos = pPlayer->Position;
+														PositionPlas(temp, pPiece[i].no);
+														pPiece[i].OldMovePos = pPiece[i].pos;
+														if (pFlag)
+														{
+															pPlayer->Position += temp;
+															pPlayer->oldpos = pPlayer->Position;
+														}
+														// ヒバナエフェクト
+														SetEffectSpark(pJoint[j].pos, 0.0f);
+														// ピースのアニメーション
+														StartPieceAnimation(pJoint[k].indexno);
+														StartPieceAnimation(pJoint[j].indexno);
 													}
-													// ヒバナエフェクト
-													SetEffectSpark(pJoint[j].pos, 0.0f);
-													// ピースのアニメーション
-													StartPieceAnimation(pJoint[k].indexno);
-													StartPieceAnimation(pJoint[j].indexno);
+													else
+													{
+														Rotreturn(pPiece[i].no);
+														colFlag2 = true;
+														temp = pPiece[i].OldMovePos - pPiece[i].pos;
+														PositionPlas(temp, pPiece[i].no);
+														pPiece[i].pos = pPiece[i].OldMovePos;
+														if (pFlag)
+														{
+															pPlayer->Position = pPlayer->OneOldpos;
+														}
+													}
 												}
-												else
+												//ジョイントが左だったら
+												else if (pPiece[i].pos.x - pPiece[i].size.x / 3 > pJoint[j].pos.x)
 												{
-													Rotreturn(pPiece[i].no);
-													colFlag2 = true;
-													temp = pPiece[i].OldMovePos - pPiece[i].pos;
-													PositionPlas(temp, pPiece[i].no);
-													pPiece[i].pos = pPiece[i].OldMovePos;
-													if (pFlag)
+													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
+
+													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_SIZE, pPiece[pJoint[k].indexno].pos.y);
+
+													if (fourPieceCollision(pPiece[i], i))
 													{
-														pPlayer->Position = pPlayer->OneOldpos;
+
+														PositionPlas(temp, pPiece[i].no);
+														pPiece[i].OldMovePos = pPiece[i].pos;
+														if (pFlag)
+														{
+															pPlayer->Position += temp;
+															pPlayer->oldpos = pPlayer->Position;
+
+														}
+														pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
+														// ヒバナエフェクト
+														SetEffectSpark(pJoint[j].pos, 0.0f);
+														// ピースのアニメーション
+														StartPieceAnimation(pJoint[k].indexno);
+														StartPieceAnimation(pJoint[j].indexno);
+													}
+													else
+													{
+														Rotreturn(pPiece[i].no);
+														colFlag2 = true;
+														temp = pPiece[i].OldMovePos - pPiece[i].pos;
+														PositionPlas(temp, pPiece[i].no);
+
+														pPiece[i].pos = pPiece[i].OldMovePos;
+														if (pFlag)
+														{
+															pPlayer->Position = pPlayer->OneOldpos;
+														}
 													}
 												}
+												//ジョイントが上だったら
+												else if (pPiece[i].pos.y - pPiece[i].size.y / 3 > pJoint[j].pos.y)
+												{
+													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT) - pPiece[i].pos;
+
+													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT);
+
+													if (fourPieceCollision(pPiece[i], i))
+													{
+														PositionPlas(temp, pPiece[i].no);
+														pPiece[i].OldMovePos = pPiece[i].pos;
+														if (pFlag)
+														{
+															pPlayer->Position += temp;
+															pPlayer->oldpos = pPlayer->Position;
+
+														}
+														// ヒバナエフェクト
+														SetEffectSpark(pJoint[j].pos, 0.0f);
+														// ピースのアニメーション
+														StartPieceAnimation(pJoint[k].indexno);
+														StartPieceAnimation(pJoint[j].indexno);
+													}
+													else
+													{
+														Rotreturn(pPiece[i].no);
+														colFlag2 = true;
+														temp = pPiece[i].OldMovePos - pPiece[i].OldPos;
+														PositionPlas(temp, pPiece[i].no);
+
+														pPiece[i].pos = pPiece[i].OldMovePos;
+														if (pFlag)
+														{
+															pPlayer->Position = pPlayer->OneOldpos;
+														}
+
+													}
+
+												}
+												//ジョイントが下だったら
+												else if (pPiece[i].pos.y + pPiece[i].size.y / 3 < pJoint[j].pos.y)
+												{
+													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT) - pPiece[i].pos;
+
+													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT);
+
+													if (fourPieceCollision(pPiece[i], i))
+													{
+														PositionPlas(temp, pPiece[i].no);
+														pPiece[i].OldMovePos = pPiece[i].pos;
+														if (pFlag)
+														{
+															pPlayer->Position += temp;
+															pPlayer->oldpos = pPlayer->Position;
+
+														}
+														// ヒバナエフェクト
+														SetEffectSpark(pJoint[j].pos, 0.0f);
+														// ピースのアニメーション
+														StartPieceAnimation(pJoint[k].indexno);
+														StartPieceAnimation(pJoint[j].indexno);
+													}
+													else
+													{
+														Rotreturn(pPiece[i].no);
+														colFlag2 = true;
+														temp = pPiece[i].OldMovePos - pPiece[i].pos;
+														PositionPlas(temp, pPiece[i].no);
+
+														pPiece[i].pos = pPiece[i].OldMovePos;
+
+														if (pFlag)
+														{
+															pPlayer->Position = pPlayer->OneOldpos;
+														}
+
+													}
+
+												}
+
+												break;
 											}
-											//ジョイントが左だったら
-											else if (pPiece[i].pos.x - pPiece[i].size.x / 3 > pJoint[j].pos.x)
-											{
-												D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
-
-												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_SIZE, pPiece[pJoint[k].indexno].pos.y);
-
-												if (fourPieceCollision(pPiece[i], i))
-												{
-
-													PositionPlas(temp, pPiece[i].no);
-													pPiece[i].OldMovePos = pPiece[i].pos;
-													if (pFlag)
-													{
-														pPlayer->Position += temp;
-														pPlayer->oldpos = pPlayer->Position;
-
-													}
-													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
-													// ヒバナエフェクト
-													SetEffectSpark(pJoint[j].pos, 0.0f);
-													// ピースのアニメーション
-													StartPieceAnimation(pJoint[k].indexno);
-													StartPieceAnimation(pJoint[j].indexno);
-												}
-												else
-												{
-													Rotreturn(pPiece[i].no);
-													colFlag2 = true;
-													temp = pPiece[i].OldMovePos - pPiece[i].pos;
-													PositionPlas(temp, pPiece[i].no);
-
-													pPiece[i].pos = pPiece[i].OldMovePos;
-													if (pFlag)
-													{
-														pPlayer->Position = pPlayer->OneOldpos;
-													}
-												}
-											}
-											//ジョイントが上だったら
-											else if (pPiece[i].pos.y - pPiece[i].size.y / 3 > pJoint[j].pos.y)
-											{
-												D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT) - pPiece[i].pos;
-
-												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT);
-
-												if (fourPieceCollision(pPiece[i], i))
-												{
-													PositionPlas(temp, pPiece[i].no);
-													pPiece[i].OldMovePos = pPiece[i].pos;
-													if (pFlag)
-													{
-														pPlayer->Position += temp;
-														pPlayer->oldpos = pPlayer->Position;
-
-													}
-													// ヒバナエフェクト
-													SetEffectSpark(pJoint[j].pos, 0.0f);
-													// ピースのアニメーション
-													StartPieceAnimation(pJoint[k].indexno);
-													StartPieceAnimation(pJoint[j].indexno);
-												}
-												else
-												{
-													Rotreturn(pPiece[i].no);
-													colFlag2 = true;
-													temp = pPiece[i].OldMovePos - pPiece[i].OldPos;
-													PositionPlas(temp, pPiece[i].no);
-
-													pPiece[i].pos = pPiece[i].OldMovePos;
-													if (pFlag)
-													{
-														pPlayer->Position = pPlayer->OneOldpos;
-													}
-
-												}
-
-											}
-											//ジョイントが下だったら
-											else if (pPiece[i].pos.y + pPiece[i].size.y / 3 < pJoint[j].pos.y)
-											{
-												D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT) - pPiece[i].pos;
-
-												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT);
-
-												if (fourPieceCollision(pPiece[i], i))
-												{
-													PositionPlas(temp, pPiece[i].no);
-													pPiece[i].OldMovePos = pPiece[i].pos;
-													if (pFlag)
-													{
-														pPlayer->Position += temp;
-														pPlayer->oldpos = pPlayer->Position;
-
-													}
-													// ヒバナエフェクト
-													SetEffectSpark(pJoint[j].pos, 0.0f);
-													// ピースのアニメーション
-													StartPieceAnimation(pJoint[k].indexno);
-													StartPieceAnimation(pJoint[j].indexno);
-												}
-												else
-												{
-													Rotreturn(pPiece[i].no);
-													colFlag2 = true;
-													temp = pPiece[i].OldMovePos - pPiece[i].pos;
-													PositionPlas(temp, pPiece[i].no);
-
-													pPiece[i].pos = pPiece[i].OldMovePos;
-
-													if (pFlag)
-													{
-														pPlayer->Position = pPlayer->OneOldpos;
-													}
-
-												}
-
-											}
-
 											break;
 										}
-										break;
 									}
-
 
 								}
 							}
