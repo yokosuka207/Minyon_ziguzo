@@ -29,6 +29,8 @@ bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECT
 bool CollisionCircle(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, float size1, float size2);//ŠÛ‚ª“–‚½‚Á‚Ä‚¢‚é‚©‚ ‚½‚Á‚Ä‚¢‚È‚¢‚©‚ğ”»’è‚·‚é‚¾‚¯
 
 
+void InitCollision();
+void UninitCollision();
 void UpdateCollision();	//“–‚½‚è”»’è‚ğs‚¤
 //----------ƒpƒYƒ‹‚Ì”»’èŠÖ”----------------
 void PieceCollision();

@@ -96,7 +96,7 @@ void InitGame()
 		InitEffectSpark();		// ヒバナエフェクト
 		InitBullet();
 		InitPlayerLife();
-
+		InitCollision();
 	}
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
@@ -144,6 +144,7 @@ void UninitGame()
 	UninitEnemy();
 	UninitBullet();
 	UninitPlayerLife();
+	UninitCollision();
 
 	UninitPause();
 	pScore->UninitScore();
