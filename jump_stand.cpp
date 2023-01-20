@@ -23,7 +23,7 @@ static ID3D11ShaderResourceView* g_textureBlock;	//画像一枚で一つの変数が必要
 static char* g_textureName_Block = (char*)"data\\texture\\jumpstand.png";	//テクスチャファイルパス
 static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
 static int g_JumpStandSoundNo = 0;
-static char g_JumpStandSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_JumpStandSoundName[] = "data\\SoundData\\SE\\タイプライターwav";
 
 HRESULT InitJumpStand()
 {
