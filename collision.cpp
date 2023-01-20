@@ -108,7 +108,7 @@ static char g_BrokenSoundName[] = "data\\SoundData\\SE\\ŠvŒC‚Å•à‚­.wav";
 //================================
 void InitCollision()
 {
-
+	g_BrokenSoundNo = LoadSound(g_BrokenSoundName);
 }
 
 
@@ -117,7 +117,7 @@ void InitCollision()
 //================================
 void UninitCollision()
 {
-
+	StopSound(g_BrokenSoundNo);
 }
 
 
@@ -491,8 +491,8 @@ void UpdateCollision(){
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2)
 				{
 					(pBroken + i)->breakFlag = true;
+					//SetVolume(g_BrokenSoundNo, 0.5f);
 					PlaySound(g_BrokenSoundNo, 0);
-					SetVolume(g_BrokenSoundNo, 0.5f);
 					(pBroken + i)->UseFlag = false;
 					pPlayer->fall = true;
 					pPlayer->getfall = true;
