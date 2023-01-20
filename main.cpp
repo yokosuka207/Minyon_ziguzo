@@ -76,7 +76,7 @@ static char NoiseSoundName[] = "data\\SoundData\\BGM\\ノイズ.wav";
 
 long g_MouseX = 0;
 long g_MouseY = 0;
-
+HWND hWnd;
 #ifdef _DEBUG
 int		g_CountFPS;							// FPSカウンタ
 char	g_DebugStr[2048] = WINDOW_CAPTION;	// デバッグ文字表示用
@@ -107,7 +107,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	RegisterClass(&wc);
 	
 	// ウィンドウの作成
-	HWND hWnd = CreateWindow(CLASS_NAME,
+	hWnd = CreateWindow(CLASS_NAME,
 						WINDOW_CAPTION,
 						WS_OVERLAPPEDWINDOW,
 						CW_USEDEFAULT,																		// ウィンドウの左座標
@@ -327,4 +327,13 @@ int Irand(int max) {
 	std::uniform_int_distribution<> dist(0, max);
 
 	return dist(mt);
+}
+
+void Setclose()
+{
+}
+
+HWND GetHwnd()
+{
+	return hWnd;
 }
