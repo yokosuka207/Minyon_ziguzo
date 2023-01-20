@@ -68,10 +68,10 @@ void DrawEnemy() {
 				-0.1f,
 				g_Enemy[i].size.x,
 				g_Enemy[i].size.y,
-				0.0f,
+				180.0f,
 				g_Enemy[i].color,
 				0.0f,
-				1.0f / 1.0f,
+				-1.0f / 1.0f,
 				1.0f / 1.0f,
 				1
 			);

@@ -41,11 +41,11 @@ HRESULT InitBullet()
 	{
 		//ÉoÉåÉbÉgÇÃèâä˙âª
 		g_Bullet[i].pos = D3DXVECTOR2(0, 0);
-		g_Bullet[i].sp = D3DXVECTOR2(0, -BULLET_SPEED);
+		g_Bullet[i].sp = D3DXVECTOR2(-BULLET_SPEED, 0.0f);
 		//g_Bullet[i].sp = D3DXVECTOR2(BULLET_SPEED, 0);
 		g_Bullet[i].w = BULLET_SIZE_W;
 		g_Bullet[i].h = BULLET_SIZE_H;
-		g_Bullet[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0, 1.0f);
+		g_Bullet[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_Bullet[i].rot = 0.0f;
 		g_Bullet[i].use = false;
 		g_Bullet[i].texno = LoadTexture(g_TextureName);
