@@ -160,6 +160,9 @@ void UpdatePlayer()
 			// アニメーションパターン番号を0～15の範囲内にする
 			if (g_Player.PaternNo >= 15) { g_Player.PaternNo -= 15; }
 			if (g_Player.PaternNo < 0) { g_Player.PaternNo += 15; }
+			//============================================================
+			//	足音
+			//============================================================
 			if (g_Player.PaternNo == 4.0f || g_Player.PaternNo == 12.0f) {
 				PlaySound(g_PlayerSoundNo, 0);
 				SetVolume(g_PlayerSoundNo, 0.5f);

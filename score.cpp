@@ -483,3 +483,6 @@ SCOREPARAM* Score::GetScoreParam() {
 Score* Score::GetScore() {
 	return &g_Score;
 }
+ANIMEPARAM* Score::GetAnimeParam() {
+	return g_AnimeParam;
+}

@@ -45,6 +45,7 @@ static Time* pTime = pTime->GetTime();
 static TimeParam*	pTimeParam = pTime->GetTimeParam();
 static Score* pScore = pScore->GetScore();
 static FADEPARAM* pFadeParam = GetFadeParam();
+static ANIMEPARAM* pAnimeParam = pScore->GetAnimeParam();
 //======================
 //‰Šú‰»
 //======================
@@ -158,6 +159,9 @@ void	UpdateResult()
 			{
 				pTimeParam->UseFlag = false;
 				pTime->StartTime();
+				for (int i = 0; i < SCORE_MAX; i++) {
+					pAnimeParam[i].AnimeFlag = false;
+				}
 				//SetScene(SCENE::SCENE_GAME);
 				pFadeParam->ExceptFlag = true;
 				pFadeParam->TitleFlag = false;
