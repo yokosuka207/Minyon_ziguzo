@@ -46,6 +46,7 @@
 #include "EffectSpark.h"	// ヒバナエフェクト
 #include "PlayerLife.h"
 #include "start.h"
+#include "JumpStandExplain.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -96,6 +97,7 @@ void InitGame()
 		InitEffectSpark();		// ヒバナエフェクト
 		InitBullet();
 		InitPlayerLife();
+		InitExplain();
 
 	}
 	InitMapChip();
@@ -144,6 +146,7 @@ void UninitGame()
 	UninitEnemy();
 	UninitBullet();
 	UninitPlayerLife();
+	UninitExplain();
 
 	UninitPause();
 	pScore->UninitScore();
@@ -217,6 +220,7 @@ void UpdateGame()
 		UpdateEffectSpark();	// ヒバナエフェクト
 
 		UpdatePlayerLife();
+		UpdateExplain();
 	}
 	else {
 		UpdatePause();
@@ -272,6 +276,7 @@ void DrawGame()
 		g_Player3D.Draw();
 		DrawEffectSpark();		// ヒバナエフェクト
 		SetCamera();
+		DrawExplain();
 	}
 	else {
 		BgDraw();
