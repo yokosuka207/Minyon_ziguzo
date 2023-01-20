@@ -65,8 +65,10 @@ int StageNo = 0;
 
 static bool OneFlag =true;	//geƒQ[ƒ€‚ÌÅ‰‚©‚Ç‚¤‚©
 
-static int g_StageSelectPlayerSoundNo = 0;
-static char g_StageSelectPlayerSoundName[] = "data\\SoundData\\SE\\ŠvŒC‚Å•à‚­.wav";
+static int g_StageSelectPlayerRightSoundNo = 0;
+static char g_StageSelectPlayerRightSoundName[] = "data\\SoundData\\SE\\ŠvŒC‚Å•à‚­‰E.wav";
+static int g_StageSelectPlayerLeftSoundNo = 0;
+static char g_StageSelectPlayerLeftSoundName[] = "data\\SoundData\\SE\\ŠvŒC‚Å•à‚­¶.wav";
 
 
 //-----------------------------------------------------------------------------
@@ -202,7 +204,8 @@ HRESULT InitStageSelect() {
 	ply.CoolTime = PLAYER_COOLTIME;
 	ply.PieceIndex = 0;
 
-	g_StageSelectPlayerSoundNo = LoadSound(g_StageSelectPlayerSoundName);
+	g_StageSelectPlayerRightSoundNo = LoadSound(g_StageSelectPlayerRightSoundName);
+	g_StageSelectPlayerLeftSoundNo = LoadSound(g_StageSelectPlayerLeftSoundName);
 
 	return S_OK;
 }
@@ -289,9 +292,13 @@ void UpdateStageSelect() {
 		// ƒAƒjƒ[ƒVƒ‡ƒ“ƒpƒ^[ƒ“”Ô†‚ð0`15‚Ì”ÍˆÍ“à‚É‚·‚é
 		if (ply.PaternNo > 15) { ply.PaternNo -= 15; }
 		if (ply.PaternNo < 0) { ply.PaternNo += 15; }
-		if (ply.PaternNo == 4.0f || ply.PaternNo == 12.0f) {
-			PlaySound(g_StageSelectPlayerSoundNo, 0);
-			SetVolume(g_StageSelectPlayerSoundNo, 0.5f);
+		if (ply.PaternNo == 9.0f) {
+			PlaySound(g_StageSelectPlayerRightSoundNo, 0);
+			SetVolume(g_StageSelectPlayerRightSoundNo, 0.5f);
+		}
+		if (ply.PaternNo == 1.0f) {
+			PlaySound(g_StageSelectPlayerLeftSoundNo, 0);
+			SetVolume(g_StageSelectPlayerLeftSoundNo, 0.5f);
 		}
 
 		ply.oldpos = ply.Position;
