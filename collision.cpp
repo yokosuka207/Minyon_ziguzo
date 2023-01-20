@@ -57,6 +57,8 @@
 #include"SwitchWall.h"//switchの壁
 #include"cursor.h"
 
+#include"sound.h"
+
 //==================================
 //プロトタイプ宣言
 //=================================
@@ -94,6 +96,31 @@ static Time* pTime = pTime->GetTime();
 static TimeParam* pTimeParam = pTime->GetTimeParam();
 DIRECSION Direcsion = NUM;	//方向の確認
 static bool InventoryFlag = false;
+
+
+static int g_BrokenSoundNo = 0;
+static char g_BrokenSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
+
+
+
+//===============================
+//初期化処理
+//================================
+void InitCollision()
+{
+	g_BrokenSoundNo = LoadSound(g_BrokenSoundName);
+}
+
+
+//===============================
+//更新処理
+//================================
+void UninitCollision()
+{
+	StopSound(g_BrokenSoundNo);
+}
+
+
 
 //===============================
 //当たり判定処理
@@ -470,6 +497,8 @@ void UpdateCollision(){
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2)
 				{
 					(pBroken + i)->breakFlag = true;
+					//SetVolume(g_BrokenSoundNo, 0.5f);
+					PlaySound(g_BrokenSoundNo, 0);
 					(pBroken + i)->UseFlag = false;
 					pPlayer->fall = true;
 					pPlayer->getfall = true;
