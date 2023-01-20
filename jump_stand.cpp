@@ -10,6 +10,7 @@
 #include "puzzle.h"
 #include "MapChip.h"
 #include"mouse.h"
+#include"sound.h"
 
 //-------配列にしてほしい↓（マップチップの都合上必要）-------
 static JUMPSTAND g_JumpStand[JUMPSTAND_MAX];
@@ -21,6 +22,8 @@ static ID3D11ShaderResourceView* g_textureBlock;	//画像一枚で一つの変数が必要
 //static char* g_textureName_Block= (char*)"data\\texture\\JumpStand.jpg";	//テクスチャファイルパス
 static char* g_textureName_Block = (char*)"data\\texture\\jumpstand.png";	//テクスチャファイルパス
 static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
+static int g_JumpStandSoundNo = 0;
+static char g_JumpStandSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
 
 HRESULT InitJumpStand()
 {
@@ -37,7 +40,7 @@ HRESULT InitJumpStand()
 		g_JumpStand[i].JumpStandFlag = false;
 
 		g_JumpStand[i].JumpStandFlag = false;
-
+		g_JumpStandSoundNo = LoadSound(g_JumpStandSoundName);
 		return S_OK;
 	}
 }
@@ -49,6 +52,8 @@ void UninitJumpStand()
 		g_textureBlock->Release();
 		g_textureBlock = NULL;
 	}
+
+	StopSound(g_JumpStandSoundNo);
 }
 
 void UpdateJumpStand()
@@ -69,7 +74,7 @@ void UpdateJumpStand()
 				g_JumpStand[i].oldpos = g_JumpStand[i].pos;
 
 				if (g_JumpStand[i].rot == 90 || g_JumpStand[i].rot == 270) {
-					g_JumpStand[i].rot = 0.0f;
+					g_JumpStand[i].rot = 180.0f;
 				}
 
 				if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
@@ -138,17 +143,23 @@ void UpdateJumpStand()
 
 
 
-					//プレイヤー下・壊れるブロック上
+					//プレイヤー下・上jumpstand
 					if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
 						p_Player->Position.x - p_Player->size.x / 2 < g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 &&
 						p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2 &&
 						p_Player->oldpos.y - p_Player->size.y / 2 >= g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2)
 					{
 						g_JumpStand[i].JumpStandFlag = true;
+
+						SetVolume(g_JumpStandSoundNo, 1.5f);
+						
+						PlaySound(g_JumpStandSoundNo, 0);
+
 						p_Player->sp.y = 0.0f;
 						g_JumpStand[i].JumpPower = 4.8f;
 						//p_Player->sp.y = 5.0f;
 						g_JumpStand[i].JumpGravity = 0.1f;
+						
 					}
 
 					if (g_JumpStand[i].JumpStandFlag)
@@ -158,6 +169,7 @@ void UpdateJumpStand()
 						if (g_JumpStand[i].JumpPower > -10.0f)
 						{
 							g_JumpStand[i].JumpPower -= g_JumpStand[i].JumpGravity;
+							
 						}
 						p_Player->Position.y += g_JumpStand[i].JumpPower;
 						//p_Player->Position.y -= p_Player->sp.y;

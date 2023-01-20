@@ -51,7 +51,7 @@ void Score::InitScore() {
 		g_AnimeParam[i].num = 0;
 		g_AnimeParam[i].index = -1;
 	}
-	char filename[] = "data\\SoundData\\SE\\meka_ge_type_chin_kaigyo01.wav";
+	char filename[] = "data\\SoundData\\SE\\タイプライター.wav";
 	g_ScoreSoundNo = LoadSound(filename);
 }
 void Score::UninitScore() {
