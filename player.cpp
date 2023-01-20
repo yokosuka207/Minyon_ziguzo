@@ -60,8 +60,10 @@
 static PLAYER g_Player;
 static char* g_TextureNameBroken = (char*)"data\\texture\\ÉvÉåÉCÉÑÅ[.png";
 
-static int g_PlayerSoundNo = 0;
-static char g_PlayerSoundName[] = "data\\SoundData\\SE\\ävåCÇ≈ï‡Ç≠.wav";
+static int g_PlayerRightSoundNo = 0;
+static char g_PlayeRightSoundName[] = "data\\SoundData\\SE\\ävåCÇ≈ï‡Ç≠âE.wav";
+static int g_PlayerLeftSoundNo = 0;
+static char g_PlayerLeftSoundName[] = "data\\SoundData\\SE\\ävåCÇ≈ï‡Ç≠ç∂.wav";
 
 static Time		g_Time;
 
@@ -105,7 +107,8 @@ HRESULT InitPlayer()
 	g_Player.CoolTime = PLAYER_COOLTIME;
 	g_Player.PieceIndex = 0;
 
-	g_PlayerSoundNo = LoadSound(g_PlayerSoundName);
+	g_PlayerRightSoundNo = LoadSound(g_PlayeRightSoundName);
+	g_PlayerLeftSoundNo = LoadSound(g_PlayerLeftSoundName);
 
 	return S_OK;
 }
@@ -115,7 +118,8 @@ HRESULT InitPlayer()
 //=============================================================================
 void UninitPlayer()
 {
-	StopSound(g_PlayerSoundNo);
+	StopSound(g_PlayerRightSoundNo);
+	StopSound(g_PlayerLeftSoundNo);
 }
 
 //=============================================================================
@@ -163,9 +167,13 @@ void UpdatePlayer()
 			//============================================================
 			//	ë´âπ
 			//============================================================
-			if (g_Player.PaternNo == 4.0f || g_Player.PaternNo == 12.0f) {
-				PlaySound(g_PlayerSoundNo, 0);
-				SetVolume(g_PlayerSoundNo, 0.5f);
+			if (g_Player.PaternNo == 9.0f) {
+				SetVolume(g_PlayerRightSoundNo, 0.5f);
+				PlaySound(g_PlayerRightSoundNo, 0);
+			}
+			if (g_Player.PaternNo == 1.0f) {
+				SetVolume(g_PlayerLeftSoundNo, 0.5f);
+				PlaySound(g_PlayerLeftSoundNo, 0);
 			}
 
 			if (g_Player.sp.x == 0)
