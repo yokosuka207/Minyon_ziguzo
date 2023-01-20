@@ -30,6 +30,7 @@ HRESULT InitEnemy() {
 		g_Enemy[i].sp = D3DXVECTOR2(0.0f, 0.0f);
 		g_Enemy[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_Enemy[i].index = -1;
+		g_Enemy[i].BulletWait = 110;
 		g_Enemy[i].texno = LoadTexture(g_EnemyTextureName);
 		g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_LEFT;
 		g_Enemy[i].UseFlag = false;
@@ -51,7 +52,13 @@ void UpdateEnemy() {
 		if (g_Enemy[i].UseFlag) {
 			if (g_Enemy[i].AIFlag)
 			{
-				SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), 1);
+				g_Enemy[i].BulletWait++;
+				if (g_Enemy[i].BulletWait > 120)
+				{
+					SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), 1);
+					g_Enemy[i].BulletWait = 0;
+
+				}
 			}
 			
 		}
