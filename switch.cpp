@@ -13,6 +13,7 @@
 #include "texture.h"
 #include "sprite.h"
 #include "player.h"
+#include "sound.h"
 
 #define SWITCH_UV_W (1.0f / 2.0f)
 #define SWITCH_UV_H (1.0f / 1.0f)
@@ -23,6 +24,7 @@ SWITCH g_Switch[SWITCH_MAX];
 static ID3D11ShaderResourceView* g_SwitchTexture;	//画像一枚で一つの変数が必要
 static char* g_SwitchTextureName = (char*)"data\\texture\\ボタン.png";	//テクスチャファイルパス
 static int g_SwitchTextureNo = 0;
+
 
 HRESULT InitSwitch() {
 	for (int i = 0; i < SWITCH_MAX; i++) {
@@ -43,6 +45,7 @@ void UninitSwitch() {
 	if (g_SwitchTexture != NULL) {
 		g_SwitchTexture->Release();
 		g_SwitchTexture = NULL;
+		
 	}
 }
 void UpdateSwitch() {

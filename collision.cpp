@@ -97,9 +97,22 @@ static TimeParam* pTimeParam = pTime->GetTimeParam();
 DIRECSION Direcsion = NUM;	//方向の確認
 static bool InventoryFlag = false;
 
-
+//効果音
+//壊れるブロック
 static int g_BrokenSoundNo = 0;
-static char g_BrokenSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
+static char g_BrokenSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+
+//スイッチ
+static int g_SwitchSoundNo = 0;
+static char g_SwitchSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+//ワープ
+static int g_WarpSoundNo = 0;
+static char g_WarpSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+//高いとこから請われる床
+static int g_HighSoundNo = 0;
+static char g_HighSoundName[] = "data\\SoundData\\SE\\タイプライター..wav";
+
+
 
 
 
@@ -109,6 +122,10 @@ static char g_BrokenSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
 void InitCollision()
 {
 	g_BrokenSoundNo = LoadSound(g_BrokenSoundName);
+	g_WarpSoundNo = LoadSound(g_WarpSoundName);
+	g_HighSoundNo = LoadSound(g_HighSoundName);
+	g_SwitchSoundNo = LoadSound(g_SwitchSoundName);
+
 }
 
 
@@ -118,6 +135,9 @@ void InitCollision()
 void UninitCollision()
 {
 	StopSound(g_BrokenSoundNo);
+	StopSound(g_SwitchSoundNo);
+	StopSound(g_WarpSoundNo);
+	StopSound(g_HighSoundNo);
 }
 
 
@@ -238,6 +258,8 @@ void UpdateCollision(){
 				{
 					pSwitch[i].PressFlag = true;//押されたら
 					pSwitch[i].PaternNo = 1;
+					//SetVolume(g_BrokenSoundNo, 0.5f);
+					PlaySound(g_SwitchSoundNo, 0);
 				}
 				else {
 					pSwitch[i].PressFlag = false;
@@ -411,6 +433,8 @@ void UpdateCollision(){
 									{
 										pPlayer->Position = (pWarp + i + 1)->Position;
 										pPlayer->CoolTime = PLAYER_COOLTIME;
+										//SetVolume(g_BrokenSoundNo, 0.5f);
+										PlaySound(g_WarpSoundNo, 0);
 										pPlayer->WarpFlag = true;
 									}
 								}
@@ -427,7 +451,8 @@ void UpdateCollision(){
 									{
 										pPlayer->Position = (pWarp + i - 1)->Position;
 										pPlayer->CoolTime = PLAYER_COOLTIME;
-
+										//SetVolume(g_BrokenSoundNo, 0.5f);
+										PlaySound(g_WarpSoundNo, 0);
 										pPlayer->WarpFlag = true;
 
 									}
@@ -627,6 +652,8 @@ void UpdateCollision(){
 					if (pPlayer->sp.y >= 5.0f) {
 						//pPlayer->isHigh = false;
 						(pHigh + i)->UseFlag = false;
+						//SetVolume(g_BrokenSoundNo, 0.5f);
+						PlaySound(g_HighSoundNo, 0);
 						pPlayer->frame = 50;
 					}
 					else {
