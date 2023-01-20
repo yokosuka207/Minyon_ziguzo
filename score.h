@@ -55,6 +55,7 @@ public:
 	void SetStageNo(int stage);
 	SCOREPARAM* GetScoreParam();
 	Score* GetScore();
+	ANIMEPARAM* GetAnimeParam();
 };
 
 #endif // !_SCORE_H_

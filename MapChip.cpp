@@ -300,28 +300,28 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetGoal(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP) :	//8　ジャンプ台
-				SetJumpStand(position, DrawSize, no);
+				SetJumpStand(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9　トゲ
-				SetThornBlock(position, DrawSize, no);
+				SetThornBlock(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL) :	//10　乗ると落ちるブロック
 				SetFallBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11　鍵
-				SetKey(position, DrawSize, no);
+				SetKey(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12　鍵付きの扉
-				SetOpenKey(position, DrawSize, no);
+				SetOpenKey(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13　ボタン
-				SetSwitch(position, DrawSize, no);
+				SetSwitch(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14　ボタンで開く扉×3
-				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[i + j].direction, 3);
+				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 3);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15　ボタンで開く扉×4
-				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[i + j].direction ,4);
+				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction ,4);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
 				SetSheerFloors(position, DrawSize, no);
@@ -355,7 +355,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetPlayerPosition(position);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
-				SetStart(position, DrawSize, no);
+				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			default:
 				break;
@@ -583,28 +583,28 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetGoal(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP):	//8　ジャンプ台
-				SetJumpStand(position, DrawSize, no);
+				SetJumpStand(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE):	//9　トゲ
-				SetThornBlock(position, DrawSize, no);
+				SetThornBlock(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL):	//10　乗ると落ちるブロック
 				SetFallBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11　鍵
-				SetKey(position, DrawSize, no);
+				SetKey(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12　鍵付きの扉
-				SetOpenKey(position, DrawSize, no);
+				SetOpenKey(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13　ボタン
-				SetSwitch(position, DrawSize, no);
+				SetSwitch(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14　ボタンで開く扉×3
-				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[i + j].direction, 3);
+				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 3);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15　ボタンで開く扉×4
-				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[i + j].direction, 4);
+				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 4);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
 				SetSheerFloors(position, DrawSize, no);
@@ -633,7 +633,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetEnemy(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
-				SetStart(position, DrawSize, no);
+				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			default:
 				break;

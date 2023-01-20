@@ -46,3 +46,5 @@
 long GetMousePosX(void);
 long GetMousePosY(void);
 int Irand(int max);
+void Setclose();
+HWND GetHwnd();
