@@ -18,6 +18,7 @@ typedef struct {
 	D3DXVECTOR2 pos;
 	D3DXVECTOR2 size;
 	D3DXCOLOR	color;
+	float		rot;
 	int			PieceIndex;
 	int			SwitchIndex;
 	bool		PressFlag;
@@ -31,7 +32,7 @@ HRESULT InitSwitch();
 void UninitSwitch();
 void UpdateSwitch();
 void DrawSwitch();
-void SetSwitch(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo);
+void SetSwitch(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int PieceNo);
 SWITCH* GetSwitch();
 void DeleteSwitch(int PieceNo);
 
