@@ -97,9 +97,13 @@ static TimeParam* pTimeParam = pTime->GetTimeParam();
 DIRECSION Direcsion = NUM;	//方向の確認
 static bool InventoryFlag = false;
 
-
+//効果音
+//壊れるブロック
 static int g_BrokenSoundNo = 0;
 static char g_BrokenSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
+//スイッチ
+static int g_SwitchSoundNo = 0;
+static char g_SwitchSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
 
 
 
@@ -109,6 +113,8 @@ static char g_BrokenSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
 void InitCollision()
 {
 	g_BrokenSoundNo = LoadSound(g_BrokenSoundName);
+	g_SwitchSoundNo = LoadSound(g_SwitchSoundName);
+
 }
 
 
@@ -118,6 +124,7 @@ void InitCollision()
 void UninitCollision()
 {
 	StopSound(g_BrokenSoundNo);
+	StopSound(g_SwitchSoundNo);
 }
 
 
@@ -238,6 +245,8 @@ void UpdateCollision(){
 				{
 					pSwitch[i].PressFlag = true;//押されたら
 					pSwitch[i].PaternNo = 1;
+					//SetVolume(g_BrokenSoundNo, 0.5f);
+					PlaySound(g_SwitchSoundNo, 0);
 				}
 				else {
 					pSwitch[i].PressFlag = false;
