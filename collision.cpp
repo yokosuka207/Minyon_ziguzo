@@ -101,7 +101,7 @@ static bool InventoryFlag = false;
 //壊れるブロック
 static int g_BrokenSoundNo = 0;
 static char g_BrokenSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
-static char g_BrokenSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
+//static char g_BrokenSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
 //スイッチ
 static int g_SwitchSoundNo = 0;
 static char g_SwitchSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
