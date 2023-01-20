@@ -283,29 +283,18 @@ void UpdateCollision(){
 		//プレーヤーと壁の判定
 		for (int i = 0; i < SWITCHWALL_MAX; i++) {
 			if (pSwitchWall[i].UseFlag) {
+
+				D3DXVECTOR2 pPlayerMin = D3DXVECTOR2(pPlayer->Position.x + pPlayer->size.x / 2, pPlayer->Position.y - pPlayer->size.y / 2);
+				D3DXVECTOR2 pPlayerMax = D3DXVECTOR2(pPlayer->Position.x - pPlayer->size.x / 2, pPlayer->Position.y + pPlayer->size.y / 2);
+
 				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
 					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
 					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
 				{
-					if (pSwitchWall[i].rot == 0.0f) {
-						pPlayer->Position.x = pPlayer->oldpos.x;
-						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2;
-					}
-					else if (pSwitchWall[i].rot == 90.0f) {
-						pPlayer->Position = pPlayer->oldpos;
-						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2;
-					}
-					else if (pSwitchWall[i].rot == 180.0f) {
-						pPlayer->Position = pPlayer->oldpos;
-						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2;
-					}
-					else if (pSwitchWall[i].rot == 270.0f) {
-						pPlayer->Position = pPlayer->oldpos;
-						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2;
-					}
+					//修正
+					pPlayer->Position = pPlayer->oldpos;
 				}
-
 			}
 		}
 		//スイッチと木箱の判定
