@@ -30,7 +30,7 @@ HRESULT InitJumpStand()
 
 		g_JumpStand[i].pos = D3DXVECTOR2(0.0f, 0.0f);
 		g_JumpStand[i].size = D3DXVECTOR2(JUMPSTAND_SIZE, JUMPSTAND_SIZE);
-
+		g_JumpStand[i].rot = 0.0f;
 		g_JumpStand[i].PieceIndex = -1;
 
 		g_JumpStand[i].UseJumpStand = false;
@@ -67,6 +67,10 @@ void UpdateJumpStand()
 			if (g_JumpStand[i].UseJumpStand)
 			{
 				g_JumpStand[i].oldpos = g_JumpStand[i].pos;
+
+				if (g_JumpStand[i].rot == 90 || g_JumpStand[i].rot == 270) {
+					g_JumpStand[i].rot = 0.0f;
+				}
 
 				if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
 					p_Player->oldpos.x + p_Player->size.x / 2 <= g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
@@ -207,7 +211,7 @@ void DrawJumpStand()
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TextureNo));
 
 			SpriteDrawColorRotation(g_JumpStand[i].pos.x, g_JumpStand[i].pos.y,-0.1f,
-				g_JumpStand[i].size.x, g_JumpStand[i].size.y, 0.0f, D3DXCOLOR(3.0f, 0.0f, 0.0f, 1.0f),
+				g_JumpStand[i].size.x, g_JumpStand[i].size.y, g_JumpStand[i].rot, D3DXCOLOR(3.0f, 0.0f, 0.0f, 1.0f),
 				0, 1.0f, 1.0f, 1);
 		}
 	}
@@ -219,6 +223,7 @@ void SetJumpStand(D3DXVECTOR2 p)
 
 		if (!g_JumpStand[i].UseJumpStand)
 		{
+
 			g_JumpStand[i].pos = p;
 			g_JumpStand[i].size = D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE);
 
@@ -270,9 +275,22 @@ bool Collition_JumpStand()
 	}
 }
 
-void SetJumpStand(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
+void SetJumpStand(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int PieceNo) {
 	for (int i = 0; i < JUMPSTAND_MAX; i++) {
 		if (!g_JumpStand[i].UseJumpStand) {
+			switch (direction)
+			{
+			case 0:g_JumpStand[i].rot = (direction + 2) * 90;
+				break;
+			case 1:g_JumpStand[i].rot = direction * 90;
+				break;
+			case 2:g_JumpStand[i].rot = (direction - 2) * 90;
+				break;
+			case 3:g_JumpStand[i].rot = direction * 90;
+				break;
+			default:
+				break;
+			}
 			g_JumpStand[i].pos = pos;
 			g_JumpStand[i].size = size;
 			g_JumpStand[i].PieceIndex = PieceNo;
