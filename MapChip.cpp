@@ -303,7 +303,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetJumpStand(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9　トゲ
-				SetThornBlock(position, DrawSize, no);
+				SetThornBlock(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL) :	//10　乗ると落ちるブロック
 				SetFallBlock(position, DrawSize, no);
@@ -586,7 +586,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetJumpStand(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE):	//9　トゲ
-				SetThornBlock(position, DrawSize, no);
+				SetThornBlock(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL):	//10　乗ると落ちるブロック
 				SetFallBlock(position, DrawSize, no);

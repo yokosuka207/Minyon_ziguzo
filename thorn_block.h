@@ -28,7 +28,7 @@ struct THORNBLOCK
 	D3DXVECTOR2 Postion;//表示座標(中心座標)
 	D3DXVECTOR2 sp;
 	int			PieceIndex;
-	float rot;//回転角度
+	float		rot;//回転角度
 	float texno;//テクスチャインデックス
 	D3DXCOLOR col;//色
 	float PaternNo;//パターン番号
@@ -49,7 +49,7 @@ void UpdateThornBlock();
 void DrawThornBlock();
 
 //int SetThornBlock(D3DXVECTOR2 Pos, D3DXVECTOR2 s);
-void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo);
+void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int PieceNo);
 void DeleteThornBlock(int PieceNo);
 
 THORNBLOCK* GetThornBlock();
