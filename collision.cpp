@@ -103,10 +103,10 @@ static int g_BrokenSoundNo = 0;
 static char g_BrokenSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
 //スイッチ
 static int g_SwitchSoundNo = 0;
-static char g_SwitchSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_SwitchSoundName[] = "data\\SoundData\\SE\\スイッチ（ニコニ・コモンズ）.wav";
 //ワープ
 static int g_WarpSoundNo = 0;
-static char g_WarpSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_WarpSoundName[] = "data\\SoundData\\SE\\ワープ_無料効果音で遊ぼう！_.wav";
 //高いとこから請われる床
 static int g_HighSoundNo = 0;
 static char g_HighSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
@@ -121,7 +121,7 @@ static int g_GKeySoundNo = 0;
 static char g_GKeySoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
 //ピースの合体
 static int g_MatchPieceSoundNo = 0;
-static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\ピースはめ込む音_無料効果音で遊ぼう！_.wav";
 
 
 
@@ -796,6 +796,7 @@ void UpdateCollision(){
 		//------------------------------------------------------
 		//しんちゃんへ
 		//SE導入してるときに気になったから追加してみたけど余計なことしてたらごめんね追加部分はコメントアウトしとくね
+		//エネミー関連のSE部分はいろいろ決まったら随時追加予定
 		for (int i = 0; i < ENEMY_MAX; i++) {
 			if (pEnemy[i].UseFlag) {
 				pEnemy[i].AIFlag = false;

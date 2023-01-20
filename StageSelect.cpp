@@ -73,7 +73,7 @@ static char g_StageSelectPlayerLeftSoundName[] = "data\\SoundData\\SE\\ŠvŒC‚Å•à‚
 
 //ƒXƒe[ƒWƒZƒŒƒNƒgƒhƒASE
 static int g_StageSelectSoundNo = 0;
-static char g_StageSelectSoundName[] = "data\\SoundData\\SE\\ƒ^ƒCƒvƒ‰ƒCƒ^[.wav";
+static char g_StageSelectSoundName[] = "data\\SoundData\\SE\\ƒhƒA‚ğŠJ‚¯‚é‰¹_–³—¿Œø‰Ê‰¹‚Å—V‚Ú‚¤I_.wav";
 
 //-----------------------------------------------------------------------------
 //	‰Šú‰»

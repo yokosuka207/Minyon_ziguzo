@@ -105,7 +105,7 @@ HRESULT InitPlayer()
 	g_Player.uv_h = PLAYER_UV_H;//ècÉTÉCÉY
 	g_Player.NumPatern = 4;//â°ñáêî
 
-	g_Player.hp = 3;
+	g_Player.hp = PLAYER_HP;
 	g_Player.frame = 0;
 	g_Player.CoolTime = PLAYER_COOLTIME;
 	g_Player.PieceIndex = 0;
