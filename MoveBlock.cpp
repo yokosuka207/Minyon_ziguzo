@@ -9,6 +9,7 @@
 #include "block.h"
 #include "puzzle.h"
 #include "MapChip.h"
+#include "sound.h"
 
 static MOVEBLOCK gMoveBlock[MOVE_BLOCK_MAX];
 
@@ -18,6 +19,13 @@ static BLOCK* cipblock;
 static ID3D11ShaderResourceView* g_textureBlock;	//画像一枚で一つの変数が必要
 static char* g_textureName_Block = (char*)"data\\texture\\Moveblock.png";	//テクスチャファイルパス
 static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
+
+//サウンド
+static int g_MoveBlockMoveSoundNo = 0;
+static char g_MoveBlockMoveSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+
+//SetVolume(g_MoveBlockMoveSoundNo, 0.5f);
+//PlaySound(g_MoveBlockMoveSoundNo, 0);
 
 HRESULT InitMoveBlock()
 {
@@ -33,6 +41,8 @@ HRESULT InitMoveBlock()
 		gMoveBlock[i].bUse = true;
 	}
 
+	g_MoveBlockMoveSoundNo = LoadSound(g_MoveBlockMoveSoundName);
+
 	return S_OK;
 }
 
@@ -43,6 +53,7 @@ void UninitMoveBlock()
 		g_textureBlock->Release();
 		g_textureBlock = NULL;
 	}
+	StopSound(g_MoveBlockMoveSoundNo);
 }
 
 void UpdateMoveBlock()
