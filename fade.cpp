@@ -195,10 +195,9 @@ void StartFade(FADE state) {
 			else//プレイ画面のゴールの位置にアイリスイン
 			{ 
 				START* pStart = GetStart();
-				g_FadeParam.pos = D3DXVECTOR2(pStart[0].pos.x - pStart[0].size.x * 3 + SCREEN_WIDTH / 2, pStart[0].pos.y + SCREEN_HEIGHT / 6);
+				
+				g_FadeParam.pos = D3DXVECTOR2(pStart[0].pos.x - SCREEN_WIDTH / 2, pStart[0].pos.y + SCREEN_HEIGHT / 6);
 
-				//GOAL* goal = GetGoal();
-				//g_FadeParam.pos = goal->Pos;
 			}
 
 			g_FadeParam.alpha = 1.0f;
