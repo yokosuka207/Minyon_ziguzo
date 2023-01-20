@@ -61,6 +61,7 @@
     <ClCompile Include="EffectSpark.cpp" />
     <ClCompile Include="PlayerLife.cpp" />
     <ClCompile Include="start.cpp" />
+    <ClCompile Include="JumpStandExplain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -135,5 +136,6 @@
     <ClInclude Include="EffectSpark.h" />
     <ClInclude Include="PlayerLife.h" />
     <ClInclude Include="start.h" />
+    <ClInclude Include="JumpStandExplain.h" />
   </ItemGroup>
 </Project>

@@ -132,16 +132,11 @@ void UpdateCamera(void)
 	{
 
 	}
-	if (g_Camera.zoomFlag)
-	{
-		SetCameraAT(D3DXVECTOR3(pPlayer->Position.x, pPlayer->Position.y, 0.0f));	// カメラの注視点
-		g_Camera.pos.y = pPlayer->Position.y;
-	}
 
 
 
 
-	if (GetThumbLeftX(0) != 0|| GetThumbLeftY(0) != 0)
+	if (GetThumbLeftX(0) != 0|| GetThumbLeftY(0) != 0|| IsButtonPressed(0, XINPUT_GAMEPAD_A))
 	{
 		g_Camera.fov = 20.0f;
 		g_Camera.zoomFlag = true;
@@ -152,6 +147,12 @@ void UpdateCamera(void)
 		g_Camera.fov = 45.0f;
 		g_Camera.zoomFlag = false;
 	}
+	if (g_Camera.zoomFlag)
+	{
+		SetCameraAT(D3DXVECTOR3(pPlayer->Position.x, pPlayer->Position.y, 0.0f));	// カメラの注視点
+		g_Camera.pos.y = pPlayer->Position.y;
+	}
+
 }
 
 

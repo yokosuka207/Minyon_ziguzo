@@ -157,7 +157,6 @@ void UpdatePlayer()
 			{
 				g_Player.sp.x = 0;
 			}
-			//fuck
 			// アニメーションパターン番号を0～15の範囲内にする
 			if (g_Player.PaternNo >= 15) { g_Player.PaternNo -= 15; }
 			if (g_Player.PaternNo < 0) { g_Player.PaternNo += 15; }
@@ -338,7 +337,7 @@ void UpdatePlayer()
 			}
 
 			// ジャンプ
-			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock) && g_Player.sp.y <= 0 && Keyboard_IsKeyDown(KK_SPACE))
+			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock) && g_Player.sp.y <= 0 && (Keyboard_IsKeyDown(KK_SPACE)|| IsButtonPressed(0, XINPUT_GAMEPAD_A)))
 			{
 
 				g_Player.sp.y = 2.5f;			// スピードのyをマイナスにする
