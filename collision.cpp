@@ -101,14 +101,14 @@ static bool InventoryFlag = false;
 //壊れるブロック
 static int g_BrokenSoundNo = 0;
 static char g_BrokenSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
-//static char g_BrokenSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
+
 //スイッチ
 static int g_SwitchSoundNo = 0;
 static char g_SwitchSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
-
+//ワープ
 static int g_WarpSoundNo = 0;
 static char g_WarpSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
-
+//高いとこから請われる床
 static int g_HighSoundNo = 0;
 static char g_HighSoundName[] = "data\\SoundData\\SE\\タイプライター..wav";
 
