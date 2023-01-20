@@ -22,8 +22,11 @@ static ID3D11ShaderResourceView* g_textureBlock;	//画像一枚で一つの変数が必要
 //static char* g_textureName_Block= (char*)"data\\texture\\JumpStand.jpg";	//テクスチャファイルパス
 static char* g_textureName_Block = (char*)"data\\texture\\jumpstand.png";	//テクスチャファイルパス
 static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
+
+//ジャンプスタンド音
 static int g_JumpStandSoundNo = 0;
 static char g_JumpStandSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+//ジャンプスタンド運ぶ（引きずる音）
 static int g_JumpStandSoundMoveNo = 0;
 static char g_JumpStandSoundMoveName[] = "data\\SoundData\\SE\\タイプライター.wav";
 

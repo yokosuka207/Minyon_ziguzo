@@ -59,8 +59,9 @@ static int g_CursorIndex = -1;	//マウスの掴んだパズルの番号入れ
 static int NoIndex = -1;	//マウスで掴んだピース番号
 static bool g_CursorFlag = false;	//マウスをクリックしているか
 
+//マウスクリックSE
 static int g_CursorSoundNo = 0;
-//static char g_CursorSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_CursorSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
 
 
 //==================================================
@@ -71,7 +72,7 @@ HRESULT InitCursor()
 	oneFlag = false;	//マウスでパズルを一つ持っているか
 	g_CursorIndex = -1;	//マウスの掴んだパズルの番号入れ
 	NoIndex = -1;	//マウスで掴んだピース番号
-	 g_CursorFlag = false;	//マウスをクリックしているか
+	g_CursorFlag = false;	//マウスをクリックしているか
 
 
 	// カーソルの初期化
@@ -88,7 +89,7 @@ HRESULT InitCursor()
 	}
 	g_CursorTextureNo[0] = LoadTexture(g_CursorTextureName);
 	g_CursorTextureNo[1] = LoadTexture(g_CursorCatchTextureName);
-	//g_CursorSoundNo = LoadSound(g_CursorSoundName);
+	g_CursorSoundNo = LoadSound(g_CursorSoundName);
 
 	return S_OK;
 }
@@ -98,7 +99,7 @@ HRESULT InitCursor()
 //==================================================
 void UninitCursor()
 {
-	//StopSound(g_CursorSoundNo);
+	StopSound(g_CursorSoundNo);
 }
 
 //==================================================
@@ -235,8 +236,7 @@ void UpdateCursor()
 						pPiece[i].pos.x + PUZZLE_WIDHT / 3 > g_Cursor.pos.x - SCREEN_WIDTH / 2 &&
 						!oneFlag)
 					{
-						//SetVolume(g_CursorSoundNo, 0.5f);
-						//PlaySound(g_CursorSoundNo, 0);
+						
 
 						//プレーヤーが持ったピースの中にいたら
 						if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pPlayer->Position.y &&
@@ -246,12 +246,18 @@ void UpdateCursor()
 							)
 						{
 							g_Cursor.pFlag = true;
+							
 							pPlayer->OneOldpos = pPlayer->Position;
 						}
 
 						g_Cursor.RotIndex = 0;
 
 						oneFlag = true;
+						if (oneFlag == true)
+						{
+							//SetVolume(g_CursorSoundNo, 0.5f);
+							PlaySound(g_CursorSoundNo, 0);
+						}
 						pPiece[i].MoveFlag = true;
 						g_CursorIndex = i;
 						NoIndex = pPiece[i].no;

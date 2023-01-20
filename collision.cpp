@@ -791,14 +791,24 @@ void UpdateCollision(){
 				}
 			}
 		}
-		//------------------------------------
-		//敵の目の前とプレイヤー当たり判定
-		//------------------------------------
+		//------------------------------------------------------
+		//敵の目の前とプレイヤー当たり判定(プレイヤーが死ぬ場合)
+		//------------------------------------------------------
+		//しんちゃんへ
+		//SE導入してるときに気になったから追加してみたけど余計なことしてたらごめんね追加部分はコメントアウトしとくね
 		for (int i = 0; i < ENEMY_MAX; i++) {
 			if (pEnemy[i].UseFlag) {
 				pEnemy[i].AIFlag = false;
 				if (CollisionBB(pEnemy[i].pos, pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x * 1000, pEnemy[i].size.y), pPlayer->size)) {
 					pEnemy[i].AIFlag = true;
+					/*if (pEnemy[i].AIFlag == true)
+					{
+						pPlayer->hp--;
+						if (pPlayer->hp > 0)
+						{
+							pPlayer->UseFlag = false;
+						}
+					}*/
 				}
 			}
 		}

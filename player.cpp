@@ -65,6 +65,9 @@ static char g_PlayeRightSoundName[] = "data\\SoundData\\SE\\ŠvŒC‚Å•à‚­‰E.wav";
 static int g_PlayerLeftSoundNo = 0;
 static char g_PlayerLeftSoundName[] = "data\\SoundData\\SE\\ŠvŒC‚Å•à‚­¶.wav";
 
+//ƒvƒŒƒCƒ„[’…’n‰¹“±“ü‚µ‚½‚¢‚Å‚·
+//
+
 static Time		g_Time;
 
 //=============================================================================
