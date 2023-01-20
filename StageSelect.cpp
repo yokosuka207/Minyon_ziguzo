@@ -192,6 +192,8 @@ HRESULT InitStageSelect() {
 	ply.isSheerFloorsUse = false;
 	ply.isHigh = false;
 	ply.isMoveBlock = false;
+	ply.SoundRightFlag = false;
+	ply.SoundLeftFlag = false;
 	ply.texno = LoadTexture(g_TextureNamePly);
 
 	ply.PaternNo = 0;//パターン番号
@@ -292,13 +294,29 @@ void UpdateStageSelect() {
 		// アニメーションパターン番号を0～15の範囲内にする
 		if (ply.PaternNo > 15) { ply.PaternNo -= 15; }
 		if (ply.PaternNo < 0) { ply.PaternNo += 15; }
-		if (ply.PaternNo == 9.0f) {
-			PlaySound(g_StageSelectPlayerRightSoundNo, 0);
-			SetVolume(g_StageSelectPlayerRightSoundNo, 0.5f);
+		if (!ply.SoundRightFlag) {
+			if (ply.PaternNo == 9.0f) {
+				PlaySound(g_StageSelectPlayerRightSoundNo, 0);
+				SetVolume(g_StageSelectPlayerRightSoundNo, 0.5f);
+				ply.SoundRightFlag = true;
+			}
 		}
-		if (ply.PaternNo == 1.0f) {
-			PlaySound(g_StageSelectPlayerLeftSoundNo, 0);
-			SetVolume(g_StageSelectPlayerLeftSoundNo, 0.5f);
+		else{
+			if (ply.PaternNo != 9.0f) {
+				ply.SoundRightFlag = false;
+			}
+		}
+		if (!ply.SoundLeftFlag) {
+			if (ply.PaternNo == 1.0f) {
+				PlaySound(g_StageSelectPlayerLeftSoundNo, 0);
+				SetVolume(g_StageSelectPlayerLeftSoundNo, 0.5f);
+				ply.SoundLeftFlag = true;
+			}
+		}
+		else {
+			if (ply.PaternNo != 1.0f) {
+				ply.SoundLeftFlag = false;
+			}
 		}
 
 		ply.oldpos = ply.Position;

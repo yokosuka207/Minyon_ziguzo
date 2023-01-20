@@ -107,6 +107,8 @@ HRESULT InitPlayer()
 	g_Player.CoolTime = PLAYER_COOLTIME;
 	g_Player.PieceIndex = 0;
 
+	g_Player.SoundRightFlag = false;
+	g_Player.SoundLeftFlag = false;
 	g_PlayerRightSoundNo = LoadSound(g_PlayeRightSoundName);
 	g_PlayerLeftSoundNo = LoadSound(g_PlayerLeftSoundName);
 
@@ -167,15 +169,30 @@ void UpdatePlayer()
 			//============================================================
 			//	‘«‰¹
 			//============================================================
-			if (g_Player.PaternNo == 9.0f) {
-				SetVolume(g_PlayerRightSoundNo, 0.5f);
-				PlaySound(g_PlayerRightSoundNo, 0);
+			if (!g_Player.SoundRightFlag) {
+				if (g_Player.PaternNo == 9.0f) {
+					SetVolume(g_PlayerRightSoundNo, 0.5f);
+					PlaySound(g_PlayerRightSoundNo, 0);
+					g_Player.SoundRightFlag = true;
+				}
 			}
-			if (g_Player.PaternNo == 1.0f) {
-				SetVolume(g_PlayerLeftSoundNo, 0.5f);
-				PlaySound(g_PlayerLeftSoundNo, 0);
+			else {
+				if (g_Player.PaternNo != 1.0f) {
+					g_Player.SoundRightFlag = false;
+				}
 			}
-
+			if (!g_Player.SoundLeftFlag) {
+				if (g_Player.PaternNo == 1.0f) {
+					SetVolume(g_PlayerLeftSoundNo, 0.5f);
+					PlaySound(g_PlayerLeftSoundNo, 0);
+					g_Player.SoundLeftFlag = true;
+				}
+			}
+			else {
+				if (g_Player.PaternNo != 9.0f) {
+					g_Player.SoundLeftFlag = false;
+				}
+			}
 			if (g_Player.sp.x == 0)
 			{
 				g_Player.PaternNo = 17;
