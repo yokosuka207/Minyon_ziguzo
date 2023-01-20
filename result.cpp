@@ -156,10 +156,13 @@ void	UpdateResult()
 			{
 				pTimeParam->UseFlag = false;
 				pTime->StartTime();
-				//SetScene(SCENE::SCENE_GAME);
 				pFadeParam->ExceptFlag = true;
 				if (!pFadeParam->FadeFlag)
-				StartFade(FADE::FADE_ALPHA_OUT);
+				{
+					StartFade(FADE::FADE_ALPHA_OUT);
+					//SetScene(SCENE::SCENE_GAME);
+				}
+				
 			}
 		}
 		
