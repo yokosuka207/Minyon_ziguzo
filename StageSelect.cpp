@@ -65,11 +65,15 @@ int StageNo = 0;
 
 static bool OneFlag =true;	//geゲームの最初かどうか
 
+//プレイヤーSE
 static int g_StageSelectPlayerRightSoundNo = 0;
 static char g_StageSelectPlayerRightSoundName[] = "data\\SoundData\\SE\\革靴で歩く右.wav";
 static int g_StageSelectPlayerLeftSoundNo = 0;
 static char g_StageSelectPlayerLeftSoundName[] = "data\\SoundData\\SE\\革靴で歩く左.wav";
 
+//ステージセレクトドアSE
+static int g_StageSelectSoundNo = 0;
+static char g_StageSelectSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
 
 //-----------------------------------------------------------------------------
 //	初期化
@@ -81,6 +85,7 @@ HRESULT InitStageSelect() {
 	g_StageSelectBg.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	g_StageSelectBg.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_StageSelectBg.texno = LoadTexture(g_StageSelectBgTextureName);
+	
 
 	int a = 0;
 	int b = 0;
@@ -154,7 +159,8 @@ HRESULT InitStageSelect() {
 			g_StageSelect[i].StagePieceIndex = i;
 			g_StageSelect[i].StageUseFlag = true;
 			g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
-
+			//ドアSE
+			g_StageSelectSoundNo = LoadSound(g_StageSelectSoundName);
 
 			g_StageSelectBlack[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (175.0f) + (250.0f * a));
 			g_StageSelectBlack[i].size = D3DXVECTOR2(120.0f, 150.0f);
@@ -219,6 +225,9 @@ void UninitStageSelect() {
 	if (g_StageSelectTexture) {
 		g_StageSelectTexture->Release();
 		g_StageSelectTexture = NULL;
+
+		StopSound(g_StageSelectSoundNo);
+
 	}
 }
 
@@ -454,6 +463,8 @@ void UpdateStageSelect() {
 
 
 				if (Keyboard_IsKeyTrigger(KK_A) || IsButtonPressed(0, XINPUT_GAMEPAD_A)) {
+					//SetVolume(g_BrokenSoundNo, 0.5f);
+					PlaySound(g_StageSelectSoundNo, 0);
 					StageNo = i;
 					//SetScene(SCENE::SCENE_GAME);
 					StartFade(FADE::FADE_OUT);
