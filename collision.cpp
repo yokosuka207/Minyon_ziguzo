@@ -97,20 +97,26 @@ static TimeParam* pTimeParam = pTime->GetTimeParam();
 DIRECSION Direcsion = NUM;	//方向の確認
 static bool InventoryFlag = false;
 
-//効果音
-//壊れるブロック
-static int g_BrokenSoundNo = 0;
-static char g_BrokenSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
-
-//スイッチ
-static int g_SwitchSoundNo = 0;
-static char g_SwitchSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
-//ワープ
-static int g_WarpSoundNo = 0;
-static char g_WarpSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
-//高いとこから請われる床
-static int g_HighSoundNo = 0;
-static char g_HighSoundName[] = "data\\SoundData\\SE\\タイプライター..wav";
+////効果音
+////壊れるブロック
+//static int g_BrokenSoundNo = 0;
+//static char g_BrokenSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+//
+////スイッチ
+//static int g_SwitchSoundNo = 0;
+//static char g_SwitchSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+////ワープ
+//static int g_WarpSoundNo = 0;
+//static char g_WarpSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+////高いとこから請われる床
+//static int g_HighSoundNo = 0;
+//static char g_HighSoundName[] = "data\\SoundData\\SE\\タイプライター..wav";
+////鍵
+//static int g_KeySoundNo = 0;
+//static char g_KeySoundName[] = "data\\SoundData\\SE\\タイプライター..wav";
+////鍵扉
+//static int g_OpenKeySoundNo = 0;
+//static char g_OpenKeySoundName[] = "data\\SoundData\\SE\\タイプライター..wav";
 
 
 
@@ -121,11 +127,12 @@ static char g_HighSoundName[] = "data\\SoundData\\SE\\タイプライター..wav";
 //================================
 void InitCollision()
 {
-	g_BrokenSoundNo = LoadSound(g_BrokenSoundName);
+	/*g_BrokenSoundNo = LoadSound(g_BrokenSoundName);
 	g_WarpSoundNo = LoadSound(g_WarpSoundName);
 	g_HighSoundNo = LoadSound(g_HighSoundName);
 	g_SwitchSoundNo = LoadSound(g_SwitchSoundName);
-
+	g_KeySoundNo = LoadSound(g_KeySoundName);
+	g_OpenKeySoundNo = LoadSound(g_OpenKeySoundName);*/
 }
 
 
@@ -134,10 +141,12 @@ void InitCollision()
 //================================
 void UninitCollision()
 {
-	StopSound(g_BrokenSoundNo);
+	/*StopSound(g_BrokenSoundNo);
 	StopSound(g_SwitchSoundNo);
 	StopSound(g_WarpSoundNo);
 	StopSound(g_HighSoundNo);
+	StopSound(g_KeySoundNo);
+	StopSound(g_OpenKeySoundNo);*/
 }
 
 
@@ -259,7 +268,7 @@ void UpdateCollision(){
 					pSwitch[i].PressFlag = true;//押されたら
 					pSwitch[i].PaternNo = 1;
 					//SetVolume(g_BrokenSoundNo, 0.5f);
-					PlaySound(g_SwitchSoundNo, 0);
+					//PlaySound(g_SwitchSoundNo, 0);
 				}
 				else {
 					pSwitch[i].PressFlag = false;
@@ -449,8 +458,8 @@ void UpdateCollision(){
 									{
 										pPlayer->Position = (pWarp + i + 1)->Position;
 										pPlayer->CoolTime = PLAYER_COOLTIME;
-										//SetVolume(g_BrokenSoundNo, 0.5f);
-										PlaySound(g_WarpSoundNo, 0);
+										//SetVolume(g_WarpSoundNo, 0.5f);
+										//PlaySound(g_WarpSoundNo, 0);
 										pPlayer->WarpFlag = true;
 									}
 								}
@@ -467,8 +476,8 @@ void UpdateCollision(){
 									{
 										pPlayer->Position = (pWarp + i - 1)->Position;
 										pPlayer->CoolTime = PLAYER_COOLTIME;
-										//SetVolume(g_BrokenSoundNo, 0.5f);
-										PlaySound(g_WarpSoundNo, 0);
+										//SetVolume(g_WarpSoundNo, 0.5f);
+										//PlaySound(g_WarpSoundNo, 0);
 										pPlayer->WarpFlag = true;
 
 									}
@@ -539,7 +548,7 @@ void UpdateCollision(){
 				{
 					(pBroken + i)->breakFlag = true;
 					//SetVolume(g_BrokenSoundNo, 0.5f);
-					PlaySound(g_BrokenSoundNo, 0);
+					//PlaySound(g_BrokenSoundNo, 0);
 					(pBroken + i)->UseFlag = false;
 					pPlayer->fall = true;
 					pPlayer->getfall = true;
@@ -668,8 +677,8 @@ void UpdateCollision(){
 					if (pPlayer->sp.y >= 5.0f) {
 						//pPlayer->isHigh = false;
 						(pHigh + i)->UseFlag = false;
-						//SetVolume(g_BrokenSoundNo, 0.5f);
-						PlaySound(g_HighSoundNo, 0);
+						//SetVolume(g_HighSoundNo, 0.5f);
+						//PlaySound(g_HighSoundNo, 0);
 						pPlayer->frame = 50;
 					}
 					else {
@@ -717,6 +726,8 @@ void UpdateCollision(){
 				if (CollisionBB(pKey[i].Position, pPlayer->Position, pKey[i].Size, pPlayer->size)) {
 					pPlayer->HaveKey++;
 					pKey->GetKey = false;
+					//SetVolume(g_BrokenSoundNo, 0.5f);
+					//PlaySound(g_KeySoundNo, 0);
 				}
 			}
 		}
@@ -729,6 +740,8 @@ void UpdateCollision(){
 					if (pPlayer->HaveKey > 0) {
 						//pPlayer->Position.x = (pOpenKey + i)->Position.x - (pOpenKey + i)->Size.x / 2 - pPlayer->size.x / 2;
 						(pOpenKey + i)->UseFlag = false;
+						//SetVolume(g_OpenKeySoundNo, 0.5f);
+						//PlaySound(g_OpenKeySoundNo, 0);
 					}
 					/*else
 					{
