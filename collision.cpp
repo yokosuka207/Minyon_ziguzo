@@ -297,8 +297,24 @@ void UpdateCollision(){
 					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
 					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
 				{
-					pPlayer->Position = pPlayer->oldpos;
+					if (pSwitchWall[i].rot == 0.0f) {
+						pPlayer->Position.x = pPlayer->oldpos.x;
+						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2;
+					}
+					else if (pSwitchWall[i].rot == 90.0f) {
+						pPlayer->Position = pPlayer->oldpos;
+						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2;
+					}
+					else if (pSwitchWall[i].rot == 180.0f) {
+						pPlayer->Position = pPlayer->oldpos;
+						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2;
+					}
+					else if (pSwitchWall[i].rot == 270.0f) {
+						pPlayer->Position = pPlayer->oldpos;
+						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2;
+					}
 				}
+
 			}
 		}
 		//スイッチと木箱の判定
@@ -519,7 +535,7 @@ void UpdateCollision(){
 					pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2 &&
 					pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2)
 				{
-					pPlayer->Position.y = (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2 - pPlayer->size.y / 2;
+					pPlayer->Position.y = (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2 + pPlayer->size.y / 2;
 					pPlayer->jump = false;
 					pPlayer->fall = false;
 					pPlayer->frame = 0;
@@ -566,7 +582,7 @@ void UpdateCollision(){
 					pPlayer->Position.y + pPlayer->size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2)
 				{
-					pPlayer->Position.y = pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 - pPlayer->size.y / 2;
+					pPlayer->Position.y = pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2 + pPlayer->size.y / 2;
 					// 着地中にする
 					if (!pPlayer->isMoveBlock) {
 						pPlayer->sp.y = 0.0f;
@@ -615,7 +631,7 @@ void UpdateCollision(){
 					pPlayer->Position.y + pPlayer->size.y / 2 > (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 &&
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2)
 				{
-					pPlayer->Position.y = (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 - pPlayer->size.y / 2;
+					pPlayer->Position.y = (pFallBlock + i)->Position.y +(pFallBlock + i)->Size.y / 2 + pPlayer->size.y / 2;
 					pPlayer->getfall = false;
 					pPlayer->fall = false;
 					pPlayer->frame = 50;
@@ -627,7 +643,7 @@ void UpdateCollision(){
 					pPlayer->Position.y - pPlayer->size.y / 2 < (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 &&
 					pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2)
 				{
-					pPlayer->Position.y = (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 - pPlayer->size.y / 2;
+					pPlayer->Position.y = (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 - pPlayer->size.y / 2;
 				}
 			}
 		}
@@ -658,7 +674,7 @@ void UpdateCollision(){
 					pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
 					pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
 				{
-					if (pPlayer->sp.y >= -10.0f) {
+					if (pPlayer->sp.y >= 5.0f) {
 						//pPlayer->isHigh = false;
 						(pHigh + i)->UseFlag = false;
 						//SetVolume(g_HighSoundNo, 0.5f);
@@ -668,7 +684,7 @@ void UpdateCollision(){
 					else {
 						//pPlayer->isHigh = true;
 						pPlayer->sp.y = 0.0f;
-						pPlayer->Position.y = (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 - pPlayer->size.y / 2;
+						pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
 					}
 
 				}/*
@@ -682,7 +698,7 @@ void UpdateCollision(){
 					pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2)
 				{
-					pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
+					pPlayer->Position.y = (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 - pPlayer->size.y / 2;
 				}
 				// プレイヤーの下にブロックがあったら
 				if ((pPlayer->Position.y - pPlayer->size.y / 2 - 0.05f < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2) &&
@@ -2226,7 +2242,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	{
 		if (pJumpStand[i].UseJumpStand)
 		{
-			if (pJumpStand[i].PieceIndex == pinNo)
+			if (pJumpStand[i].NowPieceIndex == pinNo)
 			{
 				pJumpStand[i].pos += num;
 			}

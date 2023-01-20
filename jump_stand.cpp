@@ -35,6 +35,7 @@ HRESULT InitJumpStand()
 		g_JumpStand[i].size = D3DXVECTOR2(JUMPSTAND_SIZE, JUMPSTAND_SIZE);
 		g_JumpStand[i].rot = 0.0f;
 		g_JumpStand[i].PieceIndex = -1;
+		g_JumpStand[i].NowPieceIndex = -1;
 
 		g_JumpStand[i].UseJumpStand = false;
 		g_JumpStand[i].JumpStandFlag = false;
@@ -119,6 +120,7 @@ void UpdateJumpStand()
 								g_JumpStand[i].oldpos.y - g_JumpStand[i].size.y / 2 >= (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2)
 							{
 								g_JumpStand[i].pos.y = g_JumpStand[i].oldpos.y;
+								g_JumpStand[i].NowPieceIndex = p_Block[j].PieceIndex;
 
 							}
 							if (g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 > (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
@@ -307,6 +309,7 @@ void SetJumpStand(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int PieceNo) 
 			g_JumpStand[i].pos = pos;
 			g_JumpStand[i].size = size;
 			g_JumpStand[i].PieceIndex = PieceNo;
+			g_JumpStand[i].NowPieceIndex = PieceNo;
 			g_JumpStand[i].UseJumpStand = true;
 			break;
 		}
