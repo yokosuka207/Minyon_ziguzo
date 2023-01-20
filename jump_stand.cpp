@@ -47,8 +47,9 @@ HRESULT InitJumpStand()
 		g_JumpStand[i].JumpStandFlag = false;
 		g_JumpStandSoundNo = LoadSound(g_JumpStandSoundName);
 		g_JumpStandSoundMoveNo = LoadSound(g_JumpStandSoundMoveName);
-		return S_OK;
+		
 	}
+	return S_OK;
 }
 
 void UninitJumpStand()
