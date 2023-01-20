@@ -177,7 +177,7 @@ void UpdatePlayer()
 				}
 			}
 			else {
-				if (g_Player.PaternNo != 1.0f) {
+				if (g_Player.PaternNo != 9.0f) {
 					g_Player.SoundRightFlag = false;
 				}
 			}
@@ -189,7 +189,7 @@ void UpdatePlayer()
 				}
 			}
 			else {
-				if (g_Player.PaternNo != 9.0f) {
+				if (g_Player.PaternNo != 1.0f) {
 					g_Player.SoundLeftFlag = false;
 				}
 			}
