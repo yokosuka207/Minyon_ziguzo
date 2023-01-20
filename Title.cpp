@@ -24,9 +24,17 @@ typedef	struct
 	D3DXCOLOR		Color;		//色
 	float			Rotate;		//角度
 }TITLE;
+typedef	struct
+{
+	D3DXVECTOR3		Position;	//表示座標
+	D3DXVECTOR2		Size;		//サイズ
+	D3DXCOLOR		Color;		//色
+	float			Rotate;		//角度
+	int texno;
+}TITLE_SWITH;
 
 TITLE	TitleObject;//タイトル画面オブジェクト
-
+TITLE_SWITH g_TitleSwith[2];
 int		TitleTextureNo1;//テクスチャ番号
 
 //======================

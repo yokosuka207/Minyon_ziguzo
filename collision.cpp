@@ -236,7 +236,7 @@ void UpdateCollision(){
 		//=====================================
 		//死亡判定（トゲ、落下死,thornBlock）
 		//=====================================
-		if (!Mouse_IsLeftDown)
+		if (!Mouse_IsLeftDown())
 		{
 			//プレイヤーとトゲブロックの判定
 			for (int i = 0; i < THORN_BLOCK_MAX; i++) {
