@@ -29,6 +29,7 @@ typedef struct {
 	D3DXCOLOR		color;
 	int				index;
 	int				texno;
+	int BulletWait;
 	ENEMY_DIRECTION dir;
 
 	bool			UseFlag;
