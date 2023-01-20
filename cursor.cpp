@@ -358,7 +358,7 @@ void UpdateCursor()
 						{//ジャンプスタンド
 							if (pJumpStand[i].UseJumpStand)
 							{
-								if (pJumpStand[i].PieceIndex == NoIndex)
+								if (pJumpStand[i].NowPieceIndex == NoIndex)
 								{
 									pJumpStand[i].pos += temp;
 								}
