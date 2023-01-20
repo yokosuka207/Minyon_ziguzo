@@ -119,7 +119,9 @@ static char g_OpenKeySoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
 //ゴールピース
 static int g_GKeySoundNo = 0;
 static char g_GKeySoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
-
+//ピースの合体
+static int g_MatchPieceSoundNo = 0;
+static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
 
 
 
@@ -136,6 +138,7 @@ void InitCollision()
 	g_KeySoundNo = LoadSound(g_KeySoundName);
 	g_OpenKeySoundNo = LoadSound(g_OpenKeySoundName);
 	g_GKeySoundNo = LoadSound(g_GKeySoundName);
+	g_MatchPieceSoundNo = LoadSound(g_MatchPieceSoundName);
 }
 
 
@@ -151,6 +154,7 @@ void UninitCollision()
 	StopSound(g_KeySoundNo);
 	StopSound(g_OpenKeySoundNo);
 	StopSound(g_GKeySoundNo);
+	StopSound(g_MatchPieceSoundNo);
 }
 
 
@@ -1031,6 +1035,8 @@ void PieceCollision()
 														// ピースのアニメーション
 														StartPieceAnimation(pJoint[k].indexno);
 														StartPieceAnimation(pJoint[j].indexno);
+														//SetVolume(g_MatchPieceSoundNo, 0.5f);
+														PlaySound(g_MatchPieceSoundNo, 0);
 													}
 													else
 													{
@@ -1069,6 +1075,8 @@ void PieceCollision()
 														// ピースのアニメーション
 														StartPieceAnimation(pJoint[k].indexno);
 														StartPieceAnimation(pJoint[j].indexno);
+														//SetVolume(g_MatchPieceSoundNo, 0.5f);
+														PlaySound(g_MatchPieceSoundNo, 0);
 													}
 													else
 													{
@@ -1106,6 +1114,8 @@ void PieceCollision()
 														// ピースのアニメーション
 														StartPieceAnimation(pJoint[k].indexno);
 														StartPieceAnimation(pJoint[j].indexno);
+														//SetVolume(g_MatchPieceSoundNo, 0.5f);
+														PlaySound(g_MatchPieceSoundNo, 0);
 													}
 													else
 													{
@@ -1145,6 +1155,8 @@ void PieceCollision()
 														// ピースのアニメーション
 														StartPieceAnimation(pJoint[k].indexno);
 														StartPieceAnimation(pJoint[j].indexno);
+														//SetVolume(g_MatchPieceSoundNo, 0.5f);
+														PlaySound(g_MatchPieceSoundNo, 0);
 													}
 													else
 													{
