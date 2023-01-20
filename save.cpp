@@ -23,6 +23,8 @@ Update:
 #include "input.h"
 #include "fade.h"
 #include "mouse.h"
+#include "StageSelect.h"
+
 //**************************************************
 // マクロ定義
 //**************************************************
@@ -33,14 +35,15 @@ Update:
 //**************************************************
 // 各テクスチャの名前
 static char* g_BGTextureFileName = (char*)"data/texture/black.png";				// 背景
-static char* g_TextureFileName1 = (char*)"data/texture/セーブデータテキスト１.png";					// データ１
-static char* g_TextureFileName2 = (char*)"data/texture/セーブデータテキスト２.png";					// データ２
-static char* g_TextureFileName3 = (char*)"data/texture/セーブデータテキスト３.png";					// データ３
+static char* g_TextureFileName[] = { (char*)"data/texture/セーブデータテキスト１.png",				// データ１
+									(char*)"data/texture/セーブデータテキスト２.png",				// データ２
+									(char*)"data/texture/セーブデータテキスト３.png"				// データ３
+};
 
 // セーブデータを保存するファイル名
-static char* g_saveFileName1 = (char*)"data/SaveData/Data1.bin";			// データ１
-static char* g_saveFileName2 = (char*)"data/SaveData/Data2.bin";			// データ２
-static char* g_saveFileName3 = (char*)"data/SaveData/Data3.bin";			// データ３
+static char* g_saveFileName[] = { (char*)"data/SaveData/Data1.bin",			// データ１
+								(char*)"data/SaveData/Data2.bin",			// データ２
+								(char*)"data/SaveData/Data3.bin" };			// データ３
 
 // 各データのボタンを作る
 Button g_DataButton[BUTTON_NUM];
@@ -52,6 +55,13 @@ void Save::Init()
 {
 	// マウスの初期化
 	InitGameMouse();
+
+	// ボタンのテクスチャ番号読み込み
+	int ButtonTexNo[3];
+	for (int i = 0; i < BUTTON_NUM; i++) {
+		ButtonTexNo[i] = LoadTexture(g_TextureFileName[i]);
+	}
+
 	// 各ボタンの初期化
 	for (auto& b : g_DataButton) {
 		b.Init();
@@ -67,33 +77,25 @@ void Save::Init()
 	// セーブデータ系の初期化
 	m_saveData.clearStageNum = 0;
 
+
+
+	FILE* fp;		// ファイルポインタ
 	// 各ボタンのセット
-	int i = 0;
-	for (auto& b : g_DataButton) {
-		i++;
-		switch (i) {
-		case 1:
-			// ファイルがあったら
-			if (ExistFile(g_saveFileName1)) {
-				b.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * i), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName1));
-				continue;
-			}
-			break;
-		case 2:
-			// ファイルがあったら
-			if (ExistFile(g_saveFileName2)) {
-				b.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * i), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName2));
-				continue;
-			}
-			break;
-		case 3:
-			// ファイルがあったら
-			if (ExistFile(g_saveFileName3)) {
-				b.SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * i), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName3));
-				continue;
-			}
-			break;
+	for (int i = 0; i < BUTTON_NUM; i++) {
+		// ファイルがあったら
+		g_DataButton[i].SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * (i+1)), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName[i]));
+
+		// ファイルを開く
+		fopen_s(&fp, g_saveFileName[i], "rb");			// 開く
+
+		// データ読み込む
+		if (fp != NULL) {
+			fread(&m_saveData, sizeof(SaveData), 1, fp);
+
+			// ファイルを閉じる
+			fclose(fp);
 		}
+		g_DataButton[i].SetNum(m_saveData.clearStageNum);
 	}
 }
 
@@ -116,13 +118,6 @@ void Save::Update()
 	// マウスの更新
 	UpdateGameMouse();
 	//[----------とりあえずまだ残しておきます----------
-	//[----------入力----------
-	if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
-		Keyboard_IsKeyTrigger(KK_A)) {						// Keyboard	A
-		// ステージセレクトシーンへ
-		//SetScene(SCENE_STAGESELECT);
-		StartFade(FADE::FADE_ALPHA_OUT);
-	}
 	// Zボタンを押したら
 	if (IsButtonTriggered(0, XINPUT_GAMEPAD_X) ||			// GamePad	X
 		Keyboard_IsKeyTrigger(KK_Z)) {						// Keyboard	Z
@@ -131,30 +126,13 @@ void Save::Update()
 	}
 	//----------入力----------]
 	//----------とりあえずまだ残しておきます----------]
-
-	int dataNo = 0;
-	for (auto& b : g_DataButton) {
-		dataNo++;
+	for (int i = 0; i < BUTTON_NUM; i++) {
 		// 各ボタンの更新
-		b.Update();
+		g_DataButton[i].Update();
 		// もし押されたら
-		if (b.ReleaseButton()) {
-			SetDataNo(dataNo);			// データ番号をセット
-			//DataSave();					// セーブ
+		if (g_DataButton[i].ReleaseButton()) {
+			SetDataNo(i);			// データ番号をセット
 			DataLoad();					// ロード
-
-			// ボタンのテクスチャを変える
-			switch (dataNo) {
-			case 1:
-				b.SetButtonTexNo(LoadTexture(g_TextureFileName1));
-				break;
-			case 2:
-				b.SetButtonTexNo(LoadTexture(g_TextureFileName2));
-				break;
-			case 3:
-				b.SetButtonTexNo(LoadTexture(g_TextureFileName3));
-				break;
-			}
 
 			FADEPARAM* pFadeParam = GetFadeParam();
 
@@ -189,23 +167,13 @@ void Save::Draw()
 void Save::DataSave()
 {
 	// ----セーブする各データをm_saveDataに入れたい----
-	m_saveData.clearStageNum = 0;				// 仮
+	m_saveData.clearStageNum = (GetClearStageNum() - 1);
 	// ------------------------------------------------
 
 	FILE* fp;		// ファイルポインタ
 
 	// ファイルを開く
-	switch (m_dataNo) {
-	case 1:
-		fopen_s(&fp, g_saveFileName1, "wb");
-		break;
-	case 2:
-		fopen_s(&fp, g_saveFileName2, "wb");
-		break;
-	case 3:
-		fopen_s(&fp, g_saveFileName3, "wb");
-		break;
-	}
+	fopen_s(&fp, g_saveFileName[m_dataNo], "wb");
 
 	if (fp != NULL) {
 		// 書き込む
@@ -222,22 +190,23 @@ void Save::DataSave()
 //==================================================
 void Save::DeleteSaveData()
 {
-	// ファイルを削除
-	//switch (m_dataNo) {
-	//case 1:
-	//	remove(g_saveFileName1);
-	//	break;
-	//case 2:
-	//	remove(g_saveFileName2);
-	//	break;
-	//case 3:
-	//	remove(g_saveFileName3);
-	//	break;
-	//}
-	remove(g_saveFileName1);
-	remove(g_saveFileName2);
-	remove(g_saveFileName3);
+	m_saveData.clearStageNum = 0;
 
+	FILE* fp;		// ファイルポインタ
+
+	// ファイルを開く
+	for (int i = 0; i < BUTTON_NUM; i++) {
+		fopen_s(&fp, g_saveFileName[i], "wb");
+
+		if (fp != NULL) {
+			// 書き込む
+			fwrite(&m_saveData, sizeof(SaveData), 1, fp);
+
+			// ファイルを閉じる
+			fclose(fp);
+		}
+		g_DataButton[i].SetNum(m_saveData.clearStageNum);
+	}
 }
 
 //==================================================
@@ -249,29 +218,7 @@ void Save::DataLoad()
 	FILE* fp;		// ファイルポインタ
 
 	// ファイルを開く
-	switch (m_dataNo) {
-	case 1:
-		// ファイルがないなら作る
-		if (!ExistFile(g_saveFileName1)) {
-			DataSave();
-		}
-		fopen_s(&fp, g_saveFileName1, "rb");			// 開く
-		break;
-	case 2:
-		// ファイルがないなら作る
-		if (!ExistFile(g_saveFileName2)) {
-			DataSave();
-		}
-		fopen_s(&fp, g_saveFileName2, "rb");			// 開く
-		break;
-	case 3:
-		// ファイルがないなら作る
-		if (!ExistFile(g_saveFileName3)) {
-			DataSave();
-		}
-		fopen_s(&fp, g_saveFileName3, "rb");			// 開く
-		break;
-	}
+	fopen_s(&fp, g_saveFileName[m_dataNo], "rb");			// 開く
 
 	// データ読み込む
 	if (fp != NULL) {
@@ -282,7 +229,7 @@ void Save::DataLoad()
 	}
 
 	//[----ここでロードした各データを各々の場所に入れたい----
-	//
+	SetClearStageNum(m_saveData.clearStageNum);
 	//------------------------------------------------------]
 }
 

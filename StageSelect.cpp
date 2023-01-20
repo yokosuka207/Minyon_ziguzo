@@ -68,6 +68,7 @@ static bool OneFlag =true;	//geゲームの最初かどうか
 static int g_StageSelectPlayerSoundNo = 0;
 static char g_StageSelectPlayerSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
 
+static int g_ClearStageNum = 0;
 
 //-----------------------------------------------------------------------------
 //	初期化
@@ -123,8 +124,6 @@ HRESULT InitStageSelect() {
 		g_StageSelectStairs[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_StageSelectStairs[i].texno = LoadTexture(g_StageSelectStairsTextureName);
 		b++;
-
-
 	}
 
 	//g_Texturenumber = LoadTexture(g_StageSelectStairsTextureName);
@@ -136,8 +135,6 @@ HRESULT InitStageSelect() {
 
 	if (OneFlag)
 	{
-
-
 		for (int i = 0; i < STAGE_MAX; i++)
 		{
 			if (i % 7 == 0 && i != 0)
@@ -150,7 +147,7 @@ HRESULT InitStageSelect() {
 			g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
 			g_StageSelect[i].UseFlag = true;
 			g_StageSelect[i].StagePieceIndex = i;
-			g_StageSelect[i].StageUseFlag = true;
+			g_StageSelect[i].StageUseFlag = false;
 			g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
 
 
@@ -169,6 +166,11 @@ HRESULT InitStageSelect() {
 		TexNo = LoadTexture(g_StageSelect2TextureName);
 
 		OneFlag = false;
+
+		// 最初にクリアステージ数分解放する
+		for (int i = 0; i <= g_ClearStageNum; i++) {
+			g_StageSelect[i].StageUseFlag = true;
+		}
 	}
 
 
@@ -551,6 +553,27 @@ STAGESELECT* GetSelect() {
 int ReturnStageNo()
 {
 	return StageNo;
+}
+
+//-----------------------------------------------------------------------------
+//	クリアステージ数のゲット関数
+//-----------------------------------------------------------------------------
+int GetClearStageNum()
+{
+	g_ClearStageNum = 0;
+	for (STAGESELECT& ss : g_StageSelect) {
+		if (ss.StageUseFlag){
+			g_ClearStageNum++;
+		}
+	}
+		return g_ClearStageNum;
+}
+//-----------------------------------------------------------------------------
+//　クリアステージ数のセット関数
+//-----------------------------------------------------------------------------
+void SetClearStageNum(int num)
+{
+	g_ClearStageNum = num;
 }
 
 //-----------------------------------------------------------------------------

@@ -54,7 +54,7 @@ public:
 	// ゲッター
 	int GetDataNo()const { return m_dataNo; }		// データ番号
 	// セッター
-	void SetDataNo(int no) { if (0 < no && no < 4) { m_dataNo = no; } }		// データ番号(1～3)
+	void SetDataNo(int no) { if (0 <= no && no < 3) { m_dataNo = no; } }		// データ番号(0～2)
 
 private:
 	// ファイルの有無チェック

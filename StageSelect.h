@@ -72,6 +72,8 @@ PLAYER* GetSelectPlayer();
 
 int ReturnStageNo();
 
+int GetClearStageNum();
+void SetClearStageNum(int num);
 
 #endif // !_STAGESELECT_H_
 

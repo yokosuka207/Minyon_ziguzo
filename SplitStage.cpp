@@ -6,7 +6,7 @@
 SplitStage g_splitStage;
 
 // テクスチャの名前
-static char* g_splitStageTextureName = (char*)"data\\texture\\split_4x3.png";
+static char* g_splitStageTextureName = (char*)"data\\texture\\split_4x3_white.png";
 
 void InitSplitStage()
 {

@@ -28,11 +28,15 @@ class Button
 {
 private:	
 	D3DXVECTOR2 m_pos;										// 中心座標
-	D3DXVECTOR2 m_drawPos;										// 表示座標
+	D3DXVECTOR2 m_drawPos;									// 表示座標
 	D3DXVECTOR2 m_size;										// サイズ
 	D3DXCOLOR m_color;	// 色
 	BUTTON_TYPE m_type = BUTTON_TYPE::TYPE_NORMAL;			// 状態
 	float m_texNo = -1;										// テクスチャの番号
+	int m_num = -1;											// クリアステージ数表示用
+	float m_numTexNo = -1;									// 数字のテクスチャ
+	float m_frameTexNo = -1;								// 枠のテクスチャ
+	bool m_bSelect = false;									// 選択されているか
 public:
 	Button() {}
 	~Button() {}
@@ -51,6 +55,9 @@ public:
 	// 引数：ポジション, サイズ, テクスチャ番号
 	void SetButton(D3DXVECTOR2 po, D3DXVECTOR2 si, D3DXCOLOR co, float no);
 	void SetButtonTexNo(float no) { m_texNo = no; }			// テクスチャ切り替え
+	void SetNum(int num) { m_num = num; }		// 数字のセット
+	void SetNumTexNo(float no) { m_numTexNo = no; }	// 数字のテクスチャのセット
+	void SetIsSelect(bool bSelect) { m_bSelect = bSelect; }		// 選ばれているかのセット
 
 	// マウスとの当たり判定
 	bool CollisionMouse();
