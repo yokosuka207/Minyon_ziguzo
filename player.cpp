@@ -107,6 +107,8 @@ HRESULT InitPlayer()
 	g_Player.CoolTime = PLAYER_COOLTIME;
 	g_Player.PieceIndex = 0;
 
+	g_Player.SoundRightFlag = false;
+	g_Player.SoundLeftFlag = false;
 	g_PlayerRightSoundNo = LoadSound(g_PlayeRightSoundName);
 	g_PlayerLeftSoundNo = LoadSound(g_PlayerLeftSoundName);
 
@@ -167,15 +169,30 @@ void UpdatePlayer()
 			//============================================================
 			//	足音
 			//============================================================
-			if (g_Player.PaternNo == 9.0f) {
-				SetVolume(g_PlayerRightSoundNo, 0.5f);
-				PlaySound(g_PlayerRightSoundNo, 0);
+			if (!g_Player.SoundRightFlag) {
+				if (g_Player.PaternNo == 9.0f) {
+					SetVolume(g_PlayerRightSoundNo, 0.5f);
+					PlaySound(g_PlayerRightSoundNo, 0);
+					g_Player.SoundRightFlag = true;
+				}
 			}
-			if (g_Player.PaternNo == 1.0f) {
-				SetVolume(g_PlayerLeftSoundNo, 0.5f);
-				PlaySound(g_PlayerLeftSoundNo, 0);
+			else {
+				if (g_Player.PaternNo != 1.0f) {
+					g_Player.SoundRightFlag = false;
+				}
 			}
-
+			if (!g_Player.SoundLeftFlag) {
+				if (g_Player.PaternNo == 1.0f) {
+					SetVolume(g_PlayerLeftSoundNo, 0.5f);
+					PlaySound(g_PlayerLeftSoundNo, 0);
+					g_Player.SoundLeftFlag = true;
+				}
+			}
+			else {
+				if (g_Player.PaternNo != 9.0f) {
+					g_Player.SoundLeftFlag = false;
+				}
+			}
 			if (g_Player.sp.x == 0)
 			{
 				g_Player.PaternNo = 17;
@@ -291,12 +308,16 @@ void UpdatePlayer()
 				if (!GetThumbLeftY(0) < -0.3f ||		// GamePad	左スティック	下
 					!Keyboard_IsKeyDown(KK_DOWN))		// Keyboard 下
 				{
-					if ((g_Player.oldpos.y + g_Player.size.y / 2 < pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
+					if ((g_Player.oldpos.y + g_Player.size.y / 2 <= pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
 						CollisionBB(g_Player.Position, pSheerFloors[i].pos, g_Player.size, pSheerFloors[i].size))
 					{
-						g_Player.Position.y = pSheerFloors[i].pos.y - (pSheerFloors[i].size.y / 2 + g_Player.size.y / 2);
-						g_Player.sp.y = 0.0f;
-						p_JumpStand->JumpStandFlag = false;
+						//g_Player.Position.y = pSheerFloors[i].pos.y - (pSheerFloors[i].size.y / 2 + g_Player.size.y / 2);
+						//g_Player.sp.y = 0.0f;
+						for (int i = 0; i < JUMPSTAND_MAX; i++)
+						{
+							p_JumpStand[i].JumpStandFlag = false;
+
+						}
 
 						g_Player.isSheerFloors = true;
 						g_Player.sp.y = 0.0f;
@@ -327,7 +348,7 @@ void UpdatePlayer()
 						(g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2) &&
 						(g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2))
 					{	// 着地中にする
-						g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2 + 0.02f;
+						g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
 
 						if (!g_Player.isSheerFloors) {
 							g_Player.sp.y = 0.0f;

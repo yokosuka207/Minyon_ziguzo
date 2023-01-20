@@ -31,6 +31,7 @@
 #include"SheerFloors.h"
 #include"goal_key.h"
 #include "start.h"
+#include"high_broken.h"
 //--------------------------------------------------
 // マクロ定義
 //--------------------------------------------------
@@ -118,6 +119,7 @@ void UpdateCursor()
 	SHEERFLOORS* pSheerFloors = GetSheerFloors();
 	GKey* pGkey = GetGKey();
 	START* pStart = GetStart();
+	HIGH* pHigh = GetHigh();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	g_Cursor.pos.x = GetXMousePosX();
@@ -270,6 +272,18 @@ void UpdateCursor()
 								if (pBroken[i].index == NoIndex)
 								{
 									pBroken[i].Postion += temp;
+								}
+
+							}
+
+						}
+						for (int i = 0; i < HIGH_MAX; i++)
+						{//ブロック動かす
+							if (pHigh[i].UseFlag)
+							{
+								if (pHigh[i].index == NoIndex)
+								{
+									pHigh[i].Postion += temp;
 								}
 
 							}
