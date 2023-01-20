@@ -56,7 +56,7 @@ void	InitTitle()
 
 	TitleObject.Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
 	TitleObject.Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
-	TitleObject.Color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
+	TitleObject.Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	TitleObject.Rotate = 0.0f;
 
 
