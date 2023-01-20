@@ -34,8 +34,9 @@ static char* g_TextureNameKey = (char*)"data\\texture\\Мо.png";
 HRESULT InitKey()
 {
 	for (int i = 0; i < KEY_MAX; i++) {
-		g_Key[i].Size = D3DXVECTOR2(KEY_W, KEY_H);
-		g_Key[i].Position = D3DXVECTOR2(200, 200);
+		g_Key[i].Size = D3DXVECTOR2(0.0f, 0.0f);
+		g_Key[i].Position = D3DXVECTOR2(0.0f, 0.0f);
+		g_Key[i].rot = 0.0f;
 		g_Key[i].index = -1;
 		g_Key[i].texno = LoadTexture(g_TextureNameKey);
 		g_Key[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
@@ -77,9 +78,21 @@ void DrawKey()
 	}
 }
 
-void SetKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index){
+void SetKey(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index){
 	for (int i = 0; i < KEY_MAX; i++) {
 		if (!g_Key[i].GetKey){
+			switch (direction) {
+			case 0:g_Key[i].rot = (direction + 2) * 90;
+				break;
+			case 1:g_Key[i].rot = direction * 90;
+				break;
+			case 2:g_Key[i].rot = (direction - 2) * 90;
+				break;
+			case 3:g_Key[i].rot = direction * 90;
+				break;
+			default:
+				break;
+			}
 			g_Key[i].Position = pos;
 			g_Key[i].Size = size;
 			g_Key[i].index = index;

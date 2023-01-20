@@ -309,7 +309,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetFallBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11　鍵
-				SetKey(position, DrawSize, no);
+				SetKey(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12　鍵付きの扉
 				SetOpenKey(position, DrawSize, g_PieceMapChip[no].direction, no);
@@ -592,7 +592,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetFallBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11　鍵
-				SetKey(position, DrawSize, no);
+				SetKey(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12　鍵付きの扉
 				SetOpenKey(position, DrawSize, g_PieceMapChip[no].direction, no);
