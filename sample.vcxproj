@@ -158,6 +158,7 @@
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="issuer.cpp" />
     <ClCompile Include="joint.cpp" />
+    <ClCompile Include="JumpStandExplain.cpp" />
     <ClCompile Include="jump_stand.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="main.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="inventory.h" />
     <ClInclude Include="issuer.h" />
     <ClInclude Include="joint.h" />
+    <ClInclude Include="JumpStandExplain.h" />
     <ClInclude Include="jump_stand.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="main.h" />

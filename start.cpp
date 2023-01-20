@@ -19,6 +19,7 @@ HRESULT InitStart() {
 		g_Start[i].pos = D3DXVECTOR2(0.0f, 0.0f);
 		g_Start[i].size = D3DXVECTOR2(0.0f, 0.0f);
 		g_Start[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_Start[i].rot = 0;
 		g_Start[i].PieceIndex = -1;
 		g_Start[i].PaternNo = 0;
 		g_Start[i].GoalFlag = false;
@@ -48,7 +49,7 @@ void DrawStart() {
 				-0.1f,
 				g_Start[i].size.x,
 				-g_Start[i].size.y,
-				0.0f,
+				g_Start[i].rot,
 				g_Start[i].color,
 				g_Start[i].PaternNo,
 				START_UV_W,
@@ -58,10 +59,30 @@ void DrawStart() {
 		}
 	}
 }
-void SetStart(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
+void SetStart(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int PieceNo) {
 	for (int i = 0; i < START_MAX; i++) {
 		if (!g_Start[i].UseFlag) {
-			g_Start[i].pos = D3DXVECTOR2(pos.x, pos.y - i * size.y);
+			switch (direction)
+			{
+			case 0:
+				g_Start[i].pos = D3DXVECTOR2(pos.x, pos.y + i * size.y);
+				g_Start[i].rot = (direction + 2) * 90;
+				break;
+			case 1:
+				g_Start[i].pos = D3DXVECTOR2(pos.x + i * size.x, pos.y);
+				g_Start[i].rot = direction * 90;
+				break;
+			case 2:
+				g_Start[i].pos = D3DXVECTOR2(pos.x, pos.y - i * size.y);
+				g_Start[i].rot = (direction - 2) * 90;
+				break;
+			case 3:
+				g_Start[i].pos = D3DXVECTOR2(pos.x - i * size.x, pos.y);
+				g_Start[i].rot = direction * 90;
+				break;
+			default:
+				break;
+			}
 			g_Start[i].size = size;
 			g_Start[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 			g_Start[i].PieceIndex = PieceNo;

@@ -50,6 +50,8 @@
 #include "doppelganger.h"   //ドッペルゲンガー
 #include "enemy.h"			//エネミー
 
+#include "JumpStandExplain.h"		
+
 #include "EffectSpark.h"	// ヒバナエフェクト
 #include"switch.h"	//スイッチ
 #include"SwitchWall.h"//switchの壁
@@ -120,6 +122,7 @@ void UpdateCollision(){
 	KEY* pKey = GetKey();
 	OPENKEY* pOpenKey = GetOpenKey();
 	GKey* pGKey = GetGKey();
+	EXPLAIN* p_Explain = GetExplain();
 
 	GOAL* pGoal = GetGoal();
 	START* pStart = GetStart();
@@ -163,6 +166,35 @@ void UpdateCollision(){
 				break;
 			}
 		}
+
+		//=========================================
+		//プレーヤーとヒント表示
+		//=========================================
+		//ジャンプ台ヒント
+		
+		if (p_Explain->bUse) {
+			if (CollisionBB(pPlayer->Position, p_Explain->pos, pPlayer->size * 2, p_Explain->size * 2))
+			{
+				p_Explain->CollisionUse = true;
+			}
+			else {
+				p_Explain->CollisionUse = false;
+			}
+		}
+		
+		//動く台ヒント
+		//for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
+		//	if (pMoveBlock[i].bUse) {
+		//		if (CollisionBB(pPlayer->Position, pMoveBlock[i].pos, pPlayer->size * 2, pMoveBlock[i].size * 2)) 
+		//		{
+		//			
+		//		}
+		//		else
+		//		{
+		//			pExplain->bUse = false;
+		//		}
+		//	}
+		//}
 
 		//=========================================
 		//プレーヤーとスイッチ系(switch,SwitchWall)
