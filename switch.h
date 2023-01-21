@@ -23,6 +23,7 @@ typedef struct {
 	int			SwitchIndex;
 	bool		PressFlag;
 	bool		UseFlag;
+	bool		NotPressed;
 
 	int			PaternNo;
 

@@ -22,10 +22,11 @@ static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
 
 //サウンド
 static int g_MoveBlockMoveSoundNo = 0;
-static char g_MoveBlockMoveSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_MoveBlockMoveSoundName[] = "data\\SoundData\\SE\\引きずる音(要編集).wav";
+static int g_MoveBolckLandingSoundNo = 0;
+static char g_g_MoveBolckLandingSoundName[] = "data\\SoundData\\SE\\物の落下音(無料効果音で遊ぼう！).wav";
 
-//SetVolume(g_MoveBlockMoveSoundNo, 0.5f);
-//PlaySound(g_MoveBlockMoveSoundNo, 0);
+
 
 HRESULT InitMoveBlock()
 {
@@ -38,10 +39,13 @@ HRESULT InitMoveBlock()
 
 		gMoveBlock[i].PieceIndex = -1;
 
-		gMoveBlock[i].bUse = true;
-	}
+		gMoveBlock[i].bUse = false;
 
-	g_MoveBlockMoveSoundNo = LoadSound(g_MoveBlockMoveSoundName);
+		gMoveBlock[i].MoveBlockNotMove = false;
+
+		g_MoveBlockMoveSoundNo = LoadSound(g_MoveBlockMoveSoundName);
+		g_MoveBolckLandingSoundNo = LoadSound(g_g_MoveBolckLandingSoundName);
+	}
 
 	return S_OK;
 }
@@ -54,6 +58,7 @@ void UninitMoveBlock()
 		g_textureBlock = NULL;
 	}
 	StopSound(g_MoveBlockMoveSoundNo);
+	StopSound(g_MoveBolckLandingSoundNo);
 }
 
 void UpdateMoveBlock()
@@ -64,6 +69,7 @@ void UpdateMoveBlock()
 	{
 		if (gMoveBlock[i].bUse)
 		{
+			gMoveBlock[i].oldoldpos = gMoveBlock[i].oldpos;
 			gMoveBlock[i].oldpos = gMoveBlock[i].pos;
 
 			//プレイヤーが持ってるときの判定
@@ -71,9 +77,22 @@ void UpdateMoveBlock()
 			{
 				gMoveBlock[i].sp = p_Player->sp;
 				gMoveBlock[i].pos.x += gMoveBlock[i].sp.x;
+
+				//引きずる音
+				if (gMoveBlock[i].oldpos.x != gMoveBlock[i].pos.x && gMoveBlock[i].MoveBlockNotMove == true)//動かした瞬間
+				{
+					//SetVolume(g_MoveBlockMoveSoundNo, 0.5f);
+					PlaySound(g_MoveBlockMoveSoundNo, -1);
+					gMoveBlock[i].MoveBlockNotMove = false;
+				}
+				if (gMoveBlock[i].oldpos.x == gMoveBlock[i].pos.x && gMoveBlock[i].MoveBlockNotMove == false)//動かしてない時
+				{
+					gMoveBlock[i].MoveBlockNotMove = true;
+					StopSound(g_MoveBlockMoveSoundNo);
+				}
 			}
 
-			gMoveBlock[i].pos.y++;
+			gMoveBlock[i].pos.y--;
 
 			//ブロックとの当たり判定
 
@@ -119,7 +138,9 @@ void UpdateMoveBlock()
 						gMoveBlock[i].pos.y	   + gMoveBlock[i].size.y / 2 > (cipblock + j)->Position.y  - (cipblock + j)->Size.y / 2 &&
 						gMoveBlock[i].pos.y	   - gMoveBlock[i].size.y / 2 < (cipblock + j)->Position.y  + (cipblock + j)->Size.y / 2)
 					{
+						//p_Player->Position.x = gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 - p_Player->size.x / 2;
 						gMoveBlock[i].pos.x = (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 - gMoveBlock[i].size.x / 2;
+
 					}
 					//プレイヤー右・ブロック左
 					if (gMoveBlock[i].pos.x	   - gMoveBlock[i].size.x / 2 < (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 &&
@@ -127,6 +148,7 @@ void UpdateMoveBlock()
 						gMoveBlock[i].pos.y    + gMoveBlock[i].size.y / 3 > (cipblock + j)->Position.y - (cipblock + j)->Size.y / 3 &&
 						gMoveBlock[i].pos.y    - gMoveBlock[i].size.y / 3 < (cipblock + j)->Position.y + (cipblock + j)->Size.y / 3)
 					{
+						//p_Player->Position.x = gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 + p_Player->size.x / 2;
 						gMoveBlock[i].pos.x = (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 + gMoveBlock[i].size.x / 2;
 					}
 					//プレイヤー上・ブロック下,着地する
@@ -135,7 +157,15 @@ void UpdateMoveBlock()
 						gMoveBlock[i].pos.y + gMoveBlock[i].size.y / 2 > (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 &&
 						gMoveBlock[i].oldpos.y + gMoveBlock[i].size.y / 2 <= (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2)
 					{
+						//p_Player->Position.y = gMoveBlock[i].pos.y - gMoveBlock[i].size.y / 2 - p_Player->size.y / 2;
 						gMoveBlock[i].pos.y = (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 - gMoveBlock[i].size.y / 2;
+						
+						//着地した瞬間だけ音が鳴る
+						if (gMoveBlock[i].oldoldpos.y != gMoveBlock[i].pos.y)
+						{
+							//SetVolume(g_MoveBolckLandingSoundNo, 0.5f);
+							PlaySound(g_MoveBolckLandingSoundNo, 0);
+						}
 					}
 					//プレイヤー下・ブロック上,落下する
 					if (gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 > (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 &&

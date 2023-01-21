@@ -15,11 +15,16 @@
 #include "bullet.h"
 #include "xkeyboard.h"
 #include "collision.h"
+#include "sound.h"
 
 static ENEMY g_Enemy[ENEMY_MAX];
 
 static ID3D11ShaderResourceView* g_EnemyTexture;	//画像一枚で一つの変数が必要
 static char* g_EnemyTextureName = (char*)"data\\texture\\敵.png";	//テクスチャファイルパス
+
+//エネミーSE
+static int g_EnemySoundNo = 0;
+static char g_EnemySoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
 
 BULLET* bullet = GetBullet();
 
@@ -35,13 +40,16 @@ HRESULT InitEnemy() {
 		g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_LEFT;
 		g_Enemy[i].UseFlag = false;
 		g_Enemy[i].AIFlag = false;
+		g_EnemySoundNo = LoadSound(g_EnemySoundName);
 	}
 	return S_OK;
 }
+
 void UninitEnemy() {
 	if (g_EnemyTexture != NULL){
 		g_EnemyTexture->Release();
 		g_EnemyTexture=NULL;
+		StopSound(g_EnemySoundNo);
 	}
 }
 
@@ -56,6 +64,8 @@ void UpdateEnemy() {
 				if (g_Enemy[i].BulletWait > 120)
 				{
 					SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), 1);
+					
+
 					g_Enemy[i].BulletWait = 0;
 
 				}

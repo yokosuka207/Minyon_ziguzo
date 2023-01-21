@@ -11,6 +11,7 @@
 #include "MapChip.h"
 #include"mouse.h"
 #include"sound.h"
+#include"cursor.h"
 
 //-------配列にしてほしい↓（マップチップの都合上必要）-------
 static JUMPSTAND g_JumpStand[JUMPSTAND_MAX];
@@ -22,10 +23,15 @@ static ID3D11ShaderResourceView* g_textureBlock;	//画像一枚で一つの変数が必要
 //static char* g_textureName_Block= (char*)"data\\texture\\JumpStand.jpg";	//テクスチャファイルパス
 static char* g_textureName_Block = (char*)"data\\texture\\jumpstand.png";	//テクスチャファイルパス
 static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
+
+//ジャンプスタンド音
 static int g_JumpStandSoundNo = 0;
-static char g_JumpStandSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_JumpStandSoundName[] = "data\\SoundData\\SE\\革靴で歩く右.wav";
+//ジャンプスタンド運ぶ（引きずる音）
 static int g_JumpStandSoundMoveNo = 0;
-static char g_JumpStandSoundMoveName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_JumpStandSoundMoveName[] = "data\\SoundData\\SE\\引きずる音(要編集).wav";
+static int g_JumpStandLandingSoundNo = 0;
+static char g_JumpStandLandingSoundName[] = "data\\SoundData\\SE\\物の落下音(無料効果音で遊ぼう！).wav";
 
 
 
@@ -45,10 +51,14 @@ HRESULT InitJumpStand()
 		g_JumpStand[i].JumpStandFlag = false;
 
 		g_JumpStand[i].JumpStandFlag = false;
+
+		g_JumpStand[i].JumpStandNotMove = true;
+
 		g_JumpStandSoundNo = LoadSound(g_JumpStandSoundName);
 		g_JumpStandSoundMoveNo = LoadSound(g_JumpStandSoundMoveName);
-		return S_OK;
+		g_JumpStandLandingSoundNo = LoadSound(g_JumpStandLandingSoundName);
 	}
+	return S_OK;
 }
 
 void UninitJumpStand()
@@ -61,6 +71,7 @@ void UninitJumpStand()
 
 	StopSound(g_JumpStandSoundNo);
 	StopSound(g_JumpStandSoundMoveNo);
+	StopSound(g_JumpStandLandingSoundNo);
 }
 
 void UpdateJumpStand()
@@ -78,6 +89,7 @@ void UpdateJumpStand()
 		{
 			if (g_JumpStand[i].UseJumpStand)
 			{
+				g_JumpStand[i].oldoldpos = g_JumpStand[i].oldpos;
 				g_JumpStand[i].oldpos = g_JumpStand[i].pos;
 
 				if (g_JumpStand[i].rot == 90 || g_JumpStand[i].rot == 270) {
@@ -89,8 +101,9 @@ void UpdateJumpStand()
 					p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
 					p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2)
 				{
-					g_JumpStand[i].sp = p_Player->sp;
-					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
+					p_Player->Position.x = g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 - p_Player->size.x / 2;
+					//g_JumpStand[i].sp = p_Player->sp;
+					//g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
 					//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
 					//PlaySound(g_JumpStandSoundMoveNo, 0);
 				}
@@ -100,19 +113,31 @@ void UpdateJumpStand()
 					p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
 					p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2)
 				{
-					g_JumpStand[i].sp = p_Player->sp;
-					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
+					p_Player->Position.x = g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 + p_Player->size.x / 2;
+					//g_JumpStand[i].sp = p_Player->sp;
+					//g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
 					//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
 					//PlaySound(g_JumpStandSoundMoveNo, 0);
 				}
 
 
-				if (g_JumpStand[i].GetJumpStand)
+				if (g_JumpStand[i].GetJumpStand)//ジャンプ台を持った時
 				{
 					g_JumpStand[i].sp = p_Player->sp;
 					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
-					//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
-					PlaySound(g_JumpStandSoundMoveNo, 0);//通っているけど出だしのごく短い時間がループしている
+
+					//引きずる音
+					if (g_JumpStand[i].oldpos.x != g_JumpStand[i].pos.x && g_JumpStand[i].JumpStandNotMove == true)//動かした瞬間
+					{
+						//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
+						PlaySound(g_JumpStandSoundMoveNo, -1);
+						g_JumpStand[i].JumpStandNotMove = false;
+					}
+				}
+				if (g_JumpStand[i].oldpos.x == g_JumpStand[i].pos.x)//動かしてない時
+				{
+					g_JumpStand[i].JumpStandNotMove = true;
+					StopSound(g_JumpStandSoundMoveNo);
 				}
 
 				{
@@ -133,6 +158,12 @@ void UpdateJumpStand()
 								g_JumpStand[i].pos.y = g_JumpStand[i].oldpos.y;
 								g_JumpStand[i].NowPieceIndex = p_Block[j].PieceIndex;
 
+								//着地した瞬間だけ音が鳴る,ピースが空き領域に設置されたかどうかをとりたい
+								if (g_JumpStand[i].oldoldpos.y != g_JumpStand[i].pos.y)
+								{
+									//SetVolume(g_JumpStandLandingSoundNo, 0.5f);
+									PlaySound(g_JumpStandLandingSoundNo, 0);
+								}
 							}
 							if (g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 > (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
 								g_JumpStand[i].oldpos.x + g_JumpStand[i].size.x / 2 <= (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
@@ -165,7 +196,6 @@ void UpdateJumpStand()
 						g_JumpStand[i].JumpStandFlag = true;
 
 						SetVolume(g_JumpStandSoundNo, 1.5f);
-						
 						PlaySound(g_JumpStandSoundNo, 0);
 
 						p_Player->sp.y = 0.0f;

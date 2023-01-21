@@ -11,6 +11,7 @@
 #include "fade.h"
 #include"StageSelect.h"
 #include "start.h"
+#include "save.h"
 
 GOAL g_Goal;
 GKey g_GKey;
@@ -73,6 +74,9 @@ void UpdateGoal()
 				{
 					pStageSelect[ReturnStageNo() + 1].StageUseFlag = true;
 					pStageSelect[ReturnStageNo() + 1].size = D3DXVECTOR2(120.0f, 140.f);
+				}
+				else {		// 最後のステージだったら
+					SetStageAllClear(true);
 				}
 				for (int i = 0; i < START_MAX; i++) {
 					if (pStart[i].UseFlag) {

@@ -24,7 +24,7 @@ static char *g_textureName_PuzzleCip = (char*)"data\\texture\\ピース取得アイテム
 
 //サウンド
 static int g_PieceSoundNo = 0;
-static char g_PieceSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_PieceSoundName[] = "data\\SoundData\\SE\\ピース入手(効果音ラボ).wav";
 
 
 

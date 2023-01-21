@@ -15,7 +15,7 @@
 #include "texture.h"
 #include "input.h"
 #include"collision.h"
-
+#include "sound.h"
 
 //=============================================================================
 //É}ÉNÉçíËã`
@@ -31,7 +31,9 @@
 static BULLET g_Bullet[BULLET_MAX];
 static char* g_TextureName = (char*)"data\\texture\\íe.png";
 
-
+//íeî≠éÀâπSE
+static int g_BulletSoundNo = 0;
+static char g_BulletSoundName[] = "data\\SoundData\\SE\\èeê∫(On-Jin).wav";
 
 //=============================================================================
 //èâä˙âªèàóù
@@ -57,6 +59,8 @@ HRESULT InitBullet()
 		g_Bullet[i].NumPatern = 1;//â°ñáêî
 		g_Bullet[i].hit = false;
 		g_Bullet[i].Damage = 1;
+
+		g_BulletSoundNo = LoadSound(g_BulletSoundName);
 	}
 
 	
@@ -70,7 +74,7 @@ void UninitBullet()
 {
 	for (int i = 0; i < BULLET_MAX; i++)
 	{
-
+		StopSound(g_BulletSoundNo);
 	}
 }
 
@@ -128,7 +132,8 @@ void SetBullet(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index)
 			g_Bullet[i].h = BULLET_SIZE_H;
 			g_Bullet[i].w = BULLET_SIZE_W;
 			g_Bullet[i].use = true;
-			
+			//SetVolume(g_BulletSoundNo, 0.5f);
+			PlaySound(g_BulletSoundNo, 0);
 			return;
 		}
 	}

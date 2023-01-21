@@ -6,7 +6,8 @@ typedef struct
 {
 	D3DXVECTOR2 pos;	//表示座標
 	D3DXVECTOR2 size;	//大きさ
-	D3DXVECTOR2 oldpos;	
+	D3DXVECTOR2 oldpos;
+	D3DXVECTOR2 oldoldpos;
 	D3DXVECTOR2 sp;		//スピード
 	float		rot;
 	int			PieceIndex;
@@ -19,6 +20,8 @@ typedef struct
 	bool JumpStandFlag;		//ジャンプスタンドのジャンプ中フラグ
 
 	bool GetJumpStand;
+	bool JumpStandNotMove;
+
 
 }JUMPSTAND;
 

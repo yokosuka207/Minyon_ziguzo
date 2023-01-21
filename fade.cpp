@@ -192,6 +192,7 @@ void StartFade(FADE state) {
 				PLAYER* pPlayer = GetSelectPlayer();
 				g_FadeParam.pos = pPlayer->Position;
 			}
+			//ここ間に合えばやるby fusegi
 			else//プレイ画面のゴールの位置にアイリスイン
 			{ 
 				START* pStart = GetStart();
