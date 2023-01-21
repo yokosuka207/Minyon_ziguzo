@@ -352,25 +352,16 @@ void UpdateCollision(){
 		//=====================================
 		if (!Mouse_IsLeftDown())
 		{
-			//プレイヤーとトゲブロックの判定
+			//プレイヤーとトゲブロックの判定(プレイヤーがトゲ死)
 			for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 				if (pThornBlock[i].UseFlag) {
 					if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
 						
 						pPlayer->hp--;
-
-						if (pPlayer->hp <= 0) {
-							SetResultType(LOSE);
-							StartFade(FADE::FADE_OUT);
-							pTime->EndTime();
-							pTimeParam->EndFlag = true;
-						}
-						else {//下に何もなく死亡する場合
-							for (int i = 0; i < SPAWN_POINT_MAX; i++) {
-								if (pSpawnPoint[i].UseFlag) {
-									if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
-										pPlayer->Position = pSpawnPoint[i].Position;
-									}
+						for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
+							if (pSpawnPoint[i].UseFlag) {
+								if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
+									pPlayer->Position = pSpawnPoint[i].Position;
 								}
 							}
 						}
@@ -378,13 +369,24 @@ void UpdateCollision(){
 				}
 			}
 		}
-		//プレイヤーが落下死したら
+		//プレイヤーが落下死
 		if (pPlayer->Position.y - pPlayer->size.y < -SCREEN_HEIGHT / 2) {
 			pPlayer->hp--;
-			pResult[0].type = LOSE;
+			for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
+				if (pSpawnPoint[i].UseFlag) {
+					if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
+						pPlayer->Position = pSpawnPoint[i].Position;
+					}
+				}
+			}
+		}
+		//プレイヤー残機ゼロ
+		if (pPlayer->hp <= 0) {
+			pPlayer->UseFlag = false;
+			SetResultType(LOSE);
+			StartFade(FADE::FADE_ALPHA_OUT);
 			pTime->EndTime();
 			pTimeParam->EndFlag = true;
-			StartFade(FADE::FADE_ALPHA_OUT);
 		}
 
 		//========================================================================
