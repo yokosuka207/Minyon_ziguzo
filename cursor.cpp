@@ -377,15 +377,15 @@ void UpdateCursor()
 								}
 							}
 						}
-						for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
-							for (int i = 0; i < OPEN_KEY_MAX; i++) {
-								if ((pOpenKey + j + i)->UseFlag) {
-									if ((pOpenKey + j + i)->index == NoIndex) {
-										(pOpenKey + j + i)->Position += temp;
-									}
+						
+						for (int i = 0; i < OPEN_KEY_MAX * STAGE_OPEN_KEY_MAX; i++) {
+							if ((pOpenKey + i)->UseFlag) {
+								if ((pOpenKey + i)->index == NoIndex) {
+									(pOpenKey + i)->Position += temp;
 								}
 							}
 						}
+						
 						for (int i = 0; i < THORN_BLOCK_MAX; i++)
 						{//‚Æ‚°
 							if (pThornBlock[i].UseFlag)
