@@ -301,12 +301,17 @@ void UpdateCollision(){
 					if(CollisionBB(pSwitch[i].pos,pMoveBlock[j].pos,pSwitch[i].size,pMoveBlock[j].size)){
 						pSwitch[i].PressFlag = true;//‰Ÿ‚³‚ê‚½‚ç
 						pSwitch[i].PaternNo = 1;
-						//SetVolume(g_SwitchSoundNo, 0.5f);
-						PlaySound(g_SwitchSoundNo, 0);
+						if (pSwitch[i].NotPressed == true)
+						{
+							//SetVolume(g_SwitchSoundNo, 0.5f);
+							PlaySound(g_SwitchSoundNo, 0);
+							pSwitch[i].NotPressed = false;
+						}
 					}
 					else {
 						pSwitch[i].PressFlag = false;
 						pSwitch[i].PaternNo = 0;
+						pSwitch[i].NotPressed = true;
 					}
 				}
 
