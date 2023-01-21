@@ -44,8 +44,7 @@ static KEEP_PUZZLE_BG	g_InventoryBG;
 static KEEP_PUZZLE		g_Inventory[INVENTORY_MAX];
 
 // テクスチャの名前
-static char* g_InventoryBGTextureName = (char*)"data\\texture\\JumpStand.jpg";
-//static char* g_InventoryBGTextureName = (char*)"data\\texture\\white.jpg";
+static char* g_InventoryBGTextureName = (char*)"data\\texture\\white.jpg";
 static char* g_InventoryTextureName = (char*)"data\\texture\\blue.png";
 
 
@@ -62,7 +61,7 @@ HRESULT InitInventory()
 	// 背景の初期化
 	g_InventoryBG.pos = D3DXVECTOR2(INVENTORYBG_POS_X, INVENTORYBG_POS_Y);
 	g_InventoryBG.size = D3DXVECTOR2(INVENTORYBG_SIZE_X, INVENTORYBG_SIZE_Y);
-	g_InventoryBG.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f);
+	g_InventoryBG.color = D3DXCOLOR(0.0f, 0.4f, 0.5f, 0.2f);
 	g_InventoryBG.texno = BGTexNo;
 
 	// インベントリ内のパズルの初期化
