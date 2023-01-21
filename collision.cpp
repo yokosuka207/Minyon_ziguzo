@@ -297,27 +297,59 @@ void UpdateCollision(){
 				}
 			}
 		}
-		//プレーヤーと壁の判定
 		for (int i = 0; i < SWITCHWALL_MAX; i++) {
 			if (pSwitchWall[i].UseFlag) {
-
-				D3DXVECTOR2 pPlayerMin = D3DXVECTOR2(pPlayer->Position.x + pPlayer->size.x / 2, pPlayer->Position.y - pPlayer->size.y / 2);
-				D3DXVECTOR2 pPlayerMax = D3DXVECTOR2(pPlayer->Position.x - pPlayer->size.x / 2, pPlayer->Position.y + pPlayer->size.y / 2);
-
+				//プレーヤーと壁の判定
+				//壁の左とプレイヤーの右
 				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
 					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
 					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
 				{
-					//修正
+					pPlayer->Position.x = pPlayer->oldpos.x;
+				}
+				//壁の右とプレイヤーの左
+				if (pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 <= pPlayer->oldpos.x - pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+				{
+					pPlayer->Position.x = pPlayer->oldpos.x;
+				}
+				//壁の↓とプレイヤーの上
+				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 >= pPlayer->oldpos.y + pPlayer->size.y / 2)
+				{
 					pPlayer->Position = pPlayer->oldpos;
 				}
-			}
-		}
-		//スイッチと木箱の判定
-		for (int i = 0; i < SWITCHWALL_MAX; i++) {
-			if (pSwitchWall[i].UseFlag) {
+				//壁の↑とプレイヤーの↓
+				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
+					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
+				{
+					pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 + pPlayer->size.y / 2 + 0.02f;
+					pPlayer->jump = false;
+					pPlayer->fall = false;
+					pPlayer->WarpFlag = false;
+					pPlayer->sp.y = 0;
+					pPlayer->frame = 0;
+				}
 
+				//壁とjumpstandの判定
+				for (int j = 0; j < JUMPSTAND_MAX; j++) {
+					if (CollisionBB(pSwitchWall[i].pos, pJumpStand[j].pos, pSwitchWall[i].size, pJumpStand[j].size)) {
+						pJumpStand[j].pos = pJumpStand[j].oldpos;
+					}
+				}
+				//壁と動くブロックの判定
+				for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
+					if (CollisionBB(pSwitchWall[i].pos, pMoveBlock[j].pos, pSwitchWall[i].size, pMoveBlock[j].size)) {
+						pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+					}
+				}
 			}
 		}
 		//=====================================
@@ -407,7 +439,6 @@ void UpdateCollision(){
 					pPlayer->jump = false;
 					pPlayer->fall = false;
 					pPlayer->WarpFlag = false;
-					//pPlayer->isGround = true;
 					pPlayer->sp.y = 0;
 					pPlayer->frame = 0;
 				}
@@ -953,7 +984,6 @@ void PieceCollision()
 			{
 				if (!pPiece[i].InventoryFlag)
 				{
-
 
 
 					pPiece[i].MoveEndFlag = false;
