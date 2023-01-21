@@ -29,6 +29,8 @@
 #include "score.h"
 #include "SheerFloors.h"
 #include "high_broken.h"
+#include "Key.h"
+#include "OpenKey.h"
 #include "MoveBlock.h"
 #include "switch.h"
 #include "SwitchWall.h"
@@ -83,6 +85,8 @@ void InitGame()
 		InitInventory();			// インベントリの初期化
 		InitCursor();				// カーソルの初期化
 		InitThornBlock();
+		InitKey();
+		InitOpenKey();
 		InitHigh();
 		InitSwitch();
 		InitSwitchWall();
@@ -99,6 +103,7 @@ void InitGame()
 		InitPlayerLife();
 		InitExplain();
 
+		InitCollision();
 	}
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
@@ -137,6 +142,8 @@ void UninitGame()
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了
 	UninitThornBlock();
+	UninitKey();
+	UninitOpenKey();
 	UninitMoveBlock();
 	UninitHigh();
 	UninitSwitch();
@@ -147,6 +154,7 @@ void UninitGame()
 	UninitBullet();
 	UninitPlayerLife();
 	UninitExplain();
+	UninitCollision();
 
 	UninitPause();
 	pScore->UninitScore();
@@ -200,6 +208,8 @@ void UpdateGame()
 		UpdateJumpStand();
 		UpdateSheerFloors();
 		UpdateThornBlock();
+		UpdateKey();
+		UpdateOpenKey();
 		UpdateMoveBlock();
 		UpdateHigh();
 		UpdateSwitch();
@@ -253,6 +263,8 @@ void DrawGame()
 		DrawJumpStand();
 		DrawSheerFloors();
 		DrawThornBlock();
+		DrawKey();
+		DrawOpenKey();
 		DrawMoveBlock();
 		DrawHigh();
 		DrawSwitch();

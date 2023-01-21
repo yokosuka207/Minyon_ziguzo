@@ -87,8 +87,8 @@ static char* g_MapChipTextureName[PIECE_TEX_MAX] = {
 static int g_MapChipTextureNo[PIECE_TEX_MAX];
 // ステージ情報が入っているファイルの名前
 static char* g_StageFileName[21] = {
-	(char*)"data/MapData/map.txt",			// デバッグ用マップ
-	//(char*)"data/MapData/Stage01.txt",
+	//(char*)"data/MapData/map.txt",			// デバッグ用マップ
+	(char*)"data/MapData/Stage01.txt",
 	(char*)"data/MapData/Stage02.txt",
 	(char*)"data/MapData/Stage03.txt",
 	(char*)"data/MapData/Stage04.txt",
@@ -112,28 +112,28 @@ static char* g_StageFileName[21] = {
 };
 
 // 各ステージ各ピースの情報
-static int g_StagePieceInfo[21][12] = {
-	{  82,  180,   01,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 1				 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
-	{  92,   61,   61,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 2  				 ┃・21ステージ									 ┃
-	{  82,   91,  133,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 3  ←ここまで	 ┃・各ステージ最大ピース数12					 ┃
-	{  00, -130,  143,   00,    0,    0,    0,    0,    0,    0,    0,    0},	// 4				 ┃・テクスチャの名前からした値が				 ┃
-	{ 190,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 5				 ┃			十と百の位の数字					 ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 6				 ┃・一の位は回転回数							 ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 7				 ┃				テクスチャを参考に左(反時計)回り ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 8				 ┃											     ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 9				 ┃・左右を反転させたい場合は -(マイナス) にする ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 10				 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 11								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 12							
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 13						
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 14					
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 15								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 16								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 17								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 18								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 19								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 20								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 21								
+static int g_StagePieceInfo[21][7] = {
+	{  82,  180,   01,    0,    0,    0,    0,},	// 1	○			 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
+	{ 121,  131,   61,    0,    0,    0,    0,},	// 2  	○			 ┃・21ステージ									 ┃
+	{  82,   91,  133,    0,    0,    0,    0,},	// 3	○			 ┃・各ステージ最大ピース数12					 ┃
+	{  00, -130,  143,  170,    0,    0,    0,},	// 4	○			 ┃・テクスチャの名前からした値が				 ┃
+	{  00, -131,  131,   63,    0,    0,    0,},	// 5	○			 ┃			十と百の位の数字					 ┃
+	{  32,   62, -142,  140,    0,    0,    0,},	// 6	○			 ┃・一の位は回転回数							 ┃
+	{ 182,  141,  171,   52,    0,    0,    0,},	// 7	○			 ┃				テクスチャを参考に左(反時計)回り ┃
+	{ 170,   00, -151,   80, -151,    0,    0,},	// 8	○			 ┃											     ┃
+	{  10,   10,   53,   30,   20,    0,    0,},	// 9	○			 ┃・左右を反転させたい場合は -(マイナス) にする ┃
+	{ 153,   10,  140,   51,   61,    0,    0,},	// 10	○			 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
+	{  43,  110, -131,  181,   10,    0,    0,},	// 11	○							
+	{ 101,  190, -140,   01,   01,    0,    0,},	// 12	○						
+	{  20,   63,   60,   73,   71,    0,    0,},	// 13	○					
+	{  52,   72,  181,   01,   10,    0,    0,},	// 14	○				
+	{-131, -153, -150, -141, -151,   10,    0,},	// 15	○							
+	{-150,  160,  171,  140,   72,   53,    0,},	// 16	○							
+	{ 101,  190,   60,   70,   53,   10,    0,},	// 17	○							
+	{  52,  190,  171, -143,  191,   10,    0,},	// 18	○							
+	{-131,   20,  132,  113,   10,   53, -151,},	// 19	○							
+	{  20,  161,   61,  132,   00,  133,  120,},	// 20	○							
+	{   0,    0,    0,    0,    0,    0,    0,},	// 21								
 };										 
 
 /*　　　				　		／＼			↑触るな危険！  不用意に踏み込まない方がいいぞ！
@@ -301,28 +301,28 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetGoal(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP) :	//8　ジャンプ台
-				SetJumpStand(position, DrawSize, no);
+				SetJumpStand(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE) :	//9　トゲ
-				SetThornBlock(position, DrawSize, no);
+				SetThornBlock(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL) :	//10　乗ると落ちるブロック
 				SetFallBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11　鍵
-				SetKey(position, DrawSize, no);
+				SetKey(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12　鍵付きの扉
-				SetOpenKey(position, DrawSize, no);
+				SetOpenKey(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13　ボタン
-				SetSwitch(position, DrawSize, no);
+				SetSwitch(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14　ボタンで開く扉×3
-				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[i + j].direction, 3);
+				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 3);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15　ボタンで開く扉×4
-				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[i + j].direction ,4);
+				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction ,4);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
 				SetSheerFloors(position, DrawSize, no);
@@ -356,7 +356,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetPlayerPosition(position);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
-				SetStart(position, DrawSize, no);
+				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_EXPLAIN):	//26 ヒントブロック
 				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
@@ -588,28 +588,28 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetGoal(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_JUMP):	//8　ジャンプ台
-				SetJumpStand(position, DrawSize, no);
+				SetJumpStand(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SPIKE):	//9　トゲ
-				SetThornBlock(position, DrawSize, no);
+				SetThornBlock(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_FALL):	//10　乗ると落ちるブロック
 				SetFallBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11　鍵
-				SetKey(position, DrawSize, no);
+				SetKey(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12　鍵付きの扉
-				SetOpenKey(position, DrawSize, no);
+				SetOpenKey(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCH):	//13　ボタン
-				SetSwitch(position, DrawSize, no);
+				SetSwitch(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL3):	//14　ボタンで開く扉×3
-				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[i + j].direction, 3);
+				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 3);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15　ボタンで開く扉×4
-				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[i + j].direction, 4);
+				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 4);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
 				SetSheerFloors(position, DrawSize, no);
@@ -638,7 +638,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetEnemy(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
-				SetStart(position, DrawSize, no);
+				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_EXPLAIN):	//26 ヒントブロック
 				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);

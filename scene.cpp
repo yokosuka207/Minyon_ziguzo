@@ -90,7 +90,7 @@ void InitScene(SCENE no){
 	case SCENE::SCENE_RESULT:
 		InitResult();
 		InitNoizu();
-
+		g_SaveScene.DataSave();
 		break;
 	default:
 		break;

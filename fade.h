@@ -24,11 +24,12 @@ enum class FADE {
 	FADE_NUM
 };
 typedef struct {
-	bool	ExceptFlag;	//例外（シーン切り替えの）
-	bool	FadeFlag;	//フェードしている間の再発動防止
-	float	alpha;		//透明度切り替え
-	D3DXVECTOR2	scaling;		//サイズの変化
-	FADE	state;		
+	bool			ExceptFlag;	//例外（シーン切り替えの）
+	bool			TitleFlag;
+	bool			FadeFlag;	//フェードしている間の再発動防止
+	float			alpha;		//透明度切り替え
+	D3DXVECTOR2		scaling;		//サイズの変化
+	FADE			state;		
 
 	int				TexNo1;
 	int				TexNo2;

@@ -20,31 +20,35 @@
 //グローバル変数
 //=============================================================================
 static OPENKEY g_OpenKey[OPEN_KEY_MAX];
-static ID3D11ShaderResourceView	*g_textureOpenKey;	//画像一枚で一つの変数が必要
+static ID3D11ShaderResourceView	*g_OpenKeytexture;	//画像一枚で一つの変数が必要
 
-static char* g_TextureNameOpenKey = (char*)"data\\texture\\EF_46dCUEAA5c4Y.jpg";
-
-//=============================================================================
-
+static char* g_OpenKeyTextureName = (char*)"data\\texture\\鍵付きドア.png";
+static int g_OpenKeyTextureNo = 0;
 
 
 HRESULT InitOpenKey()
 {
 	for (int i = 0; i < OPEN_KEY_MAX; i++)
 	{
-		g_OpenKey[i].Size = D3DXVECTOR2(OPEN_KEY_W, OPEN_KEY_H);
-		g_OpenKey[i].Position = D3DXVECTOR2(300, 400);
+		g_OpenKey[i].Size = D3DXVECTOR2(0.0f, 0.0f);
+		g_OpenKey[i].Position = D3DXVECTOR2(0.0f, 0.0f);
+		g_OpenKey[i].rot = 0.0f;
 		g_OpenKey[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_OpenKey[i].index = -1;
-		g_OpenKey[i].texno = LoadTexture(g_TextureNameOpenKey);
+		g_OpenKey[i].PaternNo = 0.0f;
+		g_OpenKey[i].KeyOpen = false;
 		g_OpenKey[i].UseFlag = false;
-		return S_OK;
+		
 	}
-	
+	g_OpenKeyTextureNo = LoadTexture(g_OpenKeyTextureName);
+	return S_OK;
 }
 
-void UninitOpenKey()
-{
+void UninitOpenKey(){
+	if (g_OpenKeytexture != NULL) {
+		g_OpenKeytexture->Release();
+		g_OpenKeytexture = NULL;
+	}
 }
 
 void UpdateOpenKey()
@@ -53,38 +57,70 @@ void UpdateOpenKey()
 
 void DrawOpenKey()
 {
+	//SetWorldViewProjection2D();
+	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_OpenKeyTextureNo));
+
 	for (int i = 0; i < OPEN_KEY_MAX; i++) {
-		if (g_OpenKey[i].UseFlag)
-		{
-			//SetWorldViewProjection2D();
-
-			//テクスチャの設定
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_OpenKey[i].texno));
-			//スプライトを表示
-			D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			SpriteDrawColorRotation(g_OpenKey[i].Position.x, g_OpenKey[i].Position.y,-0.1f, g_OpenKey[i].Size.x, g_OpenKey[i].Size.y,
-				g_OpenKey[i].rot, g_OpenKey[i].col, 0, 1.0f, 1.0f, 1);
-
+		if (g_OpenKey[i].UseFlag){
+			g_OpenKey[i].PaternNo = i;
+			if (g_OpenKey[i].PaternNo > 3.0f) {
+				g_OpenKey[i].PaternNo -= 3.0f;
+			}
+			else if (g_OpenKey[i].PaternNo > 6.0f) {
+				g_OpenKey[i].PaternNo -= 6.0f;
+			}
+			SpriteDrawColorRotation(
+				g_OpenKey[i].Position.x,
+				g_OpenKey[i].Position.y,
+				-0.1f,
+				g_OpenKey[i].Size.x,
+				-g_OpenKey[i].Size.y,
+				g_OpenKey[i].rot,
+				g_OpenKey[i].col,
+				g_OpenKey[i].PaternNo,
+				1.0f / 1.0f,
+				1.0f / 3.0f,
+				1
+			);
+			
 		}
 	}
-	
 }
-
-
-void SetOpenKey(D3DXVECTOR2 size, D3DXVECTOR2 pos, int index)
-{
+void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index){
 	for (int i = 0; i < OPEN_KEY_MAX; i++) {
-		if (!g_OpenKey[i].UseFlag) //!はNOT
-		{
-			g_OpenKey[i].Position = pos;
-			g_OpenKey[i].Size = size;
-			g_OpenKey[i].index = index;
-			g_OpenKey[i].UseFlag = true;
-
-			break;
+		if (!g_OpenKey[i].KeyOpen) {
+			if (!g_OpenKey[i].UseFlag) {
+				
+				switch (direction)
+				{
+				case 0:
+					g_OpenKey[i].Position = D3DXVECTOR2(pos.x, pos.y + i * size.y);
+					g_OpenKey[i].rot = (direction + 2) * 90;
+					break;
+				case 1:
+					g_OpenKey[i].Position = D3DXVECTOR2(pos.x + i * size.x, pos.y);
+					g_OpenKey[i].rot = direction * 90;
+					break;
+				case 2:
+					g_OpenKey[i].Position = D3DXVECTOR2(pos.x, pos.y - i * size.y);
+					g_OpenKey[i].rot = (direction - 2) * 90;
+					break;
+				case 3:
+					g_OpenKey[i].Position = D3DXVECTOR2(pos.x - i * size.x, pos.y);
+					g_OpenKey[i].rot = direction * 90;
+					break;
+				default:
+					break;
+				}
+				g_OpenKey[i].Size = size;
+				g_OpenKey[i].index = index;
+				g_OpenKey[i].UseFlag = true;
+				if (i == 2 || i==5 || i== OPEN_KEY_MAX - 1) {
+					break;
+				}
+			}
 		}
 	}
-	
 }
 
 void DeleteOpenKey(int PieceNo) {

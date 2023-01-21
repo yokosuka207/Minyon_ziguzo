@@ -27,6 +27,7 @@ HRESULT InitSwitchWall() {
 		g_SwitchWall[i].size = D3DXVECTOR2(0.0f, 0.0f);
 		g_SwitchWall[i].sp = D3DXVECTOR2(0.0f, 0.0f);
 		g_SwitchWall[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_SwitchWall[i].rot = 0;
 		g_SwitchWall[i].PaternNo = 0.0f;
 		g_SwitchWall[i].uv_w = 1.0f / 1.0f;
 		g_SwitchWall[i].uv_h = 1.0f / 3.0f;
@@ -65,7 +66,7 @@ void DrawSwitchWall() {
 					-0.1f,
 					g_SwitchWall[i + j].size.x,
 					-g_SwitchWall[i + j].size.y,
-					0.0f,
+					g_SwitchWall[i + j].rot,
 					g_SwitchWall[i + j].color,
 					g_SwitchWall[i + j].PaternNo,
 					g_SwitchWall[i + j].uv_w,
@@ -84,13 +85,21 @@ void SetSwitchWall(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo, int direction
 			//方向変換できればドアもできる(0,2しか来ない)、あとはインデックスだけ
 			for (int j = 0; j < WallMax; j++) {
 				switch (direction) {
-				case 0:g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x, pos.y + j * size.y);//↑
+				case 0:
+					g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x, pos.y + j * size.y);//↑
+					g_SwitchWall[i + j].rot = (direction + 2) * 90;
 					break;
-				case 1:g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x + j * size.x, pos.y);//→
+				case 1:
+					g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x + j * size.x, pos.y);//→
+					g_SwitchWall[i + j].rot = direction * 90;
 					break;
-				case 2:g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x, pos.y - j * size.y);//↓
+				case 2:
+					g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x, pos.y - j * size.y);//↓
+					g_SwitchWall[i + j].rot = (direction - 2) * 90;
 					break;
-				case 3:g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x - j * size.x, pos.y);//←
+				case 3:
+					g_SwitchWall[i + j].pos = D3DXVECTOR2(pos.x - j * size.x, pos.y);//←
+					g_SwitchWall[i + j].rot = direction * 90;
 					break;
 				}
 				g_SwitchWall[i + j].size = size;

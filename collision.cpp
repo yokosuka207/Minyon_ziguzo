@@ -58,6 +58,8 @@
 #include"SwitchWall.h"//switchの壁
 #include"cursor.h"
 
+#include"sound.h"
+
 //==================================
 //プロトタイプ宣言
 //=================================
@@ -95,6 +97,73 @@ static Time* pTime = pTime->GetTime();
 static TimeParam* pTimeParam = pTime->GetTimeParam();
 DIRECSION Direcsion = NUM;	//方向の確認
 static bool InventoryFlag = false;
+
+//効果音
+//壊れるブロック
+static int g_BrokenSoundNo = 0;
+static char g_BrokenSoundName[] = "data\\SoundData\\SE\\木箱が壊れる(魔王魂).wav";
+//スイッチ
+static int g_SwitchSoundNo = 0;
+static char g_SwitchSoundName[] = "data\\SoundData\\SE\\スイッチ(ニコニ・コモンズ).wav";
+//ワープ
+static int g_WarpSoundNo = 0;
+static char g_WarpSoundName[] = "data\\SoundData\\SE\\ワープ(無料効果音で遊ぼう！).wav";
+//高いとこから壊れる床
+static int g_HighSoundNo = 0;
+static char g_HighSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+//鍵
+static int g_KeySoundNo = 0;
+static char g_KeySoundName[] = "data\\SoundData\\SE\\鍵入手.wav";
+//鍵扉
+static int g_OpenKeySoundNo = 0;
+static char g_OpenKeySoundName[] = "data\\SoundData\\SE\\鍵を開ける(無料効果音で遊ぼう！).wav";
+//ゴールピース
+static int g_GKeySoundNo = 0;
+static char g_GKeySoundName[] = "data\\SoundData\\SE\\ピース入手(効果音ラボ).wav";
+//ピースの合体
+static int g_MatchPieceSoundNo = 0;
+static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\ピースはめ込む音(無料効果音で遊ぼう！).wav";
+//ろうそく
+static int g_CandleSoundNo = 0;
+static char g_CandleSoundName[] = "data\\SoundData\\SE\\ろうそく(効果音ラボ).wav";
+
+
+
+
+//===============================
+//初期化処理
+//================================
+void InitCollision()
+{
+	g_BrokenSoundNo = LoadSound(g_BrokenSoundName);
+	g_SwitchSoundNo = LoadSound(g_SwitchSoundName);
+	g_WarpSoundNo = LoadSound(g_WarpSoundName);
+	g_HighSoundNo = LoadSound(g_HighSoundName);
+	g_KeySoundNo = LoadSound(g_KeySoundName);
+	g_OpenKeySoundNo = LoadSound(g_OpenKeySoundName);
+	g_GKeySoundNo = LoadSound(g_GKeySoundName);
+	g_MatchPieceSoundNo = LoadSound(g_MatchPieceSoundName);
+	g_CandleSoundNo = LoadSound(g_CandleSoundName);
+}
+
+
+//===============================
+//更新処理
+//================================
+void UninitCollision()
+{
+	StopSound(g_BrokenSoundNo);
+	StopSound(g_SwitchSoundNo);
+	StopSound(g_WarpSoundNo);
+	StopSound(g_HighSoundNo);
+	StopSound(g_KeySoundNo);
+	StopSound(g_OpenKeySoundNo);
+	StopSound(g_GKeySoundNo);
+	StopSound(g_MatchPieceSoundNo);
+	StopSound(g_CandleSoundNo);
+}
+
+
 
 //===============================
 //当たり判定処理
@@ -203,9 +272,6 @@ void UpdateCollision(){
 		//=========================================
 		for (int i = 0; i < SWITCH_MAX; i++) {
 			if (pSwitch[i].UseFlag) {
-				//スイッチの左がプレイヤーの右よりも左にあるとき、
-				//スイッチの右がプレイヤーの左よりも右にあるとき
-				//スイッチの上が
 				if (pSwitch[i].pos.x - pSwitch[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 					pSwitch[i].pos.x + pSwitch[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
 					pSwitch[i].pos.y - pSwitch[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
@@ -213,11 +279,27 @@ void UpdateCollision(){
 				{
 					pSwitch[i].PressFlag = true;//押されたら
 					pSwitch[i].PaternNo = 1;
+					//SetVolume(g_SwitchSoundNo, 0.5f);
+					PlaySound(g_SwitchSoundNo, 0);
 				}
 				else {
 					pSwitch[i].PressFlag = false;
 					pSwitch[i].PaternNo = 0;
 				}
+				//スイッチと木箱の当たり判定
+				for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
+					if(CollisionBB(pSwitch[i].pos,pMoveBlock[j].pos,pSwitch[i].size,pMoveBlock[j].size)){
+						pSwitch[i].PressFlag = true;//押されたら
+						pSwitch[i].PaternNo = 1;
+						//SetVolume(g_SwitchSoundNo, 0.5f);
+						PlaySound(g_SwitchSoundNo, 0);
+					}
+					else {
+						pSwitch[i].PressFlag = false;
+						pSwitch[i].PaternNo = 0;
+					}
+				}
+
 				if (pSwitch[i].PressFlag) {
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
 						//  switch index 0,1			switch wall	index 0,3
@@ -233,22 +315,59 @@ void UpdateCollision(){
 				}
 			}
 		}
-		//プレーヤーと壁の判定
 		for (int i = 0; i < SWITCHWALL_MAX; i++) {
 			if (pSwitchWall[i].UseFlag) {
+				//プレーヤーと壁の判定
+				//壁の左とプレイヤーの右
 				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
 					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
 					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
 				{
+					pPlayer->Position.x = pPlayer->oldpos.x;
+				}
+				//壁の右とプレイヤーの左
+				if (pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 <= pPlayer->oldpos.x - pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+				{
+					pPlayer->Position.x = pPlayer->oldpos.x;
+				}
+				//壁の↓とプレイヤーの上
+				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 >= pPlayer->oldpos.y + pPlayer->size.y / 2)
+				{
 					pPlayer->Position = pPlayer->oldpos;
 				}
-			}
-		}
-		//スイッチと木箱の判定
-		for (int i = 0; i < SWITCHWALL_MAX; i++) {
-			if (pSwitchWall[i].UseFlag) {
+				//壁の↑とプレイヤーの↓
+				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
+					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
+				{
+					pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 + pPlayer->size.y / 2 + 0.02f;
+					pPlayer->jump = false;
+					pPlayer->fall = false;
+					pPlayer->WarpFlag = false;
+					pPlayer->sp.y = 0;
+					pPlayer->frame = 0;
+				}
 
+				//壁とjumpstandの判定
+				for (int j = 0; j < JUMPSTAND_MAX; j++) {
+					if (CollisionBB(pSwitchWall[i].pos, pJumpStand[j].pos, pSwitchWall[i].size, pJumpStand[j].size)) {
+						pJumpStand[j].pos = pJumpStand[j].oldpos;
+					}
+				}
+				//壁と動くブロックの判定
+				for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
+					if (CollisionBB(pSwitchWall[i].pos, pMoveBlock[j].pos, pSwitchWall[i].size, pMoveBlock[j].size)) {
+						pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+					}
+				}
 			}
 		}
 		//=====================================
@@ -259,7 +378,7 @@ void UpdateCollision(){
 				if (pStart[i].GoalFlag) {
 					if (CollisionBB(pPlayer->Position, pStart[i].pos, pPlayer->size, pStart[i].size)) {
 						SetResultType(WIN);
-						StartFade(FADE::FADE_OUT);
+						StartFade(FADE::FADE_ALPHA_OUT);
 						pTime->EndTime();
 						pTimeParam->EndFlag = true;
 					}
@@ -272,25 +391,18 @@ void UpdateCollision(){
 		//=====================================
 		if (!Mouse_IsLeftDown())
 		{
-			//プレイヤーとトゲブロックの判定
+			//プレイヤーとトゲブロックの判定(プレイヤーがトゲ死)
 			for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 				if (pThornBlock[i].UseFlag) {
 					if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
 						
 						pPlayer->hp--;
-
-						if (pPlayer->hp <= 0) {
-							SetResultType(LOSE);
-							StartFade(FADE::FADE_OUT);
-							pTime->EndTime();
-							pTimeParam->EndFlag = true;
-						}
-						else {//下に何もなく死亡する場合
-							for (int i = 0; i < SPAWN_POINT_MAX; i++) {
-								if (pSpawnPoint[i].UseFlag) {
-									if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
-										pPlayer->Position = pSpawnPoint[i].Position;
-									}
+						//SetVolume(g_CandleSoundNo, 0.5f);
+						PlaySound(g_CandleSoundNo, 0);
+						for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
+							if (pSpawnPoint[i].UseFlag) {
+								if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
+									pPlayer->Position = pSpawnPoint[i].Position;
 								}
 							}
 						}
@@ -298,13 +410,26 @@ void UpdateCollision(){
 				}
 			}
 		}
-		//プレイヤーが落下死したら
+		//プレイヤーが落下死
 		if (pPlayer->Position.y - pPlayer->size.y < -SCREEN_HEIGHT / 2) {
 			pPlayer->hp--;
-			pResult[0].type = LOSE;
+			//SetVolume(g_CandleSoundNo, 0.5f);
+			PlaySound(g_CandleSoundNo, 0);
+			for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
+				if (pSpawnPoint[i].UseFlag) {
+					if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
+						pPlayer->Position = pSpawnPoint[i].Position;
+					}
+				}
+			}
+		}
+		//プレイヤー残機ゼロ
+		if (pPlayer->hp <= 0) {
+			pPlayer->UseFlag = false;
+			SetResultType(LOSE);
+			StartFade(FADE::FADE_ALPHA_OUT);
 			pTime->EndTime();
 			pTimeParam->EndFlag = true;
-			StartFade(FADE::FADE_ALPHA_OUT);
 		}
 
 		//========================================================================
@@ -338,7 +463,6 @@ void UpdateCollision(){
 					pPlayer->jump = false;
 					pPlayer->fall = false;
 					pPlayer->WarpFlag = false;
-					//pPlayer->isGround = true;
 					pPlayer->sp.y = 0;
 					pPlayer->frame = 0;
 				}
@@ -349,6 +473,12 @@ void UpdateCollision(){
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2)
 				{
 					pPlayer->Position.y = (pChipblock + i)->Position.y - (pChipblock + i)->Size.y / 2 - pPlayer->size.y / 2 - 0.02f;
+					pPlayer->sp.y = 0;
+					for (int i = 0; i < JUMPSTAND_MAX; i++)
+					{
+						pJumpStand[i].JumpStandFlag = false;
+
+					}
 
 					pPlayer->fall = true;
 					pPlayer->getfall = true;
@@ -380,6 +510,8 @@ void UpdateCollision(){
 									{
 										pPlayer->Position = (pWarp + i + 1)->Position;
 										pPlayer->CoolTime = PLAYER_COOLTIME;
+										//SetVolume(g_WarpSoundNo, 0.5f);
+										PlaySound(g_WarpSoundNo, 0);
 										pPlayer->WarpFlag = true;
 									}
 								}
@@ -396,7 +528,8 @@ void UpdateCollision(){
 									{
 										pPlayer->Position = (pWarp + i - 1)->Position;
 										pPlayer->CoolTime = PLAYER_COOLTIME;
-
+										//SetVolume(g_WarpSoundNo, 0.5f);
+										PlaySound(g_WarpSoundNo, 0);
 										pPlayer->WarpFlag = true;
 
 									}
@@ -454,7 +587,7 @@ void UpdateCollision(){
 					pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2 &&
 					pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2)
 				{
-					pPlayer->Position.y = (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2 - pPlayer->size.y / 2;
+					pPlayer->Position.y = (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2 + pPlayer->size.y / 2;
 					pPlayer->jump = false;
 					pPlayer->fall = false;
 					pPlayer->frame = 0;
@@ -466,6 +599,8 @@ void UpdateCollision(){
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2)
 				{
 					(pBroken + i)->breakFlag = true;
+					//SetVolume(g_BrokenSoundNo, 0.5f);
+					PlaySound(g_BrokenSoundNo, 0);
 					(pBroken + i)->UseFlag = false;
 					pPlayer->fall = true;
 					pPlayer->getfall = true;
@@ -499,7 +634,7 @@ void UpdateCollision(){
 					pPlayer->Position.y + pPlayer->size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2)
 				{
-					pPlayer->Position.y = pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 - pPlayer->size.y / 2;
+					pPlayer->Position.y = pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2 + pPlayer->size.y / 2;
 					// 着地中にする
 					if (!pPlayer->isMoveBlock) {
 						pPlayer->sp.y = 0.0f;
@@ -548,7 +683,7 @@ void UpdateCollision(){
 					pPlayer->Position.y + pPlayer->size.y / 2 > (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 &&
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2)
 				{
-					pPlayer->Position.y = (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 - pPlayer->size.y / 2;
+					pPlayer->Position.y = (pFallBlock + i)->Position.y +(pFallBlock + i)->Size.y / 2 + pPlayer->size.y / 2;
 					pPlayer->getfall = false;
 					pPlayer->fall = false;
 					pPlayer->frame = 50;
@@ -560,7 +695,7 @@ void UpdateCollision(){
 					pPlayer->Position.y - pPlayer->size.y / 2 < (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 &&
 					pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2)
 				{
-					pPlayer->Position.y = (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 - pPlayer->size.y / 2;
+					pPlayer->Position.y = (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 - pPlayer->size.y / 2;
 				}
 			}
 		}
@@ -591,9 +726,11 @@ void UpdateCollision(){
 					pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
 					pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
 				{
-					if (pPlayer->sp.y >= -10.0f) {
+					if (pPlayer->sp.y >= 5.0f) {
 						//pPlayer->isHigh = false;
 						(pHigh + i)->UseFlag = false;
+						//SetVolume(g_HighSoundNo, 0.5f);
+						//PlaySound(g_HighSoundNo, 0);
 						pPlayer->frame = 50;
 					}
 					else {
@@ -613,7 +750,7 @@ void UpdateCollision(){
 					pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2)
 				{
-					pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
+					pPlayer->Position.y = (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 - pPlayer->size.y / 2;
 				}
 				// プレイヤーの下にブロックがあったら
 				if ((pPlayer->Position.y - pPlayer->size.y / 2 - 0.05f < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2) &&
@@ -637,10 +774,13 @@ void UpdateCollision(){
 		//プレイヤーと鍵の当たり判定(PlayerとKey)
 		//-----------------------------------------------------
 		for (int i = 0; i < KEY_MAX; i++) {
-			if (pKey->GetKey) {
+			if (pKey[i].UseFlag) {
 				if (CollisionBB(pKey[i].Position, pPlayer->Position, pKey[i].Size, pPlayer->size)) {
 					pPlayer->HaveKey++;
-					pKey->GetKey = false;
+					pKey[i].GetKey = true;
+					pKey[i].UseFlag = false;
+					//SetVolume(g_BrokenSoundNo, 0.5f);
+					PlaySound(g_KeySoundNo, 0);
 				}
 			}
 		}
@@ -649,10 +789,17 @@ void UpdateCollision(){
 		//-----------------------------------------------------------------
 		for (int i = 0; i < OPEN_KEY_MAX; i++) {
 			if ((pOpenKey + i)->UseFlag) {
-				if (CollisionBB(pOpenKey[i].Position, pKey->Position, pOpenKey[i].Size, pKey->Size)) {
-					if (pPlayer->HaveKey > 0) {
-						//pPlayer->Position.x = (pOpenKey + i)->Position.x - (pOpenKey + i)->Size.x / 2 - pPlayer->size.x / 2;
-						(pOpenKey + i)->UseFlag = false;
+				for (int j = 0; j < KEY_MAX; j++) {
+					if (CollisionBB(pOpenKey[i].Position, pPlayer->Position, pOpenKey[i].Size, pPlayer->size)) {
+						if (pPlayer->HaveKey > 0) {
+							pOpenKey[i].KeyOpen = true;
+							pOpenKey[i].UseFlag = false;
+							if (i % 3 == 0) {
+								pPlayer->HaveKey--;
+							}
+							//SetVolume(g_OpenKeySoundNo, 0.5f);
+							PlaySound(g_OpenKeySoundNo, 0);
+						}
 					}
 					/*else
 					{
@@ -661,8 +808,66 @@ void UpdateCollision(){
 
 				}
 			}
-
 		}
+
+		//-----------------------------------------------------
+		//プレイヤーと鍵付き扉の当たり判定(PlayerとOpenKey)
+		//-----------------------------------------------------
+		for (int i = 0; i < OPEN_KEY_MAX; i++) {
+			if (pOpenKey[i].UseFlag) {
+				//プレーヤーと扉の判定
+				//扉の左とプレイヤーの右
+				if (pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+				{
+					pPlayer->Position.x = pPlayer->oldpos.x;
+				}
+				//扉の右とプレイヤーの左
+				if (pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 <= pPlayer->oldpos.x - pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+				{
+					pPlayer->Position.x = pPlayer->oldpos.x;
+				}
+				//扉の↓とプレイヤーの上
+				if (pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 >= pPlayer->oldpos.y + pPlayer->size.y / 2)
+				{
+					pPlayer->Position = pPlayer->oldpos;
+				}
+				//扉の↑とプレイヤーの↓
+				if (pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
+					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
+				{
+					pPlayer->Position.y = pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 + pPlayer->size.y / 2 + 0.02f;
+					pPlayer->jump = false;
+					pPlayer->fall = false;
+					pPlayer->WarpFlag = false;
+					pPlayer->sp.y = 0;
+					pPlayer->frame = 0;
+				}
+				//扉とjumpstandの判定
+				for (int j = 0; j < JUMPSTAND_MAX; j++) {
+					if (CollisionBB(pOpenKey[i].Position, pJumpStand[j].pos, pOpenKey[i].Size, pJumpStand[j].size)) {
+						pJumpStand[j].pos = pJumpStand[j].oldpos;
+					}
+				}
+				//扉と動くブロックの判定
+				for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
+					if (CollisionBB(pOpenKey[i].Position, pMoveBlock[j].pos, pOpenKey[i].Size, pMoveBlock[j].size)) {
+						pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+					}
+				}
+			}
+		}
+
 		//------------------------------------------------------------------
 		//ストーリー用鍵
 		//------------------------------------------------------------------
@@ -683,6 +888,8 @@ void UpdateCollision(){
 			if (CollisionBB(pGKey->pos, pPlayer->Position, pGKey->size, pPlayer->size)) {
 				pGKey->UseFlag = false;
 				pGKey->GetGKey = true;
+				//SetVolume(g_GKeySoundNo, 0.5f);
+				PlaySound(g_GKeySoundNo, 0);
 			}
 		}
 		//-------------------------------------------------------------------
@@ -705,13 +912,25 @@ void UpdateCollision(){
 				}
 			}
 		}
-		//------------------------------------
-		//敵の目の前とプレイヤー当たり判定
-		//------------------------------------
+		//------------------------------------------------------
+		//敵の目の前とプレイヤー当たり判定(プレイヤーが死ぬ場合)
+		//------------------------------------------------------
+		//しんちゃんへ
+		//SE導入してるときに気になったから追加してみたけど余計なことしてたらごめんね追加部分はコメントアウトしとくね
+		//エネミー関連のSE部分はいろいろ決まったら随時追加予定
 		for (int i = 0; i < ENEMY_MAX; i++) {
 			if (pEnemy[i].UseFlag) {
+				pEnemy[i].AIFlag = false;
 				if (CollisionBB(pEnemy[i].pos, pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x * 1000, pEnemy[i].size.y), pPlayer->size)) {
 					pEnemy[i].AIFlag = true;
+					/*if (pEnemy[i].AIFlag == true)
+					{
+						pPlayer->hp--;
+						if (pPlayer->hp > 0)
+						{
+							pPlayer->UseFlag = false;
+						}
+					}*/
 				}
 			}
 		}
@@ -868,7 +1087,6 @@ void PieceCollision()
 				{
 
 
-
 					pPiece[i].MoveEndFlag = false;
 
 					if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pPlayer->Position.y &&
@@ -906,182 +1124,195 @@ void PieceCollision()
 						{
 							for (int k = 0; k < JOINT_MAX; k++)
 							{
-								if (pJoint[j].pieNo != pJoint[k].pieNo)//ピース番号が違ったら
+								if (pJoint[k].useFlag)
 								{
 
-									//ジョイントが重なっていたら
-									colFlag = CollisionBB(pJoint[j].pos, pJoint[k].pos, pJoint[j].size, pJoint[k].size);
-
-									if (colFlag)
+								
+									if (pJoint[j].pieNo != pJoint[k].pieNo)//ピース番号が違ったら
 									{
 
-										//凹凸が合っていたら
-										if (pJoint[j].type == JOINT_TYPE::TYPE_BUMP && pJoint[k].type == JOINT_TYPE::TYPE_DIP ||
-											pJoint[k].type == JOINT_TYPE::TYPE_BUMP && pJoint[j].type == JOINT_TYPE::TYPE_DIP)
+
+										//ジョイントが重なっていたら
+										colFlag = CollisionBB(pJoint[j].pos, pJoint[k].pos, pJoint[j].size, pJoint[k].size);
+
+										if (colFlag)
 										{
-											colFlag2 = true;
 
-											//ジョイントが右だったら
-											if (pPiece[i].pos.x + pPiece[i].size.x / 3 < pJoint[j].pos.x)
+											//凹凸が合っていたら
+											if (pJoint[j].type == JOINT_TYPE::TYPE_BUMP && pJoint[k].type == JOINT_TYPE::TYPE_DIP ||
+												pJoint[k].type == JOINT_TYPE::TYPE_BUMP && pJoint[j].type == JOINT_TYPE::TYPE_DIP)
 											{
+												colFlag2 = true;
 
-
-												D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
-
-												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
-
-												if (fourPieceCollision(pPiece[i], i))
+												//ジョイントが右だったら
+												if (pPiece[i].pos.x + pPiece[i].size.x / 3 < pJoint[j].pos.x)
 												{
-													PositionPlas(temp, pPiece[i].no);
-													pPiece[i].OldMovePos = pPiece[i].pos;
-													if (pFlag)
+
+
+													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
+
+													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
+
+													if (fourPieceCollision(pPiece[i], i))
 													{
-														pPlayer->Position += temp;
-														pPlayer->oldpos = pPlayer->Position;
+														PositionPlas(temp, pPiece[i].no);
+														pPiece[i].OldMovePos = pPiece[i].pos;
+														if (pFlag)
+														{
+															pPlayer->Position += temp;
+															pPlayer->oldpos = pPlayer->Position;
+														}
+														// ヒバナエフェクト
+														SetEffectSpark(pJoint[j].pos, 0.0f);
+														// ピースのアニメーション
+														StartPieceAnimation(pJoint[k].indexno);
+														StartPieceAnimation(pJoint[j].indexno);
+														//SetVolume(g_MatchPieceSoundNo, 0.5f);
+														PlaySound(g_MatchPieceSoundNo, 0);
 													}
-													// ヒバナエフェクト
-													SetEffectSpark(pJoint[j].pos, 0.0f);
-													// ピースのアニメーション
-													StartPieceAnimation(pJoint[k].indexno);
-													StartPieceAnimation(pJoint[j].indexno);
+													else
+													{
+														Rotreturn(pPiece[i].no);
+														colFlag2 = true;
+														temp = pPiece[i].OldMovePos - pPiece[i].pos;
+														PositionPlas(temp, pPiece[i].no);
+														pPiece[i].pos = pPiece[i].OldMovePos;
+														if (pFlag)
+														{
+															pPlayer->Position = pPlayer->OneOldpos;
+														}
+													}
 												}
-												else
+												//ジョイントが左だったら
+												else if (pPiece[i].pos.x - pPiece[i].size.x / 3 > pJoint[j].pos.x)
 												{
-													Rotreturn(pPiece[i].no);
-													colFlag2 = true;
-													temp = pPiece[i].OldMovePos - pPiece[i].pos;
-													PositionPlas(temp, pPiece[i].no);
-													pPiece[i].pos = pPiece[i].OldMovePos;
-													if (pFlag)
+													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
+
+													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_SIZE, pPiece[pJoint[k].indexno].pos.y);
+
+													if (fourPieceCollision(pPiece[i], i))
 													{
-														pPlayer->Position = pPlayer->OneOldpos;
+
+														PositionPlas(temp, pPiece[i].no);
+														pPiece[i].OldMovePos = pPiece[i].pos;
+														if (pFlag)
+														{
+															pPlayer->Position += temp;
+															pPlayer->oldpos = pPlayer->Position;
+
+														}
+														pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
+														// ヒバナエフェクト
+														SetEffectSpark(pJoint[j].pos, 0.0f);
+														// ピースのアニメーション
+														StartPieceAnimation(pJoint[k].indexno);
+														StartPieceAnimation(pJoint[j].indexno);
+														//SetVolume(g_MatchPieceSoundNo, 0.5f);
+														PlaySound(g_MatchPieceSoundNo, 0);
+													}
+													else
+													{
+														Rotreturn(pPiece[i].no);
+														colFlag2 = true;
+														temp = pPiece[i].OldMovePos - pPiece[i].pos;
+														PositionPlas(temp, pPiece[i].no);
+
+														pPiece[i].pos = pPiece[i].OldMovePos;
+														if (pFlag)
+														{
+															pPlayer->Position = pPlayer->OneOldpos;
+														}
 													}
 												}
+												//ジョイントが上だったら
+												else if (pPiece[i].pos.y - pPiece[i].size.y / 3 > pJoint[j].pos.y)
+												{
+													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT) - pPiece[i].pos;
+
+													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT);
+
+													if (fourPieceCollision(pPiece[i], i))
+													{
+														PositionPlas(temp, pPiece[i].no);
+														pPiece[i].OldMovePos = pPiece[i].pos;
+														if (pFlag)
+														{
+															pPlayer->Position += temp;
+															pPlayer->oldpos = pPlayer->Position;
+
+														}
+														// ヒバナエフェクト
+														SetEffectSpark(pJoint[j].pos, 0.0f);
+														// ピースのアニメーション
+														StartPieceAnimation(pJoint[k].indexno);
+														StartPieceAnimation(pJoint[j].indexno);
+														//SetVolume(g_MatchPieceSoundNo, 0.5f);
+														PlaySound(g_MatchPieceSoundNo, 0);
+													}
+													else
+													{
+														Rotreturn(pPiece[i].no);
+														colFlag2 = true;
+														temp = pPiece[i].OldMovePos - pPiece[i].OldPos;
+														PositionPlas(temp, pPiece[i].no);
+
+														pPiece[i].pos = pPiece[i].OldMovePos;
+														if (pFlag)
+														{
+															pPlayer->Position = pPlayer->OneOldpos;
+														}
+
+													}
+
+												}
+												//ジョイントが下だったら
+												else if (pPiece[i].pos.y + pPiece[i].size.y / 3 < pJoint[j].pos.y)
+												{
+													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT) - pPiece[i].pos;
+
+													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT);
+
+													if (fourPieceCollision(pPiece[i], i))
+													{
+														PositionPlas(temp, pPiece[i].no);
+														pPiece[i].OldMovePos = pPiece[i].pos;
+														if (pFlag)
+														{
+															pPlayer->Position += temp;
+															pPlayer->oldpos = pPlayer->Position;
+
+														}
+														// ヒバナエフェクト
+														SetEffectSpark(pJoint[j].pos, 0.0f);
+														// ピースのアニメーション
+														StartPieceAnimation(pJoint[k].indexno);
+														StartPieceAnimation(pJoint[j].indexno);
+														//SetVolume(g_MatchPieceSoundNo, 0.5f);
+														PlaySound(g_MatchPieceSoundNo, 0);
+													}
+													else
+													{
+														Rotreturn(pPiece[i].no);
+														colFlag2 = true;
+														temp = pPiece[i].OldMovePos - pPiece[i].pos;
+														PositionPlas(temp, pPiece[i].no);
+
+														pPiece[i].pos = pPiece[i].OldMovePos;
+
+														if (pFlag)
+														{
+															pPlayer->Position = pPlayer->OneOldpos;
+														}
+
+													}
+
+												}
+
+												break;
 											}
-											//ジョイントが左だったら
-											else if (pPiece[i].pos.x - pPiece[i].size.x / 3 > pJoint[j].pos.x)
-											{
-												D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
-
-												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_SIZE, pPiece[pJoint[k].indexno].pos.y);
-
-												if (fourPieceCollision(pPiece[i], i))
-												{
-
-													PositionPlas(temp, pPiece[i].no);
-													pPiece[i].OldMovePos = pPiece[i].pos;
-													if (pFlag)
-													{
-														pPlayer->Position += temp;
-														pPlayer->oldpos = pPlayer->Position;
-
-													}
-													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
-													// ヒバナエフェクト
-													SetEffectSpark(pJoint[j].pos, 0.0f);
-													// ピースのアニメーション
-													StartPieceAnimation(pJoint[k].indexno);
-													StartPieceAnimation(pJoint[j].indexno);
-												}
-												else
-												{
-													Rotreturn(pPiece[i].no);
-													colFlag2 = true;
-													temp = pPiece[i].OldMovePos - pPiece[i].pos;
-													PositionPlas(temp, pPiece[i].no);
-
-													pPiece[i].pos = pPiece[i].OldMovePos;
-													if (pFlag)
-													{
-														pPlayer->Position = pPlayer->OneOldpos;
-													}
-												}
-											}
-											//ジョイントが上だったら
-											else if (pPiece[i].pos.y - pPiece[i].size.y / 3 > pJoint[j].pos.y)
-											{
-												D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT) - pPiece[i].pos;
-
-												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT);
-
-												if (fourPieceCollision(pPiece[i], i))
-												{
-													PositionPlas(temp, pPiece[i].no);
-													pPiece[i].OldMovePos = pPiece[i].pos;
-													if (pFlag)
-													{
-														pPlayer->Position += temp;
-														pPlayer->oldpos = pPlayer->Position;
-
-													}
-													// ヒバナエフェクト
-													SetEffectSpark(pJoint[j].pos, 0.0f);
-													// ピースのアニメーション
-													StartPieceAnimation(pJoint[k].indexno);
-													StartPieceAnimation(pJoint[j].indexno);
-												}
-												else
-												{
-													Rotreturn(pPiece[i].no);
-													colFlag2 = true;
-													temp = pPiece[i].OldMovePos - pPiece[i].OldPos;
-													PositionPlas(temp, pPiece[i].no);
-
-													pPiece[i].pos = pPiece[i].OldMovePos;
-													if (pFlag)
-													{
-														pPlayer->Position = pPlayer->OneOldpos;
-													}
-
-												}
-
-											}
-											//ジョイントが下だったら
-											else if (pPiece[i].pos.y + pPiece[i].size.y / 3 < pJoint[j].pos.y)
-											{
-												D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT) - pPiece[i].pos;
-
-												pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT);
-
-												if (fourPieceCollision(pPiece[i], i))
-												{
-													PositionPlas(temp, pPiece[i].no);
-													pPiece[i].OldMovePos = pPiece[i].pos;
-													if (pFlag)
-													{
-														pPlayer->Position += temp;
-														pPlayer->oldpos = pPlayer->Position;
-
-													}
-													// ヒバナエフェクト
-													SetEffectSpark(pJoint[j].pos, 0.0f);
-													// ピースのアニメーション
-													StartPieceAnimation(pJoint[k].indexno);
-													StartPieceAnimation(pJoint[j].indexno);
-												}
-												else
-												{
-													Rotreturn(pPiece[i].no);
-													colFlag2 = true;
-													temp = pPiece[i].OldMovePos - pPiece[i].pos;
-													PositionPlas(temp, pPiece[i].no);
-
-													pPiece[i].pos = pPiece[i].OldMovePos;
-
-													if (pFlag)
-													{
-														pPlayer->Position = pPlayer->OneOldpos;
-													}
-
-												}
-
-											}
-
 											break;
 										}
-										break;
 									}
-
 
 								}
 							}
@@ -2044,6 +2275,9 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	JOINT* pJoint = GetJoint();
 	PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
 	GOAL* pGoal = GetGoal();
+	KEY* pKey = GetKey();
+	OPENKEY* pOpenKey = GetOpenKey();
+
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	JUMPSTAND* pJumpStand = GetJumpStand();
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
@@ -2053,7 +2287,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	BROKEN* pBroken = GetBroken();
 	SHEERFLOORS* pSheerFloors = GetSheerFloors();
 	START* pStart = GetStart();
-
+	HIGH* pHigh = GetHigh();
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
@@ -2084,6 +2318,19 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 		}
 
 	}
+	for (int i = 0; i < HIGH_MAX; i++)
+	{//ブロック動かす
+		if (pHigh[i].UseFlag)
+		{
+			if (pHigh[i].index == pinNo)
+			{
+				pHigh[i].Postion += num;
+			}
+
+		}
+
+	}
+
 	for (int i = 0; i < SHEERFLOORS_NUM; i++)
 	{//ブロック動かす
 		if (pSheerFloors[i].use)
@@ -2133,6 +2380,20 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 			pGoal->Pos += num;
 		}
 	}
+	for (int i = 0; i < KEY_MAX; i++) {
+		if (pKey[i].UseFlag) {
+			if (pKey[i].index == pinNo) {
+				pKey[i].Position += num;
+			}
+		}
+	}
+	for (int i = 0; i < OPEN_KEY_MAX; i++) {
+		if (pOpenKey[i].UseFlag) {
+			if (pOpenKey[i].index == pinNo) {
+				pOpenKey[i].Position += num;
+			}
+		}
+	}
 	for (int i = 0; i < THORN_BLOCK_MAX; i++)
 	{//とげ
 		if (pThornBlock[i].UseFlag)
@@ -2148,7 +2409,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	{
 		if (pJumpStand[i].UseJumpStand)
 		{
-			if (pJumpStand[i].PieceIndex == pinNo)
+			if (pJumpStand[i].NowPieceIndex == pinNo)
 			{
 				pJumpStand[i].pos += num;
 			}
@@ -2883,10 +3144,10 @@ bool SpritStageCollision(Piece p)
 {
 	SplitStage* pSprit = GetSplitStage();
 
-	D3DXVECTOR2 up = pSprit->Split3[0][0];
-	D3DXVECTOR2 down = pSprit->Split3[0][2];
-	D3DXVECTOR2 right = pSprit->Split3[2][0];
-	D3DXVECTOR2 left = pSprit->Split3[0][1];
+	D3DXVECTOR2 up = pSprit->Split34[0][0];
+	D3DXVECTOR2 down = pSprit->Split34[0][2];
+	D3DXVECTOR2 right = pSprit->Split34[3][0];
+	D3DXVECTOR2 left = pSprit->Split34[0][1];
 
 	float x = p.pos.x;
 

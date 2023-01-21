@@ -15,7 +15,7 @@
 //É}ÉNÉçíËã`
 //=============================================================================
 #define BULLET_MAX (100)
-#define BULLET_SPEED (10.0f)
+#define BULLET_SPEED (4.0f)
 #define BULLET_SIZE_W (ENEMY_SIZE_W)
 #define BULLET_SIZE_H (ENEMY_SIZE_H / 3)
 

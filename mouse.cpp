@@ -43,8 +43,6 @@ HRESULT InitGameMouse()
 	Mouse.UseFlag = false;
 	Mouse.pFlag = false;
 
-	//Mouse_SetMode(MOUSE_POSITION_MODE_RELATIVE);		// ‘Š‘Îƒ‚[ƒh‚É‚·‚é
-
 	return S_OK;
 }
 

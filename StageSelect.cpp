@@ -28,6 +28,7 @@
 #define STAIRS_LEFT	75
 #define STAIRS_RIGHT	285
 
+#define DOOR_SPACE	1050 / 7
 
 
 //*****************************************************************************
@@ -65,9 +66,16 @@ int StageNo = 0;
 
 static bool OneFlag =true;	//geゲームの最初かどうか
 
-static int g_StageSelectPlayerSoundNo = 0;
-static char g_StageSelectPlayerSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
+//プレイヤーSE
+static int g_StageSelectPlayerRightSoundNo = 0;
+static char g_StageSelectPlayerRightSoundName[] = "data\\SoundData\\SE\\革靴で歩く右.wav";
+static int g_StageSelectPlayerLeftSoundNo = 0;
+static char g_StageSelectPlayerLeftSoundName[] = "data\\SoundData\\SE\\革靴で歩く左.wav";
 
+//ステージセレクトドアSE
+static int g_StageSelectSoundNo = 0;
+static char g_StageSelectSoundName[] = "data\\SoundData\\SE\\ドアを開ける音(無料効果音で遊ぼう！).wav";
+static int g_ClearStageNum = 0;
 
 //-----------------------------------------------------------------------------
 //	初期化
@@ -79,6 +87,7 @@ HRESULT InitStageSelect() {
 	g_StageSelectBg.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	g_StageSelectBg.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_StageSelectBg.texno = LoadTexture(g_StageSelectBgTextureName);
+	
 
 	int a = 0;
 	int b = 0;
@@ -123,8 +132,6 @@ HRESULT InitStageSelect() {
 		g_StageSelectStairs[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_StageSelectStairs[i].texno = LoadTexture(g_StageSelectStairsTextureName);
 		b++;
-
-
 	}
 
 	//g_Texturenumber = LoadTexture(g_StageSelectStairsTextureName);
@@ -136,8 +143,6 @@ HRESULT InitStageSelect() {
 
 	if (OneFlag)
 	{
-
-
 		for (int i = 0; i < STAGE_MAX; i++)
 		{
 			if (i % 7 == 0 && i != 0)
@@ -146,13 +151,15 @@ HRESULT InitStageSelect() {
 				b = 0;
 			}
 			//ドア
-			g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (180.0f) + (250.0f * a));
+			//g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (180.0f) + (250.0f * a));
+			g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (DOOR_SPACE * b), (180.0f) + (250.0f * a));
 			g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
 			g_StageSelect[i].UseFlag = true;
 			g_StageSelect[i].StagePieceIndex = i;
-			g_StageSelect[i].StageUseFlag = true;
+			g_StageSelect[i].StageUseFlag = true;		// true : 全ステージ開放チート	false : 通常
 			g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
-
+			//ドアSE
+			g_StageSelectSoundNo = LoadSound(g_StageSelectSoundName);
 
 			g_StageSelectBlack[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (175.0f) + (250.0f * a));
 			g_StageSelectBlack[i].size = D3DXVECTOR2(120.0f, 150.0f);
@@ -162,9 +169,11 @@ HRESULT InitStageSelect() {
 			{
 				g_StageSelect[i].StageUseFlag = true;
 				g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
-
 			}
-
+			// クリアステージ数分解放する
+			else if (i <= g_ClearStageNum) {
+				g_StageSelect[i].StageUseFlag = true;
+			}
 		}
 		TexNo = LoadTexture(g_StageSelect2TextureName);
 
@@ -190,6 +199,8 @@ HRESULT InitStageSelect() {
 	ply.isSheerFloorsUse = false;
 	ply.isHigh = false;
 	ply.isMoveBlock = false;
+	ply.SoundRightFlag = false;
+	ply.SoundLeftFlag = false;
 	ply.texno = LoadTexture(g_TextureNamePly);
 
 	ply.PaternNo = 0;//パターン番号
@@ -202,7 +213,8 @@ HRESULT InitStageSelect() {
 	ply.CoolTime = PLAYER_COOLTIME;
 	ply.PieceIndex = 0;
 
-	g_StageSelectPlayerSoundNo = LoadSound(g_StageSelectPlayerSoundName);
+	g_StageSelectPlayerRightSoundNo = LoadSound(g_StageSelectPlayerRightSoundName);
+	g_StageSelectPlayerLeftSoundNo = LoadSound(g_StageSelectPlayerLeftSoundName);
 
 	return S_OK;
 }
@@ -214,6 +226,8 @@ void UninitStageSelect() {
 	if (g_StageSelectTexture) {
 		g_StageSelectTexture->Release();
 		g_StageSelectTexture = NULL;
+
+		StopSound(g_StageSelectSoundNo);
 	}
 }
 
@@ -289,9 +303,29 @@ void UpdateStageSelect() {
 		// アニメーションパターン番号を0～15の範囲内にする
 		if (ply.PaternNo > 15) { ply.PaternNo -= 15; }
 		if (ply.PaternNo < 0) { ply.PaternNo += 15; }
-		if (ply.PaternNo == 4.0f || ply.PaternNo == 12.0f) {
-			PlaySound(g_StageSelectPlayerSoundNo, 0);
-			SetVolume(g_StageSelectPlayerSoundNo, 0.5f);
+		if (!ply.SoundRightFlag) {
+			if (ply.PaternNo == 9.0f) {
+				PlaySound(g_StageSelectPlayerRightSoundNo, 0);
+				SetVolume(g_StageSelectPlayerRightSoundNo, 0.5f);
+				ply.SoundRightFlag = true;
+			}
+		}
+		else{
+			if (ply.PaternNo != 9.0f) {
+				ply.SoundRightFlag = false;
+			}
+		}
+		if (!ply.SoundLeftFlag) {
+			if (ply.PaternNo == 1.0f) {
+				PlaySound(g_StageSelectPlayerLeftSoundNo, 0);
+				SetVolume(g_StageSelectPlayerLeftSoundNo, 0.5f);
+				ply.SoundLeftFlag = true;
+			}
+		}
+		else {
+			if (ply.PaternNo != 1.0f) {
+				ply.SoundLeftFlag = false;
+			}
 		}
 
 		ply.oldpos = ply.Position;
@@ -426,9 +460,10 @@ void UpdateStageSelect() {
 				ply.Position.y + ply.size.y / 2 > g_StageSelect[i].pos.y - g_StageSelect[i].size.y / 2 &&
 				ply.Position.y - ply.size.y / 2 < g_StageSelect[i].pos.y + g_StageSelect[i].size.y / 2)
 			{
-
-
-				if (Keyboard_IsKeyTrigger(KK_A) || IsButtonPressed(0, XINPUT_GAMEPAD_A)) {
+				if (Keyboard_IsKeyTrigger(KK_A) ||					// keyboard A
+					IsButtonPressed(0, XINPUT_GAMEPAD_B)) {			// GamePad B
+					//SetVolume(g_BrokenSoundNo, 0.5f);
+					PlaySound(g_StageSelectSoundNo, 0);
 					StageNo = i;
 					//SetScene(SCENE::SCENE_GAME);
 					StartFade(FADE::FADE_OUT);
@@ -443,7 +478,7 @@ void UpdateStageSelect() {
 //	描画処理
 //-----------------------------------------------------------------------------
 void DrawStageSelect() {
-	
+
 
 	{	//背景ポリゴン表示
 		SetWorldViewProjection2D();
@@ -473,17 +508,15 @@ void DrawStageSelect() {
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairs[i].texno));
 
 		SpriteDrawColorRotation(
-			g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x+10, g_StageSelectStairs[i].size.y+10
+			g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x + 10, g_StageSelectStairs[i].size.y + 10
 			, 0.0f, g_StageSelectStairs[i].color, 0, 1.0f, 1.0f, 1);
 
 	}
 
-	
 
-		for (int i = 0; i < STAGE_MAX; i++)
-		{
 
-		
+	for (int i = 0; i < STAGE_MAX; i++)
+	{		
 		SetWorldViewProjection2D();
 		if (g_StageSelect[i].StageUseFlag)
 		{
@@ -498,19 +531,18 @@ void DrawStageSelect() {
 
 		//g_StageSelect[i].pos.x = g_SelectDistance;
 
-			SpriteDrawColorRotation(
-				g_StageSelect[i].pos.x, g_StageSelect[i].pos.y - 10, 0.0f,
-				g_StageSelect[i].size.x / 2, g_StageSelect[i].size.y,
-				0.0f,
-				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-				0,
-				1.0f,
-				1.0f,
-				1
-			);
-			//g_StageSelect[i].pos.x -= 30;
-		
-		}
+		SpriteDrawColorRotation(
+			g_StageSelect[i].pos.x, g_StageSelect[i].pos.y - 10, 0.0f,
+			g_StageSelect[i].size.x / 2, g_StageSelect[i].size.y,
+			0.0f,
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
+		//g_StageSelect[i].pos.x -= 30;
+	}
 
 		if (ply.UseFlag == true)
 		{
@@ -553,6 +585,27 @@ STAGESELECT* GetSelect() {
 int ReturnStageNo()
 {
 	return StageNo;
+}
+
+//-----------------------------------------------------------------------------
+//	クリアステージ数のゲット関数
+//-----------------------------------------------------------------------------
+int GetClearStageNum()
+{
+	g_ClearStageNum = 0;
+	for (STAGESELECT& ss : g_StageSelect) {
+		if (ss.StageUseFlag){
+			g_ClearStageNum++;
+		}
+	}
+		return g_ClearStageNum;
+}
+//-----------------------------------------------------------------------------
+//　クリアステージ数のセット関数
+//-----------------------------------------------------------------------------
+void SetClearStageNum(int num)
+{
+	g_ClearStageNum = num;
 }
 
 //-----------------------------------------------------------------------------

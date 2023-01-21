@@ -9,6 +9,7 @@ typedef struct {
 	D3DXVECTOR2 pos;
 	D3DXVECTOR2 size;
 	D3DXCOLOR	color;
+	float		rot;
 	int			PieceIndex;
 	bool		GoalFlag;
 	bool		UseFlag;
@@ -21,7 +22,7 @@ HRESULT InitStart();
 void UninitStart();
 void UpdateStart();
 void DrawStart();
-void SetStart(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo);
+void SetStart(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int PieceNo);
 START* GetStart();
 void DeleteStart(int PieceNo);
 
