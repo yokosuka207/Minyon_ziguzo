@@ -130,8 +130,10 @@ void UpdateCursor()
 	HIGH* pHigh = GetHigh();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
+	// 絶対モード時 カーソル移動
 	g_Cursor.pos.x = GetXMousePosX();
 	g_Cursor.pos.y = GetXMousePosY();
+	
 	//g_Cursor.oldPos.x = g_Cursor.pos.x -= SCREEN_WIDTH / 2;
 	//g_Cursor.pos.y = -g_Cursor.pos.y + SCREEN_HEIGHT / 2;
 
@@ -147,13 +149,6 @@ void UpdateCursor()
 			g_Cursor.pos.y -= GetThumbRightY(0) * 12;	// 上下移動
 		}
 		//----------移動----------]
-
-		// 絶対モード時
-		g_Cursor.pos.x = GetXMousePosX();
-		g_Cursor.pos.y = GetXMousePosY();
-		// 相対モード時
-		//g_Cursor.pos.x += GetXMousePosX();
-		//g_Cursor.pos.y += GetXMousePosY();
 
 		//[----------壁判定 (壁の上下左右)----------
 		// 上下

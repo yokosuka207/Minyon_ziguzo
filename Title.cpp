@@ -99,7 +99,7 @@ void	UpdateTitle()
 	UpdateGameMouse();
 	FADEPARAM* pFadeParam = GetFadeParam();
 	//キー入力のチェック
-	if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||			// GamePad	B
 		Keyboard_IsKeyTrigger(KK_A))						// Keyboard	A
 	{
 		if (!pFadeParam->FadeFlag)

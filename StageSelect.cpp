@@ -28,6 +28,7 @@
 #define STAIRS_LEFT	75
 #define STAIRS_RIGHT	285
 
+#define DOOR_SPACE	1050 / 7
 
 
 //*****************************************************************************
@@ -74,6 +75,7 @@ static char g_StageSelectPlayerLeftSoundName[] = "data\\SoundData\\SE\\ävåCÇ≈ï‡Ç
 //ÉXÉeÅ[ÉWÉZÉåÉNÉgÉhÉASE
 static int g_StageSelectSoundNo = 0;
 static char g_StageSelectSoundName[] = "data\\SoundData\\SE\\ÉhÉAÇäJÇØÇÈâπ(ñ≥óøå¯â âπÇ≈óVÇ⁄Ç§ÅI).wav";
+static int g_ClearStageNum = 0;
 
 //-----------------------------------------------------------------------------
 //	èâä˙âª
@@ -130,8 +132,6 @@ HRESULT InitStageSelect() {
 		g_StageSelectStairs[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_StageSelectStairs[i].texno = LoadTexture(g_StageSelectStairsTextureName);
 		b++;
-
-
 	}
 
 	//g_Texturenumber = LoadTexture(g_StageSelectStairsTextureName);
@@ -143,8 +143,6 @@ HRESULT InitStageSelect() {
 
 	if (OneFlag)
 	{
-
-
 		for (int i = 0; i < STAGE_MAX; i++)
 		{
 			if (i % 7 == 0 && i != 0)
@@ -153,11 +151,12 @@ HRESULT InitStageSelect() {
 				b = 0;
 			}
 			//ÉhÉA
-			g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (180.0f) + (250.0f * a));
+			//g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (180.0f) + (250.0f * a));
+			g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (DOOR_SPACE * b), (180.0f) + (250.0f * a));
 			g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
 			g_StageSelect[i].UseFlag = true;
 			g_StageSelect[i].StagePieceIndex = i;
-			g_StageSelect[i].StageUseFlag = true;
+			g_StageSelect[i].StageUseFlag = true;		// true : ëSÉXÉeÅ[ÉWäJï˙É`Å[Ég	false : í èÌ
 			g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
 			//ÉhÉASE
 			g_StageSelectSoundNo = LoadSound(g_StageSelectSoundName);
@@ -170,9 +169,11 @@ HRESULT InitStageSelect() {
 			{
 				g_StageSelect[i].StageUseFlag = true;
 				g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
-
 			}
-
+			// ÉNÉäÉAÉXÉeÅ[ÉWêîï™âï˙Ç∑ÇÈ
+			else if (i <= g_ClearStageNum) {
+				g_StageSelect[i].StageUseFlag = true;
+			}
 		}
 		TexNo = LoadTexture(g_StageSelect2TextureName);
 
@@ -227,7 +228,6 @@ void UninitStageSelect() {
 		g_StageSelectTexture = NULL;
 
 		StopSound(g_StageSelectSoundNo);
-
 	}
 }
 
@@ -460,9 +460,8 @@ void UpdateStageSelect() {
 				ply.Position.y + ply.size.y / 2 > g_StageSelect[i].pos.y - g_StageSelect[i].size.y / 2 &&
 				ply.Position.y - ply.size.y / 2 < g_StageSelect[i].pos.y + g_StageSelect[i].size.y / 2)
 			{
-
-
-				if (Keyboard_IsKeyTrigger(KK_A) || IsButtonPressed(0, XINPUT_GAMEPAD_A)) {
+				if (Keyboard_IsKeyTrigger(KK_A) ||					// keyboard A
+					IsButtonPressed(0, XINPUT_GAMEPAD_B)) {			// GamePad B
 					//SetVolume(g_BrokenSoundNo, 0.5f);
 					PlaySound(g_StageSelectSoundNo, 0);
 					StageNo = i;
@@ -479,7 +478,7 @@ void UpdateStageSelect() {
 //	ï`âÊèàóù
 //-----------------------------------------------------------------------------
 void DrawStageSelect() {
-	
+
 
 	{	//îwåiÉ|ÉäÉSÉìï\é¶
 		SetWorldViewProjection2D();
@@ -509,17 +508,15 @@ void DrawStageSelect() {
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairs[i].texno));
 
 		SpriteDrawColorRotation(
-			g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x+10, g_StageSelectStairs[i].size.y+10
+			g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x + 10, g_StageSelectStairs[i].size.y + 10
 			, 0.0f, g_StageSelectStairs[i].color, 0, 1.0f, 1.0f, 1);
 
 	}
 
-	
 
-		for (int i = 0; i < STAGE_MAX; i++)
-		{
 
-		
+	for (int i = 0; i < STAGE_MAX; i++)
+	{		
 		SetWorldViewProjection2D();
 		if (g_StageSelect[i].StageUseFlag)
 		{
@@ -534,19 +531,18 @@ void DrawStageSelect() {
 
 		//g_StageSelect[i].pos.x = g_SelectDistance;
 
-			SpriteDrawColorRotation(
-				g_StageSelect[i].pos.x, g_StageSelect[i].pos.y - 10, 0.0f,
-				g_StageSelect[i].size.x / 2, g_StageSelect[i].size.y,
-				0.0f,
-				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-				0,
-				1.0f,
-				1.0f,
-				1
-			);
-			//g_StageSelect[i].pos.x -= 30;
-		
-		}
+		SpriteDrawColorRotation(
+			g_StageSelect[i].pos.x, g_StageSelect[i].pos.y - 10, 0.0f,
+			g_StageSelect[i].size.x / 2, g_StageSelect[i].size.y,
+			0.0f,
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
+		//g_StageSelect[i].pos.x -= 30;
+	}
 
 		if (ply.UseFlag == true)
 		{
@@ -589,6 +585,27 @@ STAGESELECT* GetSelect() {
 int ReturnStageNo()
 {
 	return StageNo;
+}
+
+//-----------------------------------------------------------------------------
+//	ÉNÉäÉAÉXÉeÅ[ÉWêîÇÃÉQÉbÉgä÷êî
+//-----------------------------------------------------------------------------
+int GetClearStageNum()
+{
+	g_ClearStageNum = 0;
+	for (STAGESELECT& ss : g_StageSelect) {
+		if (ss.StageUseFlag){
+			g_ClearStageNum++;
+		}
+	}
+		return g_ClearStageNum;
+}
+//-----------------------------------------------------------------------------
+//Å@ÉNÉäÉAÉXÉeÅ[ÉWêîÇÃÉZÉbÉgä÷êî
+//-----------------------------------------------------------------------------
+void SetClearStageNum(int num)
+{
+	g_ClearStageNum = num;
 }
 
 //-----------------------------------------------------------------------------

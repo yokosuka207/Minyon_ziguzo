@@ -78,8 +78,8 @@ HRESULT InitPlayer()
 	Piece* pPiece = GetPiece();
 	START* pStart = GetStart();
 	//ƒvƒŒƒCƒ„[‚Ì‰Šú‰»
-	//g_Player.Position = D3DXVECTOR2(pPiece->pos.x+30.0f,pPiece->pos.y);
-	g_Player.Position = D3DXVECTOR2(pStart[0].pos.x, pStart[0].pos.y);
+	g_Player.Position = D3DXVECTOR2(pPiece->pos.x+30.0f,pPiece->pos.y);
+	//g_Player.Position = D3DXVECTOR2(pStart[0].pos.x, pStart[0].pos.y);
 	g_Player.OneOldpos = g_Player.oldpos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	g_Player.sp = D3DXVECTOR2(0,-8);
 	g_Player.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
