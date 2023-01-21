@@ -452,7 +452,7 @@ void UpdateCollision(){
 		//========================================================================
 		//プレイヤー・チップブロック　当たり判定(PlayerとChipBlockの当たり判定)
 		//=========================================================================
-		for (int i = 0; i < BLOCK_MAX; i++) {
+		for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
 			if ((pChipblock + i)->UseFlag) {
 				//プレイヤー左・ブロック右
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pChipblock + i)->Position.x - (pChipblock + i)->Size.x / 2 &&
@@ -496,6 +496,7 @@ void UpdateCollision(){
 						pJumpStand[i].JumpStandFlag = false;
 
 					}
+					pPlayer->isHigh = false;
 
 					pPlayer->fall = true;
 					pPlayer->getfall = true;
