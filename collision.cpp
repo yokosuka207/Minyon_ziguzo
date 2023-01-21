@@ -2332,7 +2332,8 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	HIGH* pHigh = GetHigh();
 	MOVEBLOCK* pMoveBlock = GetMoveBlock();
 	FALLBLOCK* pFallBlock = GetFallBlock();
-	for (int i = 0; i < BLOCK_MAX; i++)
+	ENEMY* pEnemy = GetEnemy();
+	for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
 		{
@@ -2532,6 +2533,18 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 
 		}
 	}
+	for (int i = 0; i < ENEMY_MAX; i++)
+	{
+		if (pEnemy[i].UseFlag)
+		{
+			if (pEnemy[i].index == pinNo)
+			{
+				pEnemy[i].pos += num;
+			}
+		}
+
+	}
+
 
 }
 //--------------------------------------------
