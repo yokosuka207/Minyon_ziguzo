@@ -803,25 +803,22 @@ void UpdateCollision(){
 		//-----------------------------------------------------------------
 		//通常鍵取得プレイヤーと鍵で開く扉の当たり判定(PlayerとOpenKey)
 		//-----------------------------------------------------------------
-		for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
-			for (int i = 0; i < OPEN_KEY_MAX; i++) {
-				if ((pOpenKey + j + i)->UseFlag) {
-					if (CollisionBB((pOpenKey + j + i)->Position, pPlayer->Position, (pOpenKey + j + i)->Size, pPlayer->size)) {
-						if (pPlayer->HaveKey > 0) {
-							if (i == 0) {
-								(pOpenKey + j + i)->KeyOpen = true;
-								(pOpenKey + j + i + 1)->KeyOpen = true;
-								(pOpenKey + j + i + 2)->KeyOpen = true;
+		for (int i = 0; i < OPEN_KEY_MAX * STAGE_OPEN_KEY_MAX; i++) {
+			if ((pOpenKey + i)->UseFlag) {
+				if (CollisionBB((pOpenKey + i)->Position, pPlayer->Position, (pOpenKey + i)->Size, pPlayer->size)) {
+					if (pPlayer->HaveKey > 0) {
+						if (i == 0 || i == 3 ||i == 6) {
+							(pOpenKey + i)->KeyOpen = true;
+							(pOpenKey + i + 1)->KeyOpen = true;
+							(pOpenKey + i + 2)->KeyOpen = true;
 
-								(pOpenKey + j + i)->UseFlag = false;
-								(pOpenKey + j + i + 1)->UseFlag = false;
-								(pOpenKey + j + i + 2)->UseFlag = false;
-							}
+							(pOpenKey + i)->UseFlag = false;
+							(pOpenKey + i + 1)->UseFlag = false;
+							(pOpenKey + i + 2)->UseFlag = false;
 							pPlayer->HaveKey--;
-
-							//SetVolume(g_OpenKeySoundNo, 0.5f);
-							PlaySound(g_OpenKeySoundNo, 0);
 						}
+						//SetVolume(g_OpenKeySoundNo, 0.5f);
+						PlaySound(g_OpenKeySoundNo, 0);
 					}
 				}
 			}
@@ -2407,12 +2404,11 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 			}
 		}
 	}
-	for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
-		for (int i = 0; i < OPEN_KEY_MAX; i++) {
-			if ((pOpenKey + j + i)->UseFlag) {
-				if ((pOpenKey + j + i)->index == pinNo) {
-					(pOpenKey + j + i)->Position += num;
-				}
+	
+	for (int i = 0; i < OPEN_KEY_MAX * STAGE_OPEN_KEY_MAX; i++) {
+		if ((pOpenKey + i)->UseFlag) {
+			if ((pOpenKey + i)->index == pinNo) {
+				(pOpenKey + i)->Position += num;
 			}
 		}
 	}
