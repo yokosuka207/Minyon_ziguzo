@@ -26,6 +26,8 @@ Update:
 #include "StageSelect.h"
 #include "button.h"
 
+#include "sound.h"
+
 //**************************************************
 // マクロ定義
 //**************************************************
@@ -51,6 +53,11 @@ static char* g_DataDeleteTextureName = (char*)"data/texture/GameEnd_haikei.jpg";
 
 // 各データのボタンを作る
 Button g_DataButton[BUTTON_MAX];
+
+//サウンド
+static int g_ChangeSceneSaveSoundNo = 0;
+static char g_ChangeSceneSaveSoundName[] = "data\\SoundData\\SE\\シーン遷移(魔王魂).wav";
+
 
 
 //==================================================
@@ -120,6 +127,7 @@ void Save::Uninit()
 	for (auto& b : g_DataButton) {
 		b.Uninit();
 	}
+	StopSound(g_ChangeSceneSaveSoundNo);
 }
 
 //==================================================
@@ -226,6 +234,18 @@ void Save::Update()
 	// 次に備えて1フレーム前の座標に入れる
 	MouseOldPosX = GetMousePosX();
 	MouseOldPosY = GetMousePosY();
+}
+			FADEPARAM* pFadeParam = GetFadeParam();
+
+			//SetScene(SCENE_STAGESELECT);			// ステージセレクトシーンに切り替わる
+			if (!pFadeParam->FadeFlag)
+			{
+				//SetVolume(g_ChangeSceneSaveSoundNo, 0.5f);
+				PlaySound(g_ChangeSceneSaveSoundNo, 0);
+				StartFade(FADE::FADE_ALPHA_OUT);
+			}
+		}
+	}
 }
 
 //==================================================

@@ -11,6 +11,7 @@
 #include	"time.h"
 #include	"score.h"
 #include	"fade.h"
+#include	"sound.h"
 //======================
 //マクロ定義
 //=======================
@@ -21,13 +22,17 @@ static	ID3D11ShaderResourceView* g_ResultTexture = NULL;//テクスチャ情報
 static	char* g_ResultTextureName = (char*)"data\\texture\\セーブ画面背景.png";
 
 static	ID3D11ShaderResourceView* g_ResultGameEndTexture = NULL;//テクスチャ情報
-static	char* g_ResultGameEndTextureName = (char*)"data\\texture\\GameEnd_haikei.jpg";
+static	char* g_ResultGameEndTextureName = (char*)"data\\texture\\black.png";
 
 static	ID3D11ShaderResourceView* g_ResultTextureButton = NULL;//テクスチャ情報
 static	char* g_ResultButtonTextureName = (char*)"data\\texture\\GameEnd_contie_button.jpg";
 
 static	ID3D11ShaderResourceView* g_ResultTextureButton2 = NULL;//テクスチャ情報
 static	char* g_ResultButtonTextureName2 = (char*)"data\\texture\\GameEnd_end_button.jpg";
+
+static int g_ChangeSceneResultSoundNo = 0;
+static char g_ChangeSceneResultSoundName[] = "data\\SoundData\\SE\\シーン遷移(魔王魂).wav";
+
 
 
 RESULT	ResultObject[3];//タイトル画面オブジェクト	テクスチャ枚数分の配列
@@ -45,6 +50,7 @@ static Time* pTime = pTime->GetTime();
 static TimeParam*	pTimeParam = pTime->GetTimeParam();
 static Score* pScore = pScore->GetScore();
 static FADEPARAM* pFadeParam = GetFadeParam();
+static ANIMEPARAM* pAnimeParam = pScore->GetAnimeParam();
 //======================
 //初期化
 //======================
@@ -89,6 +95,8 @@ void	InitResult()
 	ResultObject[2].Rotate = 0.0f;
 
 	pScore->SetScore(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50), D3DXVECTOR2(50.0f, 50.0f));
+
+	g_ChangeSceneResultSoundNo = LoadSound(g_ChangeSceneResultSoundName);
 }
 //======================
 //終了処理
@@ -119,6 +127,7 @@ void	UninitResult()
 		g_ResultTextureButton2 = NULL;
 	}
 
+	StopSound(g_ChangeSceneResultSoundNo);
 }
 
 //======================
@@ -134,6 +143,8 @@ void	UpdateResult()
 		//キー入力のチェック
 		if (Keyboard_IsKeyTrigger(KK_SPACE))
 		{
+			//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
+			PlaySound(g_ChangeSceneResultSoundNo, 0);
 			//SetScene(SCENE::SCENE_TITLE);
 			StartFade(FADE::FADE_ALPHA_OUT);
 		}
@@ -158,11 +169,20 @@ void	UpdateResult()
 			{
 				pTimeParam->UseFlag = false;
 				pTime->StartTime();
+				for (int i = 0; i < SCORE_MAX; i++) {
+					pAnimeParam[i].AnimeFlag = false;
+				}
 				//SetScene(SCENE::SCENE_GAME);
 				pFadeParam->ExceptFlag = true;
 				pFadeParam->TitleFlag = false;
 				if (!pFadeParam->FadeFlag)
-				StartFade(FADE::FADE_ALPHA_OUT);
+				{
+					//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
+					PlaySound(g_ChangeSceneResultSoundNo, 0);
+					StartFade(FADE::FADE_ALPHA_OUT);
+					//SetScene(SCENE::SCENE_GAME);
+				}
+				
 			}
 		}
 		
@@ -175,7 +195,10 @@ void	UpdateResult()
 				//SetScene(SCENE::SCENE_TITLE);
 				pFadeParam->ExceptFlag = false;
 				pFadeParam->TitleFlag = true;
-				if (!pFadeParam->FadeFlag) {
+				if (!pFadeParam->FadeFlag) 
+				{
+					//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
+					PlaySound(g_ChangeSceneResultSoundNo, 0);
 					StartFade(FADE::FADE_ALPHA_OUT);
 				}
 				pTimeParam->UseFlag = false;
@@ -188,6 +211,8 @@ void	UpdateResult()
 	if (IsButtonTriggered(0, XINPUT_GAMEPAD_Y) ||		// GamePad	Y
 		Keyboard_IsKeyTrigger(KK_SPACE))				// Keyboard	SPACE	
 	{
+		//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
+		PlaySound(g_ChangeSceneResultSoundNo, 0);
 		SetScene(SCENE::SCENE_TITLE);
 	}
 }

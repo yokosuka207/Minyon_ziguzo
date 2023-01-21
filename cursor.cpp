@@ -31,6 +31,9 @@
 #include"SheerFloors.h"
 #include"goal_key.h"
 #include "start.h"
+#include"high_broken.h"
+#include "sound.h"
+
 //--------------------------------------------------
 // マクロ定義
 //--------------------------------------------------
@@ -56,6 +59,11 @@ static int g_CursorIndex = -1;	//マウスの掴んだパズルの番号入れ
 static int NoIndex = -1;	//マウスで掴んだピース番号
 static bool g_CursorFlag = false;	//マウスをクリックしているか
 
+//マウスクリックSE
+static int g_CursorSoundNo = 0;
+static char g_CursorSoundName[] = "data\\SoundData\\SE\\ピースを掴む音(効果音ラボ).wav";
+
+
 //==================================================
 // カーソル初期化
 //==================================================
@@ -64,7 +72,7 @@ HRESULT InitCursor()
 	oneFlag = false;	//マウスでパズルを一つ持っているか
 	g_CursorIndex = -1;	//マウスの掴んだパズルの番号入れ
 	NoIndex = -1;	//マウスで掴んだピース番号
-	 g_CursorFlag = false;	//マウスをクリックしているか
+	g_CursorFlag = false;	//マウスをクリックしているか
 
 
 	// カーソルの初期化
@@ -81,6 +89,7 @@ HRESULT InitCursor()
 	}
 	g_CursorTextureNo[0] = LoadTexture(g_CursorTextureName);
 	g_CursorTextureNo[1] = LoadTexture(g_CursorCatchTextureName);
+	g_CursorSoundNo = LoadSound(g_CursorSoundName);
 
 	return S_OK;
 }
@@ -90,7 +99,7 @@ HRESULT InitCursor()
 //==================================================
 void UninitCursor()
 {
-
+	StopSound(g_CursorSoundNo);
 }
 
 //==================================================
@@ -118,6 +127,7 @@ void UpdateCursor()
 	SHEERFLOORS* pSheerFloors = GetSheerFloors();
 	GKey* pGkey = GetGKey();
 	START* pStart = GetStart();
+	HIGH* pHigh = GetHigh();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	// 絶対モード時 カーソル移動
@@ -128,6 +138,8 @@ void UpdateCursor()
 	//g_Cursor.pos.y = -g_Cursor.pos.y + SCREEN_HEIGHT / 2;
 
 	if (Mouse_IsLeftDown()) {
+
+	
 		g_Cursor.oldPos = g_Cursor.pos;
 		//[----------移動----------
 		if (GetThumbRightX(0) < -0.2f || GetThumbRightX(0) > 0.2f) {				// 右スティック	左右
@@ -155,6 +167,8 @@ void UpdateCursor()
 
 		if (Mouse_IsLeftDown())
 		{
+			
+
 			for (int i = 0; i < PUZZLE_MAX; i++)
 			{
 				//if (pPuzzle[i].UseFlag)
@@ -217,6 +231,8 @@ void UpdateCursor()
 						pPiece[i].pos.x + PUZZLE_WIDHT / 3 > g_Cursor.pos.x - SCREEN_WIDTH / 2 &&
 						!oneFlag)
 					{
+						
+
 						//プレーヤーが持ったピースの中にいたら
 						if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pPlayer->Position.y &&
 							pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pPlayer->Position.y &&
@@ -225,12 +241,18 @@ void UpdateCursor()
 							)
 						{
 							g_Cursor.pFlag = true;
+							
 							pPlayer->OneOldpos = pPlayer->Position;
 						}
 
 						g_Cursor.RotIndex = 0;
 
 						oneFlag = true;
+						if (oneFlag == true)
+						{
+							//SetVolume(g_CursorSoundNo, 0.5f);
+							PlaySound(g_CursorSoundNo, 0);
+						}
 						pPiece[i].MoveFlag = true;
 						g_CursorIndex = i;
 						NoIndex = pPiece[i].no;
@@ -265,6 +287,18 @@ void UpdateCursor()
 								if (pBroken[i].index == NoIndex)
 								{
 									pBroken[i].Postion += temp;
+								}
+
+							}
+
+						}
+						for (int i = 0; i < HIGH_MAX; i++)
+						{//ブロック動かす
+							if (pHigh[i].UseFlag)
+							{
+								if (pHigh[i].index == NoIndex)
+								{
+									pHigh[i].Postion += temp;
 								}
 
 							}
@@ -324,6 +358,7 @@ void UpdateCursor()
 						//		pGkey->Pos += temp;
 						//	}
 						//}
+
 						for (int i = 0; i < THORN_BLOCK_MAX; i++)
 						{//とげ
 							if (pThornBlock[i].UseFlag)
@@ -339,7 +374,7 @@ void UpdateCursor()
 						{//ジャンプスタンド
 							if (pJumpStand[i].UseJumpStand)
 							{
-								if (pJumpStand[i].PieceIndex == NoIndex)
+								if (pJumpStand[i].NowPieceIndex == NoIndex)
 								{
 									pJumpStand[i].pos += temp;
 								}

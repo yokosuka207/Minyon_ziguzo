@@ -65,9 +65,15 @@ int StageNo = 0;
 
 static bool OneFlag =true;	//geゲームの最初かどうか
 
-static int g_StageSelectPlayerSoundNo = 0;
-static char g_StageSelectPlayerSoundName[] = "data\\SoundData\\SE\\革靴で歩く.wav";
+//プレイヤーSE
+static int g_StageSelectPlayerRightSoundNo = 0;
+static char g_StageSelectPlayerRightSoundName[] = "data\\SoundData\\SE\\革靴で歩く右.wav";
+static int g_StageSelectPlayerLeftSoundNo = 0;
+static char g_StageSelectPlayerLeftSoundName[] = "data\\SoundData\\SE\\革靴で歩く左.wav";
 
+//ステージセレクトドアSE
+static int g_StageSelectSoundNo = 0;
+static char g_StageSelectSoundName[] = "data\\SoundData\\SE\\ドアを開ける音(無料効果音で遊ぼう！).wav";
 static int g_ClearStageNum = 0;
 
 //-----------------------------------------------------------------------------
@@ -80,6 +86,7 @@ HRESULT InitStageSelect() {
 	g_StageSelectBg.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	g_StageSelectBg.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_StageSelectBg.texno = LoadTexture(g_StageSelectBgTextureName);
+	
 
 	int a = 0;
 	int b = 0;
@@ -149,7 +156,8 @@ HRESULT InitStageSelect() {
 			g_StageSelect[i].StagePieceIndex = i;
 			g_StageSelect[i].StageUseFlag = true;		// true : 全ステージ開放チート	false : 通常
 			g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
-
+			//ドアSE
+			g_StageSelectSoundNo = LoadSound(g_StageSelectSoundName);
 
 			g_StageSelectBlack[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (175.0f) + (250.0f * a));
 			g_StageSelectBlack[i].size = D3DXVECTOR2(120.0f, 150.0f);
@@ -192,6 +200,8 @@ HRESULT InitStageSelect() {
 	ply.isSheerFloorsUse = false;
 	ply.isHigh = false;
 	ply.isMoveBlock = false;
+	ply.SoundRightFlag = false;
+	ply.SoundLeftFlag = false;
 	ply.texno = LoadTexture(g_TextureNamePly);
 
 	ply.PaternNo = 0;//パターン番号
@@ -204,7 +214,8 @@ HRESULT InitStageSelect() {
 	ply.CoolTime = PLAYER_COOLTIME;
 	ply.PieceIndex = 0;
 
-	g_StageSelectPlayerSoundNo = LoadSound(g_StageSelectPlayerSoundName);
+	g_StageSelectPlayerRightSoundNo = LoadSound(g_StageSelectPlayerRightSoundName);
+	g_StageSelectPlayerLeftSoundNo = LoadSound(g_StageSelectPlayerLeftSoundName);
 
 	return S_OK;
 }
@@ -216,6 +227,9 @@ void UninitStageSelect() {
 	if (g_StageSelectTexture) {
 		g_StageSelectTexture->Release();
 		g_StageSelectTexture = NULL;
+
+		StopSound(g_StageSelectSoundNo);
+
 	}
 }
 
@@ -291,9 +305,29 @@ void UpdateStageSelect() {
 		// アニメーションパターン番号を0～15の範囲内にする
 		if (ply.PaternNo > 15) { ply.PaternNo -= 15; }
 		if (ply.PaternNo < 0) { ply.PaternNo += 15; }
-		if (ply.PaternNo == 4.0f || ply.PaternNo == 12.0f) {
-			PlaySound(g_StageSelectPlayerSoundNo, 0);
-			SetVolume(g_StageSelectPlayerSoundNo, 0.5f);
+		if (!ply.SoundRightFlag) {
+			if (ply.PaternNo == 9.0f) {
+				PlaySound(g_StageSelectPlayerRightSoundNo, 0);
+				SetVolume(g_StageSelectPlayerRightSoundNo, 0.5f);
+				ply.SoundRightFlag = true;
+			}
+		}
+		else{
+			if (ply.PaternNo != 9.0f) {
+				ply.SoundRightFlag = false;
+			}
+		}
+		if (!ply.SoundLeftFlag) {
+			if (ply.PaternNo == 1.0f) {
+				PlaySound(g_StageSelectPlayerLeftSoundNo, 0);
+				SetVolume(g_StageSelectPlayerLeftSoundNo, 0.5f);
+				ply.SoundLeftFlag = true;
+			}
+		}
+		else {
+			if (ply.PaternNo != 1.0f) {
+				ply.SoundLeftFlag = false;
+			}
 		}
 
 		ply.oldpos = ply.Position;
@@ -431,6 +465,8 @@ void UpdateStageSelect() {
 
 
 				if (Keyboard_IsKeyTrigger(KK_A) || IsButtonPressed(0, XINPUT_GAMEPAD_A)) {
+					//SetVolume(g_BrokenSoundNo, 0.5f);
+					PlaySound(g_StageSelectSoundNo, 0);
 					StageNo = i;
 					//SetScene(SCENE::SCENE_GAME);
 					StartFade(FADE::FADE_OUT);

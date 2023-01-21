@@ -10,6 +10,7 @@
 #include "puzzle.h"
 #include "MapChip.h"
 #include"mouse.h"
+#include"sound.h"
 
 //-------配列にしてほしい↓（マップチップの都合上必要）-------
 static JUMPSTAND g_JumpStand[JUMPSTAND_MAX];
@@ -22,6 +23,17 @@ static ID3D11ShaderResourceView* g_textureBlock;	//画像一枚で一つの変数が必要
 static char* g_textureName_Block = (char*)"data\\texture\\jumpstand.png";	//テクスチャファイルパス
 static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
 
+//ジャンプスタンド音
+static int g_JumpStandSoundNo = 0;
+static char g_JumpStandSoundName[] = "data\\SoundData\\SE\\革靴で歩く右.wav";
+//ジャンプスタンド運ぶ（引きずる音）
+static int g_JumpStandSoundMoveNo = 0;
+static char g_JumpStandSoundMoveName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static int g_JumpStandLandingSoundNo = 0;
+static char g_JumpStandLandingSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+
+
+
 HRESULT InitJumpStand()
 {
 	p_Player = GetPlayer();
@@ -32,14 +44,18 @@ HRESULT InitJumpStand()
 		g_JumpStand[i].size = D3DXVECTOR2(JUMPSTAND_SIZE, JUMPSTAND_SIZE);
 		g_JumpStand[i].rot = 0.0f;
 		g_JumpStand[i].PieceIndex = -1;
+		g_JumpStand[i].NowPieceIndex = -1;
 
 		g_JumpStand[i].UseJumpStand = false;
 		g_JumpStand[i].JumpStandFlag = false;
 
 		g_JumpStand[i].JumpStandFlag = false;
 
-		return S_OK;
+		g_JumpStandSoundNo = LoadSound(g_JumpStandSoundName);
+		g_JumpStandSoundMoveNo = LoadSound(g_JumpStandSoundMoveName);
+		g_JumpStandLandingSoundNo = LoadSound(g_JumpStandLandingSoundName);
 	}
+	return S_OK;
 }
 
 void UninitJumpStand()
@@ -49,6 +65,10 @@ void UninitJumpStand()
 		g_textureBlock->Release();
 		g_textureBlock = NULL;
 	}
+
+	StopSound(g_JumpStandSoundNo);
+	StopSound(g_JumpStandSoundMoveNo);
+	StopSound(g_JumpStandLandingSoundNo);
 }
 
 void UpdateJumpStand()
@@ -58,7 +78,7 @@ void UpdateJumpStand()
 	p_Player = GetPlayer();
 	p_Block = GetChipBlock();
 
-	if (!pMouse->UseFlag)
+	if (!Mouse_IsLeftDown())
 	{
 
 
@@ -69,9 +89,9 @@ void UpdateJumpStand()
 				g_JumpStand[i].oldpos = g_JumpStand[i].pos;
 
 				if (g_JumpStand[i].rot == 90 || g_JumpStand[i].rot == 270) {
-					g_JumpStand[i].rot = 0.0f;
+					g_JumpStand[i].rot = 180.0f;
 				}
-
+				//ジャンプ台右・プレイヤー左
 				if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
 					p_Player->oldpos.x + p_Player->size.x / 2 <= g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
 					p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
@@ -79,9 +99,10 @@ void UpdateJumpStand()
 				{
 					g_JumpStand[i].sp = p_Player->sp;
 					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
-
+					//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
+					//PlaySound(g_JumpStandSoundMoveNo, 0);
 				}
-				//プレイヤー右・壊れるブロック左
+				//プレイヤー右・ジャンプ台左
 				if (p_Player->Position.x - p_Player->size.x / 2 < g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 &&
 					p_Player->oldpos.x - p_Player->size.x / 2 >= g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 &&
 					p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
@@ -89,6 +110,8 @@ void UpdateJumpStand()
 				{
 					g_JumpStand[i].sp = p_Player->sp;
 					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
+					//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
+					//PlaySound(g_JumpStandSoundMoveNo, 0);
 				}
 
 
@@ -96,6 +119,8 @@ void UpdateJumpStand()
 				{
 					g_JumpStand[i].sp = p_Player->sp;
 					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
+					//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
+					//PlaySound(g_JumpStandSoundMoveNo, 0);//通っているけど出だしのごく短い時間がループしている
 				}
 
 				{
@@ -114,7 +139,11 @@ void UpdateJumpStand()
 								g_JumpStand[i].oldpos.y - g_JumpStand[i].size.y / 2 >= (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2)
 							{
 								g_JumpStand[i].pos.y = g_JumpStand[i].oldpos.y;
+								g_JumpStand[i].NowPieceIndex = p_Block[j].PieceIndex;
 
+								//着地した瞬間をとりたい
+								//SetVolume(g_JumpStandLandingSoundNo, 0.5f);
+								//PlaySound(g_JumpStandLandingSoundNo, 0);
 							}
 							if (g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 > (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
 								g_JumpStand[i].oldpos.x + g_JumpStand[i].size.x / 2 <= (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
@@ -138,17 +167,22 @@ void UpdateJumpStand()
 
 
 
-					//プレイヤー下・壊れるブロック上
+					//プレイヤー下・上jumpstand
 					if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
 						p_Player->Position.x - p_Player->size.x / 2 < g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 &&
 						p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2 &&
 						p_Player->oldpos.y - p_Player->size.y / 2 >= g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2)
 					{
 						g_JumpStand[i].JumpStandFlag = true;
+
+						SetVolume(g_JumpStandSoundNo, 1.5f);
+						PlaySound(g_JumpStandSoundNo, 0);
+
 						p_Player->sp.y = 0.0f;
 						g_JumpStand[i].JumpPower = 4.8f;
 						//p_Player->sp.y = 5.0f;
 						g_JumpStand[i].JumpGravity = 0.1f;
+						
 					}
 
 					if (g_JumpStand[i].JumpStandFlag)
@@ -158,6 +192,7 @@ void UpdateJumpStand()
 						if (g_JumpStand[i].JumpPower > -10.0f)
 						{
 							g_JumpStand[i].JumpPower -= g_JumpStand[i].JumpGravity;
+							
 						}
 						p_Player->Position.y += g_JumpStand[i].JumpPower;
 						//p_Player->Position.y -= p_Player->sp.y;
@@ -180,6 +215,7 @@ void UpdateJumpStand()
 									p_Player->Position.y = (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2 + p_Player->size.y / 2;
 									g_JumpStand[i].JumpStandFlag = false;
 								}
+								//↓
 								if (p_Player->Position.x + p_Player->size.x / 2 > (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
 									p_Player->Position.x - p_Player->size.x / 2 < (p_Block + j)->Position.x + (p_Block + j)->Size.x / 2 &&
 									p_Player->Position.y + p_Player->size.y / 2 > (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2 &&
@@ -188,7 +224,7 @@ void UpdateJumpStand()
 									g_JumpStand[i].JumpPower = 0.0f;
 									p_Player->sp.y = 0.0f;
 									//g_JumpStand[i].JumpGravity = 0.0f;
-									p_Player->Position.y = (p_Block + j)->Position.y + (p_Block + j)->Size.y / 2 + p_Player->size.y / 2;
+									p_Player->Position.y = (p_Block + j)->Position.y - (p_Block + j)->Size.y / 2 - p_Player->size.y / 2;
 									g_JumpStand[i].JumpStandFlag = false;
 
 								}
@@ -294,6 +330,7 @@ void SetJumpStand(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int PieceNo) 
 			g_JumpStand[i].pos = pos;
 			g_JumpStand[i].size = size;
 			g_JumpStand[i].PieceIndex = PieceNo;
+			g_JumpStand[i].NowPieceIndex = PieceNo;
 			g_JumpStand[i].UseJumpStand = true;
 			break;
 		}

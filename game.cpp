@@ -99,6 +99,7 @@ void InitGame()
 		InitPlayerLife();
 		InitExplain();
 
+		InitCollision();
 	}
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
@@ -147,6 +148,7 @@ void UninitGame()
 	UninitBullet();
 	UninitPlayerLife();
 	UninitExplain();
+	UninitCollision();
 
 	UninitPause();
 	pScore->UninitScore();
@@ -242,7 +244,7 @@ void DrawGame()
 		DrawPuzzle();
 		DrawMapChip();
 
-		//DrawJoint();				// いずれ必ずこの世から消してやる！
+		DrawJoint();				// いずれ必ずこの世から消してやる！
 		DrawBlock();
 
 		DrawPuzzleCip();

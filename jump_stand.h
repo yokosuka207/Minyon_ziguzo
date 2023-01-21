@@ -10,6 +10,7 @@ typedef struct
 	D3DXVECTOR2 sp;		//スピード
 	float		rot;
 	int			PieceIndex;
+	int			NowPieceIndex;	//今のピースのインデックス
 
 	float JumpGravity;	//重力
 	float JumpPower;	//飛ぶ力

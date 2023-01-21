@@ -44,6 +44,8 @@ struct PLAYER
 	bool isSheerFloorsUse;
 	bool isHigh;
 	bool isMoveBlock;
+	bool SoundRightFlag;
+	bool SoundLeftFlag;
 	int	HaveKey; //Œ®Š”
 	//int GHaveKey;
 	//int Hp;

@@ -9,6 +9,7 @@
 #include "block.h"
 #include "puzzle.h"
 #include "MapChip.h"
+#include "sound.h"
 
 static MOVEBLOCK gMoveBlock[MOVE_BLOCK_MAX];
 
@@ -18,6 +19,14 @@ static BLOCK* cipblock;
 static ID3D11ShaderResourceView* g_textureBlock;	//画像一枚で一つの変数が必要
 static char* g_textureName_Block = (char*)"data\\texture\\Moveblock.png";	//テクスチャファイルパス
 static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
+
+//サウンド
+static int g_MoveBlockMoveSoundNo = 0;
+static char g_MoveBlockMoveSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static int g_MoveBolckLandingSoundNo = 0;
+static char g_g_MoveBolckLandingSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+
+
 
 HRESULT InitMoveBlock()
 {
@@ -31,6 +40,9 @@ HRESULT InitMoveBlock()
 		gMoveBlock[i].PieceIndex = -1;
 
 		gMoveBlock[i].bUse = true;
+
+		g_MoveBlockMoveSoundNo = LoadSound(g_MoveBlockMoveSoundName);
+		g_MoveBolckLandingSoundNo = LoadSound(g_g_MoveBolckLandingSoundName);
 	}
 
 	return S_OK;
@@ -43,6 +55,8 @@ void UninitMoveBlock()
 		g_textureBlock->Release();
 		g_textureBlock = NULL;
 	}
+	StopSound(g_MoveBlockMoveSoundNo);
+	StopSound(g_MoveBolckLandingSoundNo);
 }
 
 void UpdateMoveBlock()
@@ -60,6 +74,8 @@ void UpdateMoveBlock()
 			{
 				gMoveBlock[i].sp = p_Player->sp;
 				gMoveBlock[i].pos.x += gMoveBlock[i].sp.x;
+				//SetVolume(g_MoveBlockMoveSoundNo, 0.5f);
+				PlaySound(g_MoveBlockMoveSoundNo, 0);//通っているけど出だしのごく短い時間がループしている
 			}
 
 			gMoveBlock[i].pos.y++;
@@ -125,6 +141,10 @@ void UpdateMoveBlock()
 						gMoveBlock[i].oldpos.y + gMoveBlock[i].size.y / 2 <= (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2)
 					{
 						gMoveBlock[i].pos.y = (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 - gMoveBlock[i].size.y / 2;
+						
+						//着地した瞬間をとりたい
+						//SetVolume(g_MoveBolckLandingSoundNo, 0.5f);
+						//PlaySound(g_MoveBolckLandingSoundNo, 0);
 					}
 					//プレイヤー下・ブロック上,落下する
 					if (gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 > (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 &&
