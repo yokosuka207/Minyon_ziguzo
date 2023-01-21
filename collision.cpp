@@ -1258,7 +1258,7 @@ void PieceCollision()
 
 														}
 														// ヒバナエフェクト
-														SetEffectSpark(pJoint[j].pos, 0.0f);
+														SetEffectSpark(pJoint[j].pos, 90.0f);
 														// ピースのアニメーション
 														StartPieceAnimation(pJoint[k].indexno);
 														StartPieceAnimation(pJoint[j].indexno);
@@ -1299,7 +1299,7 @@ void PieceCollision()
 
 														}
 														// ヒバナエフェクト
-														SetEffectSpark(pJoint[j].pos, 0.0f);
+														SetEffectSpark(pJoint[j].pos, 90.0f);
 														// ピースのアニメーション
 														StartPieceAnimation(pJoint[k].indexno);
 														StartPieceAnimation(pJoint[j].indexno);
