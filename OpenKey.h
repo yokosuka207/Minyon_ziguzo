@@ -41,7 +41,7 @@ void UninitOpenKey();
 void UpdateOpenKey();
 void DrawOpenKey();
 OPENKEY *GetOpenKey();
-void SetOpenKey(D3DXVECTOR2 size, D3DXVECTOR2 pos,int direction, int index);
+void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index);
 void DeleteOpenKey(int PieceNo);
 
 

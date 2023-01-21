@@ -24,6 +24,8 @@
 //#include"puzzlecip.h"
 #include"jump_stand.h"
 #include"spawnpoint.h"
+#include "Key.h"
+#include "OpenKey.h"
 #include "switch.h"
 #include "SwitchWall.h"
 #include"warp.h"
@@ -117,6 +119,8 @@ void UpdateCursor()
 	JOINT* pJoint = GetJoint();
 	PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
 	GOAL* pGoal = GetGoal();
+	KEY* pKey = GetKey();
+	OPENKEY* pOpenKey = GetOpenKey();
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	JUMPSTAND* pJumpStand = GetJumpStand();
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
@@ -358,7 +362,20 @@ void UpdateCursor()
 						//		pGkey->Pos += temp;
 						//	}
 						//}
-
+						for (int i = 0; i < KEY_MAX; i++) {
+							if (pKey[i].UseFlag) {
+								if (pKey[i].index == NoIndex) {
+									pKey[i].Position += temp;
+								}
+							}
+						}
+						for (int i = 0; i < OPEN_KEY_MAX; i++) {
+							if (pOpenKey[i].UseFlag) {
+								if (pOpenKey[i].index == NoIndex) {
+									pOpenKey[i].Position += temp;
+								}
+							}
+						}
 						for (int i = 0; i < THORN_BLOCK_MAX; i++)
 						{//‚Æ‚°
 							if (pThornBlock[i].UseFlag)
