@@ -14,6 +14,7 @@
 #include "sprite.h"
 #include "texture.h"
 #include "input.h"
+#include"collision.h"
 
 
 //=============================================================================
@@ -84,7 +85,10 @@ void UpdateBullet()
 		{
 			g_Bullet[i].pos.x += g_Bullet[i].sp.x;
 		}
+	//	if ()
+		{
 
+		}
 		if (g_Bullet[i].pos.y < SCREEN_LIMIT_UP - (g_Bullet[i].h / 2.0f))
 		{
 			g_Bullet[i].use = false;
