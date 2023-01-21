@@ -20,7 +20,6 @@ typedef struct
 	bool JumpStandFlag;		//ジャンプスタンドのジャンプ中フラグ
 
 	bool GetJumpStand;
-	bool JumpStandMoveMoment;
 	bool JumpStandNotMove;
 
 

@@ -17,6 +17,8 @@ typedef struct
 
 	bool GetMoveBlock;
 
+	bool MoveBlockNotMove;
+
 }MOVEBLOCK;
 
 HRESULT InitMoveBlock();

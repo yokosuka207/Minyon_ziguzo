@@ -29,7 +29,7 @@ static int g_JumpStandSoundNo = 0;
 static char g_JumpStandSoundName[] = "data\\SoundData\\SE\\革靴で歩く右.wav";
 //ジャンプスタンド運ぶ（引きずる音）
 static int g_JumpStandSoundMoveNo = 0;
-static char g_JumpStandSoundMoveName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_JumpStandSoundMoveName[] = "data\\SoundData\\SE\\引きずる音(要編集).wav";
 static int g_JumpStandLandingSoundNo = 0;
 static char g_JumpStandLandingSoundName[] = "data\\SoundData\\SE\\物の落下音(無料効果音で遊ぼう！).wav";
 
@@ -52,7 +52,6 @@ HRESULT InitJumpStand()
 
 		g_JumpStand[i].JumpStandFlag = false;
 
-		g_JumpStand[i].JumpStandMoveMoment = false;
 		g_JumpStand[i].JumpStandNotMove = true;
 
 		g_JumpStandSoundNo = LoadSound(g_JumpStandSoundName);
@@ -125,22 +124,17 @@ void UpdateJumpStand()
 					g_JumpStand[i].sp = p_Player->sp;
 					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
 
-					if (g_JumpStand[i].oldpos.x != g_JumpStand[i].pos.x)
-					{
-						g_JumpStand[i].JumpStandMoveMoment = true;
-						g_JumpStand[i].JumpStandNotMove = false;
-					}
-					else
-					{
-						g_JumpStand[i].JumpStandNotMove = true;
-					}
-
-
-					if (g_JumpStand[i].JumpStandMoveMoment == true)
+					//引きずる音
+					if (g_JumpStand[i].oldpos.x != g_JumpStand[i].pos.x && g_JumpStand[i].JumpStandNotMove == true)//動かした瞬間
 					{
 						//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
-						PlaySound(g_JumpStandSoundMoveNo, 0);//通っているけど出だしのごく短い時間がループしている
-						g_JumpStand[i].JumpStandMoveMoment = false;
+						PlaySound(g_JumpStandSoundMoveNo, -1);
+						g_JumpStand[i].JumpStandNotMove = false;
+					}
+					if (g_JumpStand[i].oldpos.x == g_JumpStand[i].pos.x && g_JumpStand[i].JumpStandNotMove == false)//動かしてない時
+					{
+						g_JumpStand[i].JumpStandNotMove = true;
+						StopSound(g_JumpStandSoundMoveNo);
 					}
 				}
 

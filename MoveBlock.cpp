@@ -22,7 +22,7 @@ static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
 
 //サウンド
 static int g_MoveBlockMoveSoundNo = 0;
-static char g_MoveBlockMoveSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_MoveBlockMoveSoundName[] = "data\\SoundData\\SE\\引きずる音(要編集).wav";
 static int g_MoveBolckLandingSoundNo = 0;
 static char g_g_MoveBolckLandingSoundName[] = "data\\SoundData\\SE\\物の落下音(無料効果音で遊ぼう！).wav";
 
@@ -40,6 +40,8 @@ HRESULT InitMoveBlock()
 		gMoveBlock[i].PieceIndex = -1;
 
 		gMoveBlock[i].bUse = true;
+
+		gMoveBlock[i].MoveBlockNotMove = true;
 
 		g_MoveBlockMoveSoundNo = LoadSound(g_MoveBlockMoveSoundName);
 		g_MoveBolckLandingSoundNo = LoadSound(g_g_MoveBolckLandingSoundName);
@@ -75,8 +77,19 @@ void UpdateMoveBlock()
 			{
 				gMoveBlock[i].sp = p_Player->sp;
 				gMoveBlock[i].pos.x += gMoveBlock[i].sp.x;
-				//SetVolume(g_MoveBlockMoveSoundNo, 0.5f);
-				PlaySound(g_MoveBlockMoveSoundNo, 0);//通っているけど出だしのごく短い時間がループしている
+
+				//引きずる音
+				if (gMoveBlock[i].oldpos.x != gMoveBlock[i].pos.x && gMoveBlock[i].MoveBlockNotMove == true)//動かした瞬間
+				{
+					//SetVolume(g_MoveBlockMoveSoundNo, 0.5f);
+					PlaySound(g_MoveBlockMoveSoundNo, -1);
+					gMoveBlock[i].MoveBlockNotMove = false;
+				}
+				if (gMoveBlock[i].oldpos.x == gMoveBlock[i].pos.x && gMoveBlock[i].MoveBlockNotMove == false)//動かしてない時
+				{
+					gMoveBlock[i].MoveBlockNotMove = true;
+					StopSound(g_MoveBlockMoveSoundNo);
+				}
 			}
 
 			gMoveBlock[i].pos.y++;
