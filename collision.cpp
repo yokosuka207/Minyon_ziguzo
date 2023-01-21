@@ -651,19 +651,9 @@ void UpdateCollision(){
 					pPlayer->Position.y + pPlayer->size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2)
 				{
-					pPlayer->Position.y = pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 - pPlayer->size.y / 2;
-					pMoveBlock[i].MoveFlag = true;
-					// 着地中にする
-					if (!pPlayer->isMoveBlock) {
-						pPlayer->sp.y = 0.0f;
-						pPlayer->isMoveBlock = true;
-						break;
-					}
-				}
-				else {
-					pMoveBlock[i].MoveFlag = false;
+					pMoveBlock[i].sp = pPlayer->sp;
+					pMoveBlock[i].pos.y += pMoveBlock[i].sp.x;
 
-					pPlayer->isMoveBlock = false;
 				}
 				//プレイヤー下・ブロック上,落下する
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > pMoveBlock[i].pos.x - pMoveBlock[i].size.x / 2 &&
@@ -671,9 +661,22 @@ void UpdateCollision(){
 					pPlayer->Position.y - pPlayer->size.y / 2 < pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2 &&
 					pPlayer->oldpos.y - pPlayer->size.y / 2 >= pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2)
 				{
-					pMoveBlock[i].sp = pPlayer->sp;
-					pMoveBlock[i].pos.y += pMoveBlock[i].sp.x;
+					pPlayer->Position.y = pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2 + pPlayer->size.y / 2;
+					pMoveBlock[i].MoveFlag = true;
+					// 着地中にする
+					if (!pPlayer->isMoveBlock) {
+						pPlayer->sp.y = 0.0f;
+						pPlayer->isMoveBlock = true;
+						break;
+					}
+
 				}
+				else {
+					pMoveBlock[i].MoveFlag = false;
+
+					pPlayer->isMoveBlock = false;
+				}
+
 
 			}
 		}
