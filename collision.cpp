@@ -275,6 +275,7 @@ void UpdateCollision(){
 		//プレーヤーとスイッチ系(switch,SwitchWall)
 		//=========================================
 		for (int i = 0; i < SWITCH_MAX; i++) {
+			//スイッチとプレイヤーの当たり判定
 			if (pSwitch[i].UseFlag) {
 				if (pSwitch[i].pos.x - pSwitch[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 					pSwitch[i].pos.x + pSwitch[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
@@ -283,12 +284,17 @@ void UpdateCollision(){
 				{
 					pSwitch[i].PressFlag = true;//押されたら
 					pSwitch[i].PaternNo = 1;
-					//SetVolume(g_SwitchSoundNo, 0.5f);
-					PlaySound(g_SwitchSoundNo, 0);
+					if (pSwitch[i].NotPressed == true)
+					{
+						//SetVolume(g_SwitchSoundNo, 0.5f);
+						PlaySound(g_SwitchSoundNo, 0);
+						pSwitch[i].NotPressed = false;
+					}
 				}
 				else {
 					pSwitch[i].PressFlag = false;
 					pSwitch[i].PaternNo = 0;
+					pSwitch[i].NotPressed = true;
 				}
 				//スイッチと木箱の当たり判定
 				for (int j = 0; j < MOVE_BLOCK_MAX; j++) {

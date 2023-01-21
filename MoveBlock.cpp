@@ -138,8 +138,8 @@ void UpdateMoveBlock()
 						gMoveBlock[i].pos.y	   + gMoveBlock[i].size.y / 2 > (cipblock + j)->Position.y  - (cipblock + j)->Size.y / 2 &&
 						gMoveBlock[i].pos.y	   - gMoveBlock[i].size.y / 2 < (cipblock + j)->Position.y  + (cipblock + j)->Size.y / 2)
 					{
-						p_Player->Position.x = gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 - p_Player->size.x / 2;
-						//gMoveBlock[i].pos.x = (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 - gMoveBlock[i].size.x / 2;
+						//p_Player->Position.x = gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 - p_Player->size.x / 2;
+						gMoveBlock[i].pos.x = (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 - gMoveBlock[i].size.x / 2;
 
 					}
 					//プレイヤー右・ブロック左
@@ -148,8 +148,8 @@ void UpdateMoveBlock()
 						gMoveBlock[i].pos.y    + gMoveBlock[i].size.y / 3 > (cipblock + j)->Position.y - (cipblock + j)->Size.y / 3 &&
 						gMoveBlock[i].pos.y    - gMoveBlock[i].size.y / 3 < (cipblock + j)->Position.y + (cipblock + j)->Size.y / 3)
 					{
-						p_Player->Position.x = gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 + p_Player->size.x / 2;
-						//gMoveBlock[i].pos.x = (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 + gMoveBlock[i].size.x / 2;
+						//p_Player->Position.x = gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 + p_Player->size.x / 2;
+						gMoveBlock[i].pos.x = (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 + gMoveBlock[i].size.x / 2;
 					}
 					//プレイヤー上・ブロック下,着地する
 					if (gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 > (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 &&
@@ -157,8 +157,8 @@ void UpdateMoveBlock()
 						gMoveBlock[i].pos.y + gMoveBlock[i].size.y / 2 > (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 &&
 						gMoveBlock[i].oldpos.y + gMoveBlock[i].size.y / 2 <= (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2)
 					{
-						p_Player->Position.y = gMoveBlock[i].pos.y - gMoveBlock[i].size.y / 2 - p_Player->size.y / 2;
-						//gMoveBlock[i].pos.y = (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 - gMoveBlock[i].size.y / 2;
+						//p_Player->Position.y = gMoveBlock[i].pos.y - gMoveBlock[i].size.y / 2 - p_Player->size.y / 2;
+						gMoveBlock[i].pos.y = (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 - gMoveBlock[i].size.y / 2;
 						
 						//着地した瞬間だけ音が鳴る
 						if (gMoveBlock[i].oldoldpos.y != gMoveBlock[i].pos.y)
