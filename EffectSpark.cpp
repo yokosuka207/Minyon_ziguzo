@@ -25,14 +25,15 @@ Update:
 #define EFFECT_PATTERN_MAX	(EFFECT_NUM_X * EFFECT_NUM_Y)
 #define EFFECT_UV_W	(1.0f / EFFECT_NUM_X)
 #define EFFECT_UV_Y	(1.0f / EFFECT_NUM_Y)
-#define EFFECT_SIZE_X	100.0f
-#define EFFECT_SIZE_Y	100.0f
+#define EFFECT_SIZE_X	300.0f
+#define EFFECT_SIZE_Y	300.0f
 
 //**************************************************
 // ÉOÉçÅ[ÉoÉãïœêî
 //**************************************************
 static EFFECT_SPARK g_EffectSpark[EFFECT_MAX];
-static char* g_TextureName = (char*)"data\\texture\\explosion.png";
+static char* g_EffectTextureName1 = (char*)"data\\texture\\.png";
+static char* g_EffectTextureName2 = (char*)"data\\texture\\explosion.png";
 
 //==================================================
 // èâä˙âª
@@ -44,7 +45,7 @@ void InitEffectSpark()
 		g_EffectSpark[i].size = D3DXVECTOR2(EFFECT_SIZE_X, EFFECT_SIZE_Y);
 		g_EffectSpark[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_EffectSpark[i].rot = 0.0f;
-		g_EffectSpark[i].TexNo = LoadTexture(g_TextureName);
+		g_EffectSpark[i].TexNo = LoadTexture(g_EffectTextureName1);
 		g_EffectSpark[i].PatternNo = 0.0f;
 
 		g_EffectSpark[i].bUse = false;
