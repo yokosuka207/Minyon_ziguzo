@@ -873,14 +873,22 @@ void UpdateCollision(){
 					}
 					//扉とjumpstandの判定
 					for (int j = 0; j < JUMPSTAND_MAX; j++) {
-						if (CollisionBB((pOpenKey + j + i)->Position, pJumpStand[j].pos, (pOpenKey + j + i)->Size, pJumpStand[j].size)) {
-							pJumpStand[j].pos = pJumpStand[j].oldpos;
+						if ((pOpenKey + j + i)->UseFlag) {
+							if (!(pOpenKey + j + i)->KeyOpen) {
+								if (CollisionBB((pOpenKey + j + i)->Position, pJumpStand[j].pos, (pOpenKey + j + i)->Size, pJumpStand[j].size)) {
+									pJumpStand[j].pos = pJumpStand[j].oldpos;
+								}
+							}
 						}
 					}
 					//扉と動くブロックの判定
 					for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
-						if (CollisionBB((pOpenKey + j + i)->Position, pMoveBlock[j].pos, (pOpenKey + j + i)->Size, pMoveBlock[j].size)) {
-							pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+						if ((pOpenKey + j + i)->UseFlag) {
+							if (!(pOpenKey + j + i)->KeyOpen) {
+								if (CollisionBB((pOpenKey + j + i)->Position, pMoveBlock[j].pos, (pOpenKey + j + i)->Size, pMoveBlock[j].size)) {
+									pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+								}
+							}
 						}
 					}
 				}
@@ -962,16 +970,6 @@ void UpdateCollision(){
 			}
 		}
 		//------------------------------------
-		//バネと鍵付き扉当たり判定
-		//-----------------------------------
-		for (int i = 0; i < OPEN_KEY_MAX; i++) {
-			for (int j = 0; j < JUMPSTAND_MAX; j++) {
-				if (CollisionBB(pOpenKey[i].Position, pJumpStand[j].pos, pOpenKey[j].Size, pJumpStand[j].size)) {
-					pJumpStand[j].pos = pJumpStand[j].oldpos;
-				}
-			}
-		}
-		//------------------------------------
 		//バネとトゲブロック当たり判定
 		//-----------------------------------
 		for (int i = 0; i < BROKEN_MAX; i++) {
@@ -988,16 +986,6 @@ void UpdateCollision(){
 			for (int j = 0; j < JUMPSTAND_MAX; j++) {
 				if (CollisionBB(pHigh[i].Postion, pJumpStand[j].pos, pHigh[i].Size, pJumpStand[j].size)) {
 					pJumpStand[j].pos = pJumpStand[j].oldpos;
-				}
-			}
-		}
-		//------------------------------------
-		//動くブロックと鍵付き扉当たり判定
-		//-----------------------------------
-		for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
-			for (int j = 0; j < OPEN_KEY_MAX; j++) {
-				if (CollisionBB(pMoveBlock[i].pos, pOpenKey[j].Position, pMoveBlock[i].size, pOpenKey[j].Size)) {
-					pMoveBlock[i].pos = pMoveBlock[i].oldpos;
 				}
 			}
 		}
