@@ -16,6 +16,7 @@
 #include "input.h"
 #include"collision.h"
 #include "sound.h"
+#include"block.h"
 
 //=============================================================================
 //É}ÉNÉçíËã`
@@ -83,14 +84,26 @@ void UninitBullet()
 //=============================================================================
 void UpdateBullet()
 {
+	BLOCK* pBlock = GetChipBlock();
+
+
 	for (int i = 0; i < BULLET_MAX; i++)
 	{
 		if (g_Bullet[i].use == true)
 		{
 			g_Bullet[i].pos.x += g_Bullet[i].sp.x;
-		}
-	//	if ()
-		{
+
+			for (int j = 0; j < BLOCK_CHIP_MAX; j++)
+			{
+				if (!pBlock[j].UseFlag)continue;
+
+				if (CollisionBB(g_Bullet[i].pos,pBlock[j].Position, D3DXVECTOR2(g_Bullet[i].w,g_Bullet[i].h),pBlock[j].Size))
+				{
+					g_Bullet[i].use = false;
+				}
+
+			}
+
 
 		}
 		if (g_Bullet[i].pos.y < SCREEN_LIMIT_UP - (g_Bullet[i].h / 2.0f))
