@@ -2406,6 +2406,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 			if (pJumpStand[i].NowPieceIndex == pinNo)
 			{
 				pJumpStand[i].pos += num;
+				pJumpStand[i].LookFlag = true;
 			}
 		}
 	}
