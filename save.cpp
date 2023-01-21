@@ -120,6 +120,9 @@ void Save::Init()
 
 	// サウンドデータのロード
 	g_ChangeSceneSaveSoundNo = LoadSound(g_ChangeSceneSaveSoundName);
+
+	// 全クリしてないことにする
+	g_StageAllClear = false;
 }
 
 

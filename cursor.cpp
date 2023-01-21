@@ -130,25 +130,31 @@ void UpdateCursor()
 	HIGH* pHigh = GetHigh();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
-	// 絶対モード時 カーソル移動
-	g_Cursor.pos.x = GetXMousePosX();
-	g_Cursor.pos.y = GetXMousePosY();
-	
+	static float MouseOldPosX = GetMousePosX();
+	static float MouseOldPosY = GetMousePosY();
+
+	if (MouseOldPosX != GetMousePosX() || MouseOldPosY != GetMousePosY()) {
+		// 絶対モード時 カーソル移動
+		g_Cursor.pos.x = GetXMousePosX();
+		g_Cursor.pos.y = GetXMousePosY();
+	}
+
 	//g_Cursor.oldPos.x = g_Cursor.pos.x -= SCREEN_WIDTH / 2;
 	//g_Cursor.pos.y = -g_Cursor.pos.y + SCREEN_HEIGHT / 2;
+
+	g_Cursor.oldPos = g_Cursor.pos;
+	//[----------移動----------
+	if (GetThumbRightX(0) < -0.2f || GetThumbRightX(0) > 0.2f) {				// 右スティック	左右
+		g_Cursor.pos.x += GetThumbRightX(0) * 12;	// 左右移動
+	}
+	if (GetThumbRightY(0) < -0.2f || GetThumbRightY(0) > 0.2f) {				// 右スティック	上下
+		g_Cursor.pos.y -= GetThumbRightY(0) * 12;	// 上下移動
+	}
+	//----------移動----------]
 
 	if (Mouse_IsLeftDown()) {
 
 	
-		g_Cursor.oldPos = g_Cursor.pos;
-		//[----------移動----------
-		if (GetThumbRightX(0) < -0.2f || GetThumbRightX(0) > 0.2f) {				// 右スティック	左右
-			g_Cursor.pos.x += GetThumbRightX(0) * 12;	// 左右移動
-		}
-		if (GetThumbRightY(0) < -0.2f || GetThumbRightY(0) > 0.2f) {				// 右スティック	上下
-			g_Cursor.pos.y -= GetThumbRightY(0) * 12;	// 上下移動
-		}
-		//----------移動----------]
 
 		//[----------壁判定 (壁の上下左右)----------
 		// 上下
@@ -465,6 +471,9 @@ void UpdateCursor()
 		NoIndex = -1;
 		g_Cursor.type = 0;
 	}
+
+	MouseOldPosX = GetMousePosX();
+	MouseOldPosY = GetMousePosY();
 }
 
 //==================================================
