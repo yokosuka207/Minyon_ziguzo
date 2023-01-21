@@ -39,9 +39,9 @@ HRESULT InitMoveBlock()
 
 		gMoveBlock[i].PieceIndex = -1;
 
-		gMoveBlock[i].bUse = true;
+		gMoveBlock[i].bUse = false;
 
-		gMoveBlock[i].MoveBlockNotMove = true;
+		gMoveBlock[i].MoveBlockNotMove = false;
 
 		g_MoveBlockMoveSoundNo = LoadSound(g_MoveBlockMoveSoundName);
 		g_MoveBolckLandingSoundNo = LoadSound(g_g_MoveBolckLandingSoundName);
@@ -92,7 +92,7 @@ void UpdateMoveBlock()
 				}
 			}
 
-			gMoveBlock[i].pos.y++;
+			gMoveBlock[i].pos.y--;
 
 			//ÉuÉçÉbÉNÇ∆ÇÃìñÇΩÇËîªíË
 
