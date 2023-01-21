@@ -21,10 +21,10 @@
 static	ID3D11ShaderResourceView	*g_TitleTexture1 = NULL;//テクスチャ情報
 static	char	*g_TitleTextureName1 = (char*)"data\\texture\\タイトル背景＃２.png";
 static	ID3D11ShaderResourceView* g_TitleTextureButton = NULL;//テクスチャ情報
-static	char* g_TitleButtonTextureName = (char*)"data\\texture\\start.jpg";
+static	char* g_TitleButtonTextureName = (char*)"data\\texture\\text_start.png";
 
 static	ID3D11ShaderResourceView* g_TitleTextureButton2 = NULL;//テクスチャ情報
-static	char* g_TitleButtonTextureName2 = (char*)"data\\texture\\GameEnd_end_button.jpg";
+static	char* g_TitleButtonTextureName2 = (char*)"data\\texture\\text_quit.png";
 
 //サウンド
 static int g_ChangeSceneTitleSoundNo = 0;

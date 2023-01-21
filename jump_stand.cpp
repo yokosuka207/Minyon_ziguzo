@@ -101,8 +101,9 @@ void UpdateJumpStand()
 					p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
 					p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2)
 				{
-					g_JumpStand[i].sp = p_Player->sp;
-					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
+					p_Player->Position.x = g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 - p_Player->size.x / 2;
+					//g_JumpStand[i].sp = p_Player->sp;
+					//g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
 					//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
 					//PlaySound(g_JumpStandSoundMoveNo, 0);
 				}
@@ -112,8 +113,9 @@ void UpdateJumpStand()
 					p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
 					p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2)
 				{
-					g_JumpStand[i].sp = p_Player->sp;
-					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
+					p_Player->Position.x = g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 + p_Player->size.x / 2;
+					//g_JumpStand[i].sp = p_Player->sp;
+					//g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
 					//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
 					//PlaySound(g_JumpStandSoundMoveNo, 0);
 				}
@@ -131,11 +133,11 @@ void UpdateJumpStand()
 						PlaySound(g_JumpStandSoundMoveNo, -1);
 						g_JumpStand[i].JumpStandNotMove = false;
 					}
-					if (g_JumpStand[i].oldpos.x == g_JumpStand[i].pos.x && g_JumpStand[i].JumpStandNotMove == false)//“®‚©‚µ‚Ä‚È‚¢Žž
-					{
-						g_JumpStand[i].JumpStandNotMove = true;
-						StopSound(g_JumpStandSoundMoveNo);
-					}
+				}
+				if (g_JumpStand[i].oldpos.x == g_JumpStand[i].pos.x)//“®‚©‚µ‚Ä‚È‚¢Žž
+				{
+					g_JumpStand[i].JumpStandNotMove = true;
+					StopSound(g_JumpStandSoundMoveNo);
 				}
 
 				{

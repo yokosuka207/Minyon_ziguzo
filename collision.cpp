@@ -125,6 +125,10 @@ static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\ƒs[ƒX‚Í‚ß‚Ş‰¹(–³—
 //‚ë‚¤‚»‚­
 static int g_CandleSoundNo = 0;
 static char g_CandleSoundName[] = "data\\SoundData\\SE\\‚ë‚¤‚»‚­(Œø‰Ê‰¹ƒ‰ƒ{).wav";
+//ƒXƒ^[ƒg
+static int g_GoalSoundNo = 0;
+static char g_GoalSoundName[] = "data\\SoundData\\SE\\ƒhƒA‚ğŠJ‚¯‚é‰¹(–³—¿Œø‰Ê‰¹‚Å—V‚Ú‚¤I).wav";
+
 
 
 
@@ -143,6 +147,7 @@ void InitCollision()
 	g_GKeySoundNo = LoadSound(g_GKeySoundName);
 	g_MatchPieceSoundNo = LoadSound(g_MatchPieceSoundName);
 	g_CandleSoundNo = LoadSound(g_CandleSoundName);
+	g_GoalSoundNo = LoadSound(g_GoalSoundName);
 }
 
 
@@ -160,6 +165,7 @@ void UninitCollision()
 	StopSound(g_GKeySoundNo);
 	StopSound(g_MatchPieceSoundNo);
 	StopSound(g_CandleSoundNo);
+	//StopSound(g_GoalSoundNo);
 }
 
 
@@ -309,6 +315,7 @@ void UpdateCollision(){
 				else {
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
 						pSwitchWall[j].UseFlag = true;		//•ÇoŒ»
+
 					}
 				}
 			}
@@ -885,6 +892,8 @@ void UpdateCollision(){
 			if (!pMouse->UseFlag && pGKey->GetGKey) {
 				if (CollisionBB(pGoal->Pos, pPlayer->Position, pGoal->Size, pPlayer->size)) {
 					pGoal->UseFlag = false;
+					//SetVolume(g_GoalSoundNo, 0.5f);
+					PlaySound(g_GoalSoundNo, 0);
 					//
 					for (int i = 0; i < START_MAX; i++) {
 						pStart[i].GoalFlag = true;
