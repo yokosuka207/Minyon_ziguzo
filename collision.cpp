@@ -58,6 +58,7 @@
 #include"cursor.h"
 
 #include"sound.h"
+#include"bullet.h"
 
 //==================================
 //プロトタイプ宣言
@@ -204,7 +205,7 @@ void UpdateCollision(){
 	RESULT* pResult = GetResult();
 
 	Piece* pPiece = GetPiece();
-
+	BULLET* pBullet = GetBullet();
 	//-------------------------------------
 
 	bool pFlag = false;	//プレーヤーがピースの中にいるか
@@ -650,19 +651,9 @@ void UpdateCollision(){
 					pPlayer->Position.y + pPlayer->size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2)
 				{
-					pPlayer->Position.y = pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 - pPlayer->size.y / 2;
-					pMoveBlock[i].MoveFlag = true;
-					// 着地中にする
-					if (!pPlayer->isMoveBlock) {
-						pPlayer->sp.y = 0.0f;
-						pPlayer->isMoveBlock = true;
-						break;
-					}
-				}
-				else {
-					pMoveBlock[i].MoveFlag = false;
+					pMoveBlock[i].sp = pPlayer->sp;
+					pMoveBlock[i].pos.y += pMoveBlock[i].sp.x;
 
-					pPlayer->isMoveBlock = false;
 				}
 				//プレイヤー下・ブロック上,落下する
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > pMoveBlock[i].pos.x - pMoveBlock[i].size.x / 2 &&
@@ -670,9 +661,22 @@ void UpdateCollision(){
 					pPlayer->Position.y - pPlayer->size.y / 2 < pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2 &&
 					pPlayer->oldpos.y - pPlayer->size.y / 2 >= pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2)
 				{
-					pMoveBlock[i].sp = pPlayer->sp;
-					pMoveBlock[i].pos.y += pMoveBlock[i].sp.x;
+					pPlayer->Position.y = pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2 + pPlayer->size.y / 2;
+					pMoveBlock[i].MoveFlag = true;
+					// 着地中にする
+					if (!pPlayer->isMoveBlock) {
+						pPlayer->sp.y = 0.0f;
+						pPlayer->isMoveBlock = true;
+						break;
+					}
+
 				}
+				else {
+					pMoveBlock[i].MoveFlag = false;
+
+					pPlayer->isMoveBlock = false;
+				}
+
 
 			}
 		}
@@ -714,8 +718,10 @@ void UpdateCollision(){
 				{
 					pPlayer->Position.y = (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 + pPlayer->size.y / 2;
 					pPlayer->getfall = false;
+					pPlayer->jump = false;
 					pPlayer->fall = false;
 					pPlayer->frame = 50;
+					pPlayer->isHigh = true;
 					(pFallBlock + i)->oldpos = (pFallBlock + i)->Position;
 					(pFallBlock + i)->Position.y--;
 
@@ -1029,6 +1035,26 @@ void UpdateCollision(){
 					pMoveBlock[j].pos = pMoveBlock[j].oldpos;
 				}
 			}
+		}
+		//------------------------------------
+		//弾とプレイヤー当たり判定
+		//-----------------------------------
+		if (pPlayer->UseFlag)
+		{
+			for (int i = 0; i < BULLET_MAX; i++)
+			{
+				if (pBullet[i].use)
+				{
+					if (CollisionBB(pPlayer->Position,pBullet[i].pos,pPlayer->size, D3DXVECTOR2(pBullet[i].w, pBullet[i].h)))
+					{
+						pPlayer->hp--;
+						pBullet[i].use = false;
+
+					}
+
+				}
+			}
+
 		}
 	}
 	//------------------------------------

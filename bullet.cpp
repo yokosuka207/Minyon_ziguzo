@@ -135,13 +135,14 @@ void DrawBullet()
 //=============================================================================
 //ÉZÉbÉgä÷êî
 //=============================================================================
-void SetBullet(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index)
+void SetBullet(D3DXVECTOR2 pos, D3DXVECTOR2 size, float spd)
 {
 	for (int i = 0; i < BULLET_MAX; i++)
 	{
 		if (g_Bullet[i].use == false)
 		{
 			g_Bullet[i].pos = pos;
+			g_Bullet[i].sp.x = spd;
 			g_Bullet[i].h = BULLET_SIZE_H;
 			g_Bullet[i].w = BULLET_SIZE_W;
 			g_Bullet[i].use = true;
