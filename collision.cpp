@@ -815,9 +815,8 @@ void UpdateCollision(){
 							(pOpenKey + i)->UseFlag = false;
 							(pOpenKey + i + 1)->UseFlag = false;
 							(pOpenKey + i + 2)->UseFlag = false;
+							pPlayer->HaveKey--;
 						}
-						pPlayer->HaveKey--;
-
 						//SetVolume(g_OpenKeySoundNo, 0.5f);
 						PlaySound(g_OpenKeySoundNo, 0);
 					}
