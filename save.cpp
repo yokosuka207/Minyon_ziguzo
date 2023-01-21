@@ -197,10 +197,10 @@ void Save::Update()
 
 		// そのボタンが選ばれてたら
 		if (&g_DataButton[i] == m_pButton) {
-			g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 0.6f));
+			g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 		else {
-			g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f));
 		}
 
 		// 選択されているボタンだったら
