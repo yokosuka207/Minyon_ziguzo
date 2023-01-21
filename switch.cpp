@@ -37,6 +37,7 @@ HRESULT InitSwitch() {
 		g_Switch[i].PaternNo = 0;
 		g_Switch[i].PressFlag = false;
 		g_Switch[i].UseFlag = false;
+		g_Switch[i].NotPressed = true;
 	}
 	g_SwitchTextureNo = LoadTexture(g_SwitchTextureName);
 	return S_OK;

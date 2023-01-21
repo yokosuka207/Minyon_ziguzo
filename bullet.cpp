@@ -32,7 +32,7 @@ static char* g_TextureName = (char*)"data\\texture\\弾.png";
 
 //弾発射音SE
 static int g_BulletSoundNo = 0;
-static char g_BulletSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_BulletSoundName[] = "data\\SoundData\\SE\\銃声(On-Jin).wav";
 
 //=============================================================================
 //初期化処理

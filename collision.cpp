@@ -125,6 +125,10 @@ static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\ÉsÅ[ÉXÇÕÇﬂçûÇﬁâπ(ñ≥ó
 //ÇÎÇ§ÇªÇ≠
 static int g_CandleSoundNo = 0;
 static char g_CandleSoundName[] = "data\\SoundData\\SE\\ÇÎÇ§ÇªÇ≠(å¯â âπÉâÉ{).wav";
+//ÉXÉ^Å[Ég
+static int g_GoalSoundNo = 0;
+static char g_GoalSoundName[] = "data\\SoundData\\SE\\ÉhÉAÇäJÇØÇÈâπ(ñ≥óøå¯â âπÇ≈óVÇ⁄Ç§ÅI).wav";
+
 
 
 
@@ -143,6 +147,7 @@ void InitCollision()
 	g_GKeySoundNo = LoadSound(g_GKeySoundName);
 	g_MatchPieceSoundNo = LoadSound(g_MatchPieceSoundName);
 	g_CandleSoundNo = LoadSound(g_CandleSoundName);
+	g_GoalSoundNo = LoadSound(g_GoalSoundName);
 }
 
 
@@ -160,6 +165,7 @@ void UninitCollision()
 	StopSound(g_GKeySoundNo);
 	StopSound(g_MatchPieceSoundNo);
 	StopSound(g_CandleSoundNo);
+	//StopSound(g_GoalSoundNo);
 }
 
 
@@ -269,6 +275,7 @@ void UpdateCollision(){
 		//ÉvÉåÅ[ÉÑÅ[Ç∆ÉXÉCÉbÉ`ån(switch,SwitchWall)
 		//=========================================
 		for (int i = 0; i < SWITCH_MAX; i++) {
+			//ÉXÉCÉbÉ`Ç∆ÉvÉåÉCÉÑÅ[ÇÃìñÇΩÇËîªíË
 			if (pSwitch[i].UseFlag) {
 				if (pSwitch[i].pos.x - pSwitch[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 					pSwitch[i].pos.x + pSwitch[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
@@ -277,24 +284,34 @@ void UpdateCollision(){
 				{
 					pSwitch[i].PressFlag = true;//âüÇ≥ÇÍÇΩÇÁ
 					pSwitch[i].PaternNo = 1;
-					//SetVolume(g_SwitchSoundNo, 0.5f);
-					PlaySound(g_SwitchSoundNo, 0);
+					if (pSwitch[i].NotPressed == true)
+					{
+						//SetVolume(g_SwitchSoundNo, 0.5f);
+						PlaySound(g_SwitchSoundNo, 0);
+						pSwitch[i].NotPressed = false;
+					}
 				}
 				else {
 					pSwitch[i].PressFlag = false;
 					pSwitch[i].PaternNo = 0;
+					pSwitch[i].NotPressed = true;
 				}
 				//ÉXÉCÉbÉ`Ç∆ñÿî†ÇÃìñÇΩÇËîªíË
 				for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
 					if(CollisionBB(pSwitch[i].pos,pMoveBlock[j].pos,pSwitch[i].size,pMoveBlock[j].size)){
 						pSwitch[i].PressFlag = true;//âüÇ≥ÇÍÇΩÇÁ
 						pSwitch[i].PaternNo = 1;
-						//SetVolume(g_SwitchSoundNo, 0.5f);
-						PlaySound(g_SwitchSoundNo, 0);
+						if (pSwitch[i].NotPressed == true)
+						{
+							//SetVolume(g_SwitchSoundNo, 0.5f);
+							PlaySound(g_SwitchSoundNo, 0);
+							pSwitch[i].NotPressed = false;
+						}
 					}
 					else {
 						pSwitch[i].PressFlag = false;
 						pSwitch[i].PaternNo = 0;
+						pSwitch[i].NotPressed = true;
 					}
 				}
 
@@ -309,6 +326,7 @@ void UpdateCollision(){
 				else {
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
 						pSwitchWall[j].UseFlag = true;		//ï«èoåª
+
 					}
 				}
 			}
@@ -887,6 +905,8 @@ void UpdateCollision(){
 			if (!pMouse->UseFlag && pGKey->GetGKey) {
 				if (CollisionBB(pGoal->Pos, pPlayer->Position, pGoal->Size, pPlayer->size)) {
 					pGoal->UseFlag = false;
+					//SetVolume(g_GoalSoundNo, 0.5f);
+					PlaySound(g_GoalSoundNo, 0);
 					//
 					for (int i = 0; i < START_MAX; i++) {
 						pStart[i].GoalFlag = true;
