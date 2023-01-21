@@ -28,6 +28,7 @@
 #define STAIRS_LEFT	75
 #define STAIRS_RIGHT	285
 
+#define DOOR_SPACE	1050 / 7
 
 
 //*****************************************************************************
@@ -150,7 +151,8 @@ HRESULT InitStageSelect() {
 				b = 0;
 			}
 			//ドア
-			g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (180.0f) + (250.0f * a));
+			//g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (180.0f) + (250.0f * a));
+			g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (DOOR_SPACE * b), (180.0f) + (250.0f * a));
 			g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
 			g_StageSelect[i].UseFlag = true;
 			g_StageSelect[i].StagePieceIndex = i;
@@ -167,18 +169,15 @@ HRESULT InitStageSelect() {
 			{
 				g_StageSelect[i].StageUseFlag = true;
 				g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
-
 			}
-
+			// クリアステージ数分解放する
+			else if (i <= g_ClearStageNum) {
+				g_StageSelect[i].StageUseFlag = true;
+			}
 		}
 		TexNo = LoadTexture(g_StageSelect2TextureName);
 
 		OneFlag = false;
-
-		// 最初にクリアステージ数分解放する
-		for (int i = 0; i <= g_ClearStageNum; i++) {
-			g_StageSelect[i].StageUseFlag = true;
-		}
 	}
 
 
@@ -229,7 +228,6 @@ void UninitStageSelect() {
 		g_StageSelectTexture = NULL;
 
 		StopSound(g_StageSelectSoundNo);
-
 	}
 }
 
@@ -462,9 +460,8 @@ void UpdateStageSelect() {
 				ply.Position.y + ply.size.y / 2 > g_StageSelect[i].pos.y - g_StageSelect[i].size.y / 2 &&
 				ply.Position.y - ply.size.y / 2 < g_StageSelect[i].pos.y + g_StageSelect[i].size.y / 2)
 			{
-
-
-				if (Keyboard_IsKeyTrigger(KK_A) || IsButtonPressed(0, XINPUT_GAMEPAD_A)) {
+				if (Keyboard_IsKeyTrigger(KK_A) ||					// keyboard A
+					IsButtonPressed(0, XINPUT_GAMEPAD_B)) {			// GamePad B
 					//SetVolume(g_BrokenSoundNo, 0.5f);
 					PlaySound(g_StageSelectSoundNo, 0);
 					StageNo = i;
@@ -481,7 +478,7 @@ void UpdateStageSelect() {
 //	描画処理
 //-----------------------------------------------------------------------------
 void DrawStageSelect() {
-	
+
 
 	{	//背景ポリゴン表示
 		SetWorldViewProjection2D();
@@ -511,17 +508,15 @@ void DrawStageSelect() {
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairs[i].texno));
 
 		SpriteDrawColorRotation(
-			g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x+10, g_StageSelectStairs[i].size.y+10
+			g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x + 10, g_StageSelectStairs[i].size.y + 10
 			, 0.0f, g_StageSelectStairs[i].color, 0, 1.0f, 1.0f, 1);
 
 	}
 
-	
 
-		for (int i = 0; i < STAGE_MAX; i++)
-		{
 
-		
+	for (int i = 0; i < STAGE_MAX; i++)
+	{		
 		SetWorldViewProjection2D();
 		if (g_StageSelect[i].StageUseFlag)
 		{
@@ -536,19 +531,18 @@ void DrawStageSelect() {
 
 		//g_StageSelect[i].pos.x = g_SelectDistance;
 
-			SpriteDrawColorRotation(
-				g_StageSelect[i].pos.x, g_StageSelect[i].pos.y - 10, 0.0f,
-				g_StageSelect[i].size.x / 2, g_StageSelect[i].size.y,
-				0.0f,
-				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-				0,
-				1.0f,
-				1.0f,
-				1
-			);
-			//g_StageSelect[i].pos.x -= 30;
-		
-		}
+		SpriteDrawColorRotation(
+			g_StageSelect[i].pos.x, g_StageSelect[i].pos.y - 10, 0.0f,
+			g_StageSelect[i].size.x / 2, g_StageSelect[i].size.y,
+			0.0f,
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
+		//g_StageSelect[i].pos.x -= 30;
+	}
 
 		if (ply.UseFlag == true)
 		{

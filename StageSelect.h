@@ -58,7 +58,7 @@ typedef struct {
 	float		texno;
 	int			StagePieceIndex;//ステージピースが何番目なのか
 	bool		StageUseFlag;	//ステージに入れるかどうか
-	STAGE_SELECT_TYPE type;//ステージに入れるかどうか
+	STAGE_SELECT_TYPE type;		//ステージに入れるかどうか
 	bool		UseFlag;		//ステージピース(仮名称)
 }STAGESELECT;
 

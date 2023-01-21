@@ -80,4 +80,8 @@ private:
 	void SetSaveType(SAVE_TYPE type) { m_type = type; }
 };
 
+// 全クリしたかのゲット関数
+bool GetStageAllClear();
+void SetStageAllClear(bool bClear);
+
 #endif // !_SAVE_H_

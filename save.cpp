@@ -58,7 +58,8 @@ Button g_DataButton[BUTTON_MAX];
 static int g_ChangeSceneSaveSoundNo = 0;
 static char g_ChangeSceneSaveSoundName[] = "data\\SoundData\\SE\\シーン遷移(魔王魂).wav";
 
-
+// 全クリしたか
+bool g_StageAllClear = false;
 
 //==================================================
 // 初期化
@@ -116,7 +117,11 @@ void Save::Init()
 	}
 	// データ削除ボタン
 	g_DataButton[3].SetButton(D3DXVECTOR2((SCREEN_WIDTH / 3) * 2.5f, (SCREEN_HEIGHT / 4) * 3.5f), D3DXVECTOR2(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 6), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_DataDeleteTextureName));
+
+	// サウンドデータのロード
+	g_ChangeSceneSaveSoundNo = LoadSound(g_ChangeSceneSaveSoundName);
 }
+
 
 //==================================================
 // 終了処理
@@ -212,7 +217,11 @@ void Save::Update()
 						// ステージセレクトシーンに切り替わる
 						FADEPARAM* pFadeParam = GetFadeParam();
 						if (!pFadeParam->FadeFlag)
+						{
+							//SetVolume(g_ChangeSceneSaveSoundNo, 0.5f);
+							PlaySound(g_ChangeSceneSaveSoundNo, 0);
 							StartFade(FADE::FADE_ALPHA_OUT);
+						}
 					}
 					else {
 						DeleteSaveData();		// データ削除
@@ -235,18 +244,7 @@ void Save::Update()
 	MouseOldPosX = GetMousePosX();
 	MouseOldPosY = GetMousePosY();
 }
-			FADEPARAM* pFadeParam = GetFadeParam();
 
-			//SetScene(SCENE_STAGESELECT);			// ステージセレクトシーンに切り替わる
-			if (!pFadeParam->FadeFlag)
-			{
-				//SetVolume(g_ChangeSceneSaveSoundNo, 0.5f);
-				PlaySound(g_ChangeSceneSaveSoundNo, 0);
-				StartFade(FADE::FADE_ALPHA_OUT);
-			}
-		}
-	}
-}
 
 //==================================================
 // 描画処理
@@ -286,9 +284,13 @@ void Save::Draw()
 //==================================================
 void Save::DataSave()
 {
-	// ----セーブする各データをm_saveDataに入れたい----
-	m_saveData.clearStageNum = (GetClearStageNum() - 1);
-	// ------------------------------------------------
+	// セーブするデータ
+	if (g_StageAllClear) {		// 全クリしてたら
+		m_saveData.clearStageNum = STAGE_MAX;
+	}
+	else {
+		m_saveData.clearStageNum = (GetClearStageNum() - 1);
+	}
 
 	FILE* fp;		// ファイルポインタ
 
@@ -346,9 +348,10 @@ void Save::DataLoad()
 		fclose(fp);
 	}
 
-	//[----ここでロードした各データを各々の場所に入れたい----
+	if (m_saveData.clearStageNum == STAGE_MAX) {
+		g_StageAllClear = true;
+	}
 	SetClearStageNum(m_saveData.clearStageNum);
-	//------------------------------------------------------]
 }
 
 
@@ -370,4 +373,20 @@ bool Save::ExistFile(char* fileName)
 
 	// ファイルがあったらtrueを返す
 	return true;
+}
+
+//==================================================
+// 全クリしたかを返す
+//==================================================
+bool GetStageAllClear()
+{
+	return g_StageAllClear;
+}
+
+//==================================================
+// 全クリしたかを入れる
+//==================================================
+void SetStageAllClear(bool bClear)
+{
+	g_StageAllClear = bClear;
 }
