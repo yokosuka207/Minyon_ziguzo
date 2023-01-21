@@ -2280,6 +2280,8 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	SHEERFLOORS* pSheerFloors = GetSheerFloors();
 	START* pStart = GetStart();
 	HIGH* pHigh = GetHigh();
+	MOVEBLOCK* pMoveBlock = GetMoveBlock();
+	FALLBLOCK* pFallBlock = GetFallBlock();
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
@@ -2335,6 +2337,29 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 		}
 
 	}
+	for (int i = 0; i < MOVE_BLOCK_MAX; i++)
+	{
+		if (pMoveBlock[i].bUse)
+		{
+			if (pMoveBlock[i].PieceIndex == pinNo)
+			{
+				pMoveBlock[i].pos += num;
+			}
+
+		}
+
+	}
+	for (int i = 0; i < FALLBLOCK_MAX; i++)
+	{
+		if (pFallBlock[i].UseFlag)
+		{
+			if (pFallBlock[i].PieceIndex == pinNo)
+			{
+				pFallBlock[i].Position += num;
+			}
+		}
+	}
+
 	for (int i = 0; i < START_MAX; i++) {
 		if (pStart[i].UseFlag) {
 			if (pStart[i].PieceIndex == pinNo) {
