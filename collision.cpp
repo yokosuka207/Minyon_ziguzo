@@ -46,6 +46,7 @@
 #include "Key.h"			//鍵
 #include "OpenKey.h"		//鍵で開く扉
 #include "goal_key.h"		//ゴール専用鍵
+#include "StoryKey.h"		//ストーリー用鍵
 #include "bullet.h"			//ドッペルゲンガー発射弾
 #include "doppelganger.h"   //ドッペルゲンガー
 #include "enemy.h"			//エネミー
@@ -120,6 +121,7 @@ void UpdateCollision(){
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
 	JUMPSTAND* pJumpStand = GetJumpStand();
 	KEY* pKey = GetKey();
+	STORYKEY* pSKey = GetStoryKey();
 	OPENKEY* pOpenKey = GetOpenKey();
 	GKey* pGKey = GetGKey();
 	EXPLAIN* p_Explain = GetExplain();
@@ -660,6 +662,19 @@ void UpdateCollision(){
 				}
 			}
 
+		}
+		//------------------------------------------------------------------
+		//ストーリー用鍵
+		//------------------------------------------------------------------
+		for (int i = 0; i < STORYKEY_MAX; i++) 
+		{
+			if (pSKey->bUse) {
+				if (CollisionBB(pPlayer->Position, pSKey->pos, pPlayer->size, pSKey->size)) 
+				{
+					pSKey[i].bUse = false;
+					pSKey[i].HaveSKey++;
+				}
+			}
 		}
 		//------------------------------------------------------------------
 		//ゴール専用鍵とプレイヤーの当たり判定(GKeyとPlayer)

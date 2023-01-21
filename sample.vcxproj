@@ -189,6 +189,8 @@
     <ClCompile Include="SplitStage.cpp" />
     <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="start.cpp" />
+    <ClCompile Include="story.cpp" />
+    <ClCompile Include="StoryKey.cpp" />
     <ClCompile Include="switch.cpp" />
     <ClCompile Include="SwitchWall.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -256,6 +258,8 @@
     <ClInclude Include="SplitStage.h" />
     <ClInclude Include="StageSelect.h" />
     <ClInclude Include="start.h" />
+    <ClInclude Include="story.h" />
+    <ClInclude Include="StoryKey.h" />
     <ClInclude Include="switch.h" />
     <ClInclude Include="SwitchWall.h" />
     <ClInclude Include="texture.h" />

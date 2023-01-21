@@ -28,6 +28,7 @@ HRESULT InitExplain()
 
 	g_Explain.pos = D3DXVECTOR2(-127,150);
 	g_Explain.size = D3DXVECTOR2(EXPLAIN_SIZE, EXPLAIN_SIZE);
+	g_Explain.rot = 0.0f;
 
 	g_Explain.bUse = false;
 
@@ -82,7 +83,7 @@ void DrawExplain()
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ExplainBlockNo));
 
 		SpriteDrawColorRotation(g_Explain.pos.x, g_Explain.pos.y, 0.0f,
-			g_Explain.size.x, g_Explain.size.y, 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			g_Explain.size.x, g_Explain.size.y, g_Explain.rot, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 			0, 1.0f, 1.0f, 1);
 
 
@@ -98,16 +99,24 @@ void DrawExplain()
 }
 
 
-void SetExplain(D3DXVECTOR2 pos)
+void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, float rot)
 {
 	if (!g_Explain.bUse)
 	{
 		g_Explain.pos = pos;
+		g_Explain.size = size;
 		g_Explain.bUse = true;
+
+		g_Explain.tex = no;
 	}
 }
 
 EXPLAIN* GetExplain()
 {
 	return &g_Explain;
+}
+
+void DeleteExplain()
+{
+	g_Explain.bUse = false;
 }

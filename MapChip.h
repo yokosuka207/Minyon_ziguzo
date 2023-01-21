@@ -61,6 +61,7 @@ enum class MAPCHIP_TYPE{
 	TYPE_ENEMY,			//23	敵
 	TYPE_PLAYER,		//24	敵
 	TYPE_START,			//25    初期位置
+	TYPE_EXPLAIN,		//26	ヒントブロック
 
 	TYPE_NUM		
 };

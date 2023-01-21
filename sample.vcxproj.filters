@@ -62,6 +62,8 @@
     <ClCompile Include="PlayerLife.cpp" />
     <ClCompile Include="start.cpp" />
     <ClCompile Include="JumpStandExplain.cpp" />
+    <ClCompile Include="story.cpp" />
+    <ClCompile Include="StoryKey.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -137,5 +139,7 @@
     <ClInclude Include="PlayerLife.h" />
     <ClInclude Include="start.h" />
     <ClInclude Include="JumpStandExplain.h" />
+    <ClInclude Include="story.h" />
+    <ClInclude Include="StoryKey.h" />
   </ItemGroup>
 </Project>
