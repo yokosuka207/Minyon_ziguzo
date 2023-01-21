@@ -58,6 +58,7 @@
 #include"cursor.h"
 
 #include"sound.h"
+#include"bullet.h"
 
 //==================================
 //プロトタイプ宣言
@@ -204,7 +205,7 @@ void UpdateCollision(){
 	RESULT* pResult = GetResult();
 
 	Piece* pPiece = GetPiece();
-
+	BULLET* pBullet = GetBullet();
 	//-------------------------------------
 
 	bool pFlag = false;	//プレーヤーがピースの中にいるか
@@ -1029,6 +1030,26 @@ void UpdateCollision(){
 					pMoveBlock[j].pos = pMoveBlock[j].oldpos;
 				}
 			}
+		}
+		//------------------------------------
+		//弾とプレイヤー当たり判定
+		//-----------------------------------
+		if (pPlayer->UseFlag)
+		{
+			for (int i = 0; i < BULLET_MAX; i++)
+			{
+				if (pBullet[i].use)
+				{
+					if (CollisionBB(pPlayer->Position,pBullet[i].pos,pPlayer->size, D3DXVECTOR2(pBullet[i].w, pBullet[i].h)))
+					{
+						pPlayer->hp--;
+						pBullet[i].use = false;
+
+					}
+
+				}
+			}
+
 		}
 	}
 	//------------------------------------

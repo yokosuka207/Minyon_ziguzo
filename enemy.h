@@ -31,7 +31,7 @@ typedef struct {
 	int				texno;
 	int BulletWait;
 	ENEMY_DIRECTION dir;
-
+	float uv_w;
 	bool			UseFlag;
 	bool			AIFlag; //player ÉgÅ@Ç¶ÇÀÇÒÇ›Å@ìñÇΩÇËîªíË
 }ENEMY;
@@ -40,7 +40,7 @@ HRESULT InitEnemy();
 void UninitEnemy();
 void UpdateEnemy();
 void DrawEnemy();
-void SetEnemy(D3DXVECTOR2 pos,D3DXVECTOR2 size,int index);
+void SetEnemy(D3DXVECTOR2 pos,D3DXVECTOR2 size,int index, ENEMY_DIRECTION d);
 ENEMY* GetEnemy();
 void DeleteEnemy(int index);
 

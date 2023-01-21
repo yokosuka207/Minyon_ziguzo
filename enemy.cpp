@@ -40,6 +40,7 @@ HRESULT InitEnemy() {
 		g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_LEFT;
 		g_Enemy[i].UseFlag = false;
 		g_Enemy[i].AIFlag = false;
+		g_Enemy[i].uv_w = -1.0f;
 		g_EnemySoundNo = LoadSound(g_EnemySoundName);
 	}
 	return S_OK;
@@ -58,12 +59,37 @@ void UninitEnemy() {
 void UpdateEnemy() {
 	for (int i = 0; i < ENEMY_MAX; i++) {
 		if (g_Enemy[i].UseFlag) {
+
+			switch (g_Enemy[i].dir)
+			{
+			case ENEMY_DIRECTION::DIRECTION_LEFT:
+				g_Enemy[i].uv_w = -1.0f;
+				break;
+			case ENEMY_DIRECTION::DIRECTION_RIGHT:
+				g_Enemy[i].uv_w = 1.0f;
+
+				break;
+			default:
+				break;
+			}
 			if (g_Enemy[i].AIFlag)
 			{
 				g_Enemy[i].BulletWait++;
 				if (g_Enemy[i].BulletWait > 120)
 				{
-					SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), 1);
+					switch (g_Enemy[i].dir)
+					{
+					case ENEMY_DIRECTION::DIRECTION_LEFT:
+						SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), -BULLET_SPEED);
+						break;
+					case ENEMY_DIRECTION::DIRECTION_RIGHT:
+						SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), BULLET_SPEED);
+
+						break;
+					default:
+						break;
+					}
+
 					
 
 					g_Enemy[i].BulletWait = 0;
@@ -88,19 +114,20 @@ void DrawEnemy() {
 				180.0f,
 				g_Enemy[i].color,
 				0.0f,
-				-1.0f / 1.0f,
+				g_Enemy[i].uv_w,
 				1.0f / 1.0f,
 				1
 			);
 		}
 	}
 }
-void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index) {
+void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index, ENEMY_DIRECTION d) {
 	for (int i = 0; i < ENEMY_MAX; i++) {
 		if (!g_Enemy[i].UseFlag) {
 			g_Enemy[i].pos = pos;
-			g_Enemy[i].size = size;
+			g_Enemy[i].size = size*2.0f;
 			g_Enemy[i].index = index;
+			g_Enemy[i].dir = d;
 			g_Enemy[i].UseFlag = true;
 			break;
 		}
