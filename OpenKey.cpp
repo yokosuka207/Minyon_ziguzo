@@ -87,12 +87,11 @@ void DrawOpenKey()
 }
 
 
-void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index)
-{
+void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index){
 	for (int i = 0; i < OPEN_KEY_MAX; i++) {
 		if (!g_OpenKey[i].KeyOpen) {
-			if (!g_OpenKey[i].UseFlag) //!‚ÍNOT
-			{
+			if (!g_OpenKey[i].UseFlag) {
+
 				switch (direction)
 				{
 				case 0:
@@ -117,8 +116,10 @@ void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index)
 				g_OpenKey[i].Size = size;
 				g_OpenKey[i].index = index;
 				g_OpenKey[i].UseFlag = true;
+				if (i % 3 == 0) break;
 			}
 		}
+		
 	}
 }
 
