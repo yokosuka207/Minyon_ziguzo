@@ -60,15 +60,15 @@ void DrawOpenKey()
 	//SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_OpenKeyTextureNo));
 
-	//テクスチャの設定
-	//スプライトを表示
-
 	for (int i = 0; i < OPEN_KEY_MAX; i++) {
-
-		if (g_OpenKey[i].UseFlag)
-		{
+		if (g_OpenKey[i].UseFlag){
 			g_OpenKey[i].PaternNo = i;
-
+			if (g_OpenKey[i].PaternNo > 3.0f) {
+				g_OpenKey[i].PaternNo -= 3.0f;
+			}
+			else if (g_OpenKey[i].PaternNo > 6.0f) {
+				g_OpenKey[i].PaternNo -= 6.0f;
+			}
 			SpriteDrawColorRotation(
 				g_OpenKey[i].Position.x,
 				g_OpenKey[i].Position.y,
@@ -80,18 +80,17 @@ void DrawOpenKey()
 				g_OpenKey[i].PaternNo,
 				1.0f / 1.0f,
 				1.0f / 3.0f,
-				1);
+				1
+			);
+			
 		}
 	}
-	
 }
-
-
 void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index){
 	for (int i = 0; i < OPEN_KEY_MAX; i++) {
 		if (!g_OpenKey[i].KeyOpen) {
 			if (!g_OpenKey[i].UseFlag) {
-
+				
 				switch (direction)
 				{
 				case 0:
@@ -116,10 +115,11 @@ void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index){
 				g_OpenKey[i].Size = size;
 				g_OpenKey[i].index = index;
 				g_OpenKey[i].UseFlag = true;
-				if (i % 3 == 0) break;
+				if (i == 2 || i==5 || i== OPEN_KEY_MAX - 1) {
+					break;
+				}
 			}
 		}
-		
 	}
 }
 

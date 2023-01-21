@@ -792,7 +792,7 @@ void UpdateCollision(){
 						if (pPlayer->HaveKey > 0) {
 							pOpenKey[i].KeyOpen = true;
 							pOpenKey[i].UseFlag = false;
-							if (i == OPEN_KEY_MAX - 1) {
+							if (i % 3 == 0) {
 								pPlayer->HaveKey--;
 							}
 							//SetVolume(g_OpenKeySoundNo, 0.5f);
@@ -2262,6 +2262,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	GOAL* pGoal = GetGoal();
 	KEY* pKey = GetKey();
 	OPENKEY* pOpenKey = GetOpenKey();
+
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	JUMPSTAND* pJumpStand = GetJumpStand();
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
