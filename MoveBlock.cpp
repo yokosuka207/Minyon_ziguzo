@@ -42,6 +42,7 @@ HRESULT InitMoveBlock()
 		gMoveBlock[i].bUse = false;
 
 		gMoveBlock[i].MoveBlockNotMove = false;
+		gMoveBlock[i].MoveFlag = false;
 
 		g_MoveBlockMoveSoundNo = LoadSound(g_MoveBlockMoveSoundName);
 		g_MoveBolckLandingSoundNo = LoadSound(g_g_MoveBolckLandingSoundName);
@@ -92,7 +93,10 @@ void UpdateMoveBlock()
 				}
 			}
 
-			gMoveBlock[i].pos.y--;
+				
+				gMoveBlock[i].pos.y--;
+
+			
 
 			//ÉuÉçÉbÉNÇ∆ÇÃìñÇΩÇËîªíË
 
@@ -208,6 +212,7 @@ void SetMoveBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 	for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 		if (!gMoveBlock[i].bUse) {
 			gMoveBlock[i].pos = pos;
+			gMoveBlock[i].pos.y +=1.0f ;
 			gMoveBlock[i].size = size;
 			gMoveBlock[i].PieceIndex = PieceNo;
 			gMoveBlock[i].bUse = true;

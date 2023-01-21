@@ -49,6 +49,7 @@
 #include "PlayerLife.h"
 #include "start.h"
 #include "JumpStandExplain.h"
+#include"fallblock.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -91,6 +92,7 @@ void InitGame()
 		InitSwitch();
 		InitSwitchWall();
 		InitMoveBlock();
+		InitFallBlock();
 		InitNoizu();
 		InitDoppelganger();
 		SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1);
@@ -145,6 +147,7 @@ void UninitGame()
 	UninitKey();
 	UninitOpenKey();
 	UninitMoveBlock();
+	UninitFallBlock();
 	UninitHigh();
 	UninitSwitch();
 	UninitSwitchWall();
@@ -211,6 +214,7 @@ void UpdateGame()
 		UpdateKey();
 		UpdateOpenKey();
 		UpdateMoveBlock();
+		UpdateFallBlock();
 		UpdateHigh();
 		UpdateSwitch();
 		UpdateSwitchWall();
@@ -266,6 +270,7 @@ void DrawGame()
 		DrawKey();
 		DrawOpenKey();
 		DrawMoveBlock();
+		DrawFallBlock();
 		DrawHigh();
 		DrawSwitch();
 		DrawSwitchWall();
@@ -277,7 +282,7 @@ void DrawGame()
 		DrawEnemy();
 		DrawBullet();
 		DrawNoizu();
-
+		
 		DrawPlayerLife();
 
 		//DrawRay();				// åıê¸ÇÃï`âÊ
