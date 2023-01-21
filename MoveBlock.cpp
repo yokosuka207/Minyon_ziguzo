@@ -40,10 +40,10 @@ HRESULT InitMoveBlock()
 		gMoveBlock[i].PieceIndex = -1;
 
 		gMoveBlock[i].bUse = true;
-	}
 
-	g_MoveBlockMoveSoundNo = LoadSound(g_MoveBlockMoveSoundName);
-	g_MoveBolckLandingSoundNo = LoadSound(g_g_MoveBolckLandingSoundName);
+		g_MoveBlockMoveSoundNo = LoadSound(g_MoveBlockMoveSoundName);
+		g_MoveBolckLandingSoundNo = LoadSound(g_g_MoveBolckLandingSoundName);
+	}
 
 	return S_OK;
 }

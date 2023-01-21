@@ -100,28 +100,28 @@ static bool InventoryFlag = false;
 //効果音
 //壊れるブロック
 static int g_BrokenSoundNo = 0;
-static char g_BrokenSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_BrokenSoundName[] = "data\\SoundData\\SE\\木箱が壊れる(魔王魂).wav";
 //スイッチ
 static int g_SwitchSoundNo = 0;
-static char g_SwitchSoundName[] = "data\\SoundData\\SE\\スイッチ（ニコニ・コモンズ）.wav";
+static char g_SwitchSoundName[] = "data\\SoundData\\SE\\スイッチ(ニコニ・コモンズ).wav";
 //ワープ
 static int g_WarpSoundNo = 0;
-static char g_WarpSoundName[] = "data\\SoundData\\SE\\ワープ_無料効果音で遊ぼう！_.wav";
-//高いとこから請われる床
+static char g_WarpSoundName[] = "data\\SoundData\\SE\\ワープ(無料効果音で遊ぼう！).wav";
+//高いとこから壊れる床
 static int g_HighSoundNo = 0;
 static char g_HighSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
 //鍵
 static int g_KeySoundNo = 0;
-static char g_KeySoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_KeySoundName[] = "data\\SoundData\\SE\\鍵入手.wav";
 //鍵扉
 static int g_OpenKeySoundNo = 0;
-static char g_OpenKeySoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_OpenKeySoundName[] = "data\\SoundData\\SE\\鍵を開ける(無料効果音で遊ぼう！).wav";
 //ゴールピース
 static int g_GKeySoundNo = 0;
-static char g_GKeySoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_GKeySoundName[] = "data\\SoundData\\SE\\ピース入手(効果音ラボ).wav";
 //ピースの合体
 static int g_MatchPieceSoundNo = 0;
-static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\ピースはめ込む音_無料効果音で遊ぼう！_.wav";
+static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\ピースはめ込む音(無料効果音で遊ぼう！).wav";
 
 
 

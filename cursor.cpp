@@ -61,7 +61,7 @@ static bool g_CursorFlag = false;	//マウスをクリックしているか
 
 //マウスクリックSE
 static int g_CursorSoundNo = 0;
-static char g_CursorSoundName[] = "data\\SoundData\\SE\\ピース掴む音（カーソル移動2）.wav";
+static char g_CursorSoundName[] = "data\\SoundData\\SE\\ピースを掴む音(効果音ラボ).wav";
 
 
 //==================================================

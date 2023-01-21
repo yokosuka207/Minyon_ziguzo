@@ -10,6 +10,8 @@
 #include	"fade.h"
 #include"mouse.h"
 #include"collision.h"
+#include"sound.h"
+
 //======================
 //マクロ定義
 //=======================
@@ -23,6 +25,12 @@ static	char* g_TitleButtonTextureName = (char*)"data\\texture\\start.jpg";
 
 static	ID3D11ShaderResourceView* g_TitleTextureButton2 = NULL;//テクスチャ情報
 static	char* g_TitleButtonTextureName2 = (char*)"data\\texture\\GameEnd_end_button.jpg";
+
+//サウンド
+static int g_ChangeSceneTitleSoundNo = 0;
+static char g_ChangeSceneTitleSoundName[] = "data\\SoundData\\SE\\シーン遷移(魔王魂).wav";
+
+
 
 typedef	struct
 {
@@ -68,6 +76,7 @@ void	InitTitle()
 	g_TitleSwith[1].Size = D3DXVECTOR2(200.0f, 150.0f);
 	g_TitleSwith[1].texno = LoadTexture(g_TitleButtonTextureName2);
 
+	g_ChangeSceneTitleSoundNo = LoadSound(g_ChangeSceneTitleSoundName);
 }
 //======================
 //終了処理
@@ -78,6 +87,7 @@ void	UninitTitle()
 	{
 		g_TitleTexture1->Release();
 		g_TitleTexture1 = NULL;
+		StopSound(g_ChangeSceneTitleSoundNo);
 	}
 }
 
@@ -92,10 +102,13 @@ void	UpdateTitle()
 	if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
 		Keyboard_IsKeyTrigger(KK_A))						// Keyboard	A
 	{
-		//SetScene(SCENE::SCENE_DATASELECT);
-		if(!pFadeParam->FadeFlag)
-		StartFade(FADE::FADE_ALPHA_OUT);
-		
+		if (!pFadeParam->FadeFlag)
+		{
+			//SetVolume(g_ChangeSceneTitleSoundNo, 0.5f);
+			PlaySound(g_ChangeSceneTitleSoundNo, 0);
+			//SetScene(SCENE::SCENE_DATASELECT);
+			StartFade(FADE::FADE_ALPHA_OUT);
+		}
 	}
 	D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
 
@@ -104,7 +117,11 @@ void	UpdateTitle()
 		if (Mouse_IsLeftDown())
 		{
 			if (!pFadeParam->FadeFlag)
+			{
+				//SetVolume(g_ChangeSceneTitleSoundNo, 0.5f);
+				PlaySound(g_ChangeSceneTitleSoundNo, 0);
 				StartFade(FADE::FADE_ALPHA_OUT);
+			}
 		}
 	}
 	if (CollisionBB(g_TitleSwith[1].Position, MousePos, g_TitleSwith[1].Size, D3DXVECTOR2(3.0f, 3.0f)))

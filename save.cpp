@@ -23,6 +23,8 @@ Update:
 #include "input.h"
 #include "fade.h"
 #include "mouse.h"
+#include "sound.h"
+
 //**************************************************
 // マクロ定義
 //**************************************************
@@ -44,6 +46,12 @@ static char* g_saveFileName3 = (char*)"data/SaveData/Data3.bin";			// データ３
 
 // 各データのボタンを作る
 Button g_DataButton[BUTTON_NUM];
+
+//サウンド
+static int g_ChangeSceneSaveSoundNo = 0;
+static char g_ChangeSceneSaveSoundName[] = "data\\SoundData\\SE\\シーン遷移(魔王魂).wav";
+
+
 
 //==================================================
 // 初期化
@@ -95,6 +103,7 @@ void Save::Init()
 			break;
 		}
 	}
+	g_ChangeSceneSaveSoundNo = LoadSound(g_ChangeSceneSaveSoundName);
 }
 
 //==================================================
@@ -106,6 +115,7 @@ void Save::Uninit()
 	for (auto& b : g_DataButton) {
 		b.Uninit();
 	}
+	StopSound(g_ChangeSceneSaveSoundNo);
 }
 
 //==================================================
@@ -120,6 +130,8 @@ void Save::Update()
 	if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
 		Keyboard_IsKeyTrigger(KK_A)) {						// Keyboard	A
 		// ステージセレクトシーンへ
+		//SetVolume(g_ChangeSceneSaveSoundNo, 0.5f);
+		PlaySound(g_ChangeSceneSaveSoundNo, 0);
 		//SetScene(SCENE_STAGESELECT);
 		StartFade(FADE::FADE_ALPHA_OUT);
 	}
@@ -159,8 +171,12 @@ void Save::Update()
 			FADEPARAM* pFadeParam = GetFadeParam();
 
 			//SetScene(SCENE_STAGESELECT);			// ステージセレクトシーンに切り替わる
-			if(!pFadeParam->FadeFlag)
-			StartFade(FADE::FADE_ALPHA_OUT);
+			if (!pFadeParam->FadeFlag)
+			{
+				//SetVolume(g_ChangeSceneSaveSoundNo, 0.5f);
+				PlaySound(g_ChangeSceneSaveSoundNo, 0);
+				StartFade(FADE::FADE_ALPHA_OUT);
+			}
 		}
 	}
 }

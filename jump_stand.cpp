@@ -25,7 +25,7 @@ static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
 
 //ジャンプスタンド音
 static int g_JumpStandSoundNo = 0;
-static char g_JumpStandSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_JumpStandSoundName[] = "data\\SoundData\\SE\\革靴で歩く右.wav";
 //ジャンプスタンド運ぶ（引きずる音）
 static int g_JumpStandSoundMoveNo = 0;
 static char g_JumpStandSoundMoveName[] = "data\\SoundData\\SE\\タイプライター.wav";
@@ -50,11 +50,12 @@ HRESULT InitJumpStand()
 		g_JumpStand[i].JumpStandFlag = false;
 
 		g_JumpStand[i].JumpStandFlag = false;
+
+		g_JumpStandSoundNo = LoadSound(g_JumpStandSoundName);
+		g_JumpStandSoundMoveNo = LoadSound(g_JumpStandSoundMoveName);
+		g_JumpStandLandingSoundNo = LoadSound(g_JumpStandLandingSoundName);
 	}
 	return S_OK;
-	g_JumpStandSoundNo = LoadSound(g_JumpStandSoundName);
-	g_JumpStandSoundMoveNo = LoadSound(g_JumpStandSoundMoveName);
-	g_JumpStandLandingSoundNo = LoadSound(g_JumpStandLandingSoundName);
 }
 
 void UninitJumpStand()
@@ -175,7 +176,6 @@ void UpdateJumpStand()
 						g_JumpStand[i].JumpStandFlag = true;
 
 						SetVolume(g_JumpStandSoundNo, 1.5f);
-						
 						PlaySound(g_JumpStandSoundNo, 0);
 
 						p_Player->sp.y = 0.0f;

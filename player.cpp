@@ -376,6 +376,8 @@ void UpdatePlayer()
 			{
 
 				g_Player.sp.y = 2.5f;			// スピードのyをマイナスにする
+				//SetVolume(g_PlayerRightSoundNo, 0.5f);
+				PlaySound(g_PlayerRightSoundNo, 0);
 
 				if (g_Player.isGround) {
 					g_Player.isGround = false;			// フラグをジャンプ中にする
