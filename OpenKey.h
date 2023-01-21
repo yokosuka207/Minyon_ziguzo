@@ -15,22 +15,23 @@
 //=============================================================================
 //マクロ定義
 //=============================================================================
-#define OPEN_KEY_MAX (2)
+#define OPEN_KEY_MAX (9)
 
 
 typedef struct {
-	bool UseFlag;//構造体利用中フラグ
+	bool		UseFlag;//構造体利用中フラグ
+	bool		KeyOpen;
 	D3DXVECTOR2 Size;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
 	D3DXVECTOR2 sp;
 	float		rot;//回転角度
-	float texno;//テクスチャインデックス
-	D3DXCOLOR col;//色
-	int		index;
-	float PaternNo;//パターン番号
-	float uv_w;//横サイズ
-	float uv_h;//縦サイズ
-	int NumPatern;//横枚数
+	float		texno;//テクスチャインデックス
+	D3DXCOLOR	col;//色
+	int			index;
+	float		PaternNo;//パターン番号
+	float		uv_w;//横サイズ
+	float		uv_h;//縦サイズ
+	int			NumPatern;//横枚数
 }OPENKEY;
 
 //=============================================================================
@@ -41,7 +42,7 @@ void UninitOpenKey();
 void UpdateOpenKey();
 void DrawOpenKey();
 OPENKEY *GetOpenKey();
-void SetOpenKey(D3DXVECTOR2 size, D3DXVECTOR2 pos,int direction, int index);
+void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index);
 void DeleteOpenKey(int PieceNo);
 
 

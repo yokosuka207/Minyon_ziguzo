@@ -270,9 +270,6 @@ void UpdateCollision(){
 		//=========================================
 		for (int i = 0; i < SWITCH_MAX; i++) {
 			if (pSwitch[i].UseFlag) {
-				//スイッチの左がプレイヤーの右よりも左にあるとき、
-				//スイッチの右がプレイヤーの左よりも右にあるとき
-				//スイッチの上が
 				if (pSwitch[i].pos.x - pSwitch[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 					pSwitch[i].pos.x + pSwitch[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
 					pSwitch[i].pos.y - pSwitch[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
@@ -287,6 +284,20 @@ void UpdateCollision(){
 					pSwitch[i].PressFlag = false;
 					pSwitch[i].PaternNo = 0;
 				}
+				//スイッチと木箱の当たり判定
+				for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
+					if(CollisionBB(pSwitch[i].pos,pMoveBlock[j].pos,pSwitch[i].size,pMoveBlock[j].size)){
+						pSwitch[i].PressFlag = true;//押されたら
+						pSwitch[i].PaternNo = 1;
+						//SetVolume(g_SwitchSoundNo, 0.5f);
+						PlaySound(g_SwitchSoundNo, 0);
+					}
+					else {
+						pSwitch[i].PressFlag = false;
+						pSwitch[i].PaternNo = 0;
+					}
+				}
+
 				if (pSwitch[i].PressFlag) {
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
 						//  switch index 0,1			switch wall	index 0,3
@@ -365,7 +376,7 @@ void UpdateCollision(){
 				if (pStart[i].GoalFlag) {
 					if (CollisionBB(pPlayer->Position, pStart[i].pos, pPlayer->size, pStart[i].size)) {
 						SetResultType(WIN);
-						StartFade(FADE::FADE_OUT);
+						StartFade(FADE::FADE_ALPHA_OUT);
 						pTime->EndTime();
 						pTimeParam->EndFlag = true;
 					}
@@ -761,10 +772,11 @@ void UpdateCollision(){
 		//プレイヤーと鍵の当たり判定(PlayerとKey)
 		//-----------------------------------------------------
 		for (int i = 0; i < KEY_MAX; i++) {
-			if (pKey->GetKey) {
+			if (pKey[i].UseFlag) {
 				if (CollisionBB(pKey[i].Position, pPlayer->Position, pKey[i].Size, pPlayer->size)) {
 					pPlayer->HaveKey++;
-					pKey->GetKey = false;
+					pKey[i].GetKey = true;
+					pKey[i].UseFlag = false;
 					//SetVolume(g_BrokenSoundNo, 0.5f);
 					PlaySound(g_KeySoundNo, 0);
 				}
@@ -775,12 +787,17 @@ void UpdateCollision(){
 		//-----------------------------------------------------------------
 		for (int i = 0; i < OPEN_KEY_MAX; i++) {
 			if ((pOpenKey + i)->UseFlag) {
-				if (CollisionBB(pOpenKey[i].Position, pKey->Position, pOpenKey[i].Size, pKey->Size)) {
-					if (pPlayer->HaveKey > 0) {
-						//pPlayer->Position.x = (pOpenKey + i)->Position.x - (pOpenKey + i)->Size.x / 2 - pPlayer->size.x / 2;
-						(pOpenKey + i)->UseFlag = false;
-						//SetVolume(g_OpenKeySoundNo, 0.5f);
-						PlaySound(g_OpenKeySoundNo, 0);
+				for (int j = 0; j < KEY_MAX; j++) {
+					if (CollisionBB(pOpenKey[i].Position, pPlayer->Position, pOpenKey[i].Size, pPlayer->size)) {
+						if (pPlayer->HaveKey > 0) {
+							pOpenKey[i].KeyOpen = true;
+							pOpenKey[i].UseFlag = false;
+							if (i % 3 == 0) {
+								pPlayer->HaveKey--;
+							}
+							//SetVolume(g_OpenKeySoundNo, 0.5f);
+							PlaySound(g_OpenKeySoundNo, 0);
+						}
 					}
 					/*else
 					{
@@ -789,8 +806,66 @@ void UpdateCollision(){
 
 				}
 			}
-
 		}
+
+		//-----------------------------------------------------
+		//プレイヤーと鍵付き扉の当たり判定(PlayerとOpenKey)
+		//-----------------------------------------------------
+		for (int i = 0; i < OPEN_KEY_MAX; i++) {
+			if (pOpenKey[i].UseFlag) {
+				//プレーヤーと扉の判定
+				//扉の左とプレイヤーの右
+				if (pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+				{
+					pPlayer->Position.x = pPlayer->oldpos.x;
+				}
+				//扉の右とプレイヤーの左
+				if (pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 <= pPlayer->oldpos.x - pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+				{
+					pPlayer->Position.x = pPlayer->oldpos.x;
+				}
+				//扉の↓とプレイヤーの上
+				if (pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 >= pPlayer->oldpos.y + pPlayer->size.y / 2)
+				{
+					pPlayer->Position = pPlayer->oldpos;
+				}
+				//扉の↑とプレイヤーの↓
+				if (pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
+					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
+				{
+					pPlayer->Position.y = pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 + pPlayer->size.y / 2 + 0.02f;
+					pPlayer->jump = false;
+					pPlayer->fall = false;
+					pPlayer->WarpFlag = false;
+					pPlayer->sp.y = 0;
+					pPlayer->frame = 0;
+				}
+				//扉とjumpstandの判定
+				for (int j = 0; j < JUMPSTAND_MAX; j++) {
+					if (CollisionBB(pOpenKey[i].Position, pJumpStand[j].pos, pOpenKey[i].Size, pJumpStand[j].size)) {
+						pJumpStand[j].pos = pJumpStand[j].oldpos;
+					}
+				}
+				//扉と動くブロックの判定
+				for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
+					if (CollisionBB(pOpenKey[i].Position, pMoveBlock[j].pos, pOpenKey[i].Size, pMoveBlock[j].size)) {
+						pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+					}
+				}
+			}
+		}
+
 		//------------------------------------------------------------------
 		//ゴール専用鍵とプレイヤーの当たり判定(GKeyとPlayer)
 		//------------------------------------------------------------------
@@ -2185,6 +2260,9 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	JOINT* pJoint = GetJoint();
 	PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
 	GOAL* pGoal = GetGoal();
+	KEY* pKey = GetKey();
+	OPENKEY* pOpenKey = GetOpenKey();
+
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	JUMPSTAND* pJumpStand = GetJumpStand();
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
@@ -2285,6 +2363,20 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 		if (pGoal->pieceIndex == pinNo)
 		{
 			pGoal->Pos += num;
+		}
+	}
+	for (int i = 0; i < KEY_MAX; i++) {
+		if (pKey[i].UseFlag) {
+			if (pKey[i].index == pinNo) {
+				pKey[i].Position += num;
+			}
+		}
+	}
+	for (int i = 0; i < OPEN_KEY_MAX; i++) {
+		if (pOpenKey[i].UseFlag) {
+			if (pOpenKey[i].index == pinNo) {
+				pOpenKey[i].Position += num;
+			}
 		}
 	}
 	for (int i = 0; i < THORN_BLOCK_MAX; i++)

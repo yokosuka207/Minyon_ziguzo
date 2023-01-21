@@ -16,12 +16,13 @@
 //=============================================================================
 //マクロ定義
 //=============================================================================
-#define KEY_MAX (1)
+#define KEY_MAX (3)
 
 typedef struct {
 
 	bool GetKey; //鍵を取ったかどうかの判定
 	bool OpenKey; //鍵を開けるかどうかの判定
+	bool UseFlag;
 	D3DXVECTOR2 Size;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
 	D3DXCOLOR col;//色
