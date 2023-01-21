@@ -122,6 +122,9 @@ static char g_GKeySoundName[] = "data\\SoundData\\SE\\ピース入手(効果音ラボ).wav
 //ピースの合体
 static int g_MatchPieceSoundNo = 0;
 static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\ピースはめ込む音(無料効果音で遊ぼう！).wav";
+//ろうそく
+static int g_CandleSoundNo = 0;
+static char g_CandleSoundName[] = "data\\SoundData\\SE\\ろうそく(効果音ラボ).wav";
 
 
 
@@ -139,6 +142,7 @@ void InitCollision()
 	g_OpenKeySoundNo = LoadSound(g_OpenKeySoundName);
 	g_GKeySoundNo = LoadSound(g_GKeySoundName);
 	g_MatchPieceSoundNo = LoadSound(g_MatchPieceSoundName);
+	g_CandleSoundNo = LoadSound(g_CandleSoundName);
 }
 
 
@@ -155,6 +159,7 @@ void UninitCollision()
 	StopSound(g_OpenKeySoundNo);
 	StopSound(g_GKeySoundNo);
 	StopSound(g_MatchPieceSoundNo);
+	StopSound(g_CandleSoundNo);
 }
 
 
@@ -358,6 +363,8 @@ void UpdateCollision(){
 					if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
 						
 						pPlayer->hp--;
+						//SetVolume(g_CandleSoundNo, 0.5f);
+						PlaySound(g_CandleSoundNo, 0);
 						for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
 							if (pSpawnPoint[i].UseFlag) {
 								if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
@@ -372,6 +379,8 @@ void UpdateCollision(){
 		//プレイヤーが落下死
 		if (pPlayer->Position.y - pPlayer->size.y < -SCREEN_HEIGHT / 2) {
 			pPlayer->hp--;
+			//SetVolume(g_CandleSoundNo, 0.5f);
+			PlaySound(g_CandleSoundNo, 0);
 			for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
 				if (pSpawnPoint[i].UseFlag) {
 					if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {

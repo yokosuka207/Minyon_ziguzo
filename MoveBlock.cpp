@@ -24,7 +24,7 @@ static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
 static int g_MoveBlockMoveSoundNo = 0;
 static char g_MoveBlockMoveSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
 static int g_MoveBolckLandingSoundNo = 0;
-static char g_g_MoveBolckLandingSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_g_MoveBolckLandingSoundName[] = "data\\SoundData\\SE\\物の落下音(無料効果音で遊ぼう！).wav";
 
 
 
@@ -67,6 +67,7 @@ void UpdateMoveBlock()
 	{
 		if (gMoveBlock[i].bUse)
 		{
+			gMoveBlock[i].oldoldpos = gMoveBlock[i].oldpos;
 			gMoveBlock[i].oldpos = gMoveBlock[i].pos;
 
 			//プレイヤーが持ってるときの判定
@@ -142,9 +143,12 @@ void UpdateMoveBlock()
 					{
 						gMoveBlock[i].pos.y = (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 - gMoveBlock[i].size.y / 2;
 						
-						//着地した瞬間をとりたい
-						//SetVolume(g_MoveBolckLandingSoundNo, 0.5f);
-						//PlaySound(g_MoveBolckLandingSoundNo, 0);
+						//着地した瞬間だけ音が鳴る
+						if (gMoveBlock[i].oldoldpos.y != gMoveBlock[i].pos.y)
+						{
+							//SetVolume(g_MoveBolckLandingSoundNo, 0.5f);
+							PlaySound(g_MoveBolckLandingSoundNo, 0);
+						}
 					}
 					//プレイヤー下・ブロック上,落下する
 					if (gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 > (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 &&
