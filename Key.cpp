@@ -92,23 +92,25 @@ void DrawKey()
 
 void SetKey(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index){
 	for (int i = 0; i < KEY_MAX; i++) {
-		if (!g_Key[i].UseFlag){
-			switch (direction) {
-			case 0:g_Key[i].rot = (direction + 2) * 90;
-				break;
-			case 1:g_Key[i].rot = direction * 90;
-				break;
-			case 2:g_Key[i].rot = (direction - 2) * 90;
-				break;
-			case 3:g_Key[i].rot = direction * 90;
-				break;
-			default:
-				break;
+		if (!g_Key[i].GetKey) {
+			if (!g_Key[i].UseFlag) {
+				switch (direction) {
+				case 0:g_Key[i].rot = (direction + 2) * 90;
+					break;
+				case 1:g_Key[i].rot = direction * 90;
+					break;
+				case 2:g_Key[i].rot = (direction - 2) * 90;
+					break;
+				case 3:g_Key[i].rot = direction * 90;
+					break;
+				default:
+					break;
+				}
+				g_Key[i].Position = pos;
+				g_Key[i].Size = size;
+				g_Key[i].index = index;
+				g_Key[i].UseFlag = true;
 			}
-			g_Key[i].Position = pos;
-			g_Key[i].Size = size;
-			g_Key[i].index = index;
-			g_Key[i].UseFlag = true;
 		}
 	}
 }

@@ -26,6 +26,7 @@
 #include"spawnpoint.h"
 #include "Key.h"
 #include "OpenKey.h"
+#include "MoveBlock.h"
 #include "switch.h"
 #include "SwitchWall.h"
 #include"warp.h"
@@ -121,6 +122,7 @@ void UpdateCursor()
 	GOAL* pGoal = GetGoal();
 	KEY* pKey = GetKey();
 	OPENKEY* pOpenKey = GetOpenKey();
+	MOVEBLOCK* pMoveBlock = GetMoveBlock();
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	JUMPSTAND* pJumpStand = GetJumpStand();
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();

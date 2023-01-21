@@ -15,11 +15,12 @@
 //=============================================================================
 //マクロ定義
 //=============================================================================
-#define OPEN_KEY_MAX (2)
+#define OPEN_KEY_MAX (3)
 
 
 typedef struct {
 	bool UseFlag;//構造体利用中フラグ
+	bool KeyOpen;
 	D3DXVECTOR2 Size;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
 	D3DXVECTOR2 sp;

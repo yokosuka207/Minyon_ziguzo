@@ -36,6 +36,7 @@ HRESULT InitOpenKey()
 		g_OpenKey[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_OpenKey[i].index = -1;
 		g_OpenKey[i].PaternNo = 0.0f;
+		g_OpenKey[i].KeyOpen = false;
 		g_OpenKey[i].UseFlag = false;
 		
 	}
@@ -78,7 +79,7 @@ void DrawOpenKey()
 				g_OpenKey[i].col,
 				g_OpenKey[i].PaternNo,
 				1.0f / 1.0f,
-				1.0f / 2.0f,
+				1.0f / 3.0f,
 				1);
 		}
 	}
@@ -89,35 +90,36 @@ void DrawOpenKey()
 void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index)
 {
 	for (int i = 0; i < OPEN_KEY_MAX; i++) {
-		if (!g_OpenKey[i].UseFlag) //!‚ÍNOT
-		{
-			switch (direction)
+		if (!g_OpenKey[i].KeyOpen) {
+			if (!g_OpenKey[i].UseFlag) //!‚ÍNOT
 			{
-			case 0:
-				g_OpenKey[i].Position = D3DXVECTOR2(pos.x, pos.y + i * size.y);
-				g_OpenKey[i].rot = (direction + 2) * 90;
-				break;
-			case 1:
-				g_OpenKey[i].Position = D3DXVECTOR2(pos.x + i * size.x, pos.y);
-				g_OpenKey[i].rot = direction * 90;
-				break;
-			case 2:
-				g_OpenKey[i].Position = D3DXVECTOR2(pos.x, pos.y - i * size.y);
-				g_OpenKey[i].rot = (direction - 2) * 90;
-				break;
-			case 3:
-				g_OpenKey[i].Position = D3DXVECTOR2(pos.x - i * size.x, pos.y);
-				g_OpenKey[i].rot = direction * 90;
-				break;
-			default:
-				break;
+				switch (direction)
+				{
+				case 0:
+					g_OpenKey[i].Position = D3DXVECTOR2(pos.x, pos.y + i * size.y);
+					g_OpenKey[i].rot = (direction + 2) * 90;
+					break;
+				case 1:
+					g_OpenKey[i].Position = D3DXVECTOR2(pos.x + i * size.x, pos.y);
+					g_OpenKey[i].rot = direction * 90;
+					break;
+				case 2:
+					g_OpenKey[i].Position = D3DXVECTOR2(pos.x, pos.y - i * size.y);
+					g_OpenKey[i].rot = (direction - 2) * 90;
+					break;
+				case 3:
+					g_OpenKey[i].Position = D3DXVECTOR2(pos.x - i * size.x, pos.y);
+					g_OpenKey[i].rot = direction * 90;
+					break;
+				default:
+					break;
+				}
+				g_OpenKey[i].Size = size;
+				g_OpenKey[i].index = index;
+				g_OpenKey[i].UseFlag = true;
 			}
-			g_OpenKey[i].Size = size;
-			g_OpenKey[i].index = index;
-			g_OpenKey[i].UseFlag = true;
 		}
 	}
-	
 }
 
 void DeleteOpenKey(int PieceNo) {

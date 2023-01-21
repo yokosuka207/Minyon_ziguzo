@@ -775,8 +775,8 @@ void UpdateCollision(){
 			if (pKey[i].UseFlag) {
 				if (CollisionBB(pKey[i].Position, pPlayer->Position, pKey[i].Size, pPlayer->size)) {
 					pPlayer->HaveKey++;
-					pKey->GetKey = true;
-					pKey->UseFlag = false;
+					pKey[i].GetKey = true;
+					pKey[i].UseFlag = false;
 					//SetVolume(g_BrokenSoundNo, 0.5f);
 					PlaySound(g_KeySoundNo, 0);
 				}
@@ -790,7 +790,11 @@ void UpdateCollision(){
 				for (int j = 0; j < KEY_MAX; j++) {
 					if (CollisionBB(pOpenKey[i].Position, pPlayer->Position, pOpenKey[i].Size, pPlayer->size)) {
 						if (pPlayer->HaveKey > 0) {
-							(pOpenKey + i)->UseFlag = false;
+							pOpenKey[i].KeyOpen = true;
+							pOpenKey[i].UseFlag = false;
+							if (i == OPEN_KEY_MAX - 1) {
+								pPlayer->HaveKey--;
+							}
 							//SetVolume(g_OpenKeySoundNo, 0.5f);
 							PlaySound(g_OpenKeySoundNo, 0);
 						}
