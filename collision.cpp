@@ -718,8 +718,10 @@ void UpdateCollision(){
 				{
 					pPlayer->Position.y = (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 + pPlayer->size.y / 2;
 					pPlayer->getfall = false;
+					pPlayer->jump = false;
 					pPlayer->fall = false;
 					pPlayer->frame = 50;
+					pPlayer->isHigh = true;
 					(pFallBlock + i)->oldpos = (pFallBlock + i)->Position;
 					(pFallBlock + i)->Position.y--;
 
