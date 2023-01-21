@@ -65,6 +65,9 @@ static char g_PlayeRightSoundName[] = "data\\SoundData\\SE\\革靴で歩く右.wav";
 static int g_PlayerLeftSoundNo = 0;
 static char g_PlayerLeftSoundName[] = "data\\SoundData\\SE\\革靴で歩く左.wav";
 
+//プレイヤー着地音導入したいです
+//
+
 static Time		g_Time;
 
 //=============================================================================
@@ -102,7 +105,7 @@ HRESULT InitPlayer()
 	g_Player.uv_h = PLAYER_UV_H;//縦サイズ
 	g_Player.NumPatern = 4;//横枚数
 
-	g_Player.hp = 3;
+	g_Player.hp = PLAYER_HP;
 	g_Player.frame = 0;
 	g_Player.CoolTime = PLAYER_COOLTIME;
 	g_Player.PieceIndex = 0;
@@ -177,7 +180,7 @@ void UpdatePlayer()
 				}
 			}
 			else {
-				if (g_Player.PaternNo != 1.0f) {
+				if (g_Player.PaternNo != 9.0f) {
 					g_Player.SoundRightFlag = false;
 				}
 			}
@@ -189,7 +192,7 @@ void UpdatePlayer()
 				}
 			}
 			else {
-				if (g_Player.PaternNo != 9.0f) {
+				if (g_Player.PaternNo != 1.0f) {
 					g_Player.SoundLeftFlag = false;
 				}
 			}

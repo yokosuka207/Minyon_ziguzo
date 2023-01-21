@@ -22,8 +22,17 @@ static ID3D11ShaderResourceView* g_textureBlock;	//画像一枚で一つの変数が必要
 //static char* g_textureName_Block= (char*)"data\\texture\\JumpStand.jpg";	//テクスチャファイルパス
 static char* g_textureName_Block = (char*)"data\\texture\\jumpstand.png";	//テクスチャファイルパス
 static int	  g_TextureNo = 0;	//プレイヤー用テクスチャの識別子
+
+//ジャンプスタンド音
 static int g_JumpStandSoundNo = 0;
 static char g_JumpStandSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+//ジャンプスタンド運ぶ（引きずる音）
+static int g_JumpStandSoundMoveNo = 0;
+static char g_JumpStandSoundMoveName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static int g_JumpStandLandingSoundNo = 0;
+static char g_JumpStandLandingSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+
+
 
 HRESULT InitJumpStand()
 {
@@ -41,9 +50,11 @@ HRESULT InitJumpStand()
 		g_JumpStand[i].JumpStandFlag = false;
 
 		g_JumpStand[i].JumpStandFlag = false;
-		g_JumpStandSoundNo = LoadSound(g_JumpStandSoundName);
-		return S_OK;
 	}
+	return S_OK;
+	g_JumpStandSoundNo = LoadSound(g_JumpStandSoundName);
+	g_JumpStandSoundMoveNo = LoadSound(g_JumpStandSoundMoveName);
+	g_JumpStandLandingSoundNo = LoadSound(g_JumpStandLandingSoundName);
 }
 
 void UninitJumpStand()
@@ -55,6 +66,8 @@ void UninitJumpStand()
 	}
 
 	StopSound(g_JumpStandSoundNo);
+	StopSound(g_JumpStandSoundMoveNo);
+	StopSound(g_JumpStandLandingSoundNo);
 }
 
 void UpdateJumpStand()
@@ -77,7 +90,7 @@ void UpdateJumpStand()
 				if (g_JumpStand[i].rot == 90 || g_JumpStand[i].rot == 270) {
 					g_JumpStand[i].rot = 180.0f;
 				}
-
+				//ジャンプ台右・プレイヤー左
 				if (p_Player->Position.x + p_Player->size.x / 2 > g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
 					p_Player->oldpos.x + p_Player->size.x / 2 <= g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 &&
 					p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
@@ -85,9 +98,10 @@ void UpdateJumpStand()
 				{
 					g_JumpStand[i].sp = p_Player->sp;
 					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
-
+					//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
+					//PlaySound(g_JumpStandSoundMoveNo, 0);
 				}
-				//プレイヤー右・壊れるブロック左
+				//プレイヤー右・ジャンプ台左
 				if (p_Player->Position.x - p_Player->size.x / 2 < g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 &&
 					p_Player->oldpos.x - p_Player->size.x / 2 >= g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 &&
 					p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
@@ -95,6 +109,8 @@ void UpdateJumpStand()
 				{
 					g_JumpStand[i].sp = p_Player->sp;
 					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
+					//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
+					//PlaySound(g_JumpStandSoundMoveNo, 0);
 				}
 
 
@@ -102,6 +118,8 @@ void UpdateJumpStand()
 				{
 					g_JumpStand[i].sp = p_Player->sp;
 					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
+					//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
+					//PlaySound(g_JumpStandSoundMoveNo, 0);//通っているけど出だしのごく短い時間がループしている
 				}
 
 				{
@@ -122,6 +140,9 @@ void UpdateJumpStand()
 								g_JumpStand[i].pos.y = g_JumpStand[i].oldpos.y;
 								g_JumpStand[i].NowPieceIndex = p_Block[j].PieceIndex;
 
+								//着地した瞬間をとりたい
+								//SetVolume(g_JumpStandLandingSoundNo, 0.5f);
+								//PlaySound(g_JumpStandLandingSoundNo, 0);
 							}
 							if (g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 > (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
 								g_JumpStand[i].oldpos.x + g_JumpStand[i].size.x / 2 <= (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&

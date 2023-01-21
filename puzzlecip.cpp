@@ -9,6 +9,7 @@
 #include"mouse.h"
 #include "MapChip.h"
 #include "SplitStage.h"
+#include "sound.h"
 
 #include"inventory.h"
 PUZZLE_CIP	g_PuzzleCip[CIP_MAX];
@@ -19,6 +20,12 @@ PUZZLE_CIP g_ChipPuzzleChip[BLOCK_CHIP_MAX];
 
 static ID3D11ShaderResourceView	*g_texturePuzzleCip;	//画像一枚で一つの変数が必要
 static char *g_textureName_PuzzleCip = (char*)"data\\texture\\ピース取得アイテム.png";	//テクスチャファイルパス
+
+
+//サウンド
+static int g_PieceSoundNo = 0;
+static char g_PieceSoundName[] = "data\\SoundData\\SE\\革靴で歩く左.wav";
+
 
 
 void SetPuzzleCipCreate(CREATE_CIP_TYPE ctype,int u, int r, int d, int l, bool gflag);
@@ -47,6 +54,8 @@ HRESULT InitPuzzleCip()
 
 	}
 
+	g_PieceSoundNo = LoadSound(g_PieceSoundName);
+
 	return S_OK;
 }
 
@@ -57,7 +66,7 @@ void UninitPuzzleCip()
 		g_texturePuzzleCip->Release();
 		g_texturePuzzleCip = NULL;
 	}
-
+	StopSound(g_PieceSoundNo);
 }
 
 void UpdatePuzzleCip()
@@ -86,8 +95,9 @@ void UpdatePuzzleCip()
 							//SetPieceMapChip(pSplitStage->Split3[2][2], g_ChipPuzzleChip[i].NextPieceIndex);
 							SetInventory(g_ChipPuzzleChip[i].NextPieceIndex);
 							g_ChipPuzzleChip[i].GetFlag = true;
-
 							g_ChipPuzzleChip[i].UseFlag = false;
+							//SetVolume(g_WarpSoundNo, 0.5f);
+							PlaySound(g_PieceSoundNo, 0);
 						}
 
 			}
