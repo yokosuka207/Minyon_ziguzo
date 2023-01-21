@@ -785,25 +785,26 @@ void UpdateCollision(){
 		//-----------------------------------------------------------------
 		//通常鍵取得プレイヤーと鍵で開く扉の当たり判定(PlayerとOpenKey)
 		//-----------------------------------------------------------------
-		for (int i = 0; i < OPEN_KEY_MAX; i++) {
-			if ((pOpenKey + i)->UseFlag) {
-				for (int j = 0; j < KEY_MAX; j++) {
-					if (CollisionBB(pOpenKey[i].Position, pPlayer->Position, pOpenKey[i].Size, pPlayer->size)) {
+		for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
+			for (int i = 0; i < OPEN_KEY_MAX; i++) {
+				if ((pOpenKey + j + i)->UseFlag) {
+					if (CollisionBB((pOpenKey + j + i)->Position, pPlayer->Position, (pOpenKey + j + i)->Size, pPlayer->size)) {
 						if (pPlayer->HaveKey > 0) {
-							pOpenKey[i].KeyOpen = true;
-							pOpenKey[i].UseFlag = false;
-							if (i % 3 == 0) {
-								pPlayer->HaveKey--;
+							if (i == 0) {
+								(pOpenKey + j + i)->KeyOpen = true;
+								(pOpenKey + j + i + 1)->KeyOpen = true;
+								(pOpenKey + j + i + 2)->KeyOpen = true;
+
+								(pOpenKey + j + i)->UseFlag = false;
+								(pOpenKey + j + i + 1)->UseFlag = false;
+								(pOpenKey + j + i + 2)->UseFlag = false;
 							}
+							pPlayer->HaveKey--;
+
 							//SetVolume(g_OpenKeySoundNo, 0.5f);
 							PlaySound(g_OpenKeySoundNo, 0);
 						}
 					}
-					/*else
-					{
-						pPlayer->Position.x = (pOpenKey + i)->Position.x - (pOpenKey + i)->Size.x / 2 - pPlayer->size.x / 2;
-					}*/
-
 				}
 			}
 		}
@@ -811,61 +812,62 @@ void UpdateCollision(){
 		//-----------------------------------------------------
 		//プレイヤーと鍵付き扉の当たり判定(PlayerとOpenKey)
 		//-----------------------------------------------------
-		for (int i = 0; i < OPEN_KEY_MAX; i++) {
-			if (pOpenKey[i].UseFlag) {
-				//プレーヤーと扉の判定
-				//扉の左とプレイヤーの右
-				if (pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
-				{
-					pPlayer->Position.x = pPlayer->oldpos.x;
-				}
-				//扉の右とプレイヤーの左
-				if (pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 <= pPlayer->oldpos.x - pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
-				{
-					pPlayer->Position.x = pPlayer->oldpos.x;
-				}
-				//扉の↓とプレイヤーの上
-				if (pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 >= pPlayer->oldpos.y + pPlayer->size.y / 2)
-				{
-					pPlayer->Position = pPlayer->oldpos;
-				}
-				//扉の↑とプレイヤーの↓
-				if (pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
-					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
-				{
-					pPlayer->Position.y = pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 + pPlayer->size.y / 2 + 0.02f;
-					pPlayer->jump = false;
-					pPlayer->fall = false;
-					pPlayer->WarpFlag = false;
-					pPlayer->sp.y = 0;
-					pPlayer->frame = 0;
-				}
-				//扉とjumpstandの判定
-				for (int j = 0; j < JUMPSTAND_MAX; j++) {
-					if (CollisionBB(pOpenKey[i].Position, pJumpStand[j].pos, pOpenKey[i].Size, pJumpStand[j].size)) {
-						pJumpStand[j].pos = pJumpStand[j].oldpos;
+		for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
+			for (int i = 0; i < OPEN_KEY_MAX; i++) {
+				if (pOpenKey[i].UseFlag) {
+					//プレーヤーと扉の判定
+					//扉の左とプレイヤーの右
+					if ((pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+						(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+					{
+						pPlayer->Position.x = pPlayer->oldpos.x;
 					}
-				}
-				//扉と動くブロックの判定
-				for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
-					if (CollisionBB(pOpenKey[i].Position, pMoveBlock[j].pos, pOpenKey[i].Size, pMoveBlock[j].size)) {
-						pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+					//扉の右とプレイヤーの左
+					if ((pOpenKey + j + i)->Position.x + (pOpenKey + j + i)->Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.x + (pOpenKey + j + i)->Size.x / 2 <= pPlayer->oldpos.x - pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+						(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+					{
+						pPlayer->Position.x = pPlayer->oldpos.x;
+					}
+					//扉の↓とプレイヤーの上
+					if ((pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.x + (pOpenKey + j + i)->Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+						(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 >= pPlayer->oldpos.y + pPlayer->size.y / 2)
+					{
+						pPlayer->Position = pPlayer->oldpos;
+					}
+					//扉の↑とプレイヤーの↓
+					if ((pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.x + (pOpenKey + j + i)->Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
+						(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
+					{
+						pPlayer->Position.y = pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 + pPlayer->size.y / 2 + 0.02f;
+						pPlayer->jump = false;
+						pPlayer->fall = false;
+						pPlayer->WarpFlag = false;
+						pPlayer->sp.y = 0;
+						pPlayer->frame = 0;
+					}
+					//扉とjumpstandの判定
+					for (int j = 0; j < JUMPSTAND_MAX; j++) {
+						if (CollisionBB((pOpenKey + j + i)->Position, pJumpStand[j].pos, (pOpenKey + j + i)->Size, pJumpStand[j].size)) {
+							pJumpStand[j].pos = pJumpStand[j].oldpos;
+						}
+					}
+					//扉と動くブロックの判定
+					for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
+						if (CollisionBB((pOpenKey + j + i)->Position, pMoveBlock[j].pos, (pOpenKey + j + i)->Size, pMoveBlock[j].size)) {
+							pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+						}
 					}
 				}
 			}
 		}
-
 		//------------------------------------------------------------------
 		//ゴール専用鍵とプレイヤーの当たり判定(GKeyとPlayer)
 		//------------------------------------------------------------------
@@ -2372,10 +2374,12 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 			}
 		}
 	}
-	for (int i = 0; i < OPEN_KEY_MAX; i++) {
-		if (pOpenKey[i].UseFlag) {
-			if (pOpenKey[i].index == pinNo) {
-				pOpenKey[i].Position += num;
+	for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
+		for (int i = 0; i < OPEN_KEY_MAX; i++) {
+			if ((pOpenKey + j + i)->UseFlag) {
+				if ((pOpenKey + j + i)->index == pinNo) {
+					(pOpenKey + j + i)->Position += num;
+				}
 			}
 		}
 	}
