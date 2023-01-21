@@ -296,6 +296,7 @@ void UpdateCollision(){
 					pSwitch[i].PaternNo = 0;
 					pSwitch[i].NotPressed = true;
 				}
+
 				//スイッチと木箱の当たり判定
 				for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
 					if(CollisionBB(pSwitch[i].pos,pMoveBlock[j].pos,pSwitch[i].size,pMoveBlock[j].size)){
@@ -318,7 +319,7 @@ void UpdateCollision(){
 				if (pSwitch[i].PressFlag) {
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
 						//  switch index 0,1			switch wall	index 0,3
-						if (pSwitch[i].SwitchIndex == pSwitchWall[i + j].SwitchIndex) {
+						if (pSwitch[i].SwitchIndex == pSwitchWall[i].SwitchIndex) {
 							pSwitchWall[i + j].UseFlag = false;	//押されたら壁がなくなる
 						}
 					}
@@ -326,7 +327,6 @@ void UpdateCollision(){
 				else {
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
 						pSwitchWall[j].UseFlag = true;		//壁出現
-
 					}
 				}
 			}
@@ -353,16 +353,16 @@ void UpdateCollision(){
 				//壁の↓とプレイヤーの上
 				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 >= pPlayer->oldpos.y + pPlayer->size.y / 2)
+					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y - pPlayer->size.y / 2 &&
+					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 >= pPlayer->oldpos.y - pPlayer->size.y / 2)
 				{
 					pPlayer->Position = pPlayer->oldpos;
 				}
 				//壁の↑とプレイヤーの↓
 				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
-					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
+					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y + pPlayer->size.y / 2)
 				{
 					pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 + pPlayer->size.y / 2 + 0.02f;
 					pPlayer->jump = false;

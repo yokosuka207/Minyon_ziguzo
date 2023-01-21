@@ -109,10 +109,18 @@ void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index){
 					g_OpenKey[j][i].Size = size;
 					g_OpenKey[j][i].index = index;
 					g_OpenKey[j][i].UseFlag = true;
+					if (g_OpenKey[0][2].UseFlag) {
+						continue;
+					}
+					else if (g_OpenKey[1][2].UseFlag) {
+						continue;
+					}
+					else {
+						break;
+					}
 				}
 			}
 		}
-		break;
 	}
 }
 
