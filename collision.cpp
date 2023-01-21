@@ -650,7 +650,8 @@ void UpdateCollision(){
 					pPlayer->Position.y + pPlayer->size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2)
 				{
-					pPlayer->Position.y = pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2 + pPlayer->size.y / 2;
+					pPlayer->Position.y = pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 - pPlayer->size.y / 2;
+					pMoveBlock[i].MoveFlag = true;
 					// 着地中にする
 					if (!pPlayer->isMoveBlock) {
 						pPlayer->sp.y = 0.0f;
@@ -659,6 +660,8 @@ void UpdateCollision(){
 					}
 				}
 				else {
+					pMoveBlock[i].MoveFlag = false;
+
 					pPlayer->isMoveBlock = false;
 				}
 				//プレイヤー下・ブロック上,落下する
@@ -670,6 +673,7 @@ void UpdateCollision(){
 					pMoveBlock[i].sp = pPlayer->sp;
 					pMoveBlock[i].pos.y += pMoveBlock[i].sp.x;
 				}
+
 			}
 		}
 		//====================================================================
@@ -699,11 +703,8 @@ void UpdateCollision(){
 					pPlayer->Position.y + pPlayer->size.y / 2 > (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 &&
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2)
 				{
-					pPlayer->Position.y = (pFallBlock + i)->Position.y +(pFallBlock + i)->Size.y / 2 + pPlayer->size.y / 2;
-					pPlayer->getfall = false;
-					pPlayer->fall = false;
-					pPlayer->frame = 50;
-					(pFallBlock + i)->Position.y++;
+					pPlayer->Position.y = (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 - pPlayer->size.y / 2;
+
 				}
 				//プレイヤー下・落ちるブロック
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pFallBlock + i)->Position.x - (pFallBlock + i)->Size.x / 2 &&
@@ -711,8 +712,30 @@ void UpdateCollision(){
 					pPlayer->Position.y - pPlayer->size.y / 2 < (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 &&
 					pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2)
 				{
-					pPlayer->Position.y = (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 - pPlayer->size.y / 2;
+					pPlayer->Position.y = (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 + pPlayer->size.y / 2;
+					pPlayer->getfall = false;
+					pPlayer->fall = false;
+					pPlayer->frame = 50;
+					(pFallBlock + i)->oldpos = (pFallBlock + i)->Position;
+					(pFallBlock + i)->Position.y--;
+
 				}
+
+				for (int j = 0; j < BLOCK_CHIP_MAX; j++)
+				{
+					if (pChipblock[j].UseFlag)
+					{
+						if (pFallBlock[i].Position.x + pFallBlock[i].Size.x / 3 > (pChipblock + j)->Position.x - (pChipblock + j)->Size.x / 2 &&
+							pFallBlock[i].Position.x - pFallBlock[i].Size.x / 3 < (pChipblock + j)->Position.x + (pChipblock + j)->Size.x / 2 &&
+							pFallBlock[i].Position.y - pFallBlock[i].Size.y / 2 < (pChipblock + j)->Position.y + (pChipblock + j)->Size.y / 2 &&
+							pFallBlock[i].oldpos.y - pFallBlock[i].Size.y / 2 >= (pChipblock + j)->Position.y + (pChipblock + j)->Size.y / 2)
+						{
+							pFallBlock[i].Position.y = (pChipblock + j)->Position.y + (pChipblock + j)->Size.y / 2 + pFallBlock[i].Size.y / 2;
+						}
+
+					}
+				}
+
 			}
 		}
 		//====================================================================
@@ -930,6 +953,7 @@ void UpdateCollision(){
 		//しんちゃんへ
 		//SE導入してるときに気になったから追加してみたけど余計なことしてたらごめんね追加部分はコメントアウトしとくね
 		//エネミー関連のSE部分はいろいろ決まったら随時追加予定
+		//OK
 		for (int i = 0; i < ENEMY_MAX; i++) {
 			if (pEnemy[i].UseFlag) {
 				pEnemy[i].AIFlag = false;
