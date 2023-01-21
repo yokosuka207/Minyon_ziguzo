@@ -100,28 +100,31 @@ static bool InventoryFlag = false;
 //効果音
 //壊れるブロック
 static int g_BrokenSoundNo = 0;
-static char g_BrokenSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_BrokenSoundName[] = "data\\SoundData\\SE\\木箱が壊れる(魔王魂).wav";
 //スイッチ
 static int g_SwitchSoundNo = 0;
-static char g_SwitchSoundName[] = "data\\SoundData\\SE\\スイッチ（ニコニ・コモンズ）.wav";
+static char g_SwitchSoundName[] = "data\\SoundData\\SE\\スイッチ(ニコニ・コモンズ).wav";
 //ワープ
 static int g_WarpSoundNo = 0;
-static char g_WarpSoundName[] = "data\\SoundData\\SE\\ワープ_無料効果音で遊ぼう！_.wav";
-//高いとこから請われる床
+static char g_WarpSoundName[] = "data\\SoundData\\SE\\ワープ(無料効果音で遊ぼう！).wav";
+//高いとこから壊れる床
 static int g_HighSoundNo = 0;
 static char g_HighSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
 //鍵
 static int g_KeySoundNo = 0;
-static char g_KeySoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_KeySoundName[] = "data\\SoundData\\SE\\鍵入手.wav";
 //鍵扉
 static int g_OpenKeySoundNo = 0;
-static char g_OpenKeySoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_OpenKeySoundName[] = "data\\SoundData\\SE\\鍵を開ける(無料効果音で遊ぼう！).wav";
 //ゴールピース
 static int g_GKeySoundNo = 0;
-static char g_GKeySoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_GKeySoundName[] = "data\\SoundData\\SE\\ピース入手(効果音ラボ).wav";
 //ピースの合体
 static int g_MatchPieceSoundNo = 0;
-static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\ピースはめ込む音_無料効果音で遊ぼう！_.wav";
+static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\ピースはめ込む音(無料効果音で遊ぼう！).wav";
+//ろうそく
+static int g_CandleSoundNo = 0;
+static char g_CandleSoundName[] = "data\\SoundData\\SE\\ろうそく(効果音ラボ).wav";
 
 
 
@@ -139,6 +142,7 @@ void InitCollision()
 	g_OpenKeySoundNo = LoadSound(g_OpenKeySoundName);
 	g_GKeySoundNo = LoadSound(g_GKeySoundName);
 	g_MatchPieceSoundNo = LoadSound(g_MatchPieceSoundName);
+	g_CandleSoundNo = LoadSound(g_CandleSoundName);
 }
 
 
@@ -155,6 +159,7 @@ void UninitCollision()
 	StopSound(g_OpenKeySoundNo);
 	StopSound(g_GKeySoundNo);
 	StopSound(g_MatchPieceSoundNo);
+	StopSound(g_CandleSoundNo);
 }
 
 
@@ -373,25 +378,18 @@ void UpdateCollision(){
 		//=====================================
 		if (!Mouse_IsLeftDown())
 		{
-			//プレイヤーとトゲブロックの判定
+			//プレイヤーとトゲブロックの判定(プレイヤーがトゲ死)
 			for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 				if (pThornBlock[i].UseFlag) {
 					if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
 						
 						pPlayer->hp--;
-
-						if (pPlayer->hp <= 0) {
-							SetResultType(LOSE);
-							StartFade(FADE::FADE_OUT);
-							pTime->EndTime();
-							pTimeParam->EndFlag = true;
-						}
-						else {//下に何もなく死亡する場合
-							for (int i = 0; i < SPAWN_POINT_MAX; i++) {
-								if (pSpawnPoint[i].UseFlag) {
-									if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
-										pPlayer->Position = pSpawnPoint[i].Position;
-									}
+						//SetVolume(g_CandleSoundNo, 0.5f);
+						PlaySound(g_CandleSoundNo, 0);
+						for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
+							if (pSpawnPoint[i].UseFlag) {
+								if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
+									pPlayer->Position = pSpawnPoint[i].Position;
 								}
 							}
 						}
@@ -399,13 +397,26 @@ void UpdateCollision(){
 				}
 			}
 		}
-		//プレイヤーが落下死したら
+		//プレイヤーが落下死
 		if (pPlayer->Position.y - pPlayer->size.y < -SCREEN_HEIGHT / 2) {
 			pPlayer->hp--;
-			pResult[0].type = LOSE;
+			//SetVolume(g_CandleSoundNo, 0.5f);
+			PlaySound(g_CandleSoundNo, 0);
+			for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
+				if (pSpawnPoint[i].UseFlag) {
+					if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
+						pPlayer->Position = pSpawnPoint[i].Position;
+					}
+				}
+			}
+		}
+		//プレイヤー残機ゼロ
+		if (pPlayer->hp <= 0) {
+			pPlayer->UseFlag = false;
+			SetResultType(LOSE);
+			StartFade(FADE::FADE_ALPHA_OUT);
 			pTime->EndTime();
 			pTimeParam->EndFlag = true;
-			StartFade(FADE::FADE_ALPHA_OUT);
 		}
 
 		//========================================================================
