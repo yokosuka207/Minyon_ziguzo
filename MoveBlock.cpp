@@ -164,7 +164,7 @@ void UpdateMoveBlock()
 						if (gMoveBlock[i].oldoldpos.y != gMoveBlock[i].pos.y)
 						{
 							//SetVolume(g_MoveBolckLandingSoundNo, 0.5f);
-							PlaySound(g_MoveBolckLandingSoundNo, 0);
+							//PlaySound(g_MoveBolckLandingSoundNo, 0);
 						}
 					}
 					//プレイヤー下・ブロック上,落下する
