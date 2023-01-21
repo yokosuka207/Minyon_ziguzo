@@ -39,7 +39,7 @@
 #include "scene.h"
 #include "pause.h"
 #include "goal_key.h"
-#include "doppelganger.h"
+//#include "doppelganger.h" //ドッペルゲンガー
 #include "enemy.h"
 #include "bullet.h"
 #include"noizu.h"
@@ -94,8 +94,8 @@ void InitGame()
 		InitMoveBlock();
 		InitFallBlock();
 		InitNoizu();
-		InitDoppelganger();
-		SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1);
+		//InitDoppelganger(); //ドッペルゲンガー
+		//SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1); //ドッペルゲンガー
 		InitEnemy();
 		InitPause();
 		InitRay();				// 光線の初期化
@@ -152,7 +152,7 @@ void UninitGame()
 	UninitSwitch();
 	UninitSwitchWall();
 	UninitNoizu();
-	UninitDoppelganger();
+	//UninitDoppelganger(); 	//ドッペルゲンガー
 	UninitEnemy();
 	UninitBullet();
 	UninitPlayerLife();
@@ -219,7 +219,7 @@ void UpdateGame()
 		UpdateSwitch();
 		UpdateSwitchWall();
 
-		UpdateDoppelganger();
+		//UpdateDoppelganger();//ドッペルゲンガー
 		UpdateEnemy();
 		UpdateBullet();
 
@@ -278,7 +278,7 @@ void DrawGame()
 		DrawBroken();		
 		DrawThornBlock();
 
-		DrawDoppelganger();
+		//DrawDoppelganger();//ドッペルゲンガー
 		DrawEnemy();
 		DrawBullet();
 		DrawNoizu();
