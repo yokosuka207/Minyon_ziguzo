@@ -21,6 +21,7 @@ typedef struct
 
 	bool GetJumpStand;
 	bool JumpStandNotMove;
+	bool LookFlag;
 
 
 }JUMPSTAND;
