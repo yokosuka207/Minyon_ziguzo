@@ -36,6 +36,8 @@
 #include "start.h"
 #include"high_broken.h"
 #include "sound.h"
+#include"MoveBlock.h"
+#include"fallblock.h"
 
 //--------------------------------------------------
 // É}ÉNÉçíËã`
@@ -134,6 +136,7 @@ void UpdateCursor()
 	GKey* pGkey = GetGKey();
 	START* pStart = GetStart();
 	HIGH* pHigh = GetHigh();
+	FALLBLOCK* pFallBlock = GetFallBlock();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	static float MouseOldPosX = GetMousePosX();
@@ -327,6 +330,28 @@ void UpdateCursor()
 
 							}
 
+						}
+						for (int i = 0; i < MOVE_BLOCK_MAX; i++)
+						{
+							if (pMoveBlock[i].bUse)
+							{
+								if (pMoveBlock[i].PieceIndex == NoIndex)
+								{
+									pMoveBlock[i].pos += temp;
+								}
+
+							}
+
+						}
+						for (int i = 0; i < FALLBLOCK_MAX; i++)
+						{
+							if (pFallBlock[i].UseFlag)
+							{
+								if (pFallBlock[i].PieceIndex == NoIndex)
+								{
+									pFallBlock[i].Position += temp;
+								}
+							}
 						}
 						for (int i = 0; i < JOINT_MAX; i++)
 						{//âöì 
