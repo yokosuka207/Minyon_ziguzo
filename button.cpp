@@ -12,6 +12,7 @@ Update:
 #include "sprite.h"
 #include "texture.h"
 #include "mouse.h"
+#include "xinput.h"
 
 //**************************************************
 // マクロ定義
@@ -24,7 +25,6 @@ Update:
 #define NUM_TEXTURE_UV_H	1.0f
 
 static char* g_NumberTextureName = (char*)"data/texture/number.png";					// 数字
-static char* g_FrameTextureName = (char*)"data/texture/whitenoise.png";					// 枠
 
 //==================================================
 // 初期化
@@ -33,7 +33,6 @@ void Button::Init()
 {
 	m_type = BUTTON_TYPE::TYPE_NORMAL;
 	m_numTexNo = LoadTexture(g_NumberTextureName);
-	m_frameTexNo = LoadTexture(g_FrameTextureName);
 }
 
 
@@ -52,7 +51,7 @@ void Button::Uninit()
 void Button::Update()
 {
 	// 当たっている状態でマウスを押したら
-	if (Mouse_IsLeftDown() && CollisionMouse()) {
+	if (Mouse_IsLeftTrigger() && CollisionMouse()) {
 		ChangeType(BUTTON_TYPE::TYPE_PRESSED);
 	}
 	else {			// 当たっていないし押されてもいない
@@ -66,13 +65,6 @@ void Button::Update()
 //==================================================
 void Button::Draw()
 {
-	// 枠の描画
-	if (m_bSelect) {
-		// テクスチャの設定
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(m_texNo));
-		SpriteDrawColorRotation(m_pos.x, m_drawPos.y, 0.0f, m_size.x, m_size.y, 0.0f, 
-			m_color, 0.0f, 1.0f, 1.0f, 1);
-	}
 	// ボタンの描画
 	if (m_type == BUTTON_TYPE::TYPE_NORMAL) {			// ノーマル状態
 		// テクスチャの設定
@@ -148,16 +140,28 @@ bool Button::CollisionMouse()
 }
 
 //==================================================
-// 押された判定
+// 押された判定	マウス：左クリック
+//				ボタン：B
 //==================================================
-bool Button::ReleaseButton()
+bool Button::TriggerButton()
 {
 	// 当たり判定
 	if (CollisionMouse()) {
-		if (Mouse_IsLeftRelease()) {
+		if (Mouse_IsLeftTrigger() ||
+			IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {
 			return true;
 		}
 	}
 	return false;
 }
 
+//==================================================
+// ２転換の距離を返す
+//==================================================
+float DistanceTwoPoints(D3DXVECTOR2 p1, D3DXVECTOR2 p2) 
+{
+	D3DXVECTOR2 line;
+	line.x = abs((int)p2.x - (int)p1.x);
+	line.y = abs((int)p2.y - (int)p1.y);
+	return line.x * line.x + line.y * line.y;
+}

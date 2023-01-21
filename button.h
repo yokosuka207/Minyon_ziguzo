@@ -36,7 +36,6 @@ private:
 	int m_num = -1;											// クリアステージ数表示用
 	float m_numTexNo = -1;									// 数字のテクスチャ
 	float m_frameTexNo = -1;								// 枠のテクスチャ
-	bool m_bSelect = false;									// 選択されているか
 public:
 	Button() {}
 	~Button() {}
@@ -55,17 +54,22 @@ public:
 	// 引数：ポジション, サイズ, テクスチャ番号
 	void SetButton(D3DXVECTOR2 po, D3DXVECTOR2 si, D3DXCOLOR co, float no);
 	void SetButtonTexNo(float no) { m_texNo = no; }			// テクスチャ切り替え
+	void SetButtonColor(D3DXCOLOR col) { m_color = col; }		// 色の切り替え
 	void SetNum(int num) { m_num = num; }		// 数字のセット
 	void SetNumTexNo(float no) { m_numTexNo = no; }	// 数字のテクスチャのセット
-	void SetIsSelect(bool bSelect) { m_bSelect = bSelect; }		// 選ばれているかのセット
 
 	// マウスとの当たり判定
 	bool CollisionMouse();
-	// ボタンが離された
-	bool ReleaseButton();
+	// ボタンが押された
+	bool TriggerButton();
+
+
 private:
 	// タイプ変更
 	void ChangeType(BUTTON_TYPE type) { m_type = type; }
 };
+
+// 座標と座標の距離をもらう
+float DistanceTwoPoints(D3DXVECTOR2 p1, D3DXVECTOR2 p2);
 
 #endif // !_BUTTON_H_

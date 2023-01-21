@@ -147,7 +147,7 @@ HRESULT InitStageSelect() {
 			g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
 			g_StageSelect[i].UseFlag = true;
 			g_StageSelect[i].StagePieceIndex = i;
-			g_StageSelect[i].StageUseFlag = false;
+			g_StageSelect[i].StageUseFlag = true;		// true : 全ステージ開放チート	false : 通常
 			g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
 
 

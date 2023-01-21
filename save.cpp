@@ -24,11 +24,13 @@ Update:
 #include "fade.h"
 #include "mouse.h"
 #include "StageSelect.h"
+#include "button.h"
 
 //**************************************************
 // ƒ}ƒNƒ’è‹`
 //**************************************************
-#define BUTTON_NUM	(3)
+#define BUTTON_MAX	4
+#define DATA_MAX	3
 
 //**************************************************
 // ƒOƒ[ƒoƒ‹•Ï”
@@ -45,8 +47,11 @@ static char* g_saveFileName[] = { (char*)"data/SaveData/Data1.bin",			// ƒf[ƒ^‚
 								(char*)"data/SaveData/Data2.bin",			// ƒf[ƒ^‚Q
 								(char*)"data/SaveData/Data3.bin" };			// ƒf[ƒ^‚R
 
+static char* g_DataDeleteTextureName = (char*)"data/texture/GameEnd_haikei.jpg";
+
 // Šeƒf[ƒ^‚Ìƒ{ƒ^ƒ“‚ğì‚é
-Button g_DataButton[BUTTON_NUM];
+Button g_DataButton[BUTTON_MAX];
+
 
 //==================================================
 // ‰Šú‰»
@@ -56,9 +61,14 @@ void Save::Init()
 	// ƒ}ƒEƒX‚Ì‰Šú‰»
 	InitGameMouse();
 
+	// ƒZ[ƒuƒ^ƒCƒv‚Ì‰Šú‰»
+	m_type = SAVE_TYPE::TYPE_NONE;
+
+	m_pButton = &g_DataButton[0];
+
 	// ƒ{ƒ^ƒ“‚ÌƒeƒNƒXƒ`ƒƒ”Ô†“Ç‚İ‚İ
 	int ButtonTexNo[3];
-	for (int i = 0; i < BUTTON_NUM; i++) {
+	for (int i = 0; i < DATA_MAX; i++) {
 		ButtonTexNo[i] = LoadTexture(g_TextureFileName[i]);
 	}
 
@@ -81,9 +91,9 @@ void Save::Init()
 
 	FILE* fp;		// ƒtƒ@ƒCƒ‹ƒ|ƒCƒ“ƒ^
 	// Šeƒ{ƒ^ƒ“‚ÌƒZƒbƒg
-	for (int i = 0; i < BUTTON_NUM; i++) {
+	for (int i = 0; i < DATA_MAX; i++) {
 		// ƒtƒ@ƒCƒ‹‚ª‚ ‚Á‚½‚ç
-		g_DataButton[i].SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * (i+1)), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_TextureFileName[i]));
+		g_DataButton[i].SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * (i+1)), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), ButtonTexNo[i]);
 
 		// ƒtƒ@ƒCƒ‹‚ğŠJ‚­
 		fopen_s(&fp, g_saveFileName[i], "rb");			// ŠJ‚­
@@ -97,6 +107,8 @@ void Save::Init()
 		}
 		g_DataButton[i].SetNum(m_saveData.clearStageNum);
 	}
+	// ƒf[ƒ^íœƒ{ƒ^ƒ“
+	g_DataButton[3].SetButton(D3DXVECTOR2((SCREEN_WIDTH / 3) * 2.5f, (SCREEN_HEIGHT / 4) * 3.5f), D3DXVECTOR2(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 6), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_DataDeleteTextureName));
 }
 
 //==================================================
@@ -117,30 +129,103 @@ void Save::Update()
 {
 	// ƒ}ƒEƒX‚ÌXV
 	UpdateGameMouse();
-	//[----------‚Æ‚è‚ ‚¦‚¸‚Ü‚¾c‚µ‚Ä‚¨‚«‚Ü‚·----------
-	// Zƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚ç
-	if (IsButtonTriggered(0, XINPUT_GAMEPAD_X) ||			// GamePad	X
-		Keyboard_IsKeyTrigger(KK_Z)) {						// Keyboard	Z
-		// ‘Sƒf[ƒ^íœ
-		DeleteSaveData();
+
+	static float MouseOldPosX = GetMousePosX();
+	static float MouseOldPosY = GetMousePosY();
+
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_DOWN)) {	// GamePad \šƒL[ ‰º
+		float disSta = 1000000.0f;
+		int j = 0;
+		for (int i = 0; i < BUTTON_MAX; i++) {
+			D3DXVECTOR2 p0 = m_pButton->GetPosition();
+			D3DXVECTOR2 p1 = g_DataButton[i].GetPosition();
+			// ‚¢‚ÜƒZƒbƒg‚³‚ê‚Ä‚¢‚éƒ{ƒ^ƒ“‚æ‚è‰º‚ÌˆÊ’u‚É‚¢‚é
+			if (p0.y < p1.y) {
+				// ŠÔ‚Ì‹——£‚ªˆê”Ô‹ß‚¢ƒ{ƒ^ƒ“‚ğ’T‚·
+				float dis = DistanceTwoPoints(p0, p1);
+				if (disSta > dis) {
+					disSta = dis;
+					j = i;
+				}
+			}
+		}
+		m_pButton = &g_DataButton[j];
+	}
+	else if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_UP)) {	// GamePad \šƒL[ ‰º
+		float disSta = 1000000.0f;
+		int j = BUTTON_MAX - 1;
+		for (int i = BUTTON_MAX - 1; i >= 0; i--) {
+			D3DXVECTOR2 p0 = m_pButton->GetPosition();
+			D3DXVECTOR2 p1 = g_DataButton[i].GetPosition();
+			// ‚¢‚ÜƒZƒbƒg‚³‚ê‚Ä‚¢‚éƒ{ƒ^ƒ“‚æ‚èã‚ÌˆÊ’u‚É‚¢‚é
+			if (p0.y > p1.y) {
+				// ŠÔ‚Ì‹——£‚ªˆê”Ô‹ß‚¢ƒ{ƒ^ƒ“‚ğ’T‚·
+				float dis = DistanceTwoPoints(p0, p1);
+				if (disSta > dis) {
+					disSta = dis;
+					j = i;
+				}
+			}
+		}
+		m_pButton = &g_DataButton[j];
 	}
 	//----------“ü—Í----------]
-	//----------‚Æ‚è‚ ‚¦‚¸‚Ü‚¾c‚µ‚Ä‚¨‚«‚Ü‚·----------]
-	for (int i = 0; i < BUTTON_NUM; i++) {
+
+	for (int i = 0; i < BUTTON_MAX; i++) {
 		// Šeƒ{ƒ^ƒ“‚ÌXV
 		g_DataButton[i].Update();
-		// ‚à‚µ‰Ÿ‚³‚ê‚½‚ç
-		if (g_DataButton[i].ReleaseButton()) {
-			SetDataNo(i);			// ƒf[ƒ^”Ô†‚ğƒZƒbƒg
-			DataLoad();					// ƒ[ƒh
+		// ƒ}ƒEƒX‚ª“®‚¢‚Ä‚¢‚½‚ç
+		if (MouseOldPosX != GetMousePosX() ||
+			MouseOldPosY != GetMousePosY()) {
+			if (g_DataButton[i].CollisionMouse()) {
+				m_pButton = &g_DataButton[i];
+			}
+		}
 
-			FADEPARAM* pFadeParam = GetFadeParam();
+		// ‚»‚Ìƒ{ƒ^ƒ“‚ª‘I‚Î‚ê‚Ä‚½‚ç
+		if (&g_DataButton[i] == m_pButton) {
+			g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 0.6f));
+		}
+		else {
+			g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		}
 
-			//SetScene(SCENE_STAGESELECT);			// ƒXƒe[ƒWƒZƒŒƒNƒgƒV[ƒ“‚ÉØ‚è‘Ö‚í‚é
-			if(!pFadeParam->FadeFlag)
-			StartFade(FADE::FADE_ALPHA_OUT);
+		// ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒ{ƒ^ƒ“‚¾‚Á‚½‚ç
+		if (m_pButton == &g_DataButton[i]) {
+			// “ü—Íƒ`ƒFƒbƒN
+			if (Mouse_IsLeftTrigger() ||						// Mouse ¶
+				IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {		// GamePad B
+				// ƒf[ƒ^‚Ìƒ{ƒ^ƒ“‚©
+				if (i < DATA_MAX) {
+					SetDataNo(i);				// ƒf[ƒ^”Ô†‚ğƒZƒbƒg
+					if (m_type == SAVE_TYPE::TYPE_NONE) {
+						DataLoad();					// ƒ[ƒh
+
+						// ƒXƒe[ƒWƒZƒŒƒNƒgƒV[ƒ“‚ÉØ‚è‘Ö‚í‚é
+						FADEPARAM* pFadeParam = GetFadeParam();
+						if (!pFadeParam->FadeFlag)
+							StartFade(FADE::FADE_ALPHA_OUT);
+					}
+					else {
+						DeleteSaveData();		// ƒf[ƒ^íœ
+					}
+				}
+				else {	// ƒf[ƒ^‚Ìƒ{ƒ^ƒ“‚Å‚Í‚È‚©‚Á‚½‚ç
+					// ƒ^ƒCƒv‚ÌØ‚è‘Ö‚¦
+					if (m_type == SAVE_TYPE::TYPE_NONE) {
+						m_type = SAVE_TYPE::TYPE_DELETE;
+					}
+					else {
+						m_type = SAVE_TYPE::TYPE_NONE;
+					}
+				}
+			}
 		}
 	}
+
+	// Ÿ‚É”õ‚¦‚Ä1ƒtƒŒ[ƒ€‘O‚ÌÀ•W‚É“ü‚ê‚é
+	MouseOldPosX = GetMousePosX();
+	MouseOldPosY = GetMousePosY();
 }
 
 //==================================================
@@ -151,14 +236,29 @@ void Save::Draw()
 	//[----------”wŒi‚Ì•\¦----------
 	// ƒeƒNƒXƒ`ƒƒ‚Ìİ’è
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(m_BGTexNo));
+
+	if (m_type == SAVE_TYPE::TYPE_DELETE) {
+		m_BGColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
+	}
+	else {
+		m_BGColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	}
 	// lŠpŒ`‚Ì•`‰æ
-	SpriteDrawColorRotation(m_BGPos.x, m_BGPos.y,0.0f, m_BGSize.x, m_BGSize.y, 0.0f, m_BGColor, 0.0f, 1.0f, 1.0f, 1);
+	SpriteDrawColorRotation(m_BGPos.x, m_BGPos.y, 0.0f, m_BGSize.x, m_BGSize.y, 0.0f, m_BGColor, 0.0f, 1.0f, 1.0f, 1);
 	//----------”wŒi‚Ì•\¦----------]
 
 	// Šeƒ{ƒ^ƒ“‚Ì•`‰æ
-	for (auto& b : g_DataButton) {
-		b.Draw();
+	for (int i = 0; i < BUTTON_MAX; i++) {
+		g_DataButton[i].Draw();
+		if (i == DATA_MAX) {
+			if (m_type == SAVE_TYPE::TYPE_DELETE) {
+				SetBlendState(BLEND_MODE_SUBTRACT);
+			}
+		}
 	}
+
+	// ƒuƒŒƒ“ƒhƒ‚[ƒh‚ğ–ß‚·
+	SetBlendState(BLEND_MODE_ALPHABLEND);
 }
 
 //==================================================
@@ -195,18 +295,16 @@ void Save::DeleteSaveData()
 	FILE* fp;		// ƒtƒ@ƒCƒ‹ƒ|ƒCƒ“ƒ^
 
 	// ƒtƒ@ƒCƒ‹‚ğŠJ‚­
-	for (int i = 0; i < BUTTON_NUM; i++) {
-		fopen_s(&fp, g_saveFileName[i], "wb");
+	fopen_s(&fp, g_saveFileName[m_dataNo], "wb");
 
-		if (fp != NULL) {
-			// ‘‚«‚Ş
-			fwrite(&m_saveData, sizeof(SaveData), 1, fp);
+	if (fp != NULL) {
+		// ‘‚«‚Ş
+		fwrite(&m_saveData, sizeof(SaveData), 1, fp);
 
-			// ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
-			fclose(fp);
-		}
-		g_DataButton[i].SetNum(m_saveData.clearStageNum);
+		// ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
+		fclose(fp);
 	}
+	g_DataButton[m_dataNo].SetNum(m_saveData.clearStageNum);
 }
 
 //==================================================
@@ -232,6 +330,7 @@ void Save::DataLoad()
 	SetClearStageNum(m_saveData.clearStageNum);
 	//------------------------------------------------------]
 }
+
 
 //==================================================
 // ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ä‚¢‚é‚©
