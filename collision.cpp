@@ -208,6 +208,7 @@ void UpdateCollision(){
 
 	Piece* pPiece = GetPiece();
 	BULLET* pBullet = GetBullet();
+	CURSOR* pCursor = GetCurso();
 	//-------------------------------------
 
 	bool pFlag = false;	//プレーヤーがピースの中にいるか
@@ -408,7 +409,8 @@ void UpdateCollision(){
 		//=====================================
 		//死亡判定（トゲ、落下死,thornBlock）
 		//=====================================
-		if (!Mouse_IsLeftDown())
+		if (!Mouse_IsLeftDown() &&
+			!pCursor->bHave)
 		{
 			//プレイヤーとトゲブロックの判定(プレイヤーがトゲ死)
 			for (int i = 0; i < THORN_BLOCK_MAX; i++) {
@@ -1959,14 +1961,12 @@ void PuzzleCollision()
 					pPuzzle[i].Position = pPuzzle[i].oldPosition;
 
 				}
-				if (pFlag) {
+				//if (pFlag) {
 
-					MOUSE* pMouse = GetMouse();
+				//	MOUSE* pMouse = GetMouse();
 
-					pPlayer->Position = pPuzzle[i].Position - pMouse->PlPos;
-				}
-
-
+				//	pPlayer->Position = pPuzzle[i].Position - pMouse->PlPos;
+				//}
 			}
 		}
 
@@ -3225,12 +3225,10 @@ bool fourNomalPieceCollision(Piece piece, int index)
 //--------------------------------
 void Rotreturn(int index)
 {
-	MOUSE* pMouse = GetMouse();
 	CURSOR* pCursor = GetCurso();
 	for (int i = 0; i < pCursor->RotIndex; i++)
 	{
 		RotateMapChipL(index);
-
 	}
 
 }

@@ -47,6 +47,7 @@ static KEEP_PUZZLE		g_Inventory[INVENTORY_MAX];
 static char* g_InventoryBGTextureName = (char*)"data\\texture\\white.jpg";
 static char* g_InventoryTextureName = (char*)"data\\texture\\blue.png";
 
+bool g_bHave = false;					// ピースを持っているフラグ
 
 
 //==================================================
@@ -78,11 +79,7 @@ HRESULT InitInventory()
 		g_Inventory[i].IsUse = false;
 	}
 
-	// デバッグ用
-	//SetInventory(0);
-	//SetInventory(1);
-	//SetInventory(2);
-	//SetInventory(3);
+	g_bHave = false;
 
 	return S_OK;
 }
@@ -101,7 +98,16 @@ void UninitInventory()
 void UpdateInventory()
 {
 	MOUSE* pMouse = GetMouse();
-		D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
+	D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
+
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
+		if (!g_bHave) g_bHave = true;
+		else g_bHave = false;
+	}
+
+	if (Mouse_IsLeftUp()) {
+		g_bHave = false;
+	}
 
 	for (int i = 0; i < INVENTORY_MAX; i++) {
 		if (g_Inventory[i].IsUse) {
@@ -110,21 +116,12 @@ void UpdateInventory()
 			min = D3DXVECTOR2(g_Inventory[i].pos.x - g_Inventory[i].size.x, g_Inventory[i].pos.y - g_Inventory[i].size.y);
 			max = D3DXVECTOR2(g_Inventory[i].pos.x + g_Inventory[i].size.x, g_Inventory[i].pos.y + g_Inventory[i].size.y);
 
-			// マウスと所持パズルの当たり判定
-			if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y) {
-				// ちょっとでかくする
-				g_Inventory[i].size = D3DXVECTOR2(INVENTORY_BIGSIZE_X, INVENTORY_BIGSIZE_Y);
-			}
-			else {
-				// 元のサイズに戻す
-				g_Inventory[i].size = D3DXVECTOR2(INVENTORY_SIZE_X, INVENTORY_SIZE_Y);
-			}
-
 			// 左に置くバージョン
 			float bgmax_x = -INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X * 2.3f;
 
 			// 入力(マウス左Press)
-			if (Mouse_IsLeftDown()) {
+			if (Mouse_IsLeftDown() || 
+				g_bHave) {
 				//----------Trigger挙動----------
 				if (!g_Inventory[i].IsCatch) {
 					// マウスと所持パズルが当たっていたら
@@ -190,7 +187,6 @@ void UpdateInventory()
 				DeleteInventory(g_Inventory[i].PieNo);
 
 				SetPieceMapChip(g_Inventory[i].pos, Pieno);
-
 			}
 		}
 	}
@@ -212,17 +208,6 @@ void DrawInventory()
 	SpriteDrawColorRotation(g_InventoryBG.pos.x, g_InventoryBG.pos.y,0.0f, g_InventoryBG.size.x, g_InventoryBG.size.y, 0.0f, g_InventoryBG.color, 1.0f, 1.0f, 1.0f, 1);
 	// ブレンドをデフォに戻す
 	SetBlendState(BLEND_MODE_ALPHABLEND);
-
-	// インベントリ内のパズルの描画
-	for (int i = 0; i < INVENTORY_MAX; i++)
-	{
-		if (g_Inventory[i].IsUse) {
-			// テクスチャの設定
-			//GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Inventory[i].texno));
-			// 四角形の描画
-			//SpriteDrawColorRotation(g_Inventory[i].pos.x, g_Inventory[i].pos.y,0.1f, g_Inventory[i].size.x, g_Inventory[i].size.y, 0.0f, g_Inventory[i].color, 1.0f, 1.0f, 1.0f, 1);
-		}
-	}
 }
 
 //==================================================

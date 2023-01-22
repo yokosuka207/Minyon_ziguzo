@@ -188,7 +188,7 @@ void UpdateCursor()
 		}
 	}
 
-	if (Mouse_IsLeftRelease()) {
+	if (Mouse_IsLeftRelease()) {		// moues ç∂
 		g_Cursor.bHave = false;
 	}
 
