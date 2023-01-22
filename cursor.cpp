@@ -38,6 +38,7 @@
 #include "sound.h"
 #include"MoveBlock.h"
 #include"fallblock.h"
+#include"enemy.h"
 
 //--------------------------------------------------
 // É}ÉNÉçíËã`
@@ -137,6 +138,7 @@ void UpdateCursor()
 	START* pStart = GetStart();
 	HIGH* pHigh = GetHigh();
 	FALLBLOCK* pFallBlock = GetFallBlock();
+	ENEMY* pEnemy = GetEnemy();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	static float MouseOldPosX = GetMousePosX();
@@ -469,8 +471,19 @@ void UpdateCursor()
 								pWarp[i].Position += temp;
 							}
 
+							}
 						}
-					}
+						for (int i = 0; i < ENEMY_MAX; i++)
+						{
+							if (pEnemy[i].UseFlag)
+							{
+								if (pEnemy[i].index == NoIndex)
+								{
+									pEnemy[i].pos += temp;
+								}
+							}
+
+						}
 
 					if (!g_Cursor.pFlag)
 					{

@@ -21,6 +21,8 @@
 #include "player.h"
 #include "fade.h"
 #include "sound.h"
+#include "story.h"
+#include "collision.h"
 //*****************************************************************************
 //	マクロ定義
 //*****************************************************************************
@@ -236,97 +238,101 @@ void UninitStageSelect() {
 //-----------------------------------------------------------------------------
 void UpdateStageSelect() {
 
-	if (ply.UseFlag == true)
+	STORY* pStory = GetStory();
+
+	if (!pStory[0].KeyUse)
 	{
-		if (ply.isGround)
+		if (ply.UseFlag == true)
 		{
-
-			
-			//移動
-			if (GetThumbLeftX(0) > 0.3f ||					// GamePad	右スティック	右
-				Keyboard_IsKeyDown(KK_RIGHT))				// Keyboard	右
-			{//押されているときの処理
-				ply.sp.x = 2.0f;
-				ply.PaternNo += 0.25f;
-				if (ply.isHigh)
-				{
-					ply.sp.x = 3.0f;
-					ply.sp.y = 4.0f;
-
-				}
-
-				// 向きを変える
-				ply.dir = PLAYER_DIRECTION::RIGHT;
-				ply.uv_w = PLAYER_UV_W;
-			}
-			else if (GetThumbLeftX(0) < -0.3f ||			// GamePad	右スティック	左
-				Keyboard_IsKeyDown(KK_LEFT))				// Keyboard	左
-			{//押されているときの処理
-				ply.sp.x = -2.0f;
-				ply.PaternNo -= 0.25f;
-				if (ply.isHigh)
-				{
-					ply.sp.x = -3.0f;
-					ply.sp.y = -3.5f;
-
-				}
-
-				// 向きを変える
-				ply.dir = PLAYER_DIRECTION::LEFT;
-				ply.uv_w = -PLAYER_UV_W;
-			}
-			else
-			{
-				if (ply.isHigh)
-				{
-					ply.sp.y = 0.0f;
-				}
-				ply.sp.x = 0;
-
-			}
-		}
-		if (STAIRS_LEFT < ply.Position.x && ply.Position.x < STAIRS_RIGHT) {
-			if (Keyboard_IsKeyDown(KK_DOWN))//右キー
+			if (ply.isGround)
 			{
 
-				if (ply.Position.y < SCREEN_HEIGHT - 110.0f)
+
+				//移動
+				if (GetThumbLeftX(0) > 0.3f ||					// GamePad	右スティック	右
+					Keyboard_IsKeyDown(KK_RIGHT))				// Keyboard	右
+				{//押されているときの処理
+					ply.sp.x = 2.0f;
+					ply.PaternNo += 0.25f;
+					if (ply.isHigh)
+					{
+						ply.sp.x = 3.0f;
+						ply.sp.y = 4.0f;
+
+					}
+
+					// 向きを変える
+					ply.dir = PLAYER_DIRECTION::RIGHT;
+					ply.uv_w = PLAYER_UV_W;
+				}
+				else if (GetThumbLeftX(0) < -0.3f ||			// GamePad	右スティック	左
+					Keyboard_IsKeyDown(KK_LEFT))				// Keyboard	左
+				{//押されているときの処理
+					ply.sp.x = -2.0f;
+					ply.PaternNo -= 0.25f;
+					if (ply.isHigh)
+					{
+						ply.sp.x = -3.0f;
+						ply.sp.y = -3.5f;
+
+					}
+
+					// 向きを変える
+					ply.dir = PLAYER_DIRECTION::LEFT;
+					ply.uv_w = -PLAYER_UV_W;
+				}
+				else
 				{
+					if (ply.isHigh)
+					{
+						ply.sp.y = 0.0f;
+					}
 					ply.sp.x = 0;
 
-					ply.sp.y = 5.0f;
-					ply.isGround = false;
-
 				}
 			}
-		}
+			if (STAIRS_LEFT < ply.Position.x && ply.Position.x < STAIRS_RIGHT) {
+				if (Keyboard_IsKeyDown(KK_DOWN))//右キー
+				{
 
-		// アニメーションパターン番号を0～15の範囲内にする
-		if (ply.PaternNo > 15) { ply.PaternNo -= 15; }
-		if (ply.PaternNo < 0) { ply.PaternNo += 15; }
-		if (!ply.SoundRightFlag) {
-			if (ply.PaternNo == 9.0f) {
-				PlaySound(g_StageSelectPlayerRightSoundNo, 0);
-				SetVolume(g_StageSelectPlayerRightSoundNo, 0.5f);
-				ply.SoundRightFlag = true;
+					if (ply.Position.y < SCREEN_HEIGHT - 110.0f)
+					{
+						ply.sp.x = 0;
+
+						ply.sp.y = 5.0f;
+						ply.isGround = false;
+
+					}
+				}
 			}
-		}
-		else{
-			if (ply.PaternNo != 9.0f) {
-				ply.SoundRightFlag = false;
+
+			// アニメーションパターン番号を0～15の範囲内にする
+			if (ply.PaternNo > 15) { ply.PaternNo -= 15; }
+			if (ply.PaternNo < 0) { ply.PaternNo += 15; }
+			if (!ply.SoundRightFlag) {
+				if (ply.PaternNo == 9.0f) {
+					PlaySound(g_StageSelectPlayerRightSoundNo, 0);
+					SetVolume(g_StageSelectPlayerRightSoundNo, 0.5f);
+					ply.SoundRightFlag = true;
+				}
 			}
-		}
-		if (!ply.SoundLeftFlag) {
-			if (ply.PaternNo == 1.0f) {
-				PlaySound(g_StageSelectPlayerLeftSoundNo, 0);
-				SetVolume(g_StageSelectPlayerLeftSoundNo, 0.5f);
-				ply.SoundLeftFlag = true;
+			else {
+				if (ply.PaternNo != 9.0f) {
+					ply.SoundRightFlag = false;
+				}
 			}
-		}
-		else {
-			if (ply.PaternNo != 1.0f) {
-				ply.SoundLeftFlag = false;
+			if (!ply.SoundLeftFlag) {
+				if (ply.PaternNo == 1.0f) {
+					PlaySound(g_StageSelectPlayerLeftSoundNo, 0);
+					SetVolume(g_StageSelectPlayerLeftSoundNo, 0.5f);
+					ply.SoundLeftFlag = true;
+				}
 			}
-		}
+			else {
+				if (ply.PaternNo != 1.0f) {
+					ply.SoundLeftFlag = false;
+				}
+			}
 
 		if (ply.sp.x == 0)
 		{
@@ -345,144 +351,163 @@ void UpdateStageSelect() {
 
 
 
-		for (int i = 0; i < 3; i++)
-		{
+			for (int i = 0; i < 3; i++)
 			{
-				//プレイヤー左・ブロック右
-				if (ply.Position.x + ply.size.x / 2 > g_StageSelectBlock[i].pos.x - g_StageSelectBlock[i].size.x / 2 &&
-					ply.oldpos.x + ply.size.x / 2 <= g_StageSelectBlock[i].pos.x - g_StageSelectBlock[i].size.x / 2 &&
-					ply.Position.y + ply.size.y / 2 > g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2 &&
-					ply.Position.y - ply.size.y / 2 < g_StageSelectBlock[i].pos.y + g_StageSelectBlock[i].size.y / 2)
 				{
-					ply.Position.x = g_StageSelectBlock[i].pos.x - g_StageSelectBlock[i].size.x / 2 - ply.size.x / 2;
-				}
-				//プレイヤー右・ブロック左
-				if (ply.Position.x - ply.size.x / 2 < g_StageSelectBlock[i].pos.x + g_StageSelectBlock[i].size.x / 2 &&
-					ply.oldpos.x - ply.size.x / 2 >= g_StageSelectBlock[i].pos.x + g_StageSelectBlock[i].size.x / 2 &&
-					ply.Position.y + ply.size.y / 3 > g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 3 &&
-					ply.Position.y - ply.size.y / 3 < g_StageSelectBlock[i].pos.y + g_StageSelectBlock[i].size.y / 3)
-				{
-					ply.Position.x = g_StageSelectBlock[i].pos.x + g_StageSelectBlock[i].size.x / 2 + ply.size.x / 2;
-				}
-				if (ply.isGround)
-				{
-					//プレイヤー上・ブロック下,着地する
+					//プレイヤー左・ブロック右
+					if (ply.Position.x + ply.size.x / 2 > g_StageSelectBlock[i].pos.x - g_StageSelectBlock[i].size.x / 2 &&
+						ply.oldpos.x + ply.size.x / 2 <= g_StageSelectBlock[i].pos.x - g_StageSelectBlock[i].size.x / 2 &&
+						ply.Position.y + ply.size.y / 2 > g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2 &&
+						ply.Position.y - ply.size.y / 2 < g_StageSelectBlock[i].pos.y + g_StageSelectBlock[i].size.y / 2)
+					{
+						ply.Position.x = g_StageSelectBlock[i].pos.x - g_StageSelectBlock[i].size.x / 2 - ply.size.x / 2;
+					}
+					//プレイヤー右・ブロック左
+					if (ply.Position.x - ply.size.x / 2 < g_StageSelectBlock[i].pos.x + g_StageSelectBlock[i].size.x / 2 &&
+						ply.oldpos.x - ply.size.x / 2 >= g_StageSelectBlock[i].pos.x + g_StageSelectBlock[i].size.x / 2 &&
+						ply.Position.y + ply.size.y / 3 > g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 3 &&
+						ply.Position.y - ply.size.y / 3 < g_StageSelectBlock[i].pos.y + g_StageSelectBlock[i].size.y / 3)
+					{
+						ply.Position.x = g_StageSelectBlock[i].pos.x + g_StageSelectBlock[i].size.x / 2 + ply.size.x / 2;
+					}
+					if (ply.isGround)
+					{
+						//プレイヤー上・ブロック下,着地する
+						if (ply.Position.x + ply.size.x / 2 > g_StageSelectBlock[i].pos.x - g_StageSelectBlock[i].size.x / 2 &&
+							ply.Position.x - ply.size.x / 2 < g_StageSelectBlock[i].pos.x + g_StageSelectBlock[i].size.x / 2 &&
+							ply.Position.y + ply.size.y / 2 > g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2 &&
+							ply.oldpos.y + ply.size.y / 2 <= g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2)
+						{
+							ply.Position.y = g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2 - ply.size.y / 2 - 0.02f;
+							ply.jump = false;
+							ply.fall = false;
+							ply.WarpFlag = false;
+							//ply.isGround = true;
+							ply.sp.y = 0;
+							ply.frame = 0;
+							ply.isHigh = false;
+
+						}
+					}
+					//プレイヤー下・ブロック上,落下する
 					if (ply.Position.x + ply.size.x / 2 > g_StageSelectBlock[i].pos.x - g_StageSelectBlock[i].size.x / 2 &&
 						ply.Position.x - ply.size.x / 2 < g_StageSelectBlock[i].pos.x + g_StageSelectBlock[i].size.x / 2 &&
-						ply.Position.y + ply.size.y / 2 > g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2 &&
-						ply.oldpos.y + ply.size.y / 2 <= g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2)
+						ply.Position.y + ply.size.y / 2 < g_StageSelectBlock[i].pos.y + g_StageSelectBlock[i].size.y / 2 &&
+						ply.oldpos.y + ply.size.y / 2 >= g_StageSelectBlock[i].pos.y + g_StageSelectBlock[i].size.y / 2)
 					{
 						ply.Position.y = g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2 - ply.size.y / 2 - 0.02f;
+						ply.isHigh = false;
+						ply.sp.y = 0.0f;
+						ply.fall = true;
+						ply.getfall = true;
+						ply.frame = 50;
+					}
+				}
+			}
+			for (int i = 0; i < 12; i++)
+			{
+				{
+					//プレイヤー左・ブロック右
+					if (ply.Position.x + ply.size.x / 2 > g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 &&
+						ply.oldpos.x + ply.size.x / 2 <= g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 &&
+						ply.Position.y + ply.size.y / 2 > g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 2 &&
+						ply.Position.y - ply.size.y / 2 < g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y / 2)
+					{
+						//ply.Position.x = g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 - ply.size.x / 2;
+					}
+					//プレイヤー右・ブロック左
+					if (ply.Position.x - ply.size.x / 2 < g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 &&
+						ply.oldpos.x - ply.size.x / 2 >= g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 &&
+						ply.Position.y + ply.size.y / 3 > g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 3 &&
+						ply.Position.y - ply.size.y / 3 < g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y / 3)
+					{
+						//ply.Position.x = g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 + ply.size.x / 2;
+						//ply.sp = D3DXVECTOR2(0.0f,-4.0f);
+						if (Keyboard_IsKeyDown(KK_UP))
+						{
+							ply.isHigh = true;	//上に上る
+
+						}
+					}
+
+					//プレイヤー上・ブロック下,着地する
+					if (ply.Position.x + ply.size.x / 2 > g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 &&
+						ply.Position.x - ply.size.x / 2 < g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 &&
+						ply.Position.y + ply.size.y / 2 > g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 2 &&
+						ply.oldpos.y + ply.size.y / 2 <= g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 2)
+					{
+						ply.isGround = true;
+
+						ply.Position.y = g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 2 - ply.size.y / 2 - 0.02f;
 						ply.jump = false;
 						ply.fall = false;
 						ply.WarpFlag = false;
 						//ply.isGround = true;
-						ply.sp.y = 0;
+						ply.sp.y = 4.0f;
 						ply.frame = 0;
-						ply.isHigh = false;
-
 					}
-				}
-				//プレイヤー下・ブロック上,落下する
-				if (ply.Position.x + ply.size.x / 2 > g_StageSelectBlock[i].pos.x - g_StageSelectBlock[i].size.x / 2 &&
-					ply.Position.x - ply.size.x / 2 < g_StageSelectBlock[i].pos.x + g_StageSelectBlock[i].size.x / 2 &&
-					ply.Position.y + ply.size.y / 2 < g_StageSelectBlock[i].pos.y + g_StageSelectBlock[i].size.y / 2 &&
-					ply.oldpos.y + ply.size.y / 2 >= g_StageSelectBlock[i].pos.y + g_StageSelectBlock[i].size.y / 2)
-				{
-					ply.Position.y = g_StageSelectBlock[i].pos.y - g_StageSelectBlock[i].size.y / 2 - ply.size.y / 2 - 0.02f;
-					ply.isHigh = false;
-					ply.sp.y = 0.0f;
-					ply.fall = true;
-					ply.getfall = true;
-					ply.frame = 50;
-				}
-			}
-		}
-		for (int i = 0; i < 12; i++)
-		{
-			{
-				//プレイヤー左・ブロック右
-				if (ply.Position.x + ply.size.x / 2 > g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 &&
-					ply.oldpos.x + ply.size.x / 2 <= g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 &&
-					ply.Position.y + ply.size.y / 2 > g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 2 &&
-					ply.Position.y - ply.size.y / 2 < g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y / 2)
-				{
-					//ply.Position.x = g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 - ply.size.x / 2;
-				}
-				//プレイヤー右・ブロック左
-				if (ply.Position.x - ply.size.x / 2 < g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 &&
-					ply.oldpos.x - ply.size.x / 2 >= g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 &&
-					ply.Position.y + ply.size.y / 3 > g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 3 &&
-					ply.Position.y - ply.size.y / 3 < g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y / 3)
-				{
-					//ply.Position.x = g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 + ply.size.x / 2;
-					//ply.sp = D3DXVECTOR2(0.0f,-4.0f);
-					if (Keyboard_IsKeyDown(KK_UP))
+					//プレイヤー下・ブロック上,落下する
+					if (ply.Position.x + ply.size.x / 2 > g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 &&
+						ply.Position.x - ply.size.x / 2 < g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 &&
+						ply.Position.y - ply.size.y / 2 < g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y / 2 &&
+						ply.oldpos.y - ply.size.y / 2 >= g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y / 2)
 					{
-						ply.isHigh = true;	//上に上る
-
+						ply.fall = true;
+						ply.getfall = true;
+						ply.frame = 50;
 					}
 				}
-
-				//プレイヤー上・ブロック下,着地する
-				if (ply.Position.x + ply.size.x / 2 > g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 &&
-					ply.Position.x - ply.size.x / 2 < g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 &&
-					ply.Position.y + ply.size.y / 2 > g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 2 &&
-					ply.oldpos.y + ply.size.y / 2 <= g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 2)
-				{
-					ply.isGround = true;
-
-					ply.Position.y = g_StageSelectStairs[i].pos.y - g_StageSelectStairs[i].size.y / 2 - ply.size.y / 2 - 0.02f;
-					ply.jump = false;
-					ply.fall = false;
-					ply.WarpFlag = false;
-					//ply.isGround = true;
-					ply.sp.y = 4.0f;
-					ply.frame = 0;
-				}
-				//プレイヤー下・ブロック上,落下する
-				if (ply.Position.x + ply.size.x / 2 > g_StageSelectStairs[i].pos.x - g_StageSelectStairs[i].size.x / 2 &&
-					ply.Position.x - ply.size.x / 2 < g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 &&
-					ply.Position.y - ply.size.y / 2 < g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y / 2 &&
-					ply.oldpos.y - ply.size.y / 2 >= g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y / 2)
-				{
-					ply.fall = true;
-					ply.getfall = true;
-					ply.frame = 50;
-				}
 			}
+
+
 		}
 
 
-	}
 
 
-	
 
+		//ステージ選択
 
-	//ステージ選択
-
-	for (int i = 0; i < STAGE_MAX; i++)
-	{
-		if (g_StageSelect[i].StageUseFlag)
+		for (int i = 0; i < STAGE_MAX; i++)
 		{
-			if (ply.Position.x - ply.size.x / 2 > g_StageSelect[i].pos.x - g_StageSelect[i].size.x / 2 &&
-				ply.Position.x + ply.size.x / 2 < g_StageSelect[i].pos.x + g_StageSelect[i].size.x / 2 &&
-				ply.Position.y + ply.size.y / 2 > g_StageSelect[i].pos.y - g_StageSelect[i].size.y / 2 &&
-				ply.Position.y - ply.size.y / 2 < g_StageSelect[i].pos.y + g_StageSelect[i].size.y / 2)
+			if (g_StageSelect[i].StageUseFlag)
 			{
-				if (Keyboard_IsKeyTrigger(KK_A) ||					// keyboard A
-					IsButtonPressed(0, XINPUT_GAMEPAD_B)) {			// GamePad B
-					//SetVolume(g_BrokenSoundNo, 0.5f);
-					PlaySound(g_StageSelectSoundNo, 0);
-					StageNo = i;
-					//SetScene(SCENE::SCENE_GAME);
-					StartFade(FADE::FADE_OUT);
-					break;
+				if (ply.Position.x - ply.size.x / 2 > g_StageSelect[i].pos.x - g_StageSelect[i].size.x / 2 &&
+					ply.Position.x + ply.size.x / 2 < g_StageSelect[i].pos.x + g_StageSelect[i].size.x / 2 &&
+					ply.Position.y + ply.size.y / 2 > g_StageSelect[i].pos.y - g_StageSelect[i].size.y / 2 &&
+					ply.Position.y - ply.size.y / 2 < g_StageSelect[i].pos.y + g_StageSelect[i].size.y / 2)
+				{
+					if (Keyboard_IsKeyTrigger(KK_A) ||					// keyboard A
+						IsButtonPressed(0, XINPUT_GAMEPAD_B)) {			// GamePad B
+						//SetVolume(g_BrokenSoundNo, 0.5f);
+						PlaySound(g_StageSelectSoundNo, 0);
+						StageNo = i;
+						//SetScene(SCENE::SCENE_GAME);
+						StartFade(FADE::FADE_OUT);
+						break;
+					}
 				}
 			}
 		}
 	}
+
+		//ストーリー
+		if (pStory[0].bUse) {
+			if (CollisionBB(ply.Position, pStory[0].pos, ply.size, pStory[0].size))
+			{
+
+				if (Keyboard_IsKeyTrigger(KK_B) ||					// keyboard A
+					IsButtonPressed(0, XINPUT_GAMEPAD_B)) {			// GamePad B
+					pStory[0].KeyUse = true;
+				}
+				if (Keyboard_IsKeyTrigger(KK_M) ||					// keyboard A
+					IsButtonPressed(0, XINPUT_GAMEPAD_B)) {			// GamePad B
+					pStory[0].KeyUse = false;
+				}
+			}
+		}
+	
+	
 }
 
 //-----------------------------------------------------------------------------

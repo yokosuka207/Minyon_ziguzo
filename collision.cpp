@@ -46,6 +46,7 @@
 #include "Key.h"			//鍵
 #include "OpenKey.h"		//鍵で開く扉
 #include "goal_key.h"		//ゴール専用鍵
+#include "StoryKey.h"		//ストーリー用鍵
 #include "bullet.h"			//ドッペルゲンガー発射弾
 #include "doppelganger.h"   //ドッペルゲンガー
 #include "enemy.h"			//エネミー
@@ -196,6 +197,7 @@ void UpdateCollision(){
 	SWITCHWALL* pSwitchWall = GetSwitchWall();
 	JUMPSTAND* pJumpStand = GetJumpStand();
 	KEY* pKey = GetKey();
+	STORYKEY* pSKey = GetStoryKey();
 	OPENKEY* pOpenKey = GetOpenKey();
 	GKey* pGKey = GetGKey();
 	EXPLAIN* p_Explain = GetExplain();
@@ -452,7 +454,7 @@ void UpdateCollision(){
 		//========================================================================
 		//プレイヤー・チップブロック　当たり判定(PlayerとChipBlockの当たり判定)
 		//=========================================================================
-		for (int i = 0; i < BLOCK_MAX; i++) {
+		for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
 			if ((pChipblock + i)->UseFlag) {
 				//プレイヤー左・ブロック右
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pChipblock + i)->Position.x - (pChipblock + i)->Size.x / 2 &&
@@ -496,6 +498,7 @@ void UpdateCollision(){
 						pJumpStand[i].JumpStandFlag = false;
 
 					}
+					pPlayer->isHigh = false;
 
 					pPlayer->fall = true;
 					pPlayer->getfall = true;
@@ -917,6 +920,19 @@ void UpdateCollision(){
 							}
 						}
 					}
+				}
+			}
+		}
+		//------------------------------------------------------------------
+		//ストーリー用鍵
+		//------------------------------------------------------------------
+		for (int i = 0; i < STORYKEY_MAX; i++) 
+		{
+			if (pSKey->bUse) {
+				if (CollisionBB(pPlayer->Position, pSKey->pos, pPlayer->size, pSKey->size)) 
+				{
+					pSKey[i].bUse = false;
+					pSKey[i].HaveSKey++;
 				}
 			}
 		}
@@ -2332,7 +2348,8 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	HIGH* pHigh = GetHigh();
 	MOVEBLOCK* pMoveBlock = GetMoveBlock();
 	FALLBLOCK* pFallBlock = GetFallBlock();
-	for (int i = 0; i < BLOCK_MAX; i++)
+	ENEMY* pEnemy = GetEnemy();
+	for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
 		{
@@ -2532,6 +2549,18 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 
 		}
 	}
+	for (int i = 0; i < ENEMY_MAX; i++)
+	{
+		if (pEnemy[i].UseFlag)
+		{
+			if (pEnemy[i].index == pinNo)
+			{
+				pEnemy[i].pos += num;
+			}
+		}
+
+	}
+
 
 }
 //--------------------------------------------

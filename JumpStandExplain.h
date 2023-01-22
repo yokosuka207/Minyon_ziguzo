@@ -11,6 +11,9 @@ typedef struct
 	D3DXVECTOR2 size;	//大きさ
 
 	int		No;
+	int		tex;		//マップチップ番号
+
+	float  rot;
 
 	bool bUse;
 	bool HintUse;
@@ -23,5 +26,7 @@ void UninitExplain();
 void UpdateExplain();
 void DrawExplain();
 
-void SetExplain(D3DXVECTOR2 pos);
+void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, float rot);
 EXPLAIN* GetExplain();
+
+void DeleteExplain();

@@ -39,6 +39,7 @@ HRESULT InitFallBlock()
 		g_FallBlock[i].sp = D3DXVECTOR2(0, 0);
 		g_FallBlock[i].Size = D3DXVECTOR2(FALLBLOCK_W,FALLBLOCK_H);
 		g_FallBlock[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_FallBlock[i].rot = 180.0f;
 		g_FallBlock[i].texno = LoadTexture(g_TextureNameBroken);
 		g_FallBlock[i].PieceIndex = -1;
 		g_FallBlock[i].UseFlag = false;
