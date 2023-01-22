@@ -43,15 +43,19 @@ static char* g_TextureNameThornBlock = (char*)"data\\texture\\Spikes.png";
 //=============================================================================
 HRESULT InitThornBlock()
 {
-	srand(time(NULL));
+	//srand(time(NULL));
 
 	for (int i = 0; i < THORN_BLOCK_MAX; i++)
 	{
 		g_ThornBlock[i].Postion = D3DXVECTOR2(0.0f, 0.0f);
-		g_ThornBlock[i].Size = D3DXVECTOR2(THORN_BLOCK_W, THORN_BLOCK_H);
+		g_ThornBlock[i].Size = D3DXVECTOR2(0.0f, 0.0f);
 		g_ThornBlock[i].texno = LoadTexture(g_TextureNameThornBlock);
 		g_ThornBlock[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_ThornBlock[i].rot = 0.0f;
+		g_ThornBlock[i].uv_w = 1.0f / 1.0f;
+		g_ThornBlock[i].uv_h = 1.0f / 1.0f;
+		g_ThornBlock[i].PaternNo = 0;
+		g_ThornBlock[i].NumPatern = 1;
 		g_ThornBlock[i].PieceIndex = -1;
 		g_ThornBlock[i].UseFlag = false;
 	}
@@ -84,23 +88,33 @@ void UpdateThornBlock()
 //=============================================================================
 void DrawThornBlock()
 {
-	for (int i = 0; i < THORN_BLOCK_MAX; i++)
-	{
-		if (g_ThornBlock[i].UseFlag)
-		{
+	for (int i = 0; i < THORN_BLOCK_MAX; i++){
+		if (g_ThornBlock[i].UseFlag){
 			//SetWorldViewProjection2D();
+
+
 
 			//テクスチャの設定
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ThornBlock[i].texno));
 			//スプライトを表示
-			D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			SpriteDrawColorRotation(g_ThornBlock[i].Postion.x, g_ThornBlock[i].Postion.y + 1, 0.0f,g_ThornBlock[i].Size.x + 10, g_ThornBlock[i].Size.y + 4.0f,
-				g_ThornBlock[i].rot, g_ThornBlock[i].col, 0, 1.0f, -1.0f, 1);
+			SpriteDrawColorRotation(
+				g_ThornBlock[i].Postion.x, 
+				g_ThornBlock[i].Postion.y + 1.0f, 
+				0.0f,
+				g_ThornBlock[i].Size.x, 
+				-g_ThornBlock[i].Size.y + 4.0f,
+				g_ThornBlock[i].rot,
+				g_ThornBlock[i].col, 
+				g_ThornBlock[i].PaternNo,
+				g_ThornBlock[i].uv_w,
+				g_ThornBlock[i].uv_h,
+				g_ThornBlock[i].NumPatern
+			);
 
 		}
 	}
 }
-void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int PieceNo) {
+void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int PieceNo) {
 	for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 		if (!g_ThornBlock[i].UseFlag) {
 			switch (direction) {
@@ -126,10 +140,8 @@ void SetThornBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int PieceNo)
 void DeleteThornBlock(int PieceNo) {
 	for (int i = 0; i < THORN_BLOCK_MAX; i++) {
 		if (g_ThornBlock[i].UseFlag) {
-			if (g_ThornBlock[i].PieceIndex == PieceNo)
-			{
+			if (g_ThornBlock[i].PieceIndex == PieceNo){
 				g_ThornBlock[i].UseFlag = false;
-
 			}
 		}
 	}

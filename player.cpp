@@ -80,7 +80,7 @@ HRESULT InitPlayer()
 	//プレイヤーの初期化
 	//g_Player.Position = D3DXVECTOR2(pPiece->pos.x+30.0f,pPiece->pos.y);
 	g_Player.Position = D3DXVECTOR2(pStart[0].pos.x, pStart[0].pos.y);
-	g_Player.OneOldpos = g_Player.oldpos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	g_Player.OneOldpos = g_Player.oldpos = g_Player.Position;
 	g_Player.sp = D3DXVECTOR2(0,-8);
 	g_Player.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
 	g_Player.Drawsize = D3DXVECTOR2(33.0f, 33.0f);
@@ -288,81 +288,73 @@ void UpdatePlayer()
 			//---------------
 			//透ける床の場合
 			//---------------
+
 			SHEERFLOORS* pSheerFloors = GetSheerFloors();
 			for (int i = 0; i < SHEERFLOORS_NUM; i++)
 			{
-				if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
-					g_Player.oldpos.x + g_Player.size.x / 2 <= pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
-					g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2 &&
-					g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
+				if (pSheerFloors[i].use)
 				{
-					//g_Player.Position.x = pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 - g_Player.size.x / 2;
-				}
-				//プレイヤー右・ブロック左
-				if (g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
-					g_Player.oldpos.x - g_Player.size.x / 2 >= pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
-					g_Player.Position.y + g_Player.size.y / 3 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 3 &&
-					g_Player.Position.y - g_Player.size.y / 3 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 3)
-				{
-					//g_Player.Position.x = pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 + g_Player.size.x / 2;
-				}
-
-				//プレイヤー上・ブロック下,着地する
-				if (!GetThumbLeftY(0) < -0.3f ||		// GamePad	左スティック	下
-					!Keyboard_IsKeyDown(KK_DOWN))		// Keyboard 下
-				{
-					if ((g_Player.oldpos.y + g_Player.size.y / 2 <= pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
-						CollisionBB(g_Player.Position, pSheerFloors[i].pos, g_Player.size, pSheerFloors[i].size))
+					if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
+						g_Player.oldpos.x + g_Player.size.x / 2 <= pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
 					{
-						//g_Player.Position.y = pSheerFloors[i].pos.y - (pSheerFloors[i].size.y / 2 + g_Player.size.y / 2);
-						//g_Player.sp.y = 0.0f;
-						for (int i = 0; i < JUMPSTAND_MAX; i++)
+						g_Player.Position.x = pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 - g_Player.size.x / 2;
+					}
+					//プレイヤー右・ブロック左
+					if (g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+						g_Player.oldpos.x - g_Player.size.x / 2 >= pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 3 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 3 &&
+						g_Player.Position.y - g_Player.size.y / 3 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 3)
+					{
+						g_Player.Position.x = pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 + g_Player.size.x / 2;
+					}
+
+					//プレイヤー上・ブロック下,着地する
+					if (!GetThumbLeftY(0) < -0.3f ||		// GamePad	左スティック	下
+						!Keyboard_IsKeyDown(KK_DOWN))		// Keyboard 下
+					{
+						if (pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 < g_Player.Position.x + g_Player.size.x / 2 &&
+							pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 > g_Player.Position.x - g_Player.size.x / 2 &&
+							pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 > g_Player.Position.y - g_Player.size.y / 2 &&
+							pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 <= g_Player.oldpos.y - g_Player.size.y / 2)
 						{
-							p_JumpStand[i].JumpStandFlag = false;
+							//g_Player.Position.y = pSheerFloors[i].pos.y - (pSheerFloors[i].size.y / 2 + g_Player.size.y / 2);
+							//g_Player.sp.y = 0.0f;
+							for (int i = 0; i < JUMPSTAND_MAX; i++)
+							{
+								p_JumpStand[i].JumpStandFlag = false;
 
-						}
-
-						g_Player.isSheerFloors = true;
-						g_Player.sp.y = 0.0f;
-
-
-					}
-
-
-				}
-				//プレイヤー下・ブロック上,落下する
-				if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
-					g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
-					g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 &&
-					g_Player.oldpos.y - g_Player.size.y / 2 >= pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
-				{
-
-				}
-			}
-
-			for (int i = 0; i < SHEERFLOORS_NUM; i++)
-			{
-				if (!GetThumbLeftY(0) < 0.3f ||					// GamePad	左スティック	下
-					!Keyboard_IsKeyDown(KK_DOWN))				// Keyboard	下
-				{
-					// プレイヤーの下にブロックがあったら
-					if ((g_Player.Position.y - g_Player.size.y / 2 + 0.05f < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2) &&
-						(g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
-						(g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2) &&
-						(g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2))
-					{	// 着地中にする
-						g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
-
-						if (!g_Player.isSheerFloors) {
+							}
+							g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
+							g_Player.jump = false;
 							g_Player.sp.y = 0.0f;
-							g_Player.isSheerFloors = true;
-							break;
+
+							g_Player.fall = false;
+							if (!g_Player.isSheerFloors) {
+								g_Player.sp.y = 0.0f;
+								g_Player.isSheerFloors = true;
+
+							}
+							else {
+								g_Player.isSheerFloors = false;
+							}
+
+
+
+						}
+
+						//プレイヤー下・ブロック上,落下する
+						if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
+							g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+							g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 &&
+							g_Player.oldpos.y - g_Player.size.y / 2 >= pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
+						{
+
 						}
 					}
-					else {
-						g_Player.isSheerFloors = false;
-					}
 				}
+
 			}
 
 			if (GetThumbLeftY(0) < -0.3f ||			// GamePad	左スティック	下

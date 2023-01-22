@@ -112,8 +112,10 @@ void SetKey(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index){
 				g_Key[i].UseFlag = true;
 			}
 		}
-		if (g_Key[i].GetKey) {
-			break;
+		if (i != KEY_MAX) {
+			if (g_Key[i].GetKey && !g_Key[i + 1].UseFlag) {
+				break;
+			}
 		}
 	}
 }

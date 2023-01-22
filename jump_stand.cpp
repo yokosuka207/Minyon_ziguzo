@@ -285,6 +285,7 @@ void SetJumpStand(D3DXVECTOR2 p)
 		{
 
 			g_JumpStand[i].pos = p;
+			//g_JumpStand[i].pos.y += 10.0f;
 			g_JumpStand[i].size = D3DXVECTOR2(BLOCK_CHIP_SIZE, BLOCK_CHIP_SIZE);
 
 			g_JumpStand[i].UseJumpStand = true;
@@ -352,6 +353,7 @@ void SetJumpStand(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int PieceNo) 
 				break;
 			}
 			g_JumpStand[i].pos = pos;
+			g_JumpStand[i].pos.y += 1.0f;
 			g_JumpStand[i].size = size;
 			g_JumpStand[i].PieceIndex = PieceNo;
 			g_JumpStand[i].NowPieceIndex = PieceNo;
