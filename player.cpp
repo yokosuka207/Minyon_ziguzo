@@ -288,63 +288,70 @@ void UpdatePlayer()
 			//---------------
 			//透ける床の場合
 			//---------------
+
 			SHEERFLOORS* pSheerFloors = GetSheerFloors();
 			for (int i = 0; i < SHEERFLOORS_NUM; i++)
 			{
-				if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
-					g_Player.oldpos.x + g_Player.size.x / 2 <= pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
-					g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2 &&
-					g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
+				if (pSheerFloors[i].use)
 				{
-					g_Player.Position.x = pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 - g_Player.size.x / 2;
-				}
-				//プレイヤー右・ブロック左
-				if (g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
-					g_Player.oldpos.x - g_Player.size.x / 2 >= pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
-					g_Player.Position.y + g_Player.size.y / 3 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 3 &&
-					g_Player.Position.y - g_Player.size.y / 3 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 3)
-				{
-					g_Player.Position.x = pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 + g_Player.size.x / 2;
-				}
-
-				//プレイヤー上・ブロック下,着地する
-				if (!GetThumbLeftY(0) < -0.3f ||		// GamePad	左スティック	下
-					!Keyboard_IsKeyDown(KK_DOWN))		// Keyboard 下
-				{
-					if (pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 < g_Player.Position.x + g_Player.size.x / 2 &&
-						pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 > g_Player.Position.x - g_Player.size.x / 2 &&
-						pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 > g_Player.Position.y + g_Player.size.y / 2 &&
-						pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 <= g_Player.oldpos.y + g_Player.size.y / 2)
-					{
-						//g_Player.Position.y = pSheerFloors[i].pos.y - (pSheerFloors[i].size.y / 2 + g_Player.size.y / 2);
-						//g_Player.sp.y = 0.0f;
-						for (int i = 0; i < JUMPSTAND_MAX; i++)
-						{
-							p_JumpStand[i].JumpStandFlag = false;
-
-						}
-						g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
-						g_Player.jump = false;
-						g_Player.fall = false;
-						if (!g_Player.isSheerFloors) {
-							g_Player.sp.y = 0.0f;
-							g_Player.isSheerFloors = true;
-
-						}
-						else {
-							g_Player.isSheerFloors = false;
-						}
-
-
-
-					}
-					//プレイヤー下・ブロック上,落下する
 					if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
-						g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
-						g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 &&
-						g_Player.oldpos.y - g_Player.size.y / 2 >= pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
+						g_Player.oldpos.x + g_Player.size.x / 2 <= pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2 &&
+						g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
 					{
+						g_Player.Position.x = pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 - g_Player.size.x / 2;
+					}
+					//プレイヤー右・ブロック左
+					if (g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+						g_Player.oldpos.x - g_Player.size.x / 2 >= pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+						g_Player.Position.y + g_Player.size.y / 3 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 3 &&
+						g_Player.Position.y - g_Player.size.y / 3 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 3)
+					{
+						g_Player.Position.x = pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 + g_Player.size.x / 2;
+					}
 
+					//プレイヤー上・ブロック下,着地する
+					if (!GetThumbLeftY(0) < -0.3f ||		// GamePad	左スティック	下
+						!Keyboard_IsKeyDown(KK_DOWN))		// Keyboard 下
+					{
+						if (pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 < g_Player.Position.x + g_Player.size.x / 2 &&
+							pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 > g_Player.Position.x - g_Player.size.x / 2 &&
+							pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 > g_Player.Position.y - g_Player.size.y / 2 &&
+							pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 <= g_Player.oldpos.y - g_Player.size.y / 2)
+						{
+							//g_Player.Position.y = pSheerFloors[i].pos.y - (pSheerFloors[i].size.y / 2 + g_Player.size.y / 2);
+							//g_Player.sp.y = 0.0f;
+							for (int i = 0; i < JUMPSTAND_MAX; i++)
+							{
+								p_JumpStand[i].JumpStandFlag = false;
+
+							}
+							g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
+							g_Player.jump = false;
+							g_Player.sp.y = 0.0f;
+
+							g_Player.fall = false;
+							if (!g_Player.isSheerFloors) {
+								g_Player.sp.y = 0.0f;
+								g_Player.isSheerFloors = true;
+
+							}
+							else {
+								g_Player.isSheerFloors = false;
+							}
+
+
+
+						}
+
+						//プレイヤー下・ブロック上,落下する
+						if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
+							g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
+							g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 &&
+							g_Player.oldpos.y - g_Player.size.y / 2 >= pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
+						{
+
+						}
 					}
 				}
 
