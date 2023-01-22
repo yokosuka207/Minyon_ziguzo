@@ -92,6 +92,7 @@ HRESULT InitCursor()
 		g_Cursor.pFlag = false;
 		g_Cursor.useFlag = false;
 		g_Cursor.type = 0;
+		g_Cursor.bHave = false;
 	}
 	g_CursorTextureNo[0] = LoadTexture(g_CursorTextureName);
 	g_CursorTextureNo[1] = LoadTexture(g_CursorCatchTextureName);
@@ -177,8 +178,22 @@ void UpdateCursor()
 		g_Cursor.pos.x = g_Cursor.oldPos.x;
 	}
 	//-----------------------------------------]
-	if (Mouse_IsLeftDown() &&						// mouse 左
-		IsButtonPressed(0, XINPUT_GAMEPAD_B))		// GamePad B
+
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {		// GamePad B
+		if (!g_Cursor.bHave) {
+			g_Cursor.bHave = true;
+		}
+		else {
+			g_Cursor.bHave = false;
+		}
+	}
+
+	if (Mouse_IsLeftRelease()) {
+		g_Cursor.bHave = false;
+	}
+
+	if (Mouse_IsLeftDown() ||						// mouse 左
+		g_Cursor.bHave)
 	{
 		for (int i = 0; i < PUZZLE_MAX; i++)
 		{
@@ -235,16 +250,13 @@ void UpdateCursor()
 
 			if (pPiece[i].UseFlag)
 			{
-
-				if (pPiece[i].pos.y - PUZZLE_HEIGHT / 3 < -g_Cursor.pos.y+SCREEN_HEIGHT/2 &&
+				if (pPiece[i].pos.y - PUZZLE_HEIGHT / 3 < -g_Cursor.pos.y + SCREEN_HEIGHT / 2 &&
 					pPiece[i].pos.y + PUZZLE_HEIGHT / 3 > -g_Cursor.pos.y + SCREEN_HEIGHT / 2 &&
 					pPiece[i].pos.x - PUZZLE_WIDHT / 3 < g_Cursor.pos.x - SCREEN_WIDTH / 2 &&
 					pPiece[i].pos.x + PUZZLE_WIDHT / 3 > g_Cursor.pos.x - SCREEN_WIDTH / 2 &&
 					!oneFlag)
 				{
-					
-
-					//プレーヤーが持ったピースの中にいたら
+					//持ったピースの中にプレーヤーがいたら
 					if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pPlayer->Position.y &&
 						pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pPlayer->Position.y &&
 						pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pPlayer->Position.x &&
@@ -269,9 +281,14 @@ void UpdateCursor()
 					NoIndex = pPiece[i].no;
 					pPiece[i].OldMovePos = pPiece[i].pos;
 					g_Cursor.type = 1;
+					g_Cursor.bHave = true;
+					break;
 				}
 				else if (oneFlag && i == g_CursorIndex)
 				{
+					g_Cursor.type = 1;
+					g_Cursor.bHave = true;
+
 					pPiece[g_CursorIndex].OldPos = pPiece[g_CursorIndex].pos;
 
 					pPiece[g_CursorIndex].pos.x = g_Cursor.pos.x - SCREEN_WIDTH / 2;
@@ -470,23 +487,22 @@ void UpdateCursor()
 							{
 								pWarp[i].Position += temp;
 							}
-
-							}
 						}
-						for (int i = 0; i < ENEMY_MAX; i++)
+					}
+					for (int i = 0; i < ENEMY_MAX; i++)
+					{
+						if (pEnemy[i].UseFlag)
 						{
-							if (pEnemy[i].UseFlag)
+							if (pEnemy[i].index == NoIndex)
 							{
-								if (pEnemy[i].index == NoIndex)
-								{
-									pEnemy[i].pos += temp;
-								}
+								pEnemy[i].pos += temp;
 							}
-
 						}
-
+					}
+					// ピースの中にプレイヤーがいない
 					if (!g_Cursor.pFlag)
 					{
+						// 回転
 						if (Keyboard_IsKeyTrigger(KK_A) ||								// keyboard A
 							IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_SHOULDER))		// GamePad R
 						{
@@ -503,16 +519,18 @@ void UpdateCursor()
 						pPlayer->Position += temp;
 						pPlayer->oldpos = pPlayer->Position;
 					}
+					break;
 				}
 				else {
 					g_Cursor.type = 0;
+					g_Cursor.bHave = false;
 				}
 			}
 		}
 	}
 	
 	if (!Mouse_IsLeftDown() &&						// mouse 左
-		IsButtonPressed(0, XINPUT_GAMEPAD_B))		// GamePad B
+		!g_Cursor.bHave)
 	{
 		if (g_CursorIndex != -1)
 		{
