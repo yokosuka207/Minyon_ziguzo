@@ -49,6 +49,7 @@
 #include "PlayerLife.h"
 #include "start.h"
 #include "JumpStandExplain.h"
+#include "StoryKey.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -102,6 +103,7 @@ void InitGame()
 		InitBullet();
 		InitPlayerLife();
 		InitExplain();
+		InitStoryKey();
 
 		InitCollision();
 	}
@@ -154,6 +156,7 @@ void UninitGame()
 	UninitBullet();
 	UninitPlayerLife();
 	UninitExplain();
+	UninitStoryKey();
 	UninitCollision();
 
 	UninitPause();
@@ -214,6 +217,7 @@ void UpdateGame()
 		UpdateHigh();
 		UpdateSwitch();
 		UpdateSwitchWall();
+		UpdateStoryKey();
 
 		UpdateDoppelganger();
 		UpdateEnemy();
@@ -278,6 +282,7 @@ void DrawGame()
 		DrawBullet();
 		DrawNoizu();
 
+
 		DrawPlayerLife();
 
 		//DrawRay();				// 光線の描画
@@ -288,6 +293,7 @@ void DrawGame()
 		g_Player3D.Draw();
 		DrawEffectSpark();		// ヒバナエフェクト
 		SetCamera();
+		DrawStoryKey();
 		DrawExplain();
 	}
 	else {

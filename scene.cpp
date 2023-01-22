@@ -13,6 +13,7 @@
 #include "fade.h"
 #include "noizu.h"
 #include "sound.h"
+#include "story.h"
 
 #define SOUND_FADE_OUT_VOLUME (0.02f)
 
@@ -73,6 +74,7 @@ void InitScene(SCENE no){
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		InitStageSelect();
+		InitStory();
 		//g_StageSelectSoundNo = LoadSound(StageSelectName[Irand(3)]);
 		g_StageSelectSoundNo = LoadSound(StageSelectName);
 		PlaySound(g_StageSelectSoundNo, -1);
@@ -118,6 +120,7 @@ void UninitScene(){
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UninitStageSelect();
+		UninitStory();
 		UninitNoizu();
 		StopSound(g_StageSelectSoundNo);
 		g_SoundFadeOutVolume = 0.0f;
@@ -165,6 +168,7 @@ void UpdateScene(){
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UpdateStageSelect();
+		UpdateStory();
 		UpdateNoizu();
 		if (pFade->FadeFlag) {
 			SetVolume(g_StageSelectSoundNo, 0.4f - g_SoundFadeOutVolume);
@@ -220,6 +224,7 @@ void DrawScene(){
 	case SCENE::SCENE_STAGESELECT:
 
 		DrawStageSelect();
+		DrawStory();
 		DrawNoizu();
 
 		break;

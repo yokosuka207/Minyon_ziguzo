@@ -37,12 +37,13 @@ HRESULT InitStoryKey()
 
 	for (int i = 0; i < STORYKEY_MAX; i++) 
 	{
-		gStoryKey[i].pos = D3DXVECTOR2(0, 0);
+		gStoryKey[i].pos = D3DXVECTOR2(-127, 150);
 		gStoryKey[i].size = D3DXVECTOR2(STORYKEY_SIZE, STORYKEY_SIZE);
 		gStoryKey[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
+		gStoryKey[i].bUse = false;
+
 		gStoryKey[i].no = -1;
-		gStoryKey[i].HaveSKey = 1;
 	}
 
 	return S_OK;
@@ -64,7 +65,7 @@ void UpdateStoryKey()
 
 void DrawStoryKey()
 {
-	SetWorldViewProjection2D();
+	//SetWorldViewProjection2D();
 
 	for (int i = 0; i < STORYKEY_MAX; i++)
 	{
@@ -74,7 +75,6 @@ void DrawStoryKey()
 
 			for (int i = 0; i < STORYKEY_MAX; i++)
 			{
-				D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 				SpriteDrawColorRotation(gStoryKey[i].pos.x, gStoryKey[i].pos.y, 0.0f, gStoryKey[i].size.x, gStoryKey[i].size.y,
 					gStoryKey[i].rot, gStoryKey[i].col, 0, 1.0f, 1.0f, 1);
 			}
@@ -111,5 +111,5 @@ void DeleteStoryKey(int no)
 
 STORYKEY* GetStoryKey()
 {
-	return &gStoryKey[0];
+	return gStoryKey;
 }

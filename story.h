@@ -7,17 +7,22 @@
 //=====================
 
 #define STORY_MAX	(8)
+#define	STORY_BLOCK_SIZE (30)
 
 typedef	struct
 {
-	D3DXVECTOR3		pos;	//表示座標
+	D3DXVECTOR2		pos;	//表示座標
 	D3DXVECTOR2		size;	//サイズ
 	D3DXVECTOR2		sp;		//移動スピード
 	D3DXCOLOR		color;	//色
 
 	bool			bUse;	//ストーリー取得フラグ
+	bool			KeyUse;
 
 	int				HaveKey;
+
+	int				n;
+
 
 }STORY;
 
@@ -45,3 +50,4 @@ void	UninitStory();
 void	UpdateStory();
 void	DrawStory();
 
+STORY* GetStory();
