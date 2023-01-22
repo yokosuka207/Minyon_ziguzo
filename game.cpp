@@ -256,7 +256,7 @@ void DrawGame()
 		DrawPuzzle();
 		DrawMapChip();
 
-		//DrawJoint();				// いずれ必ずこの世から消してやる！
+		//DrawJoint();				// （#^ω^）
 		DrawBlock();
 
 		DrawPuzzleCip();
