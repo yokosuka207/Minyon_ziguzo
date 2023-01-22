@@ -42,6 +42,7 @@ HRESULT InitMoveBlock()
 		gMoveBlock[i].bUse = false;
 
 		gMoveBlock[i].MoveBlockNotMove = false;
+		gMoveBlock[i].MoveFlag = false;
 
 		g_MoveBlockMoveSoundNo = LoadSound(g_MoveBlockMoveSoundName);
 		g_MoveBolckLandingSoundNo = LoadSound(g_g_MoveBolckLandingSoundName);
@@ -92,7 +93,10 @@ void UpdateMoveBlock()
 				}
 			}
 
-			gMoveBlock[i].pos.y--;
+				
+				gMoveBlock[i].pos.y--;
+
+			
 
 			//ブロックとの当たり判定
 
@@ -138,7 +142,9 @@ void UpdateMoveBlock()
 						gMoveBlock[i].pos.y	   + gMoveBlock[i].size.y / 2 > (cipblock + j)->Position.y  - (cipblock + j)->Size.y / 2 &&
 						gMoveBlock[i].pos.y	   - gMoveBlock[i].size.y / 2 < (cipblock + j)->Position.y  + (cipblock + j)->Size.y / 2)
 					{
+						//p_Player->Position.x = gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 - p_Player->size.x / 2;
 						gMoveBlock[i].pos.x = (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 - gMoveBlock[i].size.x / 2;
+
 					}
 					//プレイヤー右・ブロック左
 					if (gMoveBlock[i].pos.x	   - gMoveBlock[i].size.x / 2 < (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 &&
@@ -146,6 +152,7 @@ void UpdateMoveBlock()
 						gMoveBlock[i].pos.y    + gMoveBlock[i].size.y / 3 > (cipblock + j)->Position.y - (cipblock + j)->Size.y / 3 &&
 						gMoveBlock[i].pos.y    - gMoveBlock[i].size.y / 3 < (cipblock + j)->Position.y + (cipblock + j)->Size.y / 3)
 					{
+						//p_Player->Position.x = gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 + p_Player->size.x / 2;
 						gMoveBlock[i].pos.x = (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 + gMoveBlock[i].size.x / 2;
 					}
 					//プレイヤー上・ブロック下,着地する
@@ -154,13 +161,14 @@ void UpdateMoveBlock()
 						gMoveBlock[i].pos.y + gMoveBlock[i].size.y / 2 > (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 &&
 						gMoveBlock[i].oldpos.y + gMoveBlock[i].size.y / 2 <= (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2)
 					{
+						//p_Player->Position.y = gMoveBlock[i].pos.y - gMoveBlock[i].size.y / 2 - p_Player->size.y / 2;
 						gMoveBlock[i].pos.y = (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 - gMoveBlock[i].size.y / 2;
 						
 						//着地した瞬間だけ音が鳴る
 						if (gMoveBlock[i].oldoldpos.y != gMoveBlock[i].pos.y)
 						{
 							//SetVolume(g_MoveBolckLandingSoundNo, 0.5f);
-							PlaySound(g_MoveBolckLandingSoundNo, 0);
+							//PlaySound(g_MoveBolckLandingSoundNo, 0);
 						}
 					}
 					//プレイヤー下・ブロック上,落下する
@@ -204,6 +212,7 @@ void SetMoveBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 	for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 		if (!gMoveBlock[i].bUse) {
 			gMoveBlock[i].pos = pos;
+			gMoveBlock[i].pos.y +=1.0f ;
 			gMoveBlock[i].size = size;
 			gMoveBlock[i].PieceIndex = PieceNo;
 			gMoveBlock[i].bUse = true;

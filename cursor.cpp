@@ -36,6 +36,9 @@
 #include "start.h"
 #include"high_broken.h"
 #include "sound.h"
+#include"MoveBlock.h"
+#include"fallblock.h"
+#include"enemy.h"
 
 //--------------------------------------------------
 // É}ÉNÉçíËã`
@@ -134,6 +137,8 @@ void UpdateCursor()
 	GKey* pGkey = GetGKey();
 	START* pStart = GetStart();
 	HIGH* pHigh = GetHigh();
+	FALLBLOCK* pFallBlock = GetFallBlock();
+	ENEMY* pEnemy = GetEnemy();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	static float MouseOldPosX = GetMousePosX();
@@ -328,6 +333,28 @@ void UpdateCursor()
 							}
 
 						}
+						for (int i = 0; i < MOVE_BLOCK_MAX; i++)
+						{
+							if (pMoveBlock[i].bUse)
+							{
+								if (pMoveBlock[i].PieceIndex == NoIndex)
+								{
+									pMoveBlock[i].pos += temp;
+								}
+
+							}
+
+						}
+						for (int i = 0; i < FALLBLOCK_MAX; i++)
+						{
+							if (pFallBlock[i].UseFlag)
+							{
+								if (pFallBlock[i].PieceIndex == NoIndex)
+								{
+									pFallBlock[i].Position += temp;
+								}
+							}
+						}
 						for (int i = 0; i < JOINT_MAX; i++)
 						{//âöì 
 							if (pJoint[i].useFlag)
@@ -377,13 +404,15 @@ void UpdateCursor()
 								}
 							}
 						}
-						for (int i = 0; i < OPEN_KEY_MAX; i++) {
-							if (pOpenKey[i].UseFlag) {
-								if (pOpenKey[i].index == NoIndex) {
-									pOpenKey[i].Position += temp;
+						
+						for (int i = 0; i < OPEN_KEY_MAX * STAGE_OPEN_KEY_MAX; i++) {
+							if ((pOpenKey + i)->UseFlag) {
+								if ((pOpenKey + i)->index == NoIndex) {
+									(pOpenKey + i)->Position += temp;
 								}
 							}
 						}
+						
 						for (int i = 0; i < THORN_BLOCK_MAX; i++)
 						{//Ç∆Ç∞
 							if (pThornBlock[i].UseFlag)
@@ -449,6 +478,17 @@ void UpdateCursor()
 								}
 
 							}
+						}
+						for (int i = 0; i < ENEMY_MAX; i++)
+						{
+							if (pEnemy[i].UseFlag)
+							{
+								if (pEnemy[i].index == NoIndex)
+								{
+									pEnemy[i].pos += temp;
+								}
+							}
+
 						}
 
 						if (!g_Cursor.pFlag)

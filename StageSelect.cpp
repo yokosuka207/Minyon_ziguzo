@@ -334,8 +334,19 @@ void UpdateStageSelect() {
 				}
 			}
 
-			ply.oldpos = ply.Position;
-			ply.Position += ply.sp;
+		if (ply.sp.x == 0)
+		{
+			ply.PaternNo = 17;
+
+			if (ply.uv_w < 0)
+			{
+				ply.PaternNo = 18;
+
+			}
+		}
+
+		ply.oldpos = ply.Position;
+		ply.Position += ply.sp;
 
 
 

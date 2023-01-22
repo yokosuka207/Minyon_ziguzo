@@ -39,7 +39,7 @@
 #include "scene.h"
 #include "pause.h"
 #include "goal_key.h"
-#include "doppelganger.h"
+//#include "doppelganger.h" //ドッペルゲンガー
 #include "enemy.h"
 #include "bullet.h"
 #include"noizu.h"
@@ -49,6 +49,7 @@
 #include "PlayerLife.h"
 #include "start.h"
 #include "JumpStandExplain.h"
+#include"fallblock.h"
 #include "StoryKey.h"
 
 static Time* pTime = pTime->GetTime();
@@ -92,9 +93,10 @@ void InitGame()
 		InitSwitch();
 		InitSwitchWall();
 		InitMoveBlock();
+		InitFallBlock();
 		InitNoizu();
-		InitDoppelganger();
-		SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1);
+		//InitDoppelganger(); //ドッペルゲンガー
+		//SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1); //ドッペルゲンガー
 		InitEnemy();
 		InitPause();
 		InitRay();				// 光線の初期化
@@ -147,11 +149,12 @@ void UninitGame()
 	UninitKey();
 	UninitOpenKey();
 	UninitMoveBlock();
+	UninitFallBlock();
 	UninitHigh();
 	UninitSwitch();
 	UninitSwitchWall();
 	UninitNoizu();
-	UninitDoppelganger();
+	//UninitDoppelganger(); 	//ドッペルゲンガー
 	UninitEnemy();
 	UninitBullet();
 	UninitPlayerLife();
@@ -214,12 +217,13 @@ void UpdateGame()
 		UpdateKey();
 		UpdateOpenKey();
 		UpdateMoveBlock();
+		UpdateFallBlock();
 		UpdateHigh();
 		UpdateSwitch();
 		UpdateSwitchWall();
 		UpdateStoryKey();
 
-		UpdateDoppelganger();
+		//UpdateDoppelganger();//ドッペルゲンガー
 		UpdateEnemy();
 		UpdateBullet();
 
@@ -270,6 +274,7 @@ void DrawGame()
 		DrawKey();
 		DrawOpenKey();
 		DrawMoveBlock();
+		DrawFallBlock();
 		DrawHigh();
 		DrawSwitch();
 		DrawSwitchWall();
@@ -277,11 +282,10 @@ void DrawGame()
 		DrawBroken();		
 		DrawThornBlock();
 
-		DrawDoppelganger();
+		//DrawDoppelganger();//ドッペルゲンガー
 		DrawEnemy();
 		DrawBullet();
 		DrawNoizu();
-
 
 		DrawPlayerLife();
 

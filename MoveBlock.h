@@ -16,7 +16,7 @@ typedef struct
 	bool bUse;	
 
 	bool GetMoveBlock;
-
+	bool MoveFlag;
 	bool MoveBlockNotMove;
 
 }MOVEBLOCK;

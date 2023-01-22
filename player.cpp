@@ -346,7 +346,7 @@ void UpdatePlayer()
 					!Keyboard_IsKeyDown(KK_DOWN))				// Keyboard	下
 				{
 					// プレイヤーの下にブロックがあったら
-					if ((g_Player.Position.y - g_Player.size.y / 2 - 0.05f < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2) &&
+					if ((g_Player.Position.y - g_Player.size.y / 2 + 0.05f < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2) &&
 						(g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2) &&
 						(g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2) &&
 						(g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2))
@@ -375,7 +375,7 @@ void UpdatePlayer()
 			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock) && g_Player.sp.y <= 0 && (Keyboard_IsKeyDown(KK_SPACE)|| IsButtonPressed(0, XINPUT_GAMEPAD_A)))
 			{
 
-				g_Player.sp.y = 2.5f;			// スピードのyをマイナスにする
+				g_Player.sp.y = 2.8f;			// スピードのyをマイナスにする
 				//SetVolume(g_PlayerRightSoundNo, 0.5f);
 				PlaySound(g_PlayerRightSoundNo, 0);
 

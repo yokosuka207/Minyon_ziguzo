@@ -58,8 +58,8 @@ enum class MAPCHIP_TYPE{
 	TYPE_SPWANPOINT,	//20	スポーンポイント
 	TYPE_MOVEBLOCK,		//21	動くブロック
 	TYPE_DOPPELGANGER,	//22	ドッペルゲンガー
-	TYPE_ENEMY,			//23	敵
-	TYPE_PLAYER,		//24	敵
+	TYPE_ENEMY_LEFT,			//23	敵
+	TYPE_ENEMY_RIGHT,		//24	敵
 	TYPE_START,			//25    初期位置
 	TYPE_EXPLAIN,		//26	ヒントブロック
 

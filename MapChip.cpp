@@ -349,11 +349,11 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER)://22　ドッペルゲンガー
 				SetDoppelGanger(position, DrawSize, no);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY)://23　敵
-				SetEnemy(position, DrawSize, no);
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_LEFT)://23　敵
+				SetEnemy(position, DrawSize, no,ENEMY_DIRECTION::DIRECTION_LEFT);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_PLAYER)://24　敵
-				SetPlayerPosition(position);
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_RIGHT)://24　敵
+				SetEnemy(position, DrawSize, no, ENEMY_DIRECTION::DIRECTION_RIGHT);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
@@ -634,8 +634,11 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER)://22　ドッペルゲンガー
 				SetDoppelGanger(position, DrawSize, no);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY)://23　敵
-				SetEnemy(position, DrawSize, no);
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_LEFT)://23　敵
+				SetEnemy(position, DrawSize, no, ENEMY_DIRECTION::DIRECTION_LEFT);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_RIGHT)://24　敵
+				SetEnemy(position, DrawSize, no, ENEMY_DIRECTION::DIRECTION_RIGHT);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);

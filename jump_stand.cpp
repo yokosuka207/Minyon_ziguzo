@@ -53,6 +53,7 @@ HRESULT InitJumpStand()
 		g_JumpStand[i].JumpStandFlag = false;
 
 		g_JumpStand[i].JumpStandNotMove = true;
+		g_JumpStand[i].LookFlag = false;
 
 		g_JumpStandSoundNo = LoadSound(g_JumpStandSoundName);
 		g_JumpStandSoundMoveNo = LoadSound(g_JumpStandSoundMoveName);
@@ -101,8 +102,9 @@ void UpdateJumpStand()
 					p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
 					p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2)
 				{
-					g_JumpStand[i].sp = p_Player->sp;
-					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
+					p_Player->Position.x = g_JumpStand[i].pos.x - g_JumpStand[i].size.x / 2 - p_Player->size.x / 2;
+					//g_JumpStand[i].sp = p_Player->sp;
+					//g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
 					//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
 					//PlaySound(g_JumpStandSoundMoveNo, 0);
 				}
@@ -112,8 +114,9 @@ void UpdateJumpStand()
 					p_Player->Position.y + p_Player->size.y / 2 > g_JumpStand[i].pos.y - g_JumpStand[i].size.y / 2 &&
 					p_Player->Position.y - p_Player->size.y / 2 < g_JumpStand[i].pos.y + g_JumpStand[i].size.y / 2)
 				{
-					g_JumpStand[i].sp = p_Player->sp;
-					g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
+					p_Player->Position.x = g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 + p_Player->size.x / 2;
+					//g_JumpStand[i].sp = p_Player->sp;
+					//g_JumpStand[i].pos.x += g_JumpStand[i].sp.x;
 					//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
 					//PlaySound(g_JumpStandSoundMoveNo, 0);
 				}
@@ -131,11 +134,11 @@ void UpdateJumpStand()
 						PlaySound(g_JumpStandSoundMoveNo, -1);
 						g_JumpStand[i].JumpStandNotMove = false;
 					}
-					if (g_JumpStand[i].oldpos.x == g_JumpStand[i].pos.x && g_JumpStand[i].JumpStandNotMove == false)//動かしてない時
-					{
-						g_JumpStand[i].JumpStandNotMove = true;
-						StopSound(g_JumpStandSoundMoveNo);
-					}
+				}
+				if (g_JumpStand[i].oldpos.x == g_JumpStand[i].pos.x)//動かしてない時
+				{
+					g_JumpStand[i].JumpStandNotMove = true;
+					StopSound(g_JumpStandSoundMoveNo);
 				}
 
 				{
@@ -155,13 +158,16 @@ void UpdateJumpStand()
 							{
 								g_JumpStand[i].pos.y = g_JumpStand[i].oldpos.y;
 								g_JumpStand[i].NowPieceIndex = p_Block[j].PieceIndex;
-
-								//着地した瞬間だけ音が鳴る,ピースが空き領域に設置されたかどうかをとりたい
-								if (g_JumpStand[i].oldoldpos.y != g_JumpStand[i].pos.y)
+								if (!g_JumpStand[i].LookFlag)
 								{
-									//SetVolume(g_JumpStandLandingSoundNo, 0.5f);
-									PlaySound(g_JumpStandLandingSoundNo, 0);
+									//着地した瞬間だけ音が鳴る,ピースが空き領域に設置されたかどうかをとりたい
+									if (g_JumpStand[i].oldoldpos.y != g_JumpStand[i].pos.y)//着地の瞬間
+									{
+										SetVolume(g_JumpStandLandingSoundNo, 0.5f);
+										PlaySound(g_JumpStandLandingSoundNo, 0);
+									}
 								}
+								g_JumpStand[i].LookFlag = false;
 							}
 							if (g_JumpStand[i].pos.x + g_JumpStand[i].size.x / 2 > (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
 								g_JumpStand[i].oldpos.x + g_JumpStand[i].size.x / 2 <= (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&

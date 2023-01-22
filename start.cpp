@@ -3,6 +3,7 @@
 #include "renderer.h"
 #include "texture.h"
 #include "sprite.h"
+#include "sound.h"
 
 #define START_UV_W (1.0f / 1.0f)
 #define START_UV_H (1.0f / 2.0f)
@@ -13,6 +14,8 @@ static START g_Start[START_MAX];
 static ID3D11ShaderResourceView* g_StartTexture;	//画像一枚で一つの変数が必要
 static char* g_StartTextureName = (char*)"data\\texture\\ドア.png";	//テクスチャファイルパス
 static int g_StartTextureNo = 0;
+
+
 
 HRESULT InitStart() {
 	for (int i = 0; i < START_MAX; i++) {
@@ -26,6 +29,7 @@ HRESULT InitStart() {
 		g_Start[i].UseFlag = false;
 	}
 	g_StartTextureNo = LoadTexture(g_StartTextureName);
+
 	return S_OK;
 }
 void UninitStart() {

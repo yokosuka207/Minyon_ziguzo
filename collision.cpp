@@ -59,6 +59,7 @@
 #include"cursor.h"
 
 #include"sound.h"
+#include"bullet.h"
 
 //==================================
 //ƒvƒƒgƒ^ƒCƒvéŒ¾
@@ -126,6 +127,10 @@ static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\ƒs[ƒX‚Í‚ß‚Ş‰¹(–³—
 //‚ë‚¤‚»‚­
 static int g_CandleSoundNo = 0;
 static char g_CandleSoundName[] = "data\\SoundData\\SE\\‚ë‚¤‚»‚­(Œø‰Ê‰¹ƒ‰ƒ{).wav";
+//ƒXƒ^[ƒg
+static int g_GoalSoundNo = 0;
+static char g_GoalSoundName[] = "data\\SoundData\\SE\\ƒhƒA‚ğŠJ‚¯‚é‰¹(–³—¿Œø‰Ê‰¹‚Å—V‚Ú‚¤I).wav";
+
 
 
 
@@ -144,6 +149,7 @@ void InitCollision()
 	g_GKeySoundNo = LoadSound(g_GKeySoundName);
 	g_MatchPieceSoundNo = LoadSound(g_MatchPieceSoundName);
 	g_CandleSoundNo = LoadSound(g_CandleSoundName);
+	g_GoalSoundNo = LoadSound(g_GoalSoundName);
 }
 
 
@@ -161,6 +167,7 @@ void UninitCollision()
 	StopSound(g_GKeySoundNo);
 	StopSound(g_MatchPieceSoundNo);
 	StopSound(g_CandleSoundNo);
+	//StopSound(g_GoalSoundNo);
 }
 
 
@@ -200,7 +207,7 @@ void UpdateCollision(){
 	RESULT* pResult = GetResult();
 
 	Piece* pPiece = GetPiece();
-
+	BULLET* pBullet = GetBullet();
 	//-------------------------------------
 
 	bool pFlag = false;	//ƒvƒŒ[ƒ„[‚ªƒs[ƒX‚Ì’†‚É‚¢‚é‚©
@@ -271,6 +278,7 @@ void UpdateCollision(){
 		//ƒvƒŒ[ƒ„[‚ÆƒXƒCƒbƒ`Œn(switch,SwitchWall)
 		//=========================================
 		for (int i = 0; i < SWITCH_MAX; i++) {
+			//ƒXƒCƒbƒ`‚ÆƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
 			if (pSwitch[i].UseFlag) {
 				if (pSwitch[i].pos.x - pSwitch[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 					pSwitch[i].pos.x + pSwitch[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
@@ -279,31 +287,42 @@ void UpdateCollision(){
 				{
 					pSwitch[i].PressFlag = true;//‰Ÿ‚³‚ê‚½‚ç
 					pSwitch[i].PaternNo = 1;
-					//SetVolume(g_SwitchSoundNo, 0.5f);
-					PlaySound(g_SwitchSoundNo, 0);
+					if (pSwitch[i].NotPressed == true)
+					{
+						//SetVolume(g_SwitchSoundNo, 0.5f);
+						PlaySound(g_SwitchSoundNo, 0);
+						pSwitch[i].NotPressed = false;
+					}
 				}
 				else {
 					pSwitch[i].PressFlag = false;
 					pSwitch[i].PaternNo = 0;
+					pSwitch[i].NotPressed = true;
 				}
+
 				//ƒXƒCƒbƒ`‚Æ–Ø” ‚Ì“–‚½‚è”»’è
 				for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
 					if(CollisionBB(pSwitch[i].pos,pMoveBlock[j].pos,pSwitch[i].size,pMoveBlock[j].size)){
 						pSwitch[i].PressFlag = true;//‰Ÿ‚³‚ê‚½‚ç
 						pSwitch[i].PaternNo = 1;
-						//SetVolume(g_SwitchSoundNo, 0.5f);
-						PlaySound(g_SwitchSoundNo, 0);
+						if (pSwitch[i].NotPressed == true)
+						{
+							//SetVolume(g_SwitchSoundNo, 0.5f);
+							PlaySound(g_SwitchSoundNo, 0);
+							pSwitch[i].NotPressed = false;
+						}
 					}
 					else {
 						pSwitch[i].PressFlag = false;
 						pSwitch[i].PaternNo = 0;
+						pSwitch[i].NotPressed = true;
 					}
 				}
 
 				if (pSwitch[i].PressFlag) {
 					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
 						//  switch index 0,1			switch wall	index 0,3
-						if (pSwitch[i].SwitchIndex == pSwitchWall[i + j].SwitchIndex) {
+						if (pSwitch[i].SwitchIndex == pSwitchWall[i].SwitchIndex) {
 							pSwitchWall[i + j].UseFlag = false;	//‰Ÿ‚³‚ê‚½‚ç•Ç‚ª‚È‚­‚È‚é
 						}
 					}
@@ -337,16 +356,16 @@ void UpdateCollision(){
 				//•Ç‚Ì«‚ÆƒvƒŒƒCƒ„[‚Ìã
 				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 >= pPlayer->oldpos.y + pPlayer->size.y / 2)
+					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y - pPlayer->size.y / 2 &&
+					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 >= pPlayer->oldpos.y - pPlayer->size.y / 2)
 				{
 					pPlayer->Position = pPlayer->oldpos;
 				}
 				//•Ç‚Ìª‚ÆƒvƒŒƒCƒ„[‚Ì«
 				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
-					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
+					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y + pPlayer->size.y / 2 &&
+					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y + pPlayer->size.y / 2)
 				{
 					pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 + pPlayer->size.y / 2 + 0.02f;
 					pPlayer->jump = false;
@@ -435,7 +454,7 @@ void UpdateCollision(){
 		//========================================================================
 		//ƒvƒŒƒCƒ„[Eƒ`ƒbƒvƒuƒƒbƒN@“–‚½‚è”»’è(Player‚ÆChipBlock‚Ì“–‚½‚è”»’è)
 		//=========================================================================
-		for (int i = 0; i < BLOCK_MAX; i++) {
+		for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
 			if ((pChipblock + i)->UseFlag) {
 				//ƒvƒŒƒCƒ„[¶EƒuƒƒbƒN‰E
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pChipblock + i)->Position.x - (pChipblock + i)->Size.x / 2 &&
@@ -479,6 +498,7 @@ void UpdateCollision(){
 						pJumpStand[i].JumpStandFlag = false;
 
 					}
+					pPlayer->isHigh = false;
 
 					pPlayer->fall = true;
 					pPlayer->getfall = true;
@@ -634,16 +654,9 @@ void UpdateCollision(){
 					pPlayer->Position.y + pPlayer->size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2)
 				{
-					pPlayer->Position.y = pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2 + pPlayer->size.y / 2;
-					// ’…’n’†‚É‚·‚é
-					if (!pPlayer->isMoveBlock) {
-						pPlayer->sp.y = 0.0f;
-						pPlayer->isMoveBlock = true;
-						break;
-					}
-				}
-				else {
-					pPlayer->isMoveBlock = false;
+					pMoveBlock[i].sp = pPlayer->sp;
+					pMoveBlock[i].pos.y += pMoveBlock[i].sp.x;
+
 				}
 				//ƒvƒŒƒCƒ„[‰ºEƒuƒƒbƒNã,—‰º‚·‚é
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > pMoveBlock[i].pos.x - pMoveBlock[i].size.x / 2 &&
@@ -651,9 +664,23 @@ void UpdateCollision(){
 					pPlayer->Position.y - pPlayer->size.y / 2 < pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2 &&
 					pPlayer->oldpos.y - pPlayer->size.y / 2 >= pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2)
 				{
-					pMoveBlock[i].sp = pPlayer->sp;
-					pMoveBlock[i].pos.y += pMoveBlock[i].sp.x;
+					pPlayer->Position.y = pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2 + pPlayer->size.y / 2;
+					pMoveBlock[i].MoveFlag = true;
+					// ’…’n’†‚É‚·‚é
+					if (!pPlayer->isMoveBlock) {
+						pPlayer->sp.y = 0.0f;
+						pPlayer->isMoveBlock = true;
+						break;
+					}
+
 				}
+				else {
+					pMoveBlock[i].MoveFlag = false;
+
+					pPlayer->isMoveBlock = false;
+				}
+
+
 			}
 		}
 		//====================================================================
@@ -683,11 +710,8 @@ void UpdateCollision(){
 					pPlayer->Position.y + pPlayer->size.y / 2 > (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 &&
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2)
 				{
-					pPlayer->Position.y = (pFallBlock + i)->Position.y +(pFallBlock + i)->Size.y / 2 + pPlayer->size.y / 2;
-					pPlayer->getfall = false;
-					pPlayer->fall = false;
-					pPlayer->frame = 50;
-					(pFallBlock + i)->Position.y++;
+					pPlayer->Position.y = (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 - pPlayer->size.y / 2;
+
 				}
 				//ƒvƒŒƒCƒ„[‰ºE—‚¿‚éƒuƒƒbƒN
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pFallBlock + i)->Position.x - (pFallBlock + i)->Size.x / 2 &&
@@ -695,8 +719,32 @@ void UpdateCollision(){
 					pPlayer->Position.y - pPlayer->size.y / 2 < (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 &&
 					pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2)
 				{
-					pPlayer->Position.y = (pFallBlock + i)->Position.y - (pFallBlock + i)->Size.y / 2 - pPlayer->size.y / 2;
+					pPlayer->Position.y = (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 + pPlayer->size.y / 2;
+					pPlayer->getfall = false;
+					pPlayer->jump = false;
+					pPlayer->fall = false;
+					pPlayer->frame = 50;
+					pPlayer->isHigh = true;
+					(pFallBlock + i)->oldpos = (pFallBlock + i)->Position;
+					(pFallBlock + i)->Position.y--;
+
 				}
+
+				for (int j = 0; j < BLOCK_CHIP_MAX; j++)
+				{
+					if (pChipblock[j].UseFlag)
+					{
+						if (pFallBlock[i].Position.x + pFallBlock[i].Size.x / 3 > (pChipblock + j)->Position.x - (pChipblock + j)->Size.x / 2 &&
+							pFallBlock[i].Position.x - pFallBlock[i].Size.x / 3 < (pChipblock + j)->Position.x + (pChipblock + j)->Size.x / 2 &&
+							pFallBlock[i].Position.y - pFallBlock[i].Size.y / 2 < (pChipblock + j)->Position.y + (pChipblock + j)->Size.y / 2 &&
+							pFallBlock[i].oldpos.y - pFallBlock[i].Size.y / 2 >= (pChipblock + j)->Position.y + (pChipblock + j)->Size.y / 2)
+						{
+							pFallBlock[i].Position.y = (pChipblock + j)->Position.y + (pChipblock + j)->Size.y / 2 + pFallBlock[i].Size.y / 2;
+						}
+
+					}
+				}
+
 			}
 		}
 		//====================================================================
@@ -787,25 +835,23 @@ void UpdateCollision(){
 		//-----------------------------------------------------------------
 		//’ÊíŒ®æ“¾ƒvƒŒƒCƒ„[‚ÆŒ®‚ÅŠJ‚­”à‚Ì“–‚½‚è”»’è(Player‚ÆOpenKey)
 		//-----------------------------------------------------------------
-		for (int i = 0; i < OPEN_KEY_MAX; i++) {
+		for (int i = 0; i < OPEN_KEY_MAX * STAGE_OPEN_KEY_MAX; i++) {
 			if ((pOpenKey + i)->UseFlag) {
-				for (int j = 0; j < KEY_MAX; j++) {
-					if (CollisionBB(pOpenKey[i].Position, pPlayer->Position, pOpenKey[i].Size, pPlayer->size)) {
-						if (pPlayer->HaveKey > 0) {
-							pOpenKey[i].KeyOpen = true;
-							pOpenKey[i].UseFlag = false;
-							if (i % 3 == 0) {
-								pPlayer->HaveKey--;
-							}
-							//SetVolume(g_OpenKeySoundNo, 0.5f);
-							PlaySound(g_OpenKeySoundNo, 0);
-						}
-					}
-					/*else
-					{
-						pPlayer->Position.x = (pOpenKey + i)->Position.x - (pOpenKey + i)->Size.x / 2 - pPlayer->size.x / 2;
-					}*/
+				if (CollisionBB((pOpenKey + i)->Position, pPlayer->Position, (pOpenKey + i)->Size, pPlayer->size)) {
+					if (pPlayer->HaveKey > 0) {
+						if (i == 0 || i == 3 ||i == 6) {
+							(pOpenKey + i)->KeyOpen = true;
+							(pOpenKey + i + 1)->KeyOpen = true;
+							(pOpenKey + i + 2)->KeyOpen = true;
 
+							(pOpenKey + i)->UseFlag = false;
+							(pOpenKey + i + 1)->UseFlag = false;
+							(pOpenKey + i + 2)->UseFlag = false;
+							pPlayer->HaveKey--;
+						}
+						//SetVolume(g_OpenKeySoundNo, 0.5f);
+						PlaySound(g_OpenKeySoundNo, 0);
+					}
 				}
 			}
 		}
@@ -813,61 +859,70 @@ void UpdateCollision(){
 		//-----------------------------------------------------
 		//ƒvƒŒƒCƒ„[‚ÆŒ®•t‚«”à‚Ì“–‚½‚è”»’è(Player‚ÆOpenKey)
 		//-----------------------------------------------------
-		for (int i = 0; i < OPEN_KEY_MAX; i++) {
-			if (pOpenKey[i].UseFlag) {
-				//ƒvƒŒ[ƒ„[‚Æ”à‚Ì”»’è
-				//”à‚Ì¶‚ÆƒvƒŒƒCƒ„[‚Ì‰E
-				if (pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
-				{
-					pPlayer->Position.x = pPlayer->oldpos.x;
-				}
-				//”à‚Ì‰E‚ÆƒvƒŒƒCƒ„[‚Ì¶
-				if (pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 <= pPlayer->oldpos.x - pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
-				{
-					pPlayer->Position.x = pPlayer->oldpos.x;
-				}
-				//”à‚Ì«‚ÆƒvƒŒƒCƒ„[‚Ìã
-				if (pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-					pOpenKey[i].Position.y - pOpenKey[i].Size.y / 2 >= pPlayer->oldpos.y + pPlayer->size.y / 2)
-				{
-					pPlayer->Position = pPlayer->oldpos;
-				}
-				//”à‚Ìª‚ÆƒvƒŒƒCƒ„[‚Ì«
-				if (pOpenKey[i].Position.x - pOpenKey[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.x + pOpenKey[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
-					pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
-				{
-					pPlayer->Position.y = pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 + pPlayer->size.y / 2 + 0.02f;
-					pPlayer->jump = false;
-					pPlayer->fall = false;
-					pPlayer->WarpFlag = false;
-					pPlayer->sp.y = 0;
-					pPlayer->frame = 0;
-				}
-				//”à‚Æjumpstand‚Ì”»’è
-				for (int j = 0; j < JUMPSTAND_MAX; j++) {
-					if (CollisionBB(pOpenKey[i].Position, pJumpStand[j].pos, pOpenKey[i].Size, pJumpStand[j].size)) {
-						pJumpStand[j].pos = pJumpStand[j].oldpos;
+		for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
+			for (int i = 0; i < OPEN_KEY_MAX; i++) {
+				if (pOpenKey[i].UseFlag) {
+					//ƒvƒŒ[ƒ„[‚Æ”à‚Ì”»’è
+					//”à‚Ì¶‚ÆƒvƒŒƒCƒ„[‚Ì‰E
+					if ((pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+						(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+					{
+						pPlayer->Position.x = pPlayer->oldpos.x;
 					}
-				}
-				//”à‚Æ“®‚­ƒuƒƒbƒN‚Ì”»’è
-				for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
-					if (CollisionBB(pOpenKey[i].Position, pMoveBlock[j].pos, pOpenKey[i].Size, pMoveBlock[j].size)) {
-						pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+					//”à‚Ì‰E‚ÆƒvƒŒƒCƒ„[‚Ì¶
+					if ((pOpenKey + j + i)->Position.x + (pOpenKey + j + i)->Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.x + (pOpenKey + j + i)->Size.x / 2 <= pPlayer->oldpos.x - pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+						(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+					{
+						pPlayer->Position.x = pPlayer->oldpos.x;
+					}
+					//”à‚Ì«‚ÆƒvƒŒƒCƒ„[‚Ìã
+					if ((pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.x + (pOpenKey + j + i)->Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+						(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 >= pPlayer->oldpos.y + pPlayer->size.y / 2)
+					{
+						pPlayer->Position = pPlayer->oldpos;
+					}
+					//”à‚Ìª‚ÆƒvƒŒƒCƒ„[‚Ì«
+					if ((pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.x + (pOpenKey + j + i)->Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+						(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
+						(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
+					{
+						pPlayer->Position.y = pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 + pPlayer->size.y / 2 + 0.02f;
+						pPlayer->jump = false;
+						pPlayer->fall = false;
+						pPlayer->WarpFlag = false;
+						pPlayer->sp.y = 0;
+						pPlayer->frame = 0;
+					}
+					//”à‚Æjumpstand‚Ì”»’è
+					for (int j = 0; j < JUMPSTAND_MAX; j++) {
+						if ((pOpenKey + j + i)->UseFlag) {
+							if (!(pOpenKey + j + i)->KeyOpen) {
+								if (CollisionBB((pOpenKey + j + i)->Position, pJumpStand[j].pos, (pOpenKey + j + i)->Size, pJumpStand[j].size)) {
+									pJumpStand[j].pos = pJumpStand[j].oldpos;
+								}
+							}
+						}
+					}
+					//”à‚Æ“®‚­ƒuƒƒbƒN‚Ì”»’è
+					for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
+						if ((pOpenKey + j + i)->UseFlag) {
+							if (!(pOpenKey + j + i)->KeyOpen) {
+								if (CollisionBB((pOpenKey + j + i)->Position, pMoveBlock[j].pos, (pOpenKey + j + i)->Size, pMoveBlock[j].size)) {
+									pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+								}
+							}
+						}
 					}
 				}
 			}
 		}
-
 		//------------------------------------------------------------------
 		//ƒXƒg[ƒŠ[—pŒ®
 		//------------------------------------------------------------------
@@ -900,6 +955,8 @@ void UpdateCollision(){
 			if (!pMouse->UseFlag && pGKey->GetGKey) {
 				if (CollisionBB(pGoal->Pos, pPlayer->Position, pGoal->Size, pPlayer->size)) {
 					pGoal->UseFlag = false;
+					//SetVolume(g_GoalSoundNo, 0.5f);
+					PlaySound(g_GoalSoundNo, 0);
 					//
 					for (int i = 0; i < START_MAX; i++) {
 						pStart[i].GoalFlag = true;
@@ -918,6 +975,7 @@ void UpdateCollision(){
 		//‚µ‚ñ‚¿‚á‚ñ‚Ö
 		//SE“±“ü‚µ‚Ä‚é‚Æ‚«‚É‹C‚É‚È‚Á‚½‚©‚ç’Ç‰Á‚µ‚Ä‚İ‚½‚¯‚Ç—]Œv‚È‚±‚Æ‚µ‚Ä‚½‚ç‚²‚ß‚ñ‚Ë’Ç‰Á•”•ª‚ÍƒRƒƒ“ƒgƒAƒEƒg‚µ‚Æ‚­‚Ë
 		//ƒGƒlƒ~[ŠÖ˜A‚ÌSE•”•ª‚Í‚¢‚ë‚¢‚ëŒˆ‚Ü‚Á‚½‚ç’Ç‰Á—\’è
+		//OK
 		for (int i = 0; i < ENEMY_MAX; i++) {
 			if (pEnemy[i].UseFlag) {
 				pEnemy[i].AIFlag = false;
@@ -955,16 +1013,6 @@ void UpdateCollision(){
 			}
 		}
 		//------------------------------------
-		//ƒoƒl‚ÆŒ®•t‚«”à“–‚½‚è”»’è
-		//-----------------------------------
-		for (int i = 0; i < OPEN_KEY_MAX; i++) {
-			for (int j = 0; j < JUMPSTAND_MAX; j++) {
-				if (CollisionBB(pOpenKey[i].Position, pJumpStand[j].pos, pOpenKey[j].Size, pJumpStand[j].size)) {
-					pJumpStand[j].pos = pJumpStand[j].oldpos;
-				}
-			}
-		}
-		//------------------------------------
 		//ƒoƒl‚ÆƒgƒQƒuƒƒbƒN“–‚½‚è”»’è
 		//-----------------------------------
 		for (int i = 0; i < BROKEN_MAX; i++) {
@@ -981,16 +1029,6 @@ void UpdateCollision(){
 			for (int j = 0; j < JUMPSTAND_MAX; j++) {
 				if (CollisionBB(pHigh[i].Postion, pJumpStand[j].pos, pHigh[i].Size, pJumpStand[j].size)) {
 					pJumpStand[j].pos = pJumpStand[j].oldpos;
-				}
-			}
-		}
-		//------------------------------------
-		//“®‚­ƒuƒƒbƒN‚ÆŒ®•t‚«”à“–‚½‚è”»’è
-		//-----------------------------------
-		for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
-			for (int j = 0; j < OPEN_KEY_MAX; j++) {
-				if (CollisionBB(pMoveBlock[i].pos, pOpenKey[j].Position, pMoveBlock[i].size, pOpenKey[j].Size)) {
-					pMoveBlock[i].pos = pMoveBlock[i].oldpos;
 				}
 			}
 		}
@@ -1013,6 +1051,26 @@ void UpdateCollision(){
 					pMoveBlock[j].pos = pMoveBlock[j].oldpos;
 				}
 			}
+		}
+		//------------------------------------
+		//’e‚ÆƒvƒŒƒCƒ„[“–‚½‚è”»’è
+		//-----------------------------------
+		if (pPlayer->UseFlag)
+		{
+			for (int i = 0; i < BULLET_MAX; i++)
+			{
+				if (pBullet[i].use)
+				{
+					if (CollisionBB(pPlayer->Position,pBullet[i].pos,pPlayer->size, D3DXVECTOR2(pBullet[i].w, pBullet[i].h)))
+					{
+						pPlayer->hp--;
+						pBullet[i].use = false;
+
+					}
+
+				}
+			}
+
 		}
 	}
 	//------------------------------------
@@ -1242,7 +1300,7 @@ void PieceCollision()
 
 														}
 														// ƒqƒoƒiƒGƒtƒFƒNƒg
-														SetEffectSpark(pJoint[j].pos, 0.0f);
+														SetEffectSpark(pJoint[j].pos, 90.0f);
 														// ƒs[ƒX‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
 														StartPieceAnimation(pJoint[k].indexno);
 														StartPieceAnimation(pJoint[j].indexno);
@@ -1283,7 +1341,7 @@ void PieceCollision()
 
 														}
 														// ƒqƒoƒiƒGƒtƒFƒNƒg
-														SetEffectSpark(pJoint[j].pos, 0.0f);
+														SetEffectSpark(pJoint[j].pos, 90.0f);
 														// ƒs[ƒX‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
 														StartPieceAnimation(pJoint[k].indexno);
 														StartPieceAnimation(pJoint[j].indexno);
@@ -2288,7 +2346,10 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	SHEERFLOORS* pSheerFloors = GetSheerFloors();
 	START* pStart = GetStart();
 	HIGH* pHigh = GetHigh();
-	for (int i = 0; i < BLOCK_MAX; i++)
+	MOVEBLOCK* pMoveBlock = GetMoveBlock();
+	FALLBLOCK* pFallBlock = GetFallBlock();
+	ENEMY* pEnemy = GetEnemy();
+	for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
 		{
@@ -2343,6 +2404,29 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 		}
 
 	}
+	for (int i = 0; i < MOVE_BLOCK_MAX; i++)
+	{
+		if (pMoveBlock[i].bUse)
+		{
+			if (pMoveBlock[i].PieceIndex == pinNo)
+			{
+				pMoveBlock[i].pos += num;
+			}
+
+		}
+
+	}
+	for (int i = 0; i < FALLBLOCK_MAX; i++)
+	{
+		if (pFallBlock[i].UseFlag)
+		{
+			if (pFallBlock[i].PieceIndex == pinNo)
+			{
+				pFallBlock[i].Position += num;
+			}
+		}
+	}
+
 	for (int i = 0; i < START_MAX; i++) {
 		if (pStart[i].UseFlag) {
 			if (pStart[i].PieceIndex == pinNo) {
@@ -2387,10 +2471,11 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 			}
 		}
 	}
-	for (int i = 0; i < OPEN_KEY_MAX; i++) {
-		if (pOpenKey[i].UseFlag) {
-			if (pOpenKey[i].index == pinNo) {
-				pOpenKey[i].Position += num;
+	
+	for (int i = 0; i < OPEN_KEY_MAX * STAGE_OPEN_KEY_MAX; i++) {
+		if ((pOpenKey + i)->UseFlag) {
+			if ((pOpenKey + i)->index == pinNo) {
+				(pOpenKey + i)->Position += num;
 			}
 		}
 	}
@@ -2412,6 +2497,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 			if (pJumpStand[i].NowPieceIndex == pinNo)
 			{
 				pJumpStand[i].pos += num;
+				pJumpStand[i].LookFlag = true;
 			}
 		}
 	}
@@ -2463,6 +2549,18 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 
 		}
 	}
+	for (int i = 0; i < ENEMY_MAX; i++)
+	{
+		if (pEnemy[i].UseFlag)
+		{
+			if (pEnemy[i].index == pinNo)
+			{
+				pEnemy[i].pos += num;
+			}
+		}
+
+	}
+
 
 }
 //--------------------------------------------
