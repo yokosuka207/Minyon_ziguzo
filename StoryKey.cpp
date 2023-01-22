@@ -40,8 +40,9 @@ HRESULT InitStoryKey()
 		gStoryKey[i].pos = D3DXVECTOR2(-127, 150);
 		gStoryKey[i].size = D3DXVECTOR2(STORYKEY_SIZE, STORYKEY_SIZE);
 		gStoryKey[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		gStoryKey[i].rot = 180.0f;
 
-		gStoryKey[i].bUse = false;
+		gStoryKey[i].bUse = true;
 
 		gStoryKey[i].no = -1;
 	}
@@ -83,13 +84,14 @@ void DrawStoryKey()
 }
 
 
-void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no)
+void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, float rot)
 {
 	for (int i = 0; i < STORYKEY_MAX; i++) 
 	{
 		if (!gStoryKey[i].bUse) {
 			gStoryKey[i].pos = p;
 			gStoryKey[i].size = s;
+			gStoryKey[i].rot = rot;
 
 			gStoryKey[i].no = no;
 
@@ -97,6 +99,7 @@ void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no)
 		}
 	}
 }
+
 
 void DeleteStoryKey(int no)
 {

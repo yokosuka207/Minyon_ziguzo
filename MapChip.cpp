@@ -39,6 +39,7 @@
 #include "player.h"
 #include "start.h"
 #include "JumpStandExplain.h"
+#include "StoryKey.h"
 
 #include "xkeyboard.h"
 
@@ -361,6 +362,9 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_EXPLAIN):	//26 ヒントブロック
 				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
 				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY):	//26 ヒントブロック
+				SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction);
+				break;
 			default:
 				break;
 			}
@@ -492,6 +496,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteWarp(g_PieceMapChip[PieceNo].no);
 	DeleteStart(g_PieceMapChip[PieceNo].no);
 	DeleteExplain();
+	DeleteStoryKey(g_PieceMapChip[PieceNo].no);
 }
 Piece* GetPiece() {
 	return g_PieceMapChip;
@@ -645,6 +650,9 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_EXPLAIN):	//26 ヒントブロック
 				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY):	//26 ヒントブロック
+				SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction);
 				break;
 			default:
 				break;
