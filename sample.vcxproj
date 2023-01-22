@@ -154,6 +154,7 @@
     <ClCompile Include="high_broken.cpp" />
     <ClCompile Include="input.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="issuer.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="high_broken.h" />
     <ClInclude Include="input.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="inventory.h" />
     <ClInclude Include="issuer.h" />

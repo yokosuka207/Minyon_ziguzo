@@ -983,7 +983,7 @@ void UpdateCollision(){
 				pEnemy[i].AIFlag = false;
 				if (pEnemy[i].dir == ENEMY_DIRECTION::DIRECTION_LEFT)
 				{
-					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x-50.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 100, pEnemy[i].size.y), pPlayer->size)) {
+					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x-40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 						pEnemy[i].AIFlag = true;
 					}
 
@@ -991,7 +991,7 @@ void UpdateCollision(){
 				}
 				else
 				{
-					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 50.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 100, pEnemy[i].size.y), pPlayer->size)) {
+					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 						pEnemy[i].AIFlag = true;
 					}
 
