@@ -111,8 +111,10 @@ void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index){
 					g_OpenKey[j][i].UseFlag = true;
 				}
 			}
-			if (g_OpenKey[j][i].KeyOpen) {
-				break;
+			if (j != STAGE_OPEN_KEY_MAX) {
+				if (g_OpenKey[j][i].KeyOpen && !g_OpenKey[j + 1][i].UseFlag) {
+					break;
+				}
 			}
 		}
 	}
