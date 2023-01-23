@@ -954,7 +954,7 @@ void UpdateCollision(){
 		//-------------------------------------------------------------------
 
 		if (pGoal->UseFlag) {
-			if (!pMouse->UseFlag && pGKey->GetGKey) {
+			if (!Mouse_IsLeftDown() && pGKey->GetGKey) {
 				if (CollisionBB(pGoal->Pos, pPlayer->Position, pGoal->Size, pPlayer->size)) {
 					pGoal->UseFlag = false;
 					//SetVolume(g_GoalSoundNo, 0.5f);
