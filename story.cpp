@@ -199,7 +199,7 @@ void UpdateStory()
 				Keyboard_IsKeyTrigger(KK_RIGHT))					// Mouse	‰E
 			{
 				i = 1;
-				gStory.HaveKey++;
+				n = gStory.HaveKey;
 			}
 		}
 
@@ -223,15 +223,25 @@ void UpdateStory()
 
 			s.pos += s.sp;
 		}
+		if (i == 1)
+		{
+			s.sp.x = 40;
 
-		//else if (i == 1) {
-		//	s.sp.x -= 10;
-		//	if (s.pos.x < -s.size.x / 2) {
-		//		s.sp.x = 0;
-		//		s.pos.x = SCREEN_WIDTH + s.size.x / 2;
-		//	}
-		//	i = 3;
-		//}
+			if (s.pos.x <= -s.size.x / 2) {
+				s.sp.x = 0;
+				s.pos.x = SCREEN_WIDTH + s.size.x / 2;
+				gStory.HaveKey++;
+			}
+			if (n != gStory.HaveKey) {
+				if (s.pos.x <= SCREEN_WIDTH / 2) {
+					s.sp.x = 0;
+					s.pos.x = SCREEN_WIDTH / 2;
+					i = 3;
+				}
+			}
+
+			s.pos -= s.sp;
+		}
 
 		
 	}
