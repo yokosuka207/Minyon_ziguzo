@@ -241,25 +241,25 @@ void DrawMapChip() {
 					19, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
 				);
 			}
-			// アニメーション部分を被せる
-			if (g_PieceMapChip[p].bAnim) {
-				SetBlendState(BLEND_MODE_ADD);
-				if (g_PieceMapChip[p].no == 0) {
-					SpriteDrawColorRotation(
-						g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
-						DrawSize, -DrawSize, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f),
-						g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
-					);
-				}
-				else {
-					SpriteDrawColorRotation(
-						g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
-						DrawSize, -DrawSize, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f),
-						g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
-					);
-				}
-				SetBlendState(BLEND_MODE_ALPHABLEND);
-			}
+			//// アニメーション部分を被せる
+			//if (g_PieceMapChip[p].bAnim) {
+			//	SetBlendState(BLEND_MODE_ADD);
+			//	if (g_PieceMapChip[p].no == 0) {
+			//		SpriteDrawColorRotation(
+			//			g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
+			//			DrawSize, -DrawSize, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f),
+			//			g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
+			//		);
+			//	}
+			//	else {
+			//		SpriteDrawColorRotation(
+			//			g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
+			//			DrawSize, -DrawSize, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f),
+			//			g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
+			//		);
+			//	}
+			//	SetBlendState(BLEND_MODE_ALPHABLEND);
+			//}
 		}
 	}
 }

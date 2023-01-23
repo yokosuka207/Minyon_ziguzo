@@ -245,7 +245,8 @@ void UpdatePlayer()
 
 			for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 				if (pMoveBlock[i].bUse) {
-					if (Keyboard_IsKeyDown(KK_N))
+					if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
+						Keyboard_IsKeyDown(KK_B))						// Keyboard	B
 					{
 						if (CollisionBB(g_Player.Position, pMoveBlock[i].pos, g_Player.size, pMoveBlock[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
 							pMoveBlock[i].GetMoveBlock = true;

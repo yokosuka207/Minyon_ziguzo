@@ -66,7 +66,8 @@ static char* g_TextureNamePly = (char*)"data\\texture\\プレイヤー.png";
 
 static int TexNo;	//テクスチャ格納
 
-int StageNo = 0;
+int StageNo = -1;
+int q = 0;
 
 static bool OneFlag =true;	//geゲームの最初かどうか
 
@@ -85,7 +86,7 @@ static int g_ClearStageNum = 0;
 //	初期化
 //-----------------------------------------------------------------------------
 HRESULT InitStageSelect() {
-	StageNo = 0;
+	//StageNo = 0;
 
 	g_StageSelectBg.pos = D3DXVECTOR2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
 	g_StageSelectBg.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -184,8 +185,14 @@ HRESULT InitStageSelect() {
 		OneFlag = false;
 	}
 
-
-	ply.Position = D3DXVECTOR2(30.0f, 180.0f);
+	if (StageNo < 0)
+	{
+		ply.Position = D3DXVECTOR2(110, 180);
+	}
+	else {
+		q = StageNo;
+		ply.Position = D3DXVECTOR2(g_StageSelect[q].pos.x, g_StageSelect[q].pos.y);
+	}
 	ply.OneOldpos = ply.oldpos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	ply.sp = D3DXVECTOR2(0.0f, 8.0f);
 	ply.size = D3DXVECTOR2(100.0f, 117.0f);
@@ -254,7 +261,7 @@ void UpdateStageSelect() {
 				if (GetThumbLeftX(0) > 0.3f ||					// GamePad	右スティック	右
 					Keyboard_IsKeyDown(KK_RIGHT))				// Keyboard	右
 				{//押されているときの処理
-					ply.sp.x = 2.0f;
+					ply.sp.x = 3.0f;
 					ply.PaternNo += 0.25f;
 					if (ply.isHigh)
 					{
@@ -270,7 +277,7 @@ void UpdateStageSelect() {
 				else if (GetThumbLeftX(0) < -0.3f ||			// GamePad	右スティック	左
 					Keyboard_IsKeyDown(KK_LEFT))				// Keyboard	左
 				{//押されているときの処理
-					ply.sp.x = -2.0f;
+					ply.sp.x = -3.0f;
 					ply.PaternNo -= 0.25f;
 					if (ply.isHigh)
 					{
@@ -605,6 +612,8 @@ void DrawStageSelect() {
 		//g_StageSelect[i].pos.x -= 30;
 	}
 
+	DrawStory();
+
 		if (ply.UseFlag == true)
 		{
 			SetWorldViewProjection2D();
@@ -633,9 +642,7 @@ void DrawStageSelect() {
 //	ステージセット関数
 //-----------------------------------------------------------------------------
 void SetStageSelect(int a) {
-
-	
-
+		
 }
 //-----------------------------------------------------------------------------
 //	ステージセレクトを外部で値を変えれるようにする関数
