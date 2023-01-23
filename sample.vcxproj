@@ -157,7 +157,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="inventory.cpp" />
-    <ClCompile Include="issuer.cpp" />
     <ClCompile Include="joint.cpp" />
     <ClCompile Include="JumpStandExplain.cpp" />
     <ClCompile Include="jump_stand.cpp" />
@@ -178,7 +177,6 @@
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="puzzle.cpp" />
     <ClCompile Include="puzzlecip.cpp" />
-    <ClCompile Include="ray.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="save.cpp" />
@@ -228,7 +226,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="inventory.h" />
-    <ClInclude Include="issuer.h" />
     <ClInclude Include="joint.h" />
     <ClInclude Include="JumpStandExplain.h" />
     <ClInclude Include="jump_stand.h" />
@@ -249,7 +246,6 @@
     <ClInclude Include="polygon.h" />
     <ClInclude Include="puzzle.h" />
     <ClInclude Include="puzzlecip.h" />
-    <ClInclude Include="ray.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="save.h" />

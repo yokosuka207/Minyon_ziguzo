@@ -328,7 +328,7 @@ void UpdatePlayer()
 							}
 							g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
 							g_Player.jump = false;
-							g_Player.sp.y = -0.1f;
+							g_Player.sp.y = -0.3f;
 
 							g_Player.fall = false;
 							if (!g_Player.isSheerFloors) {
