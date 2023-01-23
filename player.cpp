@@ -297,7 +297,7 @@ void UpdatePlayer()
 					if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
 						g_Player.oldpos.x + g_Player.size.x / 2 <= pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
 						g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2 &&
-						g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
+						g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 3)
 					{
 						g_Player.Position.x = pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 - g_Player.size.x / 2;
 					}
@@ -328,15 +328,17 @@ void UpdatePlayer()
 							}
 							g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
 							g_Player.jump = false;
-							g_Player.sp.y = 0.0f;
+							g_Player.sp.y = -0.1f;
 
 							g_Player.fall = false;
 							if (!g_Player.isSheerFloors) {
-								g_Player.sp.y = 0.0f;
+								//g_Player.sp.y = 0.0f;
 								g_Player.isSheerFloors = true;
 
 							}
 							else {
+								g_Player.sp.y = 0.0f;
+
 								g_Player.isSheerFloors = false;
 							}
 
