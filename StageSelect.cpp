@@ -362,6 +362,10 @@ void UpdateStageSelect() {
 			ply.isGround = true;
 			ply.Position = D3DXVECTOR2(30.0f, 0.0f);
 		}
+		if (ply.Position.x > SCREEN_WIDTH)
+		{
+			ply.Position.x = SCREEN_WIDTH;
+		}
 
 
 			for (int i = 0; i < 3; i++)
