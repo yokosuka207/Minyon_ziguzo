@@ -826,9 +826,7 @@ void UpdateCollision(){
 		for (int i = 0; i < KEY_MAX; i++) {
 			if (pKey[i].UseFlag) {
 				if (CollisionBB(pKey[i].Position, pPlayer->Position, pKey[i].Size, pPlayer->size)) {
-					if (!pKey[i].UseFlag) {
-						pPlayer->HaveKey++;
-					}
+					pPlayer->HaveKey++;
 					pKey[i].GetKey = true;
 					pKey[i].UseFlag = false;
 					//SetVolume(g_BrokenSoundNo, 0.5f);
