@@ -106,7 +106,7 @@ static int g_SwitchSoundNo = 0;
 static char g_SwitchSoundName[] = "data\\SoundData\\SE\\スイッチ（ニコニ・コモンズ）.wav";
 //ワープ
 static int g_WarpSoundNo = 0;
-static char g_WarpSoundName[] = "data\\SoundData\\SE\\ワープ_無料効果音で遊ぼう！_.wav";
+static char g_WarpSoundName[] = "data\\SoundData\\SE\\ワープ１_HURTRECORD_-_1_.wav";
 //高いとこから請われる床
 static int g_HighSoundNo = 0;
 static char g_HighSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
