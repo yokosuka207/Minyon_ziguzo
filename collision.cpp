@@ -838,7 +838,7 @@ void UpdateCollision(){
 		//通常鍵取得プレイヤーと鍵で開く扉の当たり判定(PlayerとOpenKey)
 		//-----------------------------------------------------------------
 		for (int i = 0; i < OPEN_KEY_MAX * STAGE_OPEN_KEY_MAX; i++) {
-			if ((pOpenKey + i)->DrawFlag) {
+			if (pOpenKey[i].DrawFlag) {
 				if (CollisionBB((pOpenKey + i)->Position, pPlayer->Position, (pOpenKey + i)->Size, pPlayer->size)) {
 					if (pPlayer->HaveKey > 0) {
 						if (i == 0 || i == 3 ||i == 6) {
@@ -863,7 +863,7 @@ void UpdateCollision(){
 		//-----------------------------------------------------
 		for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
 			for (int i = 0; i < OPEN_KEY_MAX; i++) {
-				if (pOpenKey[i].DrawFlag) {
+				if ((pOpenKey + j + i)->DrawFlag) {
 					//プレーヤーと扉の判定
 					//扉の左とプレイヤーの右
 					if ((pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
