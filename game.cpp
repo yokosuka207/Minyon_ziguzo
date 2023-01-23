@@ -43,8 +43,6 @@
 #include "enemy.h"
 #include "bullet.h"
 #include"noizu.h"
-#include "issuer.h"		// 光線発射装置
-#include "ray.h"		// 光線
 #include "EffectSpark.h"	// ヒバナエフェクト
 #include "PlayerLife.h"
 #include "start.h"
@@ -99,8 +97,6 @@ void InitGame()
 		//SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1); //ドッペルゲンガー
 		InitEnemy();
 		InitPause();
-		InitRay();				// 光線の初期化
-		InitIssuer();			// 光線発射装置の初期化
 		InitEffectSpark();		// ヒバナエフェクト
 		InitBullet();
 		InitPlayerLife();
@@ -166,8 +162,6 @@ void UninitGame()
 	pScore->UninitScore();
 	pTime->UninitTime();
 	g_Player3D.Uninit();
-	UninitRay();				// 光線の終了
-	UninitIssuer();				// 光線発射装置の終了
 	UninitEffectSpark();		// ヒバナエフェクト
 }
 
@@ -233,8 +227,6 @@ void UpdateGame()
 		UpdateCursor();				// カーソルの更新
 		g_Player3D.Update();
 		UpdateCamera();
-		UpdateRay();			// 光線の更新
-		UpdateIssuer();			// 光線発射装置の更新
 		UpdateEffectSpark();	// ヒバナエフェクト
 
 		UpdatePlayerLife();
