@@ -70,7 +70,7 @@ void Button::Draw()
 		// テクスチャの設定
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(m_texNo));
 		m_drawPos.y = m_pos.y;
-		SpriteDrawColorRotation(m_pos.x, m_drawPos.y,0.0f, m_size.x, m_size.y, 0.0f,
+		SpriteDrawColorRotation(m_pos.x, m_drawPos.y,0.0f, m_DrawSize.x, m_DrawSize.y, 0.0f,
 			m_color, 0.0f, 1.0f, 1.0f, 1);
 		// 数字の描画
 		if (m_num >= 0) {
@@ -89,7 +89,7 @@ void Button::Draw()
 		D3DXCOLOR col = D3DXCOLOR(m_color.r - 0.3f, m_color.g - 0.3f, m_color.b - 0.3f, m_color.a);
 		// テクスチャの設定
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(m_texNo));
-		SpriteDrawColorRotation(m_pos.x, m_drawPos.y,0.0f, m_size.x, m_size.y, 0.0f, 
+		SpriteDrawColorRotation(m_pos.x, m_drawPos.y,0.0f, m_DrawSize.x, m_DrawSize.y, 0.0f, 
 			col, 0.0f, 1.0f, 1.0f, 1);
 		// 数字の描画
 		if (m_num >= 0) {
@@ -109,10 +109,11 @@ void Button::Draw()
 //==================================================
 // セッター
 //==================================================
-void Button::SetButton(D3DXVECTOR2 po, D3DXVECTOR2 si,D3DXCOLOR co , float no)
+void Button::SetButton(D3DXVECTOR2 po, D3DXVECTOR2 si,D3DXVECTOR2 ds, D3DXCOLOR co , float no)
 {
 	m_pos = m_drawPos = po;
 	m_size = si;
+	m_DrawSize = ds;
 	m_color = co;
 	m_texNo = no;
 }
