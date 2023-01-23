@@ -45,11 +45,13 @@ static char* g_TextureFileName[] = { (char*)"data/texture/セーブデータテキスト１
 };
 
 // セーブデータを保存するファイル名
-static char* g_saveFileName[] = { (char*)"data/SaveData/Data1.bin",			// データ１
-								(char*)"data/SaveData/Data2.bin",			// データ２
-								(char*)"data/SaveData/Data3.bin" };			// データ３
+char* g_saveFileName[] = { (char*)"data/SaveData/Data1.bin",			// データ１
+							(char*)"data/SaveData/Data2.bin",			// データ２
+							(char*)"data/SaveData/Data3.bin" };			// データ３
 
-static char* g_DataDeleteTextureName = (char*)"data/texture/GameEnd_haikei.jpg";
+char* g_DataDeleteTextureName = (char*)"data/texture/データ削除テキスト.png";
+char* g_SaveTitleTextureName = (char*)"data/texture/Saveテキスト.png";
+int g_SaveTitleTextureNo = -1;
 
 // 各データのボタンを作る
 Button g_DataButton[BUTTON_MAX];
@@ -71,6 +73,8 @@ void Save::Init()
 
 	// セーブタイプの初期化
 	m_type = SAVE_TYPE::TYPE_NONE;
+	// セーブのタイトルのテクスチャ読み込み
+	g_SaveTitleTextureNo = LoadTexture(g_SaveTitleTextureName);
 
 	m_pButton = &g_DataButton[0];
 
@@ -101,7 +105,7 @@ void Save::Init()
 	// 各ボタンのセット
 	for (int i = 0; i < DATA_MAX; i++) {
 		// ファイルがあったら
-		g_DataButton[i].SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * (i+1)), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), ButtonTexNo[i]);
+		g_DataButton[i].SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5 * (i+1) + 150),D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), ButtonTexNo[i]);
 
 		// ファイルを開く
 		fopen_s(&fp, g_saveFileName[i], "rb");			// 開く
@@ -116,7 +120,7 @@ void Save::Init()
 		g_DataButton[i].SetNum(m_saveData.clearStageNum);
 	}
 	// データ削除ボタン
-	g_DataButton[3].SetButton(D3DXVECTOR2((SCREEN_WIDTH / 3) * 2.5f, (SCREEN_HEIGHT / 4) * 3.5f), D3DXVECTOR2(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 6), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_DataDeleteTextureName));
+	g_DataButton[3].SetButton(D3DXVECTOR2((SCREEN_WIDTH / 3) * 2.5f, (SCREEN_HEIGHT / 4) * 3.5f), D3DXVECTOR2(SCREEN_WIDTH / 6, SCREEN_HEIGHT / 7), D3DXVECTOR2(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 6), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_DataDeleteTextureName));
 
 	// サウンドデータのロード
 	g_ChangeSceneSaveSoundNo = LoadSound(g_ChangeSceneSaveSoundName);
@@ -209,7 +213,7 @@ void Save::Update()
 		// 選択されているボタンだったら
 		if (m_pButton == &g_DataButton[i]) {
 			// 入力チェック
-			if (Mouse_IsLeftTrigger() ||						// Mouse 左
+			if (g_DataButton[i].CollisionMouse() && (Mouse_IsLeftTrigger()) ||						// Mouse 左
 				IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {		// GamePad B
 				// データのボタンか
 				if (i < DATA_MAX) {
@@ -267,6 +271,9 @@ void Save::Draw()
 	// 四角形の描画
 	SpriteDrawColorRotation(m_BGPos.x, m_BGPos.y, 0.0f, m_BGSize.x, m_BGSize.y, 0.0f, m_BGColor, 0.0f, 1.0f, 1.0f, 1);
 	//----------背景の表示----------]
+	// セーブのタイトルの表示
+	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SaveTitleTextureNo));
+	SpriteDrawColorRotation(SCREEN_WIDTH / 2, 100.0f, 0.0f, 1000, 500, 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, 1.0f, 1.0f, 1);
 
 	// 各ボタンの描画
 	for (int i = 0; i < BUTTON_MAX; i++) {
