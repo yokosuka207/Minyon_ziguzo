@@ -32,7 +32,6 @@ HRESULT InitOpenKey()
 		for (int i = 0; i < OPEN_KEY_MAX; i++) {
 			g_OpenKey[j][i].Size = D3DXVECTOR2(0.0f, 0.0f);
 			g_OpenKey[j][i].Position = D3DXVECTOR2(0.0f, 0.0f);
-			g_OpenKey[j][i].oldPos = D3DXVECTOR2(0.0f, 0.0f);
 			g_OpenKey[j][i].rot = 0.0f;
 			g_OpenKey[j][i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 			g_OpenKey[j][i].index = -1;
@@ -89,6 +88,8 @@ void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index){
 	// ¨ “¯‚¶êŠ‚É‚ÍƒZƒbƒg‚³‚ê‚È‚¢‚æ‚¤‚É‚µ‚½‚¢
 
 	for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
+		if (index == g_OpenKey[j][0].index && g_OpenKey[j][0].KeyOpen)
+			break;
 		if (!g_OpenKey[j]->UseFlag) {
 			if (!g_OpenKey[j]->DrawFlag) {
 				if (!g_OpenKey[j]->KeyOpen) {
@@ -97,22 +98,18 @@ void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index){
 						{
 						case 0:
 							g_OpenKey[j][i].Position = D3DXVECTOR2(pos.x, pos.y + i * size.y);
-							g_OpenKey[j][i].oldPos = g_OpenKey[j][i].Position;
 							g_OpenKey[j][i].rot = (direction + 2) * 90;
 							break;
 						case 1:
 							g_OpenKey[j][i].Position = D3DXVECTOR2(pos.x + i * size.x, pos.y);
-							g_OpenKey[j][i].oldPos = g_OpenKey[j][i].Position;
 							g_OpenKey[j][i].rot = direction * 90;
 							break;
 						case 2:
 							g_OpenKey[j][i].Position = D3DXVECTOR2(pos.x, pos.y - i * size.y);
-							g_OpenKey[j][i].oldPos = g_OpenKey[j][i].Position;
 							g_OpenKey[j][i].rot = (direction - 2) * 90;
 							break;
 						case 3:
 							g_OpenKey[j][i].Position = D3DXVECTOR2(pos.x - i * size.x, pos.y);
-							g_OpenKey[j][i].oldPos = g_OpenKey[j][i].Position;
 							g_OpenKey[j][i].rot = direction * 90;
 							break;
 						default:
