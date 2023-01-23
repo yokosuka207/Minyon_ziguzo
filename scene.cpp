@@ -224,7 +224,6 @@ void DrawScene(){
 	case SCENE::SCENE_STAGESELECT:
 
 		DrawStageSelect();
-		DrawStory();
 		DrawNoizu();
 
 		break;

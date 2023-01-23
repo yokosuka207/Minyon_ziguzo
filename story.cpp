@@ -21,7 +21,7 @@
 
 //ストーリーブロック
 static	ID3D11ShaderResourceView* g_StoryTextureBlock = NULL;//テクスチャ情報
-static	char* g_StoryTextureNameBlock = (char*)"data\\texture\\ステージ選択.jpg";
+static	char* g_StoryTextureNameBlock = (char*)"data\\texture\\ストーリーブロック.png";
 
 
 static	ID3D11ShaderResourceView* g_StoryTexture1 = NULL;//テクスチャ情報
@@ -97,8 +97,9 @@ void	InitStory()
 	StoryTextureNo8 = LoadTexture(g_StoryTextureName8);
 
 	//ストーリー初期化
-	gStory.pos = D3DXVECTOR2(90, 230);
-	gStory.size = D3DXVECTOR2(STORY_BLOCK_SIZE, STORY_BLOCK_SIZE);
+	
+	gStory.pos = D3DXVECTOR2(30.0f, 210.0f);
+	gStory.size = D3DXVECTOR2(60, 90);
 	gStory.color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
 
 	gStory.HaveKey = 1;
@@ -114,7 +115,7 @@ void	InitStory()
 	pSKey = GetStoryKey();
 
 	if (gStory.n == 0) {
-		pSKey[0].HaveSKey = 3;
+		pSKey[0].HaveSKey = 1;
 		gStory.n++;
 	}
 	gStory.HaveKey = pSKey[0].HaveSKey;

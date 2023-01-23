@@ -7,7 +7,7 @@
 //=====================
 
 #define STORY_MAX	(8)
-#define	STORY_BLOCK_SIZE (30)
+#define	STORY_BLOCK_SIZE (50)
 
 typedef	struct
 {
