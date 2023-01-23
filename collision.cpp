@@ -288,7 +288,7 @@ void UpdateCollision(){
 				{
 					pSwitch[i].PressFlag = true;//‰Ÿ‚³‚ê‚½‚ç
 					pSwitch[i].PaternNo = 1;
-					if (pSwitch[i].NotPressed == true)
+					if (pSwitch[i].NotPressed)
 					{
 						//SetVolume(g_SwitchSoundNo, 0.5f);
 						PlaySound(g_SwitchSoundNo, 0);
@@ -313,11 +313,11 @@ void UpdateCollision(){
 							pSwitch[i].NotPressed = false;
 						}
 					}
-					else {
-						pSwitch[i].PressFlag = false;
-						pSwitch[i].PaternNo = 0;
-						pSwitch[i].NotPressed = true;
-					}
+					//else {
+					//	pSwitch[i].PressFlag = false;
+					//	pSwitch[i].PaternNo = 0;
+					//	pSwitch[i].NotPressed = true;
+					//}
 				}
 
 				if (pSwitch[i].PressFlag) {
