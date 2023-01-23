@@ -60,13 +60,25 @@ int		StoryTextureNo6 = 0;
 int		StoryTextureNo7 = 0;
 int		StoryTextureNo8 = 0;
 
+typedef struct {
+	D3DXVECTOR2 pos;
+	D3DXVECTOR2 size;
+	D3DXVECTOR2 sp;
 
-STORY	gStory[STORY_MAX];//タイトル画面オブジェクト
+	bool	noob;
+}S;
+
+STORY	gStory;//タイトル画面オブジェクト
+S		s;
 
 STORY_NUMBER StoryNumber = STORY_NUMBER::STORY_NONE;
 static int q;
 
 STORYKEY* pSKey;
+
+
+int i = 3;
+int n = 0;
 
 //======================
 //初期化
@@ -84,25 +96,29 @@ void	InitStory()
 	StoryTextureNo7 = LoadTexture(g_StoryTextureName7);
 	StoryTextureNo8 = LoadTexture(g_StoryTextureName8);
 
-	for (int i = 0; i < STORY_MAX; i++) {
-		gStory[i].pos = D3DXVECTOR2(90, 230);
-		gStory[i].size = D3DXVECTOR2(STORY_BLOCK_SIZE, STORY_BLOCK_SIZE);
-		gStory[i].color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
+	//ストーリー初期化
+	gStory.pos = D3DXVECTOR2(90, 230);
+	gStory.size = D3DXVECTOR2(STORY_BLOCK_SIZE, STORY_BLOCK_SIZE);
+	gStory.color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
 
-		gStory[0].HaveKey = 1;
+	gStory.HaveKey = 1;
 
-		gStory[i].bUse = true;
-		gStory[i].KeyUse = false;
+	gStory.bUse = true;
+	gStory.KeyUse = false;
 
-		
-	}
+
+	//ストーリー初期化	
+	s.pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	s.size = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+
 	pSKey = GetStoryKey();
 
-	if (gStory[0].n == 0) {
-		pSKey[0].HaveSKey = 1;
-		gStory[0].n++;
+	if (gStory.n == 0) {
+		pSKey[0].HaveSKey = 3;
+		gStory.n++;
 	}
-	gStory[0].HaveKey = pSKey[0].HaveSKey;
+	gStory.HaveKey = pSKey[0].HaveSKey;
+
 }
 
 //======================
@@ -166,34 +182,70 @@ void UninitStory()
 void UpdateStory()
 {
 
-
-	
-	if (gStory[0].KeyUse >= 1) 
+	if (gStory.KeyUse) 
 	{
-
-		if (gStory[0].HaveKey > 1)
+		if (gStory.HaveKey > 1)
 		{
 			if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad	A
 				Keyboard_IsKeyTrigger(KK_LEFT))					// Mouse	左
 			{
-				gStory[0].HaveKey--;
+				i = 0;
+				n = gStory.HaveKey;
 			}
 		}
 
-	if(gStory[0].HaveKey < pSKey[0].HaveSKey) {
+		if(gStory.HaveKey < pSKey[0].HaveSKey) {
 			if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||			// GamePad	A
 				Keyboard_IsKeyTrigger(KK_RIGHT))					// Mouse	右
 			{
-				gStory[0].HaveKey++;
+				i = 1;
+				n = gStory.HaveKey;
 			}
 		}
 
+		
+		if (i == 0) 
+		{
+			s.sp.x = 40;
+
+			if (s.pos.x >= SCREEN_WIDTH + s.size.x / 2) {
+				s.sp.x = 0;
+				s.pos.x = 0 -s.size.x / 2;
+				gStory.HaveKey--;
+			}
+			if (n != gStory.HaveKey){
+				if (s.pos.x >= SCREEN_WIDTH / 2) {
+					s.sp.x = 0;
+					s.pos.x = SCREEN_WIDTH / 2;
+					i = 3;
+				}
+			}
+
+			s.pos += s.sp;
+		}
+		if (i == 1)
+		{
+			s.sp.x = 40;
+
+			if (s.pos.x <= -s.size.x / 2) {
+				s.sp.x = 0;
+				s.pos.x = SCREEN_WIDTH + s.size.x / 2;
+				gStory.HaveKey++;
+			}
+			if (n != gStory.HaveKey) {
+				if (s.pos.x <= SCREEN_WIDTH / 2) {
+					s.sp.x = 0;
+					s.pos.x = SCREEN_WIDTH / 2;
+					i = 3;
+				}
+			}
+
+			s.pos -= s.sp;
+		}
+
+		
 	}
 	
-	//for (int i = 0; i < STORY_MAX; i++) 
-	//{
-	//	gStory[i].pos.y += gStory[i].sp.y;
-	//}
 
 }
 //======================
@@ -206,12 +258,12 @@ void DrawStory()
 
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNoBlock));
 	SpriteDrawColorRotation
-	(gStory[0].pos.x, gStory[0].pos.y, 0.0f,
-		gStory[0].size.x, gStory[0].size.y, 0, gStory[0].color, 0, 1.0f, 1.0f, 1);
+	(gStory.pos.x, gStory.pos.y, 0.0f,
+		gStory.size.x, gStory.size.y, 0, gStory.color, 0, 1.0f, 1.0f, 1);
 
-	if (gStory[0].KeyUse) 
+	if (gStory.KeyUse) 
 	{
-		switch (gStory[0].HaveKey) {
+		switch (gStory.HaveKey) {
 		case 1:
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo1));
 			break;
@@ -239,16 +291,14 @@ void DrawStory()
 		default:
 			break;
 		}
-
 		SpriteDrawColorRotation
-		(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f,
-			SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, gStory[0].color, 0, 1.0f, 1.0f, 1);
-	
+		(s.pos.x, s.pos.y, 0.0f, s.size.x, s.size.y, 0, gStory.color, 0, 1.0f, 1.0f, 1);
+
 	}
 }
 
 STORY* GetStory()
 {
-	return &gStory[0];
+	return &gStory;
 }
 

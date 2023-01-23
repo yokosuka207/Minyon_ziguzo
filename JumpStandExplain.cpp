@@ -28,7 +28,7 @@ HRESULT InitExplain()
 
 	g_Explain.pos = D3DXVECTOR2(-127,150);
 	g_Explain.size = D3DXVECTOR2(EXPLAIN_SIZE, EXPLAIN_SIZE);
-	g_Explain.rot = 0.0f;
+	g_Explain.rot = 180.0f;
 
 	g_Explain.bUse = false;
 

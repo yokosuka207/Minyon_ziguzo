@@ -930,7 +930,7 @@ void UpdateCollision(){
 		//------------------------------------------------------------------
 		for (int i = 0; i < STORYKEY_MAX; i++) 
 		{
-			if (pSKey->bUse) {
+			if (pSKey[i].bUse) {
 				if (CollisionBB(pPlayer->Position, pSKey->pos, pPlayer->size, pSKey->size)) 
 				{
 					pSKey[i].bUse = false;

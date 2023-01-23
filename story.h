@@ -17,7 +17,7 @@ typedef	struct
 	D3DXCOLOR		color;	//色
 
 	bool			bUse;	//ストーリー取得フラグ
-	bool			KeyUse;
+	bool			KeyUse; //表示中フラグ
 
 	int				HaveKey;
 
