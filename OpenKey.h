@@ -21,8 +21,10 @@
 typedef struct {
 	bool		UseFlag;//構造体利用中フラグ
 	bool		KeyOpen;
+	bool		DrawFlag;
 	D3DXVECTOR2 Size;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
+	D3DXVECTOR2 oldPos;
 	D3DXVECTOR2 sp;
 	float		rot;//回転角度
 	float		texno;//テクスチャインデックス
