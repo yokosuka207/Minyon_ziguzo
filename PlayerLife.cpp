@@ -12,11 +12,11 @@ static PLAYER*	 pPlayer;
 
 // JumpStand ヒント
 static ID3D11ShaderResourceView* gLife_A;
-static char* gLifeName = (char*)"data\\texture\\Life_A.png";
+static char* gLifeName = (char*)"data\\texture\\残機ある.png";
 static int	  gPlayerLifeNo = 0;
 
 static ID3D11ShaderResourceView* gLife_B;
-static char* gLifeName2 = (char*)"data\\texture\\Life_B.png";
+static char* gLifeName2 = (char*)"data\\texture\\残機ない.png";
 static int	  gPlayerLifeNo2 = 0;
 
 HRESULT InitPlayerLife()
@@ -26,7 +26,7 @@ HRESULT InitPlayerLife()
 		gPlayerLifeNo = LoadTexture(gLifeName);
 		gPlayerLifeNo2 = LoadTexture(gLifeName2);
 
-		gPlayerLife[i].pos = D3DXVECTOR2(50.0f, 20.0f);
+		gPlayerLife[i].pos = D3DXVECTOR2(130.0f, 50.0f);
 		gPlayerLife[i].size = D3DXVECTOR2(LIFE_SIZE_X, LIFE_SIZE_Y);
 
 		gPlayerLife[i].bUse = true;

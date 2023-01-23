@@ -39,6 +39,7 @@
 #include "player.h"
 #include "start.h"
 #include "JumpStandExplain.h"
+#include "StoryKey.h"
 
 #include "xkeyboard.h"
 
@@ -116,7 +117,7 @@ static int g_StagePieceInfo[21][7] = {
 	{  82,  180,   01,    0,    0,    0,    0,},	// 1	○			 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
 	{ 121,  131,   61,    0,    0,    0,    0,},	// 2  	○			 ┃・21ステージ									 ┃
 	{  82,   91,  133,    0,    0,    0,    0,},	// 3	○			 ┃・各ステージ最大ピース数12					 ┃
-	{  00, -130,  143,  170,    0,    0,    0,},	// 4	○			 ┃・テクスチャの名前からした値が				 ┃
+	{  00, -131,  143,  170,    0,    0,    0,},	// 4	○			 ┃・テクスチャの名前からした値が				 ┃
 	{  00, -131,  131,   63,    0,    0,    0,},	// 5	○			 ┃			十と百の位の数字					 ┃
 	{  32,   62, -142,  140,    0,    0,    0,},	// 6	○			 ┃・一の位は回転回数							 ┃
 	{ 182,  141,  171,   52,    0,    0,    0,},	// 7	○			 ┃				テクスチャを参考に左(反時計)回り ┃
@@ -361,6 +362,9 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_EXPLAIN):	//26 ヒントブロック
 				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
 				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY):	//26 ヒントブロック
+				SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction);
+				break;
 			default:
 				break;
 			}
@@ -492,6 +496,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteWarp(g_PieceMapChip[PieceNo].no);
 	DeleteStart(g_PieceMapChip[PieceNo].no);
 	DeleteExplain();
+	DeleteStoryKey(g_PieceMapChip[PieceNo].no);
 }
 Piece* GetPiece() {
 	return g_PieceMapChip;
@@ -645,6 +650,9 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_EXPLAIN):	//26 ヒントブロック
 				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY):	//26 ヒントブロック
+				SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction);
 				break;
 			default:
 				break;

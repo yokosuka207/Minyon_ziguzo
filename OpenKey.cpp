@@ -37,6 +37,7 @@ HRESULT InitOpenKey()
 			g_OpenKey[j][i].index = -1;
 			g_OpenKey[j][i].PaternNo = 0.0f;
 			g_OpenKey[j][i].KeyOpen = false;
+			g_OpenKey[j][i].DrawFlag = false;
 			g_OpenKey[j][i].UseFlag = false;
 		}
 	}
@@ -61,58 +62,66 @@ void DrawOpenKey()
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_OpenKeyTextureNo));
 	for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
 		for (int i = 0; i < OPEN_KEY_MAX; i++) {
-			if (g_OpenKey[j][i].UseFlag) {
-				g_OpenKey[j][i].PaternNo = i;
-				SpriteDrawColorRotation(
-					g_OpenKey[j][i].Position.x,
-					g_OpenKey[j][i].Position.y,
-					-0.1f,
-					g_OpenKey[j][i].Size.x,
-					-g_OpenKey[j][i].Size.y,
-					g_OpenKey[j][i].rot,
-					g_OpenKey[j][i].col,
-					g_OpenKey[j][i].PaternNo,
-					1.0f / 1.0f,
-					1.0f / 3.0f,
-					1
-				);
+			if (g_OpenKey[j][i].DrawFlag) {
+				if (!g_OpenKey[j][i].KeyOpen) {
+					g_OpenKey[j][i].PaternNo = i;
+					SpriteDrawColorRotation(
+						g_OpenKey[j][i].Position.x,
+						g_OpenKey[j][i].Position.y,
+						-0.1f,
+						g_OpenKey[j][i].Size.x,
+						-g_OpenKey[j][i].Size.y,
+						g_OpenKey[j][i].rot,
+						g_OpenKey[j][i].col,
+						g_OpenKey[j][i].PaternNo,
+						1.0f / 1.0f,
+						1.0f / 3.0f,
+						1
+					);
+				}
 			}
 		}
 	}
 }
 void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index){
+	//一度セットした後に消えたらもう一度セットされる
+	// → 同じ場所にはセットされないようにしたい
+
 	for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
-		for (int i = 0; i < OPEN_KEY_MAX; i++) {
-			if (!g_OpenKey[j][i].KeyOpen) {
-				if (!g_OpenKey[j][i].UseFlag) {
-					switch (direction)
-					{
-					case 0:
-						g_OpenKey[j][i].Position = D3DXVECTOR2(pos.x, pos.y + i * size.y);
-						g_OpenKey[j][i].rot = (direction + 2) * 90;
-						break;
-					case 1:
-						g_OpenKey[j][i].Position = D3DXVECTOR2(pos.x + i * size.x, pos.y);
-						g_OpenKey[j][i].rot = direction * 90;
-						break;
-					case 2:
-						g_OpenKey[j][i].Position = D3DXVECTOR2(pos.x, pos.y - i * size.y);
-						g_OpenKey[j][i].rot = (direction - 2) * 90;
-						break;
-					case 3:
-						g_OpenKey[j][i].Position = D3DXVECTOR2(pos.x - i * size.x, pos.y);
-						g_OpenKey[j][i].rot = direction * 90;
-						break;
-					default:
-						break;
+		if (index == g_OpenKey[j][0].index && g_OpenKey[j][0].KeyOpen)
+			break;
+		if (!g_OpenKey[j]->UseFlag) {
+			if (!g_OpenKey[j]->DrawFlag) {
+				if (!g_OpenKey[j]->KeyOpen) {
+					for (int i = 0; i < OPEN_KEY_MAX; i++) {
+						switch (direction)
+						{
+						case 0:
+							g_OpenKey[j][i].Position = D3DXVECTOR2(pos.x, pos.y + i * size.y);
+							g_OpenKey[j][i].rot = (direction + 2) * 90;
+							break;
+						case 1:
+							g_OpenKey[j][i].Position = D3DXVECTOR2(pos.x + i * size.x, pos.y);
+							g_OpenKey[j][i].rot = direction * 90;
+							break;
+						case 2:
+							g_OpenKey[j][i].Position = D3DXVECTOR2(pos.x, pos.y - i * size.y);
+							g_OpenKey[j][i].rot = (direction - 2) * 90;
+							break;
+						case 3:
+							g_OpenKey[j][i].Position = D3DXVECTOR2(pos.x - i * size.x, pos.y);
+							g_OpenKey[j][i].rot = direction * 90;
+							break;
+						default:
+							break;
+						}
+						g_OpenKey[j][i].Size = size;
+						g_OpenKey[j][i].index = index;
+						g_OpenKey[j][i].UseFlag = true;
+						g_OpenKey[j][i].DrawFlag = true;
 					}
-					g_OpenKey[j][i].Size = size;
-					g_OpenKey[j][i].index = index;
-					g_OpenKey[j][i].UseFlag = true;
+					break;
 				}
-			}
-			if (g_OpenKey[j][i].KeyOpen) {
-				break;
 			}
 		}
 	}
@@ -122,8 +131,8 @@ void DeleteOpenKey(int PieceNo) {
 	for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
 		for (int i = 0; i < OPEN_KEY_MAX; i++) {
 			if (g_OpenKey[j][i].index == PieceNo) {
-				if (g_OpenKey[j][i].UseFlag) {
-					g_OpenKey[j][i].UseFlag = false;
+				if (g_OpenKey[j][i].DrawFlag) {
+					g_OpenKey[j][i].DrawFlag = false;
 				}
 			}
 		}
