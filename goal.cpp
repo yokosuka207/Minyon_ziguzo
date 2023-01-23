@@ -74,7 +74,6 @@ void UpdateGoal()
 				if (ReturnStageNo() != STAGE_MAX)
 				{
 					pStageSelect[ReturnStageNo() + 1].StageUseFlag = true;
-					pStageSelect[ReturnStageNo() + 1].size = D3DXVECTOR2(120.0f, 140.f);
 				}
 				else {		// 最後のステージだったら
 					SetStageAllClear(true);
