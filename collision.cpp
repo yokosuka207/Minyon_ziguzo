@@ -932,7 +932,7 @@ void UpdateCollision(){
 		//------------------------------------------------------------------
 		for (int i = 0; i < STORYKEY_MAX; i++) 
 		{
-			if (pSKey->bUse) {
+			if (pSKey[i].bUse) {
 				if (CollisionBB(pPlayer->Position, pSKey->pos, pPlayer->size, pSKey->size)) 
 				{
 					pSKey[i].bUse = false;
@@ -956,7 +956,7 @@ void UpdateCollision(){
 		//-------------------------------------------------------------------
 
 		if (pGoal->UseFlag) {
-			if (!pMouse->UseFlag && pGKey->GetGKey) {
+			if (!Mouse_IsLeftDown() && pGKey->GetGKey) {
 				if (CollisionBB(pGoal->Pos, pPlayer->Position, pGoal->Size, pPlayer->size)) {
 					pGoal->UseFlag = false;
 					//SetVolume(g_GoalSoundNo, 0.5f);
@@ -983,19 +983,25 @@ void UpdateCollision(){
 		for (int i = 0; i < ENEMY_MAX; i++) {
 			if (pEnemy[i].UseFlag) {
 				pEnemy[i].AIFlag = false;
-				if (CollisionBB(pEnemy[i].pos, pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x * 1000, pEnemy[i].size.y), pPlayer->size)) {
-					pEnemy[i].AIFlag = true;
-					/*if (pEnemy[i].AIFlag == true)
-					{
-						pPlayer->hp--;
-						if (pPlayer->hp > 0)
-						{
-							pPlayer->UseFlag = false;
-						}
-					}*/
+				if (pEnemy[i].dir == ENEMY_DIRECTION::DIRECTION_LEFT)
+				{
+					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x-40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
+						pEnemy[i].AIFlag = true;
+					}
+
+
+				}
+				else
+				{
+					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
+						pEnemy[i].AIFlag = true;
+					}
+
 				}
 			}
 		}
+			
+		
 		//------------------------------------
 		//動くブロックとバネ当たり判定
 		//-----------------------------------

@@ -31,6 +31,7 @@ typedef struct
 	int pieceIndex;	//ƒs[ƒX‚Ì“Y‚¦šŠi”[
 
 	bool UseFlag;
+	bool GetFlag;
 
 }GOAL;
 

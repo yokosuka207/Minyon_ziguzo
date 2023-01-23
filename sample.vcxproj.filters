@@ -64,6 +64,7 @@
     <ClCompile Include="JumpStandExplain.cpp" />
     <ClCompile Include="story.cpp" />
     <ClCompile Include="StoryKey.cpp" />
+    <ClCompile Include="KeyDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -141,5 +142,6 @@
     <ClInclude Include="JumpStandExplain.h" />
     <ClInclude Include="story.h" />
     <ClInclude Include="StoryKey.h" />
+    <ClInclude Include="KeyDisplay.h" />
   </ItemGroup>
 </Project>

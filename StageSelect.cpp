@@ -60,6 +60,8 @@ static char* g_StageSelectfenceTextureName = (char*)"data\\texture\\ò.png";	//ƒ
 static PLAYER ply;
 static ID3D11ShaderResourceView* g_StageSelectTexturePly;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
 
+STORY* pStory;
+
 static char* g_TextureNamePly = (char*)"data\\texture\\ƒvƒŒƒCƒ„[.png";
 
 static int TexNo;	//ƒeƒNƒXƒ`ƒƒŠi”[
@@ -238,9 +240,9 @@ void UninitStageSelect() {
 //-----------------------------------------------------------------------------
 void UpdateStageSelect() {
 
-	STORY* pStory = GetStory();
+	pStory = GetStory();
 
-	if (!pStory[0].KeyUse)
+	if (!pStory->KeyUse)
 	{
 		if (ply.UseFlag == true)
 		{
@@ -348,7 +350,18 @@ void UpdateStageSelect() {
 		ply.oldpos = ply.Position;
 		ply.Position += ply.sp;
 
-
+		if (ply.Position.y > SCREEN_HEIGHT)
+		{
+			ply.jump = false;
+			ply.fall = false;
+			ply.WarpFlag = false;
+			//ply.isGround = true;
+			ply.sp.y = 0;
+			ply.frame = 0;
+			ply.isHigh = false;
+			ply.isGround = true;
+			ply.Position = D3DXVECTOR2(30.0f, 0.0f);
+		}
 
 
 			for (int i = 0; i < 3; i++)
@@ -492,17 +505,17 @@ void UpdateStageSelect() {
 	}
 
 		//ƒXƒg[ƒŠ[
-		if (pStory[0].bUse) {
-			if (CollisionBB(ply.Position, pStory[0].pos, ply.size, pStory[0].size))
+		if (pStory->bUse) {
+			if (CollisionBB(ply.Position, pStory->pos, ply.size, pStory->size))
 			{
 
 				if (Keyboard_IsKeyTrigger(KK_B) ||					// keyboard A
 					IsButtonPressed(0, XINPUT_GAMEPAD_B)) {			// GamePad B
-					pStory[0].KeyUse = true;
+					pStory->KeyUse = true;
 				}
 				if (Keyboard_IsKeyTrigger(KK_M) ||					// keyboard A
 					IsButtonPressed(0, XINPUT_GAMEPAD_B)) {			// GamePad B
-					pStory[0].KeyUse = false;
+					pStory->KeyUse = false;
 				}
 			}
 		}
@@ -515,14 +528,22 @@ void UpdateStageSelect() {
 //-----------------------------------------------------------------------------
 void DrawStageSelect() {
 
+	D3DXCOLOR color(1, 1, 1, 1);
 
+	if (pStory->KeyUse) {
+		color = D3DXCOLOR(0, 0, 0, 0.5);
+	}
+	else {
+		color = D3DXCOLOR(1, 1, 1, 1);
+	}
+	
 	{	//”wŒiƒ|ƒŠƒSƒ“•\Ž¦
 		SetWorldViewProjection2D();
 
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectBg.texno));
 		SpriteDrawColorRotation(
 			g_StageSelectBg.pos.x, g_StageSelectBg.pos.y, 0.5f, g_StageSelectBg.size.x, g_StageSelectBg.size.y
-			, 0.0f, g_StageSelectBg.color, 0, 1.0f, 1.0f, 1);
+			, 0.0f, color, 0, 1.0f, 1.0f, 1);
 	}
 	for (int i = 0; i < 3; i++)
 	{
@@ -532,7 +553,7 @@ void DrawStageSelect() {
 
 		SpriteDrawColorRotation(
 			g_StageSelectBlock[i].pos.x, g_StageSelectBlock[i].pos.y, 0.5f, g_StageSelectBlock[i].size.x, g_StageSelectBlock[i].size.y
-			, 0.0f, g_StageSelectBlock[i].color, 0, 1.0f, 1.0f, 1);
+			, 0.0f, color, 0, 1.0f, 1.0f, 1);
 
 	}
 
@@ -545,7 +566,7 @@ void DrawStageSelect() {
 
 		SpriteDrawColorRotation(
 			g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x + 10, g_StageSelectStairs[i].size.y + 10
-			, 0.0f, g_StageSelectStairs[i].color, 0, 1.0f, 1.0f, 1);
+			, 0.0f, color, 0, 1.0f, 1.0f, 1);
 
 	}
 
@@ -571,7 +592,7 @@ void DrawStageSelect() {
 			g_StageSelect[i].pos.x, g_StageSelect[i].pos.y - 10, 0.0f,
 			g_StageSelect[i].size.x / 2, g_StageSelect[i].size.y,
 			0.0f,
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			color,
 			0,
 			1.0f,
 			1.0f,
@@ -588,7 +609,7 @@ void DrawStageSelect() {
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ply.texno));
 			//ƒXƒvƒ‰ƒCƒg‚ð•\Ž¦
 			D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			SpriteDrawColorRotation(ply.Position.x, ply.Position.y, -0.0f, ply.size.x, ply.size.y, ply.rot, ply.col, ply.PaternNo, ply.uv_w, ply.uv_h, ply.NumPatern);
+			SpriteDrawColorRotation(ply.Position.x, ply.Position.y, -0.0f, ply.size.x, ply.size.y, ply.rot, color, ply.PaternNo, ply.uv_w, ply.uv_h, ply.NumPatern);
 		}
 
 		for (int i = 0; i < 21; i++)
@@ -597,7 +618,7 @@ void DrawStageSelect() {
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectfence[i].texno));
 			SpriteDrawColorRotation(
 				g_StageSelectfence[i].pos.x, g_StageSelectfence[i].pos.y, 0.5f, g_StageSelectfence[i].size.x, g_StageSelectfence[i].size.y
-				, 0.0f, g_StageSelectfence[i].color, 0, 1.0f, 1.0f, 1);
+				, 0.0f, color, 0, 1.0f, 1.0f, 1);
 
 		}
 

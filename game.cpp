@@ -51,6 +51,7 @@
 #include "JumpStandExplain.h"
 #include"fallblock.h"
 #include "StoryKey.h"
+#include"KeyDisplay.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -104,6 +105,7 @@ void InitGame()
 		InitEffectSpark();		// ヒバナエフェクト
 		InitBullet();
 		InitPlayerLife();
+		InitKeyDisplay();
 		InitExplain();
 		InitStoryKey();
 
@@ -158,6 +160,7 @@ void UninitGame()
 	UninitEnemy();
 	UninitBullet();
 	UninitPlayerLife();
+	UninitKeyDisplay();
 	UninitExplain();
 	UninitStoryKey();
 	UninitCollision();
@@ -238,6 +241,7 @@ void UpdateGame()
 		UpdateEffectSpark();	// ヒバナエフェクト
 
 		UpdatePlayerLife();
+		UpdateKeyDisplay();
 		UpdateExplain();
 	}
 	else {
@@ -288,6 +292,7 @@ void DrawGame()
 		DrawNoizu();
 
 		DrawPlayerLife();
+		DrawKeyDisplay();
 
 		//DrawRay();				// 光線の描画
 		//DrawIssuer();			// 光線発射装置の描画

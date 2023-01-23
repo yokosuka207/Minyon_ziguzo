@@ -1,8 +1,8 @@
 #pragma once
 
 #define LIFE_MAX	(3)
-#define LIFE_SIZE_X (30)
-#define LIFE_SIZE_Y (60)
+#define LIFE_SIZE_X (100)
+#define LIFE_SIZE_Y (100)
 
 typedef struct
 {
