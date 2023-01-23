@@ -81,10 +81,10 @@ HRESULT InitPlayer()
 	//g_Player.Position = D3DXVECTOR2(pPiece->pos.x+30.0f,pPiece->pos.y);
 	g_Player.Position = D3DXVECTOR2(pStart[0].pos.x, pStart[0].pos.y);
 	g_Player.OneOldpos = g_Player.oldpos = g_Player.Position;
-	g_Player.sp = D3DXVECTOR2(0,-8);
+	g_Player.sp = D3DXVECTOR2(0.0f,-8.0f);
 	g_Player.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
 	g_Player.Drawsize = D3DXVECTOR2(33.0f, 33.0f);
-	g_Player.col = D3DXCOLOR(1.0f, 1.0f, 1.0, 1.0f);
+	g_Player.col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_Player.rot = 180.0f;
 	g_Player.UseFlag = true;
 	g_Player.jump = false;
@@ -297,9 +297,9 @@ void UpdatePlayer()
 					if (g_Player.Position.x + g_Player.size.x / 2 > pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
 						g_Player.oldpos.x + g_Player.size.x / 2 <= pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 &&
 						g_Player.Position.y + g_Player.size.y / 2 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 2 &&
-						g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2)
+						g_Player.Position.y - g_Player.size.y / 2 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 3)
 					{
-						g_Player.Position.x = pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 - g_Player.size.x / 2;
+						//g_Player.Position.x = pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 - g_Player.size.x / 2;
 					}
 					//プレイヤー右・ブロック左
 					if (g_Player.Position.x - g_Player.size.x / 2 < pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 &&
@@ -307,7 +307,7 @@ void UpdatePlayer()
 						g_Player.Position.y + g_Player.size.y / 3 > pSheerFloors[i].pos.y - pSheerFloors[i].size.y / 3 &&
 						g_Player.Position.y - g_Player.size.y / 3 < pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 3)
 					{
-						g_Player.Position.x = pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 + g_Player.size.x / 2;
+						//g_Player.Position.x = pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 + g_Player.size.x / 2;
 					}
 
 					//プレイヤー上・ブロック下,着地する
@@ -328,15 +328,17 @@ void UpdatePlayer()
 							}
 							g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
 							g_Player.jump = false;
-							g_Player.sp.y = 0.0f;
+							g_Player.sp.y = -0.1f;
 
 							g_Player.fall = false;
 							if (!g_Player.isSheerFloors) {
-								g_Player.sp.y = 0.0f;
+								//g_Player.sp.y = 0.0f;
 								g_Player.isSheerFloors = true;
 
 							}
 							else {
+								g_Player.sp.y = 0.0f;
+
 								g_Player.isSheerFloors = false;
 							}
 

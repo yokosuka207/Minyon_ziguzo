@@ -350,7 +350,18 @@ void UpdateStageSelect() {
 		ply.oldpos = ply.Position;
 		ply.Position += ply.sp;
 
-
+		if (ply.Position.y > SCREEN_HEIGHT)
+		{
+			ply.jump = false;
+			ply.fall = false;
+			ply.WarpFlag = false;
+			//ply.isGround = true;
+			ply.sp.y = 0;
+			ply.frame = 0;
+			ply.isHigh = false;
+			ply.isGround = true;
+			ply.Position = D3DXVECTOR2(30.0f, 0.0f);
+		}
 
 
 			for (int i = 0; i < 3; i++)
