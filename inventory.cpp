@@ -112,7 +112,8 @@ void UpdateInventory()
 	}
 
 	for (int i = 0; i < INVENTORY_MAX; i++) {
-		if (g_Inventory[i].IsUse) {
+		if (g_Inventory[i].IsUse)
+		{
 			// 当たり判定用座標
 			D3DXVECTOR2 min, max;		// min左上, max右下
 			min = D3DXVECTOR2(g_Inventory[i].pos.x - g_Inventory[i].size.x, g_Inventory[i].pos.y - g_Inventory[i].size.y);
@@ -120,51 +121,65 @@ void UpdateInventory()
 
 			// 左に置くバージョン
 			float bgmax_x = -INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X * 2.3f;
-
 			// 入力(マウス左Press)
-			if (Mouse_IsLeftDown() || 
+			if (Mouse_IsLeftDown() ||
 				g_bPieceHave) {
-				//----------Trigger挙動----------
-				if (!g_Inventory[i].IsCatch) {
-					// マウスと所持パズルが当たっていたら
-					float x = pCursor->pos.x - SCREEN_WIDTH / 2 ;
-					float y = -pCursor->pos.y + SCREEN_HEIGHT / 2;
-					//float x = MousePos.x - SCREEN_WIDTH / 2 ;
-					//float y = -MousePos.y + SCREEN_HEIGHT / 2;
-					//if (MousePos.y < 400) {
-					//	y = y * -1;
-					//	y += 30.0f;
-					//}
-					if (min.x < x && max.x > x && min.y < y && max.y > y) {
-						// 所持ピースを全部調べて誰もつかまれていなかったら自分がつかまる
-						for (int j = 0; j < INVENTORY_MAX; j++) {
-							if (g_Inventory[j].IsCatch == true) {
-								break;
+					//----------Trigger挙動----------
+					if (!g_Inventory[i].IsCatch) {
+						// マウスと所持パズルが当たっていたら
+						float x = pCursor->pos.x - SCREEN_WIDTH / 2;
+						float y = -pCursor->pos.y + SCREEN_HEIGHT / 2;
+						//float x = MousePos.x - SCREEN_WIDTH / 2 ;
+						//float y = -MousePos.y + SCREEN_HEIGHT / 2;
+						//if (MousePos.y < 400) {
+						//	y = y * -1;
+						//	y += 30.0f;
+						//}
+						if (min.x < x && max.x > x && min.y < y && max.y > y) {
+							// 所持ピースを全部調べて誰もつかまれていなかったら自分がつかまる
+							for (int j = 0; j < INVENTORY_MAX; j++) {
+								if (g_Inventory[j].IsCatch == true) {
+									break;
+								}
+								if (j == INVENTORY_MAX - 1) {
+									// つかまった!!!!
+									g_Inventory[i].IsCatch = true;
+								}
 							}
-							if (j == INVENTORY_MAX - 1) {
-								// つかまった!!!!
-								g_Inventory[i].IsCatch = true;
-							}
+							//g_Inventory[i].IsCatch = true;
 						}
 					}
-				}
+				
 				//--------------------------------
 
 				//----------Press挙動----------
 				// つかまれていたら
 				if (g_Inventory[i].IsCatch) {
 					// パズルをマウスの位置に移動
-					float x = pCursor->pos.x - SCREEN_WIDTH / 2 ;
+					float x = pCursor->pos.x - SCREEN_WIDTH / 2;
 					float y = -pCursor->pos.y + SCREEN_HEIGHT / 2;
 					//float x = MousePos.x - SCREEN_WIDTH / 2 ;
 					//float y = -MousePos.y + SCREEN_HEIGHT / 2;
 					//y = y * -1;
+					if (pCursor->PieceIndex == g_Inventory[i].PieNo)
+					{
+						g_Inventory[i].pos.x = x;
+						g_Inventory[i].pos.y = y;
+						DeleteMapChip(g_Inventory[i].PieNo);
+						SetInventoryMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo, g_Inventory[i].PieNo);
+					}
+					// 所持パズルとUI範囲の当たり判定
+					if (g_Inventory[i].pos.x > bgmax_x) {
+						// 外に出たよ
+						// ピースを出す
+						//DeleteMapChip(g_Inventory[i].PieNo);
+						//SetPieceMapChip(D3DXVECTOR2(pMouse->PosX,-pMouse->PosY), g_Inventory[i].PieNo);
+						
+						int Pieno = g_Inventory[i].PieNo;
+						DeleteInventory(g_Inventory[i].PieNo);
 
-					g_Inventory[i].pos.x = x;
-					g_Inventory[i].pos.y = y;
-					DeleteMapChip(g_Inventory[i].PieNo);
-					SetInventoryMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo, g_Inventory[i].PieNo);
-
+						SetPieceMapChip(g_Inventory[i].pos, Pieno);
+					}
 				}
 				//-----------------------------
 			}
@@ -174,25 +189,13 @@ void UpdateInventory()
 					// 初期位置に戻る
 					//g_Inventory[i].pos = D3DXVECTOR2(i * INVENTORY_POS_X, INVENTORY_POS_Y);		// 下ver
 					g_Inventory[i].pos = g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f * 2 - i * 150.0f);// 左ver
-					DeleteMapChip(g_Inventory[i].PieNo);
+ 					DeleteMapChip(g_Inventory[i].PieNo);
 					SetInventoryMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo, g_Inventory[i].PieNo);
 
 					// 逃れた!!!!
 					g_Inventory[i].IsCatch = false;
 				}
 				//-------------------------------
-			}
-
-			// 所持パズルとUI範囲の当たり判定
-			if (g_Inventory[i].pos.x > bgmax_x) {
-				// 外に出たよ
-				// ピースを出す
-				//DeleteMapChip(g_Inventory[i].PieNo);
-				//SetPieceMapChip(D3DXVECTOR2(pMouse->PosX,-pMouse->PosY), g_Inventory[i].PieNo);
-				int Pieno = g_Inventory[i].PieNo;
-				DeleteInventory(g_Inventory[i].PieNo);
-
-				SetPieceMapChip(g_Inventory[i].pos, Pieno);
 			}
 		}
 	}
