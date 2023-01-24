@@ -304,7 +304,7 @@ void UpdateStageSelect() {
 				if (Keyboard_IsKeyDown(KK_DOWN))//âEÉLÅ[
 				{
 
-					if (ply.Position.y < SCREEN_HEIGHT - 100.0f)
+					if (ply.Position.y < SCREEN_HEIGHT - 80.0f)
 					{
 						ply.sp.x = 0;
 
