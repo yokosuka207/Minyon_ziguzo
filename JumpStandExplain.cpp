@@ -68,7 +68,7 @@ HRESULT InitExplain()
 		g_Explain[i].size = D3DXVECTOR2(EXPLAIN_SIZE, EXPLAIN_SIZE);
 		g_Explain[i].rot = 180.0f;
 				 
-		g_Explain[i].bUse = true;
+		g_Explain[i].bUse = false;
 	}
 
 	return S_OK;
@@ -167,7 +167,9 @@ void DrawExplain()
 
 
 			//ƒqƒ“ƒg•\Ž¦
-			if (g_Explain[i].HintUse) {
+			if (g_Explain[i].HintUse)
+			{
+				SetWorldViewProjection2D();
 
 				switch (g_Explain[i].tex) {
 				case 26:
@@ -195,7 +197,7 @@ void DrawExplain()
 					GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SheerExplainNo));
 					break;
 				}
-				SpriteDrawColorRotation(0, 0, 0.0f,
+				SpriteDrawColorRotation(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f,
 					HINT_SIZE_X, HINT_SIZE_Y, 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 					0, 1.0f, 1.0f, 1);
 			}
@@ -204,7 +206,7 @@ void DrawExplain()
 }
 
 
-void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, float rot)
+void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, float rot, int q)
 {
 	for (int i = 0; i < EXPLAIN_MAX; i++) {
 		if (!g_Explain[i].bUse)
@@ -213,7 +215,7 @@ void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, float rot)
 			g_Explain[i].size = size;
 			g_Explain[i].bUse = true;
 
-			g_Explain[i].tex = no;
+			g_Explain[i].tex = q;
 		}
 	}
 }
