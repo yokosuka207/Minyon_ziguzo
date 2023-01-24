@@ -3249,7 +3249,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[j].pieNo == piece.no)
 			{
-				if (pJoint[j].pos.y < piece.pos.y - piece.size.y / 3)
+				if (pJoint[j].pos.y > piece.pos.y + piece.size.y / 3)
 				{
 					return false;
 				}
@@ -3289,7 +3289,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[j].pieNo == piece.no)
 			{
-				if (pJoint[j].pos.y > piece.pos.y + piece.size.y / 3)
+				if (pJoint[j].pos.y < piece.pos.y - piece.size.y / 3)
 				{
 					return false;
 				}
