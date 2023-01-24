@@ -186,9 +186,6 @@ void UpdateGame()
 			pTime->PauseElapsedTime();
 		}
 	}
-	//if (Keyboard_IsKeyTrigger(KK_R)) {
-	//	ResetGame();
-	//}
 	if (!(*pause)) {
 		//UpdatePolygon();	//ƒ|ƒŠƒSƒ“‚ÌXV
 		BgUpdate();
