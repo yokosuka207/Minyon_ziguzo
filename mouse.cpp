@@ -4,9 +4,6 @@
 #include"block.h"
 #include"texture.h"
 #include"sprite.h"
-//#include"input.h"
-#include "xinput.h"
-#include "xkeyboard.h"
 #include"player.h"
 #include"MapChip.h"
 #include"joint.h"
@@ -56,19 +53,19 @@ void UpdateGameMouse()
 	g_OldMouse = g_Mouse;
 	Mouse_GetState(&g_Mouse);
 
-	PUZZLE* pPuzzle = GetPuzzle();
-	BLOCK* pBlock = GetBlock();
-	PLAYER* pPlayer = GetPlayer();
-	Piece* pPiece = GetPiece();
-	BLOCK* pCipBlock = GetChipBlock();
-	JOINT* pJoint = GetJoint();
-	PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
-	GOAL* pGoal = GetGoal();
-	THORNBLOCK* pThornBlock = GetThornBlock();
-	JUMPSTAND* pJumpStand = GetJumpStand();
-	SpawnPoint* pSpawnPoint = GetSpawnPoint();
-	SWITCH* pSwitch = GetSwitch();
-	SWITCHWALL* pSwitchWall = GetSwitchWall();
+	//PUZZLE* pPuzzle = GetPuzzle();
+	//BLOCK* pBlock = GetBlock();
+	//PLAYER* pPlayer = GetPlayer();
+	//Piece* pPiece = GetPiece();
+	//BLOCK* pCipBlock = GetChipBlock();
+	//JOINT* pJoint = GetJoint();
+	//PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
+	//GOAL* pGoal = GetGoal();
+	//THORNBLOCK* pThornBlock = GetThornBlock();
+	//JUMPSTAND* pJumpStand = GetJumpStand();
+	//SpawnPoint* pSpawnPoint = GetSpawnPoint();
+	//SWITCH* pSwitch = GetSwitch();
+	//SWITCHWALL* pSwitchWall = GetSwitchWall();
 	Mouse.oldPosX = GetMousePosX();
 	Mouse.oldPosY = GetMousePosY();
 

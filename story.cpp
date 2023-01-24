@@ -187,7 +187,7 @@ void UpdateStory()
 	{
 		if (gStory.HaveKey > 1)
 		{
-			if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad	A
+			if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_LEFT) ||		// GamePad	ç∂
 				Keyboard_IsKeyTrigger(KK_LEFT))					// Mouse	ç∂
 			{
 				i = 0;
@@ -196,7 +196,7 @@ void UpdateStory()
 		}
 
 		if(gStory.HaveKey < pSKey[0].HaveSKey) {
-			if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||			// GamePad	A
+			if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_RIGHT) ||			// GamePad	âE
 				Keyboard_IsKeyTrigger(KK_RIGHT))					// Mouse	âE
 			{
 				i = 1;
