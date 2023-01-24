@@ -141,7 +141,8 @@ void	UpdateResult()
 	if (ResultObject[0].type == WIN) 
 	{
 		//キー入力のチェック
-		if (Keyboard_IsKeyTrigger(KK_SPACE))
+		if (Keyboard_IsKeyTrigger(KK_SPACE) ||				// keyboard SPACE
+			IsButtonTriggered(0, XINPUT_GAMEPAD_B))			// GamePad B
 		{
 			//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
 			PlaySound(g_ChangeSceneResultSoundNo, 0);

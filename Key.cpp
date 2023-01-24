@@ -85,13 +85,17 @@ void DrawKey()
 				0,
 				1.0f,
 				1.0f,
-				1);
+				1
+			);
 		}
 	}
 }
 
 void SetKey(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index){
 	for (int i = 0; i < KEY_MAX; i++) {
+		if (index == g_Key[i].index && g_Key[i].GetKey)
+			break;
+
 		if (!g_Key[i].UseFlag) {
 			if (!g_Key[i].GetKey) {
 				switch (direction) {
@@ -110,8 +114,8 @@ void SetKey(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index){
 				g_Key[i].Size = size;
 				g_Key[i].index = index;
 				g_Key[i].UseFlag = true;
+				break;
 			}
-			break;
 		}
 	}
 }

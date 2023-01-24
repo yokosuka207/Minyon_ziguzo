@@ -104,7 +104,7 @@ void UpdateCamera(void)
 	//{// 角度を小さくする
 	//	g_Camera.fov -= 1.0f;
 	//}
-	if (Keyboard_IsKeyDown(KK_UP))//W
+	if (Keyboard_IsKeyDown(KK_UP))		// 矢印　上
 	{
 		g_Camera.fov = 20.0f;
 		g_Camera.zoomFlag = true;
@@ -115,7 +115,7 @@ void UpdateCamera(void)
 		}
 
 	}
-	if (Keyboard_IsKeyDown(KK_DOWN))//S
+	if (Keyboard_IsKeyDown(KK_DOWN))	// 矢印　下
 	{
 		g_Camera.fov = 48.0f;
 		if (g_Camera.fov > 47.0f)
@@ -128,19 +128,14 @@ void UpdateCamera(void)
 		}
 
 	}
-	if (Keyboard_IsKeyDown(KK_Z))
-	{
 
-	}
-
-
-
-
-	if (GetThumbLeftX(0) != 0|| GetThumbLeftY(0) != 0|| IsButtonPressed(0, XINPUT_GAMEPAD_A))
+	// 左スティックを動かすか、Aを押す
+	if (GetThumbLeftX(0) != 0|| GetThumbLeftY(0) != 0|| IsButtonPressed(0, XINPUT_GAMEPAD_A))		
 	{
 		g_Camera.fov = 20.0f;
 		g_Camera.zoomFlag = true;
 	}
+	// 右スティックを動かす
 	if (GetThumbRightX(0) != 0 || GetThumbRightY(0) != 0)
 	{
 		InitCamera();

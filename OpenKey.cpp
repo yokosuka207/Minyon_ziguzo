@@ -90,6 +90,7 @@ void SetOpenKey(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int index){
 	for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
 		if (index == g_OpenKey[j][0].index && g_OpenKey[j][0].KeyOpen)
 			break;
+
 		if (!g_OpenKey[j]->UseFlag) {
 			if (!g_OpenKey[j]->DrawFlag) {
 				if (!g_OpenKey[j]->KeyOpen) {
@@ -133,6 +134,7 @@ void DeleteOpenKey(int PieceNo) {
 			if (g_OpenKey[j][i].index == PieceNo) {
 				if (g_OpenKey[j][i].DrawFlag) {
 					g_OpenKey[j][i].DrawFlag = false;
+					g_OpenKey[j][i].UseFlag = false;
 				}
 			}
 		}

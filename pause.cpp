@@ -143,8 +143,8 @@ void	UpdatePause()
 		min1 = D3DXVECTOR2(PauseObject[2].Position.x - PauseObject[2].Size.x / 2, PauseObject[2].Position.y - PauseObject[2].Size.y / 2);
 		max1 = D3DXVECTOR2(PauseObject[2].Position.x + PauseObject[2].Size.x / 2, PauseObject[2].Position.y + PauseObject[2].Size.y / 2);
 		//	ÉQÅ[ÉÄÇ…ñﬂÇËÇ‹Ç∑
-		if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||			// GamePad	A
-			Keyboard_IsKeyTrigger(KK_L) ||						// Keyboard	TAB
+		if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
+			Keyboard_IsKeyTrigger(KK_L) ||						// Keyboard	L
 			Mouse_IsLeftDown())									// Mouse	ç∂
 		{
 			if (min1.x < MousePos.x && max1.x > MousePos.x && min1.y < MousePos.y && max1.y > MousePos.y)
@@ -157,8 +157,8 @@ void	UpdatePause()
 		min2 = D3DXVECTOR2(PauseObject[4].Position.x - PauseObject[4].Size.x / 2, PauseObject[4].Position.y - PauseObject[4].Size.y / 2);
 		max2 = D3DXVECTOR2(PauseObject[4].Position.x + PauseObject[4].Size.x / 2, PauseObject[4].Position.y + PauseObject[4].Size.y / 2);
 		//	ÉQÅ[ÉÄëIëâÊñ Ç…ñﬂÇËÇ‹Ç∑
-		if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
-			Keyboard_IsKeyTrigger(KK_M) ||					// Keyboard	TAB
+		if (IsButtonTriggered(0, XINPUT_GAMEPAD_X) ||			// GamePad	X
+			Keyboard_IsKeyTrigger(KK_M) ||					// Keyboard	M
 			Mouse_IsLeftDown())									// Mouse	ç∂
 		{
 			if (min2.x < MousePos.x && max2.x > MousePos.x && min2.y < MousePos.y && max2.y > MousePos.y)

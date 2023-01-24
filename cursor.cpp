@@ -16,6 +16,7 @@
 #include "xinput.h"
 #include "xkeyboard.h"
 #include"player.h"
+#include"doppelganger.h"
 #include"MapChip.h"
 #include"joint.h"
 #include"puzzlecip.h"
@@ -119,6 +120,7 @@ void UpdateCursor()
 	PUZZLE* pPuzzle = GetPuzzle();
 	BLOCK* pBlock = GetBlock();
 	PLAYER* pPlayer = GetPlayer();
+	DOPPELGANGER* pDoppel = GetDoppelganger();
 	Piece* pPiece = GetPiece();
 	BLOCK* pCipBlock = GetChipBlock();
 	JOINT* pJoint = GetJoint();
@@ -197,57 +199,6 @@ void UpdateCursor()
 	{
 		for (int i = 0; i < PUZZLE_MAX; i++)
 		{
-			//if (pPuzzle[i].UseFlag)
-			//{
-			//	pPuzzle[i].MoveEndFlag = false;
-			//	if (pPuzzle[i].Position.y - pPuzzle[i].Size.y / 3 < g_Cursor.PosY&&
-			//		pPuzzle[i].Position.y + pPuzzle[i].Size.y / 3 > g_Cursor.PosY&&
-			//		pPuzzle[i].Position.x - pPuzzle[i].Size.x / 3 < g_Cursor.PosX&&
-			//		pPuzzle[i].Position.x + pPuzzle[i].Size.x / 3 > g_Cursor.PosX&&
-			//		!oneFlag)
-			//	{
-			//		if (pPuzzle[i].Position.y - pPuzzle[i].Size.y / 2 < pPlayer->Position.y&&
-			//			pPuzzle[i].Position.y + pPuzzle[i].Size.y / 2 > pPlayer->Position.y&&
-			//			pPuzzle[i].Position.x - pPuzzle[i].Size.x / 2 < pPlayer->Position.x&&
-			//			pPuzzle[i].Position.x + pPuzzle[i].Size.x / 2 > pPlayer->Position.x
-			//			)
-			//		{
-			//		}
-			//		else
-			//		{
-			//			oneFlag = true;
-			//			g_CursorIndex = i;
-			//			pPuzzle[i].oldPosition = pPuzzle[i].Position;
-			//		}
-			//	}
-			//	else if (oneFlag && i == g_CursorIndex)
-			//	{
-			//		pPuzzle[g_CursorIndex].Position.x = g_Cursor.PosX;
-			//		pPuzzle[g_CursorIndex].Position.y = g_Cursor.PosY;
-			//		pPuzzle[g_CursorIndex].MoveFlag = true;
-			//		if (GetKeyboardTrigger(DIK_A))	//aキーが押されたら
-			//		{				//押されてる時の処理
-			//			pPuzzle[g_CursorIndex].Rotation += 90.0f;
-			//			pPuzzle[g_CursorIndex].RotNum++;
-			//			if (pPuzzle[g_CursorIndex].RotNum >=4)
-			//			{
-			//				pPuzzle[g_CursorIndex].RotNum = 0;
-			//			}
-			//			if (pPuzzle[g_CursorIndex].Block_Type == TYPE_GRAND)
-			//			{
-			//				for (int j = 0; j < 4; j++)
-			//				{
-			//					if (pPuzzle[g_CursorIndex].blockIndex[j] != -1)
-			//					{
-			//						//pBlock[pPuzzle[g_CursorIndex].blockIndex[j]].Rotation += 90.0f;
-			//					}
-			//				}
-			//			}
-			//			PuzzleTypeShift(g_CursorIndex);
-			//		}
-			//	}
-			//}
-
 			if (pPiece[i].UseFlag)
 			{
 				if (pPiece[i].pos.y - PUZZLE_HEIGHT / 3 < -g_Cursor.pos.y + SCREEN_HEIGHT / 2 &&
@@ -295,6 +246,17 @@ void UpdateCursor()
 					pPiece[g_CursorIndex].pos.y = -g_Cursor.pos.y + SCREEN_HEIGHT / 2;
 					//pPiece[g_CursorIndex].MoveFlag = true;
 					D3DXVECTOR2 temp = (pPiece[g_CursorIndex].pos - pPiece[g_CursorIndex].OldPos);
+
+
+					//ブロック動かす
+					if (pDoppel->UseFlag)
+					{
+						if (pDoppel->PieceIndex == NoIndex)
+						{
+							pDoppel->Position += temp;
+						}
+
+					}
 
 					for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 					{//ブロック動かす

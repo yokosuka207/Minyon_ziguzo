@@ -9,7 +9,6 @@
 #include "time.h"
 #include "pause.h"
 #include "score.h"
-#include "tutorial.h"
 #include "fade.h"
 #include "noizu.h"
 #include "sound.h"
@@ -63,7 +62,6 @@ void InitScene(SCENE no){
 		SetVolume(g_TitleSoundNo, 1.0f);//í èÌÇÕvolume 1.0f
 		break;
 	case SCENE::SCENE_TUTORIAL:
-		InitTutorial();
 		InitNoizu();
 
 		break;
@@ -108,7 +106,6 @@ void UninitScene(){
 		UninitNoizu();
 		break;
 	case SCENE::SCENE_TUTORIAL:
-		UninitTutorial();
 		UninitNoizu();
 
 		break;
@@ -150,7 +147,6 @@ void UpdateScene(){
 		UpdateNoizu();
 		break;
 	case SCENE::SCENE_TUTORIAL:
-		UpdateTutorial();
 		UpdateNoizu();
 
 		break;
@@ -210,7 +206,6 @@ void DrawScene(){
 
 		break;
 	case SCENE::SCENE_TUTORIAL:
-		DrawTutorial();
 		DrawNoizu();
 
 

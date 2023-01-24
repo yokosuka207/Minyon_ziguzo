@@ -48,7 +48,7 @@
 #include "goal_key.h"		//ゴール専用鍵
 #include "StoryKey.h"		//ストーリー用鍵
 #include "bullet.h"			//ドッペルゲンガー発射弾
-#include "doppelganger.h"   //ドッペルゲンガー
+//#include "doppelganger.h"   //ドッペルゲンガー
 #include "enemy.h"			//エネミー
 
 #include "JumpStandExplain.h"		
@@ -288,7 +288,7 @@ void UpdateCollision(){
 				{
 					pSwitch[i].PressFlag = true;//押されたら
 					pSwitch[i].PaternNo = 1;
-					if (pSwitch[i].NotPressed == true)
+					if (pSwitch[i].NotPressed)
 					{
 						//SetVolume(g_SwitchSoundNo, 0.5f);
 						PlaySound(g_SwitchSoundNo, 0);
@@ -313,11 +313,11 @@ void UpdateCollision(){
 							pSwitch[i].NotPressed = false;
 						}
 					}
-					else {
-						pSwitch[i].PressFlag = false;
-						pSwitch[i].PaternNo = 0;
-						pSwitch[i].NotPressed = true;
-					}
+					//else {
+					//	pSwitch[i].PressFlag = false;
+					//	pSwitch[i].PaternNo = 0;
+					//	pSwitch[i].NotPressed = true;
+					//}
 				}
 
 				if (pSwitch[i].PressFlag) {
@@ -585,13 +585,14 @@ void UpdateCollision(){
 		//========================================================================
 		//プレイヤー・壊れるブロック　当たり判定(PlayerとBrokenBlockの当たり判定)
 		//=========================================================================
+		bool BrokenFlag = false;
 		for (int i = 0; i < BROKEN_MAX; i++) {
 			if ((pBroken + i)->UseFlag) {
 				//プレイヤー左・壊れるブロック右
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
 					pPlayer->oldpos.x + pPlayer->size.x / 2 <= (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
-					pPlayer->Position.y + pPlayer->size.y / 2 > (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2 &&
-					pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2)
+					pPlayer->Position.y + pPlayer->size.y / 2 > (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 3 &&
+					pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 3)
 				{
 					pPlayer->Position.x = (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 - pPlayer->size.x / 2;
 				}
@@ -613,6 +614,14 @@ void UpdateCollision(){
 					pPlayer->jump = false;
 					pPlayer->fall = false;
 					pPlayer->frame = 0;
+					pPlayer->isBrokenBlock = true;
+					pPlayer->sp.y = -0.2f;
+					BrokenFlag = true;
+				}
+				else if(!BrokenFlag)
+				{
+					pPlayer->isBrokenBlock = false;
+
 				}
 				//プレイヤー下・壊れるブロック上,壊れる
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
@@ -688,6 +697,7 @@ void UpdateCollision(){
 		//====================================================================
 		//プレイヤーと落ちるブロックの当たり判定(PlayerとFallBlockの当たり判定)
 		//====================================================================
+		bool FallFlag = false;
 		for (int i = 0; i < FALLBLOCK_MAX; i++) {
 			if ((pFallBlock + i)->UseFlag) {
 				//プレイヤー左・ブロック右判定
@@ -726,9 +736,16 @@ void UpdateCollision(){
 					pPlayer->jump = false;
 					pPlayer->fall = false;
 					pPlayer->frame = 50;
-					pPlayer->isHigh = true;
+					pPlayer->sp.y = -0.4f;
+					pPlayer->isFallBlock = true;
 					(pFallBlock + i)->oldpos = (pFallBlock + i)->Position;
-					(pFallBlock + i)->Position.y--;
+					(pFallBlock + i)->Position.y -= 3.0f;
+					FallFlag = true;
+
+				}
+				else if(!FallFlag)
+				{
+					pPlayer->isFallBlock = false;
 
 				}
 
@@ -838,7 +855,7 @@ void UpdateCollision(){
 		//通常鍵取得プレイヤーと鍵で開く扉の当たり判定(PlayerとOpenKey)
 		//-----------------------------------------------------------------
 		for (int i = 0; i < OPEN_KEY_MAX * STAGE_OPEN_KEY_MAX; i++) {
-			if ((pOpenKey + i)->DrawFlag) {
+			if (pOpenKey[i].DrawFlag) {
 				if (CollisionBB((pOpenKey + i)->Position, pPlayer->Position, (pOpenKey + i)->Size, pPlayer->size)) {
 					if (pPlayer->HaveKey > 0) {
 						if (i == 0 || i == 3 ||i == 6) {
@@ -863,7 +880,7 @@ void UpdateCollision(){
 		//-----------------------------------------------------
 		for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
 			for (int i = 0; i < OPEN_KEY_MAX; i++) {
-				if (pOpenKey[i].DrawFlag) {
+				if ((pOpenKey + j + i)->DrawFlag) {
 					//プレーヤーと扉の判定
 					//扉の左とプレイヤーの右
 					if ((pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
@@ -1040,7 +1057,7 @@ void UpdateCollision(){
 			{
 				for (int j = 0; j < JUMPSTAND_MAX; j++) {
 					if (pJumpStand[j].UseJumpStand) {
-						if (CollisionBB(pBroken[i].Postion, pJumpStand[j].pos, pBroken[i].Size - 2, pJumpStand[j].size)) {
+						if (CollisionBB(pBroken[i].Postion, pJumpStand[j].pos, pBroken[i].Size, pJumpStand[j].size)) {
 							pJumpStand[j].pos = pJumpStand[j].oldpos;
 						}
 					}
@@ -1155,7 +1172,6 @@ void UpdateCollision(){
 	//		}
 	//	}
 	//}
-	
 }
 //----------------------------------------------------------------------------------------------------------
 
