@@ -360,28 +360,28 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN):	//26 ヒントブロック(Piace)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 26);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN2):	//27 ②ヒントブロック(Piace)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 27);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN3):	//28 ③ヒントブロック(Piace)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 28);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_BLOCKEXPLAIN):	//29 ヒントブロック(Block)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 29);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMYEXPLAIN):	//30 ヒントブロック(Enemy)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 30);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_BROKENEXPLAIN): //31 ヒントブロック(BrokenBlock)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 31);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEEXPLAIN):	//32 ヒントブロック(MoveBlock)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 32);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_SHEEREXPLAIN):	//33 ヒントブロック(SheerFloorsBlock)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 33);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY):	//34 ストーリー解放鍵
 				SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction);
@@ -672,28 +672,28 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN):	//26 ヒントブロック(Piace)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 26);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN2):	//27 ②ヒントブロック(Piace)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 27);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN3):	//28 ③ヒントブロック(Piace)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 28);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_BLOCKEXPLAIN):	//29 ヒントブロック(Block)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 29);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMYEXPLAIN):	//30 ヒントブロック(Enemy)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 30);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_BROKENEXPLAIN): //31 ヒントブロック(BrokenBlock)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 31);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEEXPLAIN):	//32 ヒントブロック(MoveBlock)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 32);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_SHEEREXPLAIN):	//33 ヒントブロック(SheerFloorsBlock)
-				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction);
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 33);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY):	//34 ストーリー解放鍵
 				SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction);

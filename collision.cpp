@@ -240,7 +240,7 @@ void UpdateCollision(){
 			if (!pPiece[i].InventoryFlag&&pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X*1.5f)) {
 				DeleteMapChip(i);
 				SetInventory(pPiece[i].no);
-				InventoryFlag = true;
+				pPiece[i].InventoryFlag = true;
 
 				break;
 			}
@@ -1006,7 +1006,7 @@ void UpdateCollision(){
 					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x-40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 						pEnemy[i].AIFlag = true;
 					}
-					if (Keyboard_IsKeyTrigger(KK_A))
+					if (Keyboard_IsKeyTrigger(KK_B))
 					{
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 							pEnemy[i].UseFlag = false;
@@ -1015,14 +1015,43 @@ void UpdateCollision(){
 					}
 
 				}
-				else
+				else if(pEnemy[i].dir == ENEMY_DIRECTION::DIRECTION_RIGHT)
 				{
 					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 						pEnemy[i].AIFlag = true;
 					}
-					if (Keyboard_IsKeyTrigger(KK_A))
+					if (Keyboard_IsKeyTrigger(KK_B))
 					{
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
+							pEnemy[i].UseFlag = false;
+						}
+
+					}
+
+
+				}
+				else if (pEnemy[i].dir == ENEMY_DIRECTION::DIRECTION_UP)
+				{
+					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 40.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y + 80.0f), pPlayer->size)) {
+						pEnemy[i].AIFlag = true;
+					}
+					if (Keyboard_IsKeyTrigger(KK_B))
+					{
+						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y - 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
+							pEnemy[i].UseFlag = false;
+						}
+
+					}
+
+				}
+				else if(pEnemy[i].dir == ENEMY_DIRECTION::DIRECTION_DOWN)
+				{
+					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x , pEnemy[i].pos.y - 40.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y + 80.0f), pPlayer->size)) {
+						pEnemy[i].AIFlag = true;
+					}
+					if (Keyboard_IsKeyTrigger(KK_B))
+					{
+						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 							pEnemy[i].UseFlag = false;
 						}
 
@@ -2483,7 +2512,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	{
 		if (pMoveBlock[i].bUse)
 		{
-			if (pMoveBlock[i].PieceIndex == pinNo)
+			if (pMoveBlock[i].NowPieceIndex == pinNo)
 			{
 				pMoveBlock[i].pos += num;
 			}
@@ -3228,7 +3257,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[j].pieNo == piece.no)
 			{
-				if (pJoint[j].pos.y < piece.pos.y - piece.size.y / 3)
+				if (pJoint[j].pos.y > piece.pos.y + piece.size.y / 3)
 				{
 					return false;
 				}
@@ -3268,7 +3297,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[j].pieNo == piece.no)
 			{
-				if (pJoint[j].pos.y > piece.pos.y + piece.size.y / 3)
+				if (pJoint[j].pos.y < piece.pos.y - piece.size.y / 3)
 				{
 					return false;
 				}
