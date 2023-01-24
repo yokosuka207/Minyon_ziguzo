@@ -225,7 +225,7 @@ void UpdatePlayer()
 
 			for (int i = 0; i < JUMPSTAND_MAX; i++) {
 				if (p_JumpStand[i].UseJumpStand) {
-					if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
+					if (IsButtonPressed(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
 						Keyboard_IsKeyDown(KK_B))						// Keyboard	B
 					{
 						if (CollisionBB(g_Player.Position, p_JumpStand[i].pos, g_Player.size, p_JumpStand[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
@@ -246,7 +246,7 @@ void UpdatePlayer()
 
 			for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 				if (pMoveBlock[i].bUse) {
-					if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
+					if (IsButtonPressed(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
 						Keyboard_IsKeyDown(KK_B))						// Keyboard	B
 					{
 						if (CollisionBB(g_Player.Position, pMoveBlock[i].pos, g_Player.size, pMoveBlock[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
@@ -343,9 +343,6 @@ void UpdatePlayer()
 
 								g_Player.isSheerFloors = false;
 							}
-
-
-
 						}
 
 						//プレイヤー下・ブロック上,落下する
@@ -409,13 +406,6 @@ void UpdatePlayer()
 			//プレイヤー・ワープ 当たり判定 collision.cppへ移動
 
 			{
-				
-				if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_THUMB) || 	// GamePad	Lタブ
-					Keyboard_IsKeyTrigger(KK_R))						// Keyboard	R
-				{
-					ResetGame();
-				}
-
 				//プレイヤーとパズルの画面外判定
 				Piece* pPiece = GetPiece();
 
@@ -512,7 +502,7 @@ void UpdatePlayer()
 
 
 			}
-			if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_THUMB) || 	// GamePad	Lタブ
+			if (IsButtonTriggered(0, XINPUT_GAMEPAD_BACK) || 	// GamePad	Lタブ
 				Keyboard_IsKeyTrigger(KK_R))						// Keyboard	R
 			{
 				ResetGame();
