@@ -140,7 +140,7 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 				break;
 			}
 			g_Enemy[i].pos = pos;
-			g_Enemy[i].size = size*2.0f;
+			g_Enemy[i].size = size * 2.0f;
 			g_Enemy[i].index = index;
 			g_Enemy[i].dir = d;
 			

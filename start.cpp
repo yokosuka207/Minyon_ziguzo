@@ -91,7 +91,6 @@ void SetStart(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int PieceNo) {
 			g_Start[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 			g_Start[i].PieceIndex = PieceNo;
 			g_Start[i].UseFlag = true;
-			g_Start[i].GoalFlag = false;
 		}
 	}
 }
