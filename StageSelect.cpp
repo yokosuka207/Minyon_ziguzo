@@ -525,7 +525,7 @@ void UpdateStageSelect() {
 					pStory->KeyUse = true;
 				}
 				if (Keyboard_IsKeyTrigger(KK_M) ||					// keyboard M
-					IsButtonTriggered(0, XINPUT_GAMEPAD_A)) {			// GamePad B
+					IsButtonTriggered(0, XINPUT_GAMEPAD_A)) {			// GamePad A
 					pStory->KeyUse = false;
 				}
 			}

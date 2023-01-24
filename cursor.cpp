@@ -466,13 +466,13 @@ void UpdateCursor()
 					{
 						// ‰ñ“]
 						if (Keyboard_IsKeyTrigger(KK_E) ||								// keyboard E
-							IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_THUMB))			// GamePad RT
+							IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_SHOULDER))			// GamePad R
 						{
 							RotateMapChipR(NoIndex);
 							g_Cursor.RotIndex++;
 						}
 						else if (Keyboard_IsKeyTrigger(KK_Q) ||					// keyboard Q
-							IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_THUMB)) {	// GamePad LT
+							IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_SHOULDER)) {	// GamePad L
 							RotateMapChipL(NoIndex);
 							g_Cursor.RotIndex--;
 						}

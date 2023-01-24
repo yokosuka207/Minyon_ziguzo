@@ -217,7 +217,7 @@ void UpdateDoppelganger()
 		{
 			//移動
 			if (GetThumbLeftX(0) > 0.3f ||					// GamePad	右スティック	右
-				Keyboard_IsKeyDown(KK_RIGHT))				// Keyboard	右
+				Keyboard_IsKeyDown(KK_D))				// Keyboard	D
 			{//押されているときの処理
 				g_Doppel.sp.x = -1.3f;
 				g_Doppel.PaternNo += 0.25f;
@@ -227,7 +227,7 @@ void UpdateDoppelganger()
 				g_Doppel.uv_w = -DOPPELGANGER_UV_W;
 			}
 			else if (GetThumbLeftX(0) < -0.3f ||			// GamePad	右スティック	左
-				Keyboard_IsKeyDown(KK_LEFT))				// Keyboard	左
+				Keyboard_IsKeyDown(KK_A))				// Keyboard	A
 			{//押されているときの処理
 				g_Doppel.sp.x = 1.3f;
 				g_Doppel.PaternNo -= 0.25f;
@@ -299,7 +299,7 @@ void UpdateDoppelganger()
 			for (int i = 0; i < JUMPSTAND_MAX; i++) {
 				if (p_JumpStand[i].UseJumpStand) {
 					if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
-						Keyboard_IsKeyDown(KK_B))						// Keyboard	B
+						Keyboard_IsKeyDown(KK_LEFTCONTROL))						// Keyboard	Ctrl　左
 					{
 						if (CollisionBB(g_Doppel.Position, p_JumpStand[i].pos, g_Doppel.size, p_JumpStand[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
 							p_JumpStand[i].GetJumpStand = true;
@@ -320,7 +320,7 @@ void UpdateDoppelganger()
 			for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 				if (pMoveBlock[i].bUse) {
 					if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
-						Keyboard_IsKeyDown(KK_B))						// Keyboard	B
+						Keyboard_IsKeyDown(KK_LEFTCONTROL))						// Keyboard	Ctrl 左
 					{
 						if (CollisionBB(g_Doppel.Position, pMoveBlock[i].pos, g_Doppel.size, pMoveBlock[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
 							pMoveBlock[i].GetMoveBlock = true;
@@ -387,7 +387,7 @@ void UpdateDoppelganger()
 
 					//ドッペルゲンガー上・ブロック下,着地する
 					if (!GetThumbLeftY(0) < -0.3f ||		// GamePad	左スティック	下
-						!Keyboard_IsKeyDown(KK_DOWN))		// Keyboard 下
+						!Keyboard_IsKeyDown(KK_S))		// Keyboard S
 					{
 						if (pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 < g_Doppel.Position.x + g_Doppel.size.x / 2 &&
 							pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 > g_Doppel.Position.x - g_Doppel.size.x / 2 &&
@@ -436,7 +436,7 @@ void UpdateDoppelganger()
 
 				// スケスケブロック下降りる
 				if (GetThumbLeftY(0) < -0.3f ||			// GamePad	左スティック	下
-					Keyboard_IsKeyDown(KK_DOWN))		// Keyboard	下
+					Keyboard_IsKeyDown(KK_S))		// Keyboard	S
 				{
 					g_Doppel.isSheerFloors = false;
 				}
@@ -483,13 +483,6 @@ void UpdateDoppelganger()
 			//ドッペルゲンガー・ワープ 当たり判定 collision.cppへ移動
 
 			{
-
-				if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_THUMB) || 	// GamePad	Lタブ
-					Keyboard_IsKeyTrigger(KK_R))						// Keyboard	R
-				{
-					ResetGame();
-				}
-
 				//ドッペルゲンガーとパズルの画面外判定
 				Piece* pPiece = GetPiece();
 
