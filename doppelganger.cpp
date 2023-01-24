@@ -13,7 +13,6 @@
 //#include "polygon.h"
 #include "sprite.h"
 #include "texture.h"
-//#include "input.h"
 #include "xinput.h"
 #include "xkeyboard.h"
 #include "xmouse.h"
@@ -312,6 +311,7 @@ void UpdateDoppelganger()
 					}
 				}
 
+				// スケスケブロック下降りる
 				if (GetThumbLeftY(0) < -0.3f ||			// GamePad	左スティック	下
 					Keyboard_IsKeyDown(KK_DOWN))		// Keyboard	下
 				{

@@ -121,7 +121,7 @@ static int g_StagePieceInfo[21][8] = {
 	{  00, -131,  131,   63,    0,    0,    0,    0,},	// 5	○			 ┃			十と百の位の数字					 ┃
 	{  32,   62, -142,  140,    0,    0,    0,    0,},	// 6	○			 ┃・一の位は回転回数							 ┃
 	{ 182,  141,  171,   52,    0,    0,    0,    0,},	// 7	○			 ┃				テクスチャを参考に左(反時計)回り ┃
-	{ 170,   00, -151,   80, -151,    0,    0,    0,},	// 8	○			 ┃											     ┃
+	{ 170,   00, -141,   80, -141,    0,    0,    0,},	// 8	○			 ┃											     ┃
 	{  10,   10,   53,   30,   20,    0,    0,    0,},	// 9	○			 ┃・左右を反転させたい場合は -(マイナス) にする ┃
 	{ 153,   10,  140,   51,   61,    0,    0,    0,},	// 10	○			 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
 	{  43,  110, -131,  181,   10,    0,    0,    0,},	// 11	○							
@@ -134,7 +134,7 @@ static int g_StagePieceInfo[21][8] = {
 	{  52,  190,  171, -143,  191,   10,    0,    0,},	// 18	○							
 	{-131,   20,  132,  113,   10,   53, -151,    0,},	// 19	○							
 	{  20,  161,   61,  132,   00,  133,  120,    0,},	// 20	○							
-	{  43,   80,  180,  160,  190,  182,  180,  112,},	// 21								
+	{  43,  180,  160,  190,  182,  180,  112,   80,},	// 21	○							
 };										 
 
 /*　　　				　		／＼			↑触るな危険！  不用意に踏み込まない方がいいぞ！
@@ -189,6 +189,9 @@ HRESULT InitMapChip() {
 
 	SplitStage* pSplitStage = GetSplitStage();
 	SetPieceMapChip(pSplitStage->Split34[0][0], 0);
+	if (ReturnStageNo() == 20) {
+		SetPieceMapChip(pSplitStage->Split34[1][1], 7);
+	}
 
 	return S_OK;
 }
@@ -278,7 +281,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			D3DXVECTOR2 position = D3DXVECTOR2((pos.x + PUZZLE_SIZE / 2) - j * BLOCK_CHIP_SIZE - BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
 			D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
 
-			switch (g_PieceMapChip[Pin].chip[g_PieceMapChip[no].direction][i][j]) {
+			switch (g_PieceMapChip[Pin].chip[g_PieceMapChip[Pin].direction][i][j]) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK) :	//0				
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//1　凸
@@ -509,25 +512,41 @@ Piece* GetPiece() {
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
 	int stageNo = ReturnStageNo();
 	int PieceInfo = g_StagePieceInfo[stageNo][PieceNo];
-	for (int p = 0; p < PUZZLE_MAX; p++) {
-		if (!g_PieceMapChip[p].UseFlag) {
-			g_PieceMapChip[p].pos = pos;
-			g_PieceMapChip[p].no = PieceNo;
-			SetMapChip(pos, PieceNo, p);
-			if (PieceInfo < 0) {
-				g_PieceMapChip[p].uvW = -PIECE_UV_W;
-			}
-			else {
-				g_PieceMapChip[p].uvW = PIECE_UV_W;
-			}
-			g_PieceMapChip[p].TexNo = g_MapChipTextureNo[abs(PieceInfo / 10)];
-			g_PieceMapChip[p].startAngle = abs(PieceInfo % 10) - 2;
-			g_PieceMapChip[p].InventoryFlag = false;
-
-			g_PieceMapChip[p].UseFlag = true;
-			break;
+	if (!g_PieceMapChip[PieceNo].UseFlag) {
+		g_PieceMapChip[PieceNo].pos = pos;
+		g_PieceMapChip[PieceNo].no = PieceNo;
+		SetMapChip(pos, PieceNo, PieceNo);
+		if (PieceInfo < 0) {
+			g_PieceMapChip[PieceNo].uvW = -PIECE_UV_W;
 		}
+		else {
+			g_PieceMapChip[PieceNo].uvW = PIECE_UV_W;
+		}
+		g_PieceMapChip[PieceNo].TexNo = g_MapChipTextureNo[abs(PieceInfo / 10)];
+		g_PieceMapChip[PieceNo].startAngle = abs(PieceInfo % 10) - 2;
+		g_PieceMapChip[PieceNo].InventoryFlag = false;
+		g_PieceMapChip[PieceNo].UseFlag = true;
 	}
+
+	//for (int p = 0; p < PUZZLE_MAX; p++) {
+	//	if (!g_PieceMapChip[p].UseFlag) {
+	//		g_PieceMapChip[p].pos = pos;
+	//		g_PieceMapChip[p].no = PieceNo;
+	//		SetMapChip(pos, PieceNo, p);
+	//		if (PieceInfo < 0) {
+	//			g_PieceMapChip[p].uvW = -PIECE_UV_W;
+	//		}
+	//		else {
+	//			g_PieceMapChip[p].uvW = PIECE_UV_W;
+	//		}
+	//		g_PieceMapChip[p].TexNo = g_MapChipTextureNo[abs(PieceInfo / 10)];
+	//		g_PieceMapChip[p].startAngle = abs(PieceInfo % 10) - 2;
+	//		g_PieceMapChip[p].InventoryFlag = false;
+
+	//		g_PieceMapChip[p].UseFlag = true;
+	//		break;
+	//	}
+	//}
 }
 //--------------------------------
 //インベントリ内のマップチップ
