@@ -240,7 +240,7 @@ void UpdateCollision(){
 			if (!pPiece[i].InventoryFlag&&pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X*1.5f)) {
 				DeleteMapChip(i);
 				SetInventory(pPiece[i].no);
-				InventoryFlag = true;
+				pPiece[i].InventoryFlag = true;
 
 				break;
 			}

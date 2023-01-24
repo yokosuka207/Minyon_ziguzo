@@ -62,7 +62,6 @@ static char* g_CursorCatchTextureName = (char*)"data\\texture\\cursor_catch.png"
 static int g_CursorTextureNo[2];
 
 static bool oneFlag = false;	//ƒ}ƒEƒX‚ÅƒpƒYƒ‹‚ğˆê‚Â‚Á‚Ä‚¢‚é‚©
-static int g_CursorIndex = -1;	//ƒ}ƒEƒX‚Ì’Í‚ñ‚¾ƒpƒYƒ‹‚Ì”Ô†“ü‚ê
 static int NoIndex = -1;	//ƒ}ƒEƒX‚Å’Í‚ñ‚¾ƒs[ƒX”Ô†
 static bool g_CursorFlag = false;	//ƒ}ƒEƒX‚ğƒNƒŠƒbƒN‚µ‚Ä‚¢‚é‚©
 
@@ -77,7 +76,7 @@ static char g_CursorSoundName[] = "data\\SoundData\\SE\\ƒs[ƒX‚ğ’Í‚Ş‰¹(Œø‰Ê‰¹ƒ‰ƒ
 HRESULT InitCursor()
 {
 	oneFlag = false;	//ƒ}ƒEƒX‚ÅƒpƒYƒ‹‚ğˆê‚Â‚Á‚Ä‚¢‚é‚©
-	g_CursorIndex = -1;	//ƒ}ƒEƒX‚Ì’Í‚ñ‚¾ƒpƒYƒ‹‚Ì”Ô†“ü‚ê
+	g_Cursor.PieceIndex = -1;	//ƒ}ƒEƒX‚Ì’Í‚ñ‚¾ƒpƒYƒ‹‚Ì”Ô†“ü‚ê
 	NoIndex = -1;	//ƒ}ƒEƒX‚Å’Í‚ñ‚¾ƒs[ƒX”Ô†
 	g_CursorFlag = false;	//ƒ}ƒEƒX‚ğƒNƒŠƒbƒN‚µ‚Ä‚¢‚é‚©
 
@@ -93,6 +92,7 @@ HRESULT InitCursor()
 		g_Cursor.pFlag = false;
 		g_Cursor.useFlag = false;
 		g_Cursor.type = 0;
+		g_Cursor.PieceIndex = -1;
 		g_Cursor.bHave = false;
 	}
 	g_CursorTextureNo[0] = LoadTexture(g_CursorTextureName);
@@ -228,24 +228,24 @@ void UpdateCursor()
 						PlaySound(g_CursorSoundNo, 0);
 					}
 					pPiece[i].MoveFlag = true;
-					g_CursorIndex = i;
+					g_Cursor.PieceIndex = i;
 					NoIndex = pPiece[i].no;
 					pPiece[i].OldMovePos = pPiece[i].pos;
 					g_Cursor.type = 1;
 					g_Cursor.bHave = true;
 					break;
 				}
-				else if (oneFlag && i == g_CursorIndex)
+				else if (oneFlag && i == g_Cursor.PieceIndex)
 				{
 					g_Cursor.type = 1;
 					g_Cursor.bHave = true;
 
-					pPiece[g_CursorIndex].OldPos = pPiece[g_CursorIndex].pos;
+					pPiece[g_Cursor.PieceIndex].OldPos = pPiece[g_Cursor.PieceIndex].pos;
 
-					pPiece[g_CursorIndex].pos.x = g_Cursor.pos.x - SCREEN_WIDTH / 2;
-					pPiece[g_CursorIndex].pos.y = -g_Cursor.pos.y + SCREEN_HEIGHT / 2;
-					//pPiece[g_CursorIndex].MoveFlag = true;
-					D3DXVECTOR2 temp = (pPiece[g_CursorIndex].pos - pPiece[g_CursorIndex].OldPos);
+					pPiece[g_Cursor.PieceIndex].pos.x = g_Cursor.pos.x - SCREEN_WIDTH / 2;
+					pPiece[g_Cursor.PieceIndex].pos.y = -g_Cursor.pos.y + SCREEN_HEIGHT / 2;
+					//pPiece[g_Cursor.PieceIndex].MoveFlag = true;
+					D3DXVECTOR2 temp = (pPiece[g_Cursor.PieceIndex].pos - pPiece[g_Cursor.PieceIndex].OldPos);
 
 
 					//ƒuƒƒbƒN“®‚©‚·
@@ -494,18 +494,18 @@ void UpdateCursor()
 	if (!Mouse_IsLeftDown() &&						// mouse ¶
 		!g_Cursor.bHave)
 	{
-		if (g_CursorIndex != -1)
+		if (g_Cursor.PieceIndex != -1)
 		{
-			pPuzzle[g_CursorIndex].MoveFlag = false;
-			pPuzzle[g_CursorIndex].MoveEndFlag = true;
-			pPiece[g_CursorIndex].MoveEndFlag = true;
-			pPiece[g_CursorIndex].MoveFlag = false;
+			pPuzzle[g_Cursor.PieceIndex].MoveFlag = false;
+			pPuzzle[g_Cursor.PieceIndex].MoveEndFlag = true;
+			pPiece[g_Cursor.PieceIndex].MoveEndFlag = true;
+			pPiece[g_Cursor.PieceIndex].MoveFlag = false;
 
 			//g_Cursor.RotIndex = 0;
 			g_Cursor.pFlag = false;
 		}
 		oneFlag = false;
-		g_CursorIndex = -1;
+		g_Cursor.PieceIndex = -1;
 		NoIndex = -1;
 		g_Cursor.type = 0;
 	}
