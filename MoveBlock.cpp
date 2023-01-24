@@ -106,10 +106,6 @@ void UpdateMoveBlock()
 					gMoveBlock[i].MoveBlockNotMove = false;
 				}
 			}
-			if (!gMoveBlock[i].GetMoveBlock) {
-				gMoveBlock[i].sp.x = 0.0f;
-				gMoveBlock[i].pos.x = gMoveBlock[i].oldpos.x;
-			}
 			if (gMoveBlock[i].oldpos.x == gMoveBlock[i].pos.x && gMoveBlock[i].MoveBlockNotMove == false)//動かしてない時
 			{
 				gMoveBlock[i].MoveBlockNotMove = true;
@@ -160,17 +156,17 @@ void UpdateMoveBlock()
 					//}
 
 					//動くブロック左・ブロック右
-					if (gMoveBlock[i].pos.x	   + gMoveBlock[i].size.x / 2 > (cipblock + j)->Position.x  - (cipblock + j)->Size.x / 2 &&
-						gMoveBlock[i].oldpos.x + gMoveBlock[i].size.x / 2 <= (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 &&
-						gMoveBlock[i].pos.y	   + gMoveBlock[i].size.y / 2 > (cipblock + j)->Position.y  - (cipblock + j)->Size.y / 2 &&
-						gMoveBlock[i].pos.y	   - gMoveBlock[i].size.y / 2 < (cipblock + j)->Position.y  + (cipblock + j)->Size.y / 2)
+					if (gMoveBlock[i].pos.x	   + gMoveBlock[i].size.x / 2 > (cipblock + j)->Position.x  - (cipblock + j)->Size.x / 3 &&
+						gMoveBlock[i].oldpos.x + gMoveBlock[i].size.x / 2 <= (cipblock + j)->Position.x - (cipblock + j)->Size.x / 3 &&
+						gMoveBlock[i].pos.y	   + gMoveBlock[i].size.y / 2 > (cipblock + j)->Position.y  - (cipblock + j)->Size.y / 3 &&
+						gMoveBlock[i].pos.y	   - gMoveBlock[i].size.y / 2 < (cipblock + j)->Position.y  + (cipblock + j)->Size.y / 3)
 					{
 						gMoveBlock[i].pos.x = (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 - gMoveBlock[i].size.x / 2;
 
 					}
 					//動くブロック右・ブロック左
-					if (gMoveBlock[i].pos.x	   - gMoveBlock[i].size.x / 2 < (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 &&
-						gMoveBlock[i].oldpos.x - gMoveBlock[i].size.x / 2 >= (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 &&
+					if (gMoveBlock[i].pos.x	   - gMoveBlock[i].size.x / 2 < (cipblock + j)->Position.x + (cipblock + j)->Size.x / 3 &&
+						gMoveBlock[i].oldpos.x - gMoveBlock[i].size.x / 2 >= (cipblock + j)->Position.x + (cipblock + j)->Size.x / 3 &&
 						gMoveBlock[i].pos.y    + gMoveBlock[i].size.y / 3 > (cipblock + j)->Position.y - (cipblock + j)->Size.y / 3 &&
 						gMoveBlock[i].pos.y    - gMoveBlock[i].size.y / 3 < (cipblock + j)->Position.y + (cipblock + j)->Size.y / 3)
 					{
@@ -217,7 +213,7 @@ void DrawMoveBlock()
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TextureNo));
 
 			SpriteDrawColorRotation(gMoveBlock[i].pos.x, gMoveBlock[i].pos.y,-0.1f,
-				gMoveBlock[i].size.x, gMoveBlock[i].size.y, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),
+				gMoveBlock[i].size.x, gMoveBlock[i].size.y, 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 				0, 1.0f, 1.0f, 1);
 		}
 	}
@@ -230,8 +226,6 @@ MOVEBLOCK* GetMoveBlock()
 
 void SetMoveBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 	for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
-		if (PieceNo == gMoveBlock[i].PieceIndex)
-			break;
 		if (!gMoveBlock[i].bUse) {
 			gMoveBlock[i].pos = pos;
 			gMoveBlock[i].pos.y += 1.0f ;
@@ -244,8 +238,6 @@ void SetMoveBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 }
 
 void DeleteMoveBlock(int PieceNo) {
-	//配列にしないとマップ上に存在するジャンプ台全部消えることになる
-	//今消したいのは PieceNo番目 のピースに存在するジャンプ台のみ
 	for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 		if (gMoveBlock[i].bUse) {
 			if (gMoveBlock[i].PieceIndex == PieceNo)

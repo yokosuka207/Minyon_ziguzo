@@ -44,4 +44,4 @@ void UninitBullet();
 void UpdateBullet();
 void DrawBullet();
 BULLET* GetBullet();//BULLET構造体の先頭ポインタを取得
-void SetBullet(D3DXVECTOR2 pos,D3DXVECTOR2 size, float spd);//弾発生
+void SetBullet(D3DXVECTOR2 pos,D3DXVECTOR2 size, D3DXVECTOR2 spd);//弾発生

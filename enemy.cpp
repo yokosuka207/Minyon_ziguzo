@@ -16,6 +16,7 @@
 #include "xkeyboard.h"
 #include "collision.h"
 #include "sound.h"
+#include"cursor.h"
 
 static ENEMY g_Enemy[ENEMY_MAX];
 
@@ -60,46 +61,61 @@ void UninitEnemy() {
 
 
 void UpdateEnemy() {
-	for (int i = 0; i < ENEMY_MAX; i++) {
-		if (g_Enemy[i].UseFlag) {
 
-			switch (g_Enemy[i].dir)
-			{
-			case ENEMY_DIRECTION::DIRECTION_LEFT:
-				g_Enemy[i].uv_w = -1.0f;
-				break;
-			case ENEMY_DIRECTION::DIRECTION_RIGHT:
-				g_Enemy[i].uv_w = 1.0f;
+	CURSOR* pCursor = GetCurso();		//  ƒJ[ƒ\ƒ‹
+	if (!pCursor->bHave)
+	{
 
-				break;
-			default:
-				break;
-			}
-			if (g_Enemy[i].AIFlag)
-			{
-				g_Enemy[i].BulletWait++;
-				if (g_Enemy[i].BulletWait > 120)
+
+		for (int i = 0; i < ENEMY_MAX; i++) {
+			if (g_Enemy[i].UseFlag) {
+
+				switch (g_Enemy[i].dir)
 				{
-					switch (g_Enemy[i].dir)
-					{
-					case ENEMY_DIRECTION::DIRECTION_LEFT:
-						SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), -BULLET_SPEED);
-						break;
-					case ENEMY_DIRECTION::DIRECTION_RIGHT:
-						SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), BULLET_SPEED);
+				case ENEMY_DIRECTION::DIRECTION_LEFT:
+					g_Enemy[i].uv_w = -1.0f;
+					break;
+				case ENEMY_DIRECTION::DIRECTION_RIGHT:
+					//g_Enemy[i].uv_w = 1.0f;
 
-						break;
-					default:
-						break;
-					}
-
-					
-
-					g_Enemy[i].BulletWait = 0;
-
+					break;
+				default:
+					break;
 				}
+				if (g_Enemy[i].AIFlag)
+				{
+					g_Enemy[i].BulletWait++;
+					if (g_Enemy[i].BulletWait > 120)
+					{
+						switch (g_Enemy[i].dir)
+						{
+						case ENEMY_DIRECTION::DIRECTION_LEFT:
+							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(-BULLET_SPEED, 0.0f));
+							break;
+						case ENEMY_DIRECTION::DIRECTION_RIGHT:
+							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(BULLET_SPEED, 0.0f));
+
+							break;
+						case ENEMY_DIRECTION::DIRECTION_UP:
+							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(0.0f, BULLET_SPEED));
+
+							break;
+						case ENEMY_DIRECTION::DIRECTION_DOWN:
+							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(0.0f, -BULLET_SPEED));
+
+							break;
+						default:
+							break;
+						}
+
+
+
+						g_Enemy[i].BulletWait = 0;
+
+					}
+				}
+
 			}
-			
 		}
 	}
 }
@@ -127,22 +143,57 @@ void DrawEnemy() {
 void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_DIRECTION d) {
 	for (int i = 0; i < ENEMY_MAX; i++) {
 		if (!g_Enemy[i].UseFlag) {
-			switch (direction) {
-			case 0:g_Enemy[i].rot = direction * 90;
-				break;
-			case 1:g_Enemy[i].rot = (direction + 2) * 90;
-				break;
-			case 2:g_Enemy[i].rot = direction * 90;
-				break;
-			case 3:g_Enemy[i].rot = (direction - 2) * 90;
-				break;
-			default:
-				break;
+			if (d==ENEMY_DIRECTION::DIRECTION_LEFT)
+			{
+				switch (direction) {
+				case 0:g_Enemy[i].rot = direction * 90;
+					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_RIGHT;
+
+					break;
+				case 1:g_Enemy[i].rot = (direction + 2) * 90;
+					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_DOWN;
+
+					break;
+				case 2:g_Enemy[i].rot = direction * 90;
+					g_Enemy[i].dir = d;
+					break;
+				case 3:g_Enemy[i].rot = (direction - 2) * 90;
+					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_UP;
+
+					break;
+				default:
+					break;
+				}
+
 			}
+			if (d == ENEMY_DIRECTION::DIRECTION_RIGHT)
+			{
+				switch (direction) {
+				case 0:g_Enemy[i].rot = direction * 90;
+					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_LEFT;
+
+					break;
+				case 1:g_Enemy[i].rot = (direction + 2) * 90;
+					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_UP;
+
+					break;
+				case 2:g_Enemy[i].rot = direction * 90;
+					g_Enemy[i].dir = d;
+					break;
+				case 3:g_Enemy[i].rot = (direction - 2) * 90;
+					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_DOWN;
+
+
+					break;
+				default:
+					break;
+				}
+
+			}
+
 			g_Enemy[i].pos = pos;
 			g_Enemy[i].size = size * 2.0f;
 			g_Enemy[i].index = index;
-			g_Enemy[i].dir = d;
 			
 			g_Enemy[i].UseFlag = true;
 			break;
