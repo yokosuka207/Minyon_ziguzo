@@ -1003,7 +1003,7 @@ void UpdateCollision(){
 					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x-40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 						pEnemy[i].AIFlag = true;
 					}
-					if (Keyboard_IsKeyTrigger(KK_A))
+					if (Keyboard_IsKeyTrigger(KK_B))
 					{
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 							pEnemy[i].UseFlag = false;
@@ -1012,14 +1012,43 @@ void UpdateCollision(){
 					}
 
 				}
-				else
+				else if(pEnemy[i].dir == ENEMY_DIRECTION::DIRECTION_RIGHT)
 				{
 					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 						pEnemy[i].AIFlag = true;
 					}
-					if (Keyboard_IsKeyTrigger(KK_A))
+					if (Keyboard_IsKeyTrigger(KK_B))
 					{
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
+							pEnemy[i].UseFlag = false;
+						}
+
+					}
+
+
+				}
+				else if (pEnemy[i].dir == ENEMY_DIRECTION::DIRECTION_UP)
+				{
+					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 40.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y + 80.0f), pPlayer->size)) {
+						pEnemy[i].AIFlag = true;
+					}
+					if (Keyboard_IsKeyTrigger(KK_B))
+					{
+						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y - 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
+							pEnemy[i].UseFlag = false;
+						}
+
+					}
+
+				}
+				else if(pEnemy[i].dir == ENEMY_DIRECTION::DIRECTION_DOWN)
+				{
+					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x , pEnemy[i].pos.y - 40.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y + 80.0f), pPlayer->size)) {
+						pEnemy[i].AIFlag = true;
+					}
+					if (Keyboard_IsKeyTrigger(KK_B))
+					{
+						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 							pEnemy[i].UseFlag = false;
 						}
 

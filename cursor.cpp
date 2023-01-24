@@ -502,8 +502,9 @@ void UpdateCursor()
 			pPiece[g_Cursor.PieceIndex].MoveFlag = false;
 
 			//g_Cursor.RotIndex = 0;
-			g_Cursor.pFlag = false;
 		}
+		g_Cursor.pFlag = false;
+
 		oneFlag = false;
 		g_Cursor.PieceIndex = -1;
 		NoIndex = -1;
