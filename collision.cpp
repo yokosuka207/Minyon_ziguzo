@@ -2024,16 +2024,16 @@ bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECT
 	D3DXVECTOR2	min1, min2;	//四角形の最小座標（左上）
 	D3DXVECTOR2 max1, max2;	//四角形の最大座標(右下)
 
-	//四角形１左上
+	//四角形１左下
 	min1.x = pos1.x - size1.x / 2;
 	min1.y = pos1.y - size1.y / 2;
-	//四角形１右下
+	//四角形１右上
 	max1.x = pos1.x + size1.x / 2;
 	max1.y = pos1.y + size1.y / 2;
-	//四角形２左上
+	//四角形２左下
 	min2.x = pos2.x - size2.x / 2;
 	min2.y = pos2.y - size2.y / 2;
-	//四角形２右下
+	//四角形２右上
 	max2.x = pos2.x + size2.x / 2;
 	max2.y = pos2.y + size2.y / 2;
 
