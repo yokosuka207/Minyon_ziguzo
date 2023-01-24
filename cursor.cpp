@@ -40,7 +40,7 @@
 #include"MoveBlock.h"
 #include"fallblock.h"
 #include"enemy.h"
-
+#include "JumpStandExplain.h"
 //--------------------------------------------------
 // É}ÉNÉçíËã`
 //--------------------------------------------------
@@ -142,6 +142,7 @@ void UpdateCursor()
 	HIGH* pHigh = GetHigh();
 	FALLBLOCK* pFallBlock = GetFallBlock();
 	ENEMY* pEnemy = GetEnemy();
+	EXPLAIN* pExplain = GetExplain();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	static float MouseOldPosX = GetMousePosX();
@@ -360,6 +361,13 @@ void UpdateCursor()
 						if (pStart[i].UseFlag) {
 							if (pStart[i].PieceIndex == NoIndex) {
 								pStart[i].pos += temp;
+							}
+						}
+					}
+					for (int i = 0; i < EXPLAIN_MAX; i++) {
+						if (pExplain[i].bUse) {
+							if (pExplain[i].tex == NoIndex) {
+								pExplain[i].pos += temp;
 							}
 						}
 					}

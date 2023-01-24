@@ -2422,6 +2422,8 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	MOVEBLOCK* pMoveBlock = GetMoveBlock();
 	FALLBLOCK* pFallBlock = GetFallBlock();
 	ENEMY* pEnemy = GetEnemy();
+	EXPLAIN* pExplain = GetExplain();
+
 	for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 	{
 		if (pBlock[i].UseFlag)
@@ -2633,7 +2635,13 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 		}
 
 	}
-
+	for (int i = 0; i < EXPLAIN_MAX; i++) {
+		if (pExplain[i].bUse) {
+			if (pExplain[i].tex == pinNo) {
+				pExplain[i].pos += num;
+			}
+		}
+	}
 
 }
 //--------------------------------------------

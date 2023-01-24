@@ -28,7 +28,7 @@ void UninitExplain();
 void UpdateExplain();
 void DrawExplain();
 
-void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, float rot);
+void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, int direction);
 EXPLAIN* GetExplain();
 
 void DeleteExplain(int PieceNo);
