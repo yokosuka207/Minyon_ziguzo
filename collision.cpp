@@ -1040,7 +1040,7 @@ void UpdateCollision(){
 			{
 				for (int j = 0; j < JUMPSTAND_MAX; j++) {
 					if (pJumpStand[j].UseJumpStand) {
-						if (CollisionBB(pBroken[i].Postion, pJumpStand[j].pos, pBroken[i].Size - 2, pJumpStand[j].size)) {
+						if (CollisionBB(pBroken[i].Postion, pJumpStand[j].pos, pBroken[i].Size, pJumpStand[j].size)) {
 							pJumpStand[j].pos = pJumpStand[j].oldpos;
 						}
 					}
