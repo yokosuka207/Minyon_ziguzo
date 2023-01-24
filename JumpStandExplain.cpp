@@ -55,7 +55,8 @@ void UpdateExplain()
 {
 	if (g_Explain.CollisionUse)
 	{
-		if (Keyboard_IsKeyDown(KK_B)) {
+		if (Keyboard_IsKeyDown(KK_B) ||					// keyboard B
+			IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {	// GamePad B
 			if (g_Explain.No == 0) {
 				g_Explain.HintUse = true;
 				g_Explain.No++;

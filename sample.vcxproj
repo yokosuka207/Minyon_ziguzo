@@ -197,7 +197,9 @@
     <ClCompile Include="thorn_block.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="Title.cpp" />
-    <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="tutorial.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="warp.cpp" />
     <ClCompile Include="xinput.cpp" />
     <ClCompile Include="xkeyboard.cpp" />
@@ -266,7 +268,9 @@
     <ClInclude Include="thorn_block.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="Title.h" />
-    <ClInclude Include="tutorial.h" />
+    <ClInclude Include="tutorial.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="warp.h" />
     <ClInclude Include="xinput.h" />
     <ClInclude Include="xkeyboard.h" />

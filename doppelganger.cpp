@@ -68,6 +68,8 @@ static char* g_TextureNameBroken = (char*)"data\\texture\\ドッペルゲンガー.png";
 
 static Time		g_Time;
 
+bool g_bHave = false;
+
 //=============================================================================
 //初期化処理
 //=============================================================================
@@ -107,6 +109,7 @@ HRESULT InitDoppelganger()
 	g_Doppel.CoolTime = PLAYER_COOLTIME;
 	g_Doppel.PieceIndex = 0;
 
+	g_bHave = false;
 
 	return S_OK;
 }
@@ -128,7 +131,22 @@ void UninitDoppelganger()
 void UpdateDoppelganger()
 {	
 	MOUSE* pMouse = GetMouse();
-	if (!Mouse_IsLeftDown())
+
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {		// GamePad B
+		if (!g_bHave) {
+			g_bHave = true;
+		}
+		else {
+			g_bHave = false;
+		}
+	}
+
+	if (Mouse_IsLeftRelease()) {		// moues 左
+		g_bHave = false;
+	}
+
+	if (!Mouse_IsLeftDown() &&			// mouse 左
+		!g_bHave)
 	{
 		PLAYER* pPlayer = GetPlayer();
 		//-------------------------------------------------
@@ -271,7 +289,7 @@ void UpdateDoppelganger()
 
 				for (int i = 0; i < SHEERFLOORS_NUM; i++)
 				{
-					if (!GetThumbLeftY(0) < 0.3f ||					// GamePad	左スティック	下
+					if (!GetThumbLeftY(0) < -0.3f ||				// GamePad	左スティック	下
 						!Keyboard_IsKeyDown(KK_DOWN))				// Keyboard	下
 					{
 						// 反プレイヤーの下にブロックがあったら
@@ -393,7 +411,7 @@ void UpdateDoppelganger()
 
 				for (int i = 0; i < JUMPSTAND_MAX; i++) {
 					if (p_JumpStand[i].UseJumpStand) {
-						if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
+						if (IsButtonPressed(0, XINPUT_GAMEPAD_B) ||			// GamePad	B
 							Keyboard_IsKeyDown(KK_B))						// Keyboard	B
 						{
 							if (CollisionBB(g_Doppel.Position, p_JumpStand[i].pos, g_Doppel.size, p_JumpStand[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
