@@ -70,11 +70,10 @@ enum class MAPCHIP_TYPE{
 	TYPE_MOVEEXPLAIN,		//32	棘の上にブロックおけるよヒントブロック
 	TYPE_SHEEREXPLAIN,		//33	ブロックすけるよヒントブロック
 	TYPE_STORYKEY,		//34	ストーリーキー
-	TYPE_EXPLAIN,		//26	ヒントブロック
-	TYPE_STORYKEY,		//27	ストーリーキー
-	TYPE_LAMP,			//28	街灯
-	TYPE_LAMP_SWITCH,	//29	街灯スイッチ
-	TYPE_SPWANPOINT_D,	//30	ドッペルゲンガーのスポーンポイント
+	TYPE_EXPLAIN,		//35	ヒントブロック
+	TYPE_LAMP,			//36	街灯
+	TYPE_LAMP_SWITCH,	//37	街灯スイッチ
+	TYPE_SPWANPOINT_D,	//38	ドッペルゲンガーのスポーンポイント
 
 	TYPE_NUM		
 };

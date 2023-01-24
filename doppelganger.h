@@ -55,6 +55,7 @@ struct DOPPELGANGER
 	D3DXVECTOR2 Drawsize;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
 	D3DXVECTOR2 oldpos;//1フレーム前の座標
+	D3DXVECTOR2 OneOldpos;
 	//D3DXVECTOR2 OneOldpos;//1フレーム前の座標
 
 	D3DXVECTOR2 sp;

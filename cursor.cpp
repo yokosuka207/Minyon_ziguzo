@@ -238,7 +238,7 @@ void UpdateCursor()
 					{
 						g_Cursor.dFlag = true;
 
-						pDoppel->oldpos = pDoppel->Position;
+						pDoppel->OneOldpos = pDoppel->Position;
 					}
 
 					g_Cursor.RotIndex = 0;
@@ -269,15 +269,6 @@ void UpdateCursor()
 					//pPiece[g_Cursor.PieceIndex].MoveFlag = true;
 					D3DXVECTOR2 temp = (pPiece[g_Cursor.PieceIndex].pos - pPiece[g_Cursor.PieceIndex].OldPos);
 
-
-					if (pDoppel->UseFlag)
-					{
-						if (pDoppel->PieceIndex == NoIndex)
-						{
-							//pDoppel->Position += temp;
-						}
-
-					}
 
 					for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 					{//ƒuƒƒbƒN“®‚©‚·
@@ -496,8 +487,6 @@ void UpdateCursor()
 							}
 						}
 					}
-						}
-					}
 					for (int i = 0; i < LAMP_MAX; i++)
 					{
 						if (pLamp[i].UseFlag)
@@ -544,15 +533,18 @@ void UpdateCursor()
 							g_Cursor.RotIndex--;
 						}
 					}
-					if(g_Cursor.pFlag)
+					else
 					{
-						pPlayer->Position += temp;
-						pPlayer->oldpos = pPlayer->Position;
-					}
-					if(g_Cursor.dFlag)
-					{
-						pDoppel->Position += temp;
-						pDoppel->oldpos = pDoppel->Position;
+						if (g_Cursor.pFlag)
+						{
+							pPlayer->Position += temp;
+							pPlayer->oldpos = pPlayer->Position;
+						}
+						if (g_Cursor.dFlag)
+						{
+							pDoppel->Position += temp;
+							pDoppel->oldpos = pDoppel->Position;
+						}
 					}
 					//if (!g_Cursor.pFlag)
 					//{
@@ -596,6 +588,7 @@ void UpdateCursor()
 			//g_Cursor.RotIndex = 0;
 		}
 		g_Cursor.pFlag = false;
+		g_Cursor.dFlag = false;
 
 		oneFlag = false;
 		g_Cursor.PieceIndex = -1;

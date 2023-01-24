@@ -117,7 +117,7 @@ HRESULT InitDoppelganger()
 	Piece* pPiece = GetPiece();
 
 	g_Doppel.Position = D3DXVECTOR2(pPiece->pos.x - 30.0f, pPiece->pos.y);
-	//g_Doppel.OneOldpos = g_Doppel.oldpos = g_Doppel.Position;
+	g_Doppel.OneOldpos = g_Doppel.oldpos = g_Doppel.Position;
 	g_Doppel.sp = D3DXVECTOR2(0.0f, -8.0f);
 	g_Doppel.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
 	g_Doppel.Drawsize = D3DXVECTOR2(33.0f, 33.0f);

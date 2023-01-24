@@ -91,8 +91,8 @@ static char* g_MapChipTextureName[PIECE_TEX_MAX] = {
 static int g_MapChipTextureNo[PIECE_TEX_MAX];
 // ステージ情報が入っているファイルの名前
 static char* g_StageFileName[21] = {
-	(char*)"data/MapData/map.txt",			// デバッグ用マップ
-	//(char*)"data/MapData/Stage01.txt",
+	//(char*)"data/MapData/map.txt",			// デバッグ用マップ
+	(char*)"data/MapData/Stage01.txt",
 	(char*)"data/MapData/Stage02.txt",
 	(char*)"data/MapData/Stage03.txt",
 	(char*)"data/MapData/Stage04.txt",
