@@ -2510,7 +2510,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	{
 		if (pMoveBlock[i].bUse)
 		{
-			if (pMoveBlock[i].PieceIndex == pinNo)
+			if (pMoveBlock[i].NowPieceIndex == pinNo)
 			{
 				pMoveBlock[i].pos += num;
 			}
@@ -3249,7 +3249,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[j].pieNo == piece.no)
 			{
-				if (pJoint[j].pos.y < piece.pos.y - piece.size.y / 3)
+				if (pJoint[j].pos.y > piece.pos.y + piece.size.y / 3)
 				{
 					return false;
 				}
@@ -3289,7 +3289,7 @@ bool fourNomalPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[j].pieNo == piece.no)
 			{
-				if (pJoint[j].pos.y > piece.pos.y + piece.size.y / 3)
+				if (pJoint[j].pos.y < piece.pos.y - piece.size.y / 3)
 				{
 					return false;
 				}

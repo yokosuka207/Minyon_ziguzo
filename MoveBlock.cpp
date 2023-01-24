@@ -10,6 +10,7 @@
 #include "puzzle.h"
 #include "MapChip.h"
 #include "sound.h"
+#include"cursor.h"
 
 static MOVEBLOCK gMoveBlock[MOVE_BLOCK_MAX];
 
@@ -38,6 +39,7 @@ HRESULT InitMoveBlock()
 		gMoveBlock[i].size = D3DXVECTOR2(MOVE_BLOCK_SIZE, MOVE_BLOCK_SIZE);
 
 		gMoveBlock[i].PieceIndex = -1;
+		gMoveBlock[i].NowPieceIndex = -1;
 
 		gMoveBlock[i].bUse = false;
 
@@ -65,144 +67,149 @@ void UninitMoveBlock()
 void UpdateMoveBlock()
 {
 	p_Player = GetPlayer();
-
-	for (int i = 0; i < MOVE_BLOCK_MAX; i++)
+	CURSOR* pCursor = GetCurso();
+	if (!pCursor->bHave)
 	{
-		if (gMoveBlock[i].bUse)
+
+
+		for (int i = 0; i < MOVE_BLOCK_MAX; i++)
 		{
-			gMoveBlock[i].oldoldpos = gMoveBlock[i].oldpos;
-			gMoveBlock[i].oldpos = gMoveBlock[i].pos;
-
-
-			////動くブロック右・プレイヤー左
-			//if (p_Player->Position.x + p_Player->size.x / 2 > gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 &&
-			//	p_Player->oldpos.x + p_Player->size.x / 2 <= gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 &&
-			//	p_Player->Position.y + p_Player->size.y / 2 > gMoveBlock[i].pos.y - gMoveBlock[i].size.y / 2 &&
-			//	p_Player->Position.y - p_Player->size.y / 2 < gMoveBlock[i].pos.y + gMoveBlock[i].size.y / 2)
-			//{
-			//	p_Player->Position.x = gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 - p_Player->size.x / 2;
-			//}
-			////プレイヤー右・動くブロック左
-			//if (p_Player->Position.x - p_Player->size.x / 2 < gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 &&
-			//	p_Player->oldpos.x - p_Player->size.x / 2 >= gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 &&
-			//	p_Player->Position.y + p_Player->size.y / 2 > gMoveBlock[i].pos.y - gMoveBlock[i].size.y / 2 &&
-			//	p_Player->Position.y - p_Player->size.y / 2 < gMoveBlock[i].pos.y + gMoveBlock[i].size.y / 2)
-			//{
-			//	p_Player->Position.x = gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 + p_Player->size.x / 2;
-			//}
-
-
-			//プレイヤーが持ってるときの判定
-			if (gMoveBlock[i].GetMoveBlock)
+			if (gMoveBlock[i].bUse)
 			{
-				gMoveBlock[i].sp = p_Player->sp;
-				gMoveBlock[i].pos.x += gMoveBlock[i].sp.x;
+				gMoveBlock[i].oldoldpos = gMoveBlock[i].oldpos;
+				gMoveBlock[i].oldpos = gMoveBlock[i].pos;
 
-				//引きずる音
-				if (gMoveBlock[i].oldpos.x != gMoveBlock[i].pos.x && gMoveBlock[i].MoveBlockNotMove == true)//動かした瞬間
+
+				////動くブロック右・プレイヤー左
+				//if (p_Player->Position.x + p_Player->size.x / 2 > gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 &&
+				//	p_Player->oldpos.x + p_Player->size.x / 2 <= gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 &&
+				//	p_Player->Position.y + p_Player->size.y / 2 > gMoveBlock[i].pos.y - gMoveBlock[i].size.y / 2 &&
+				//	p_Player->Position.y - p_Player->size.y / 2 < gMoveBlock[i].pos.y + gMoveBlock[i].size.y / 2)
+				//{
+				//	p_Player->Position.x = gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 - p_Player->size.x / 2;
+				//}
+				////プレイヤー右・動くブロック左
+				//if (p_Player->Position.x - p_Player->size.x / 2 < gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 &&
+				//	p_Player->oldpos.x - p_Player->size.x / 2 >= gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 &&
+				//	p_Player->Position.y + p_Player->size.y / 2 > gMoveBlock[i].pos.y - gMoveBlock[i].size.y / 2 &&
+				//	p_Player->Position.y - p_Player->size.y / 2 < gMoveBlock[i].pos.y + gMoveBlock[i].size.y / 2)
+				//{
+				//	p_Player->Position.x = gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 + p_Player->size.x / 2;
+				//}
+
+
+				//プレイヤーが持ってるときの判定
+				if (gMoveBlock[i].GetMoveBlock)
 				{
-					//SetVolume(g_MoveBlockMoveSoundNo, 0.5f);
-					PlaySound(g_MoveBlockMoveSoundNo, -1);
-					gMoveBlock[i].MoveBlockNotMove = false;
-				}
-			}
-			if (gMoveBlock[i].oldpos.x == gMoveBlock[i].pos.x && gMoveBlock[i].MoveBlockNotMove == false)//動かしてない時
-			{
-				gMoveBlock[i].MoveBlockNotMove = true;
-				StopSound(g_MoveBlockMoveSoundNo);
-			}
+					gMoveBlock[i].sp = p_Player->sp;
+					gMoveBlock[i].pos.x += gMoveBlock[i].sp.x;
 
-				
+					//引きずる音
+					if (gMoveBlock[i].oldpos.x != gMoveBlock[i].pos.x && gMoveBlock[i].MoveBlockNotMove == true)//動かした瞬間
+					{
+						//SetVolume(g_MoveBlockMoveSoundNo, 0.5f);
+						PlaySound(g_MoveBlockMoveSoundNo, -1);
+						gMoveBlock[i].MoveBlockNotMove = false;
+					}
+				}
+				if (gMoveBlock[i].oldpos.x == gMoveBlock[i].pos.x && gMoveBlock[i].MoveBlockNotMove == false)//動かしてない時
+				{
+					gMoveBlock[i].MoveBlockNotMove = true;
+					StopSound(g_MoveBlockMoveSoundNo);
+				}
+
+
 				gMoveBlock[i].pos.y--;
 
-			
 
-			//ブロックとの当たり判定
 
-			cipblock = GetChipBlock();
+				//ブロックとの当たり判定
 
-			for (int j = 0; j < BLOCK_CHIP_MAX; j++)
-			{
-				if ((cipblock + j)->UseFlag)
+				cipblock = GetChipBlock();
+
+				for (int j = 0; j < BLOCK_CHIP_MAX; j++)
 				{
-					//if (gMoveBlock[i].pos.x    + gMoveBlock[i].size.x / 2 > (p_Block + j)->Position.x   - (p_Block + j)->Size.x / 2 &&
-					//	gMoveBlock[i].pos.x    - gMoveBlock[i].size.x / 2 < (p_Block + j)->Position.x   + (p_Block + j)->Size.x / 2 &&
-					//	gMoveBlock[i].pos.y    + gMoveBlock[i].size.y / 2 > (p_Block + j)->Position.y   - (p_Block + j)->Size.y / 2 &&
-					//	gMoveBlock[i].oldpos.y + gMoveBlock[i].size.y / 2 <= (p_Block + j)->Position.y  - (p_Block + j)->Size.y / 2)
-					//{
-					//	gMoveBlock[i].pos.y = gMoveBlock[i].oldpos.y;
-					//}
-					//if (gMoveBlock[i].pos.x    + gMoveBlock[i].size.x / 2 > (p_Block + j)->Position.x  - (p_Block + j)->Size.x / 2 &&
-					//	gMoveBlock[i].oldpos.x + gMoveBlock[i].size.x / 2 <= (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
-					//	gMoveBlock[i].pos.y    + gMoveBlock[i].size.y / 2 > (p_Block + j)->Position.y  - (p_Block + j)->Size.y / 2 &&
-					//	gMoveBlock[i].pos.y    - gMoveBlock[i].size.y / 2 < (p_Block + j)->Position.y  + (p_Block + j)->Size.y / 2)
-					//{
-					//	gMoveBlock[i].pos.x = gMoveBlock[i].oldpos.x;
-					//}
-					//if (gMoveBlock[i].pos.x    - gMoveBlock[i].size.x / 2 < (p_Block + j)->Position.x  + (p_Block + j)->Size.x / 2 &&
-					//	gMoveBlock[i].oldpos.x - gMoveBlock[i].size.x / 2 >= (p_Block + j)->Position.x + (p_Block + j)->Size.x / 2 &&
-					//	gMoveBlock[i].pos.y    + gMoveBlock[i].size.y / 2 > (p_Block + j)->Position.y  - (p_Block + j)->Size.y / 2 &&
-					//	gMoveBlock[i].pos.y    - gMoveBlock[i].size.y / 2 < (p_Block + j)->Position.y  + (p_Block + j)->Size.y / 2)
-					//{
-					//	gMoveBlock[i].pos.x = gMoveBlock[i].oldpos.x;
-					//}
-					////プレイヤー下・トゲブロック上,
-					//if (gMoveBlock[i].pos.x    + gMoveBlock[i].size.x / 2 > (p_Block + j)->Position.x   - (p_Block + j)->Size.x / 2 &&
-					//	gMoveBlock[i].pos.x    - gMoveBlock[i].size.x / 2 < (p_Block + j)->Position.x   + (p_Block + j)->Size.x / 2 &&
-					//	gMoveBlock[i].pos.y    - gMoveBlock[i].size.y / 2 < (p_Block + j)->Position.y   + (p_Block + j)->Size.y / 2 &&
-					//	gMoveBlock[i].oldpos.y - gMoveBlock[i].size.y / 2 >= (p_Block + j)->Position.y  + (p_Block + j)->Size.y / 2)
-					//{
-					//	gMoveBlock[i].pos.y = gMoveBlock[i].oldpos.y;
-					//}
+					if ((cipblock + j)->UseFlag)
+					{
+						//if (gMoveBlock[i].pos.x    + gMoveBlock[i].size.x / 2 > (p_Block + j)->Position.x   - (p_Block + j)->Size.x / 2 &&
+						//	gMoveBlock[i].pos.x    - gMoveBlock[i].size.x / 2 < (p_Block + j)->Position.x   + (p_Block + j)->Size.x / 2 &&
+						//	gMoveBlock[i].pos.y    + gMoveBlock[i].size.y / 2 > (p_Block + j)->Position.y   - (p_Block + j)->Size.y / 2 &&
+						//	gMoveBlock[i].oldpos.y + gMoveBlock[i].size.y / 2 <= (p_Block + j)->Position.y  - (p_Block + j)->Size.y / 2)
+						//{
+						//	gMoveBlock[i].pos.y = gMoveBlock[i].oldpos.y;
+						//}
+						//if (gMoveBlock[i].pos.x    + gMoveBlock[i].size.x / 2 > (p_Block + j)->Position.x  - (p_Block + j)->Size.x / 2 &&
+						//	gMoveBlock[i].oldpos.x + gMoveBlock[i].size.x / 2 <= (p_Block + j)->Position.x - (p_Block + j)->Size.x / 2 &&
+						//	gMoveBlock[i].pos.y    + gMoveBlock[i].size.y / 2 > (p_Block + j)->Position.y  - (p_Block + j)->Size.y / 2 &&
+						//	gMoveBlock[i].pos.y    - gMoveBlock[i].size.y / 2 < (p_Block + j)->Position.y  + (p_Block + j)->Size.y / 2)
+						//{
+						//	gMoveBlock[i].pos.x = gMoveBlock[i].oldpos.x;
+						//}
+						//if (gMoveBlock[i].pos.x    - gMoveBlock[i].size.x / 2 < (p_Block + j)->Position.x  + (p_Block + j)->Size.x / 2 &&
+						//	gMoveBlock[i].oldpos.x - gMoveBlock[i].size.x / 2 >= (p_Block + j)->Position.x + (p_Block + j)->Size.x / 2 &&
+						//	gMoveBlock[i].pos.y    + gMoveBlock[i].size.y / 2 > (p_Block + j)->Position.y  - (p_Block + j)->Size.y / 2 &&
+						//	gMoveBlock[i].pos.y    - gMoveBlock[i].size.y / 2 < (p_Block + j)->Position.y  + (p_Block + j)->Size.y / 2)
+						//{
+						//	gMoveBlock[i].pos.x = gMoveBlock[i].oldpos.x;
+						//}
+						////プレイヤー下・トゲブロック上,
+						//if (gMoveBlock[i].pos.x    + gMoveBlock[i].size.x / 2 > (p_Block + j)->Position.x   - (p_Block + j)->Size.x / 2 &&
+						//	gMoveBlock[i].pos.x    - gMoveBlock[i].size.x / 2 < (p_Block + j)->Position.x   + (p_Block + j)->Size.x / 2 &&
+						//	gMoveBlock[i].pos.y    - gMoveBlock[i].size.y / 2 < (p_Block + j)->Position.y   + (p_Block + j)->Size.y / 2 &&
+						//	gMoveBlock[i].oldpos.y - gMoveBlock[i].size.y / 2 >= (p_Block + j)->Position.y  + (p_Block + j)->Size.y / 2)
+						//{
+						//	gMoveBlock[i].pos.y = gMoveBlock[i].oldpos.y;
+						//}
 
-					//動くブロック左・ブロック右
-					if (gMoveBlock[i].pos.x	   + gMoveBlock[i].size.x / 2 > (cipblock + j)->Position.x  - (cipblock + j)->Size.x / 3 &&
-						gMoveBlock[i].oldpos.x + gMoveBlock[i].size.x / 2 <= (cipblock + j)->Position.x - (cipblock + j)->Size.x / 3 &&
-						gMoveBlock[i].pos.y	   + gMoveBlock[i].size.y / 2 > (cipblock + j)->Position.y  - (cipblock + j)->Size.y / 3 &&
-						gMoveBlock[i].pos.y	   - gMoveBlock[i].size.y / 2 < (cipblock + j)->Position.y  + (cipblock + j)->Size.y / 3)
-					{
-						gMoveBlock[i].pos.x = (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 - gMoveBlock[i].size.x / 2;
-
-					}
-					//動くブロック右・ブロック左
-					if (gMoveBlock[i].pos.x	   - gMoveBlock[i].size.x / 2 < (cipblock + j)->Position.x + (cipblock + j)->Size.x / 3 &&
-						gMoveBlock[i].oldpos.x - gMoveBlock[i].size.x / 2 >= (cipblock + j)->Position.x + (cipblock + j)->Size.x / 3 &&
-						gMoveBlock[i].pos.y    + gMoveBlock[i].size.y / 3 > (cipblock + j)->Position.y - (cipblock + j)->Size.y / 3 &&
-						gMoveBlock[i].pos.y    - gMoveBlock[i].size.y / 3 < (cipblock + j)->Position.y + (cipblock + j)->Size.y / 3)
-					{
-						gMoveBlock[i].pos.x = (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 + gMoveBlock[i].size.x / 2;
-					}
-					//動くブロック上・ブロック下,着地する
-					if (gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 > (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 &&
-						gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 < (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 &&
-						gMoveBlock[i].pos.y + gMoveBlock[i].size.y / 2 > (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 &&
-						gMoveBlock[i].oldpos.y + gMoveBlock[i].size.y / 2 <= (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2)
-					{
-						gMoveBlock[i].pos.y = (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 - gMoveBlock[i].size.y / 2;
-						
-						//着地した瞬間だけ音が鳴る
-						if (gMoveBlock[i].oldoldpos.y != gMoveBlock[i].pos.y)
+						//動くブロック左・ブロック右
+						if (gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 > (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 &&
+							gMoveBlock[i].oldpos.x + gMoveBlock[i].size.x / 2 <= (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 &&
+							gMoveBlock[i].pos.y + gMoveBlock[i].size.y / 2 > (cipblock + j)->Position.y - (cipblock + j)->Size.y / 3 &&
+							gMoveBlock[i].pos.y - gMoveBlock[i].size.y / 2 < (cipblock + j)->Position.y + (cipblock + j)->Size.y / 3)
 						{
-							//SetVolume(g_MoveBolckLandingSoundNo, 0.5f);
-							//PlaySound(g_MoveBolckLandingSoundNo, 0);
-						}
-					}
-					//動くブロック下・ブロック上,落下する
-					if (gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 > (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 &&
-						gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 < (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 &&
-						gMoveBlock[i].pos.y - gMoveBlock[i].size.y / 2 < (cipblock + j)->Position.y + (cipblock + j)->Size.y / 2 &&
-						gMoveBlock[i].oldpos.y - gMoveBlock[i].size.y / 2 >= (cipblock + j)->Position.y + (cipblock + j)->Size.y / 2)
-					{
-						gMoveBlock[i].pos.y = (cipblock + j)->Position.y + (cipblock + j)->Size.y / 2 + gMoveBlock[i].size.y / 2;
-					}
+							gMoveBlock[i].pos.x = (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 - gMoveBlock[i].size.x / 2;
 
+						}
+						//動くブロック右・ブロック左
+						if (gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 < (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 &&
+							gMoveBlock[i].oldpos.x - gMoveBlock[i].size.x / 2 >= (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 &&
+							gMoveBlock[i].pos.y + gMoveBlock[i].size.y / 2 > (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 &&
+							gMoveBlock[i].pos.y - gMoveBlock[i].size.y / 2 < (cipblock + j)->Position.y + (cipblock + j)->Size.y / 2)
+						{
+							gMoveBlock[i].pos.x = (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 + gMoveBlock[i].size.x / 2;
+						}
+						//動くブロック上・ブロック下,着地する
+						if (gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 > (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 &&
+							gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 < (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 &&
+							gMoveBlock[i].pos.y + gMoveBlock[i].size.y / 2 > (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 &&
+							gMoveBlock[i].oldpos.y + gMoveBlock[i].size.y / 2 <= (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2)
+						{
+							gMoveBlock[i].pos.y = (cipblock + j)->Position.y - (cipblock + j)->Size.y / 2 - gMoveBlock[i].size.y / 2;
+
+							//着地した瞬間だけ音が鳴る
+							if (gMoveBlock[i].oldoldpos.y != gMoveBlock[i].pos.y)
+							{
+								//SetVolume(g_MoveBolckLandingSoundNo, 0.5f);
+								//PlaySound(g_MoveBolckLandingSoundNo, 0);
+							}
+						}
+						//動くブロック下・ブロック上,落下する
+						if (gMoveBlock[i].pos.x + gMoveBlock[i].size.x / 2 > (cipblock + j)->Position.x - (cipblock + j)->Size.x / 2 &&
+							gMoveBlock[i].pos.x - gMoveBlock[i].size.x / 2 < (cipblock + j)->Position.x + (cipblock + j)->Size.x / 2 &&
+							gMoveBlock[i].pos.y - gMoveBlock[i].size.y / 2 < (cipblock + j)->Position.y + (cipblock + j)->Size.y / 2 &&
+							gMoveBlock[i].oldpos.y - gMoveBlock[i].size.y / 2 >= (cipblock + j)->Position.y + (cipblock + j)->Size.y / 2)
+						{
+							gMoveBlock[i].pos.y = (cipblock + j)->Position.y + (cipblock + j)->Size.y / 2 + gMoveBlock[i].size.y / 2;
+							gMoveBlock[i].NowPieceIndex = cipblock[j].PieceIndex;
+						}
+
+					}
 				}
+
 			}
 
 		}
-
 	}
-	
 }
 
 void DrawMoveBlock()
