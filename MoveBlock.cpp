@@ -213,7 +213,7 @@ void DrawMoveBlock()
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TextureNo));
 
 			SpriteDrawColorRotation(gMoveBlock[i].pos.x, gMoveBlock[i].pos.y,-0.1f,
-				gMoveBlock[i].size.x, gMoveBlock[i].size.y, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),
+				gMoveBlock[i].size.x, gMoveBlock[i].size.y, 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 				0, 1.0f, 1.0f, 1);
 		}
 	}
