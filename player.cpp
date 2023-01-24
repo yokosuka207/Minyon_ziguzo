@@ -98,6 +98,7 @@ HRESULT InitPlayer()
 	g_Player.isSheerFloorsUse = false;
 	//g_Player.isHigh = false;
 	g_Player.isMoveBlock = false;
+	g_Player.isBrokenBlock = false;
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
 	g_Player.PaternNo = 0;//パターン番号
@@ -367,7 +368,7 @@ void UpdatePlayer()
 			}
 
 			// ジャンプ
-			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock) && g_Player.sp.y <= 0 && (Keyboard_IsKeyDown(KK_SPACE)|| IsButtonPressed(0, XINPUT_GAMEPAD_A)))
+			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock||g_Player.isBrokenBlock) && g_Player.sp.y <= 0 && (Keyboard_IsKeyDown(KK_SPACE)|| IsButtonPressed(0, XINPUT_GAMEPAD_A)))
 			{
 
 				g_Player.sp.y = 2.8f;			// スピードのyをマイナスにする
@@ -390,7 +391,7 @@ void UpdatePlayer()
 			}
 
 			// 空中
-			if (!g_Player.isGround && !g_Player.isHigh && !g_Player.isSheerFloors && !g_Player.isMoveBlock) {
+			if (!g_Player.isGround && !g_Player.isHigh && !g_Player.isSheerFloors && !g_Player.isMoveBlock&&!g_Player.isBrokenBlock) {
 				g_Player.sp.y -= 0.1f;			// スピードのyを増やす
 			}
 	

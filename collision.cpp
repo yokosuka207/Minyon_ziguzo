@@ -585,13 +585,14 @@ void UpdateCollision(){
 		//========================================================================
 		//プレイヤー・壊れるブロック　当たり判定(PlayerとBrokenBlockの当たり判定)
 		//=========================================================================
+		bool BrokenFlag = false;
 		for (int i = 0; i < BROKEN_MAX; i++) {
 			if ((pBroken + i)->UseFlag) {
 				//プレイヤー左・壊れるブロック右
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
 					pPlayer->oldpos.x + pPlayer->size.x / 2 <= (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
-					pPlayer->Position.y + pPlayer->size.y / 2 > (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2 &&
-					pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2)
+					pPlayer->Position.y + pPlayer->size.y / 2 > (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 3 &&
+					pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 3)
 				{
 					pPlayer->Position.x = (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 - pPlayer->size.x / 2;
 				}
@@ -613,6 +614,14 @@ void UpdateCollision(){
 					pPlayer->jump = false;
 					pPlayer->fall = false;
 					pPlayer->frame = 0;
+					pPlayer->isBrokenBlock = true;
+					pPlayer->sp.y = -0.2f;
+					BrokenFlag = true;
+				}
+				else if(!BrokenFlag)
+				{
+					pPlayer->isBrokenBlock = false;
+
 				}
 				//プレイヤー下・壊れるブロック上,壊れる
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
@@ -726,9 +735,9 @@ void UpdateCollision(){
 					pPlayer->jump = false;
 					pPlayer->fall = false;
 					pPlayer->frame = 50;
-					pPlayer->isHigh = true;
+					pPlayer->sp.y = -2.0f;
 					(pFallBlock + i)->oldpos = (pFallBlock + i)->Position;
-					(pFallBlock + i)->Position.y--;
+					(pFallBlock + i)->Position.y -= 3.0f;
 
 				}
 
