@@ -23,7 +23,7 @@
 #include "scene.h"
 #include "goal.h"
 #include "start.h"
-
+#include"xkeyboard.h"
 #include "button.h"
 #include "time.h"
 #include "spawnpoint.h"
@@ -48,7 +48,7 @@
 #include "goal_key.h"		//ゴール専用鍵
 #include "StoryKey.h"		//ストーリー用鍵
 #include "bullet.h"			//ドッペルゲンガー発射弾
-#include "doppelganger.h"   //ドッペルゲンガー
+//#include "doppelganger.h"   //ドッペルゲンガー
 #include "enemy.h"			//エネミー
 
 #include "JumpStandExplain.h"		
@@ -585,13 +585,14 @@ void UpdateCollision(){
 		//========================================================================
 		//プレイヤー・壊れるブロック　当たり判定(PlayerとBrokenBlockの当たり判定)
 		//=========================================================================
+		bool BrokenFlag = false;
 		for (int i = 0; i < BROKEN_MAX; i++) {
 			if ((pBroken + i)->UseFlag) {
 				//プレイヤー左・壊れるブロック右
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
 					pPlayer->oldpos.x + pPlayer->size.x / 2 <= (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
-					pPlayer->Position.y + pPlayer->size.y / 2 > (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2 &&
-					pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2)
+					pPlayer->Position.y + pPlayer->size.y / 2 > (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 3 &&
+					pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 3)
 				{
 					pPlayer->Position.x = (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 - pPlayer->size.x / 2;
 				}
@@ -613,6 +614,14 @@ void UpdateCollision(){
 					pPlayer->jump = false;
 					pPlayer->fall = false;
 					pPlayer->frame = 0;
+					pPlayer->isBrokenBlock = true;
+					pPlayer->sp.y = -0.2f;
+					BrokenFlag = true;
+				}
+				else if(!BrokenFlag)
+				{
+					pPlayer->isBrokenBlock = false;
+
 				}
 				//プレイヤー下・壊れるブロック上,壊れる
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
@@ -688,6 +697,7 @@ void UpdateCollision(){
 		//====================================================================
 		//プレイヤーと落ちるブロックの当たり判定(PlayerとFallBlockの当たり判定)
 		//====================================================================
+		bool FallFlag = false;
 		for (int i = 0; i < FALLBLOCK_MAX; i++) {
 			if ((pFallBlock + i)->UseFlag) {
 				//プレイヤー左・ブロック右判定
@@ -726,9 +736,16 @@ void UpdateCollision(){
 					pPlayer->jump = false;
 					pPlayer->fall = false;
 					pPlayer->frame = 50;
-					pPlayer->isHigh = true;
+					pPlayer->sp.y = -0.4f;
+					pPlayer->isFallBlock = true;
 					(pFallBlock + i)->oldpos = (pFallBlock + i)->Position;
-					(pFallBlock + i)->Position.y--;
+					(pFallBlock + i)->Position.y -= 3.0f;
+					FallFlag = true;
+
+				}
+				else if(!FallFlag)
+				{
+					pPlayer->isFallBlock = false;
 
 				}
 
@@ -986,7 +1003,13 @@ void UpdateCollision(){
 					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x-40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 						pEnemy[i].AIFlag = true;
 					}
+					if (Keyboard_IsKeyTrigger(KK_A))
+					{
+						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
+							pEnemy[i].UseFlag = false;
+						}
 
+					}
 
 				}
 				else
@@ -994,6 +1017,14 @@ void UpdateCollision(){
 					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 						pEnemy[i].AIFlag = true;
 					}
+					if (Keyboard_IsKeyTrigger(KK_A))
+					{
+						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
+							pEnemy[i].UseFlag = false;
+						}
+
+					}
+
 
 				}
 			}
@@ -1155,7 +1186,6 @@ void UpdateCollision(){
 	//		}
 	//	}
 	//}
-	
 }
 //----------------------------------------------------------------------------------------------------------
 
@@ -2024,16 +2054,16 @@ bool CollisionBB(D3DXVECTOR2 pos1, D3DXVECTOR2 pos2, D3DXVECTOR2 size1, D3DXVECT
 	D3DXVECTOR2	min1, min2;	//四角形の最小座標（左上）
 	D3DXVECTOR2 max1, max2;	//四角形の最大座標(右下)
 
-	//四角形１左上
+	//四角形１左下
 	min1.x = pos1.x - size1.x / 2;
 	min1.y = pos1.y - size1.y / 2;
-	//四角形１右下
+	//四角形１右上
 	max1.x = pos1.x + size1.x / 2;
 	max1.y = pos1.y + size1.y / 2;
-	//四角形２左上
+	//四角形２左下
 	min2.x = pos2.x - size2.x / 2;
 	min2.y = pos2.y - size2.y / 2;
-	//四角形２右下
+	//四角形２右上
 	max2.x = pos2.x + size2.x / 2;
 	max2.y = pos2.y + size2.y / 2;
 
