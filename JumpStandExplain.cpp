@@ -17,35 +17,35 @@ static int	  g_ExplainBlockNo = 0;
 
 // Piace ƒqƒ“ƒg
 static ID3D11ShaderResourceView* g_PiaceExplain;
-static char* g_PiaceExplainName = (char*)"data\\texture\\ƒqƒ“ƒg.jpg";
+static char* g_PiaceExplainName = (char*)"data\\texture\\PiaceExplain.png";
 static int	  g_PiaceExplainNo = 0;
 // Piace2 ƒqƒ“ƒg
 static ID3D11ShaderResourceView* g_Piace2Explain;
-static char* g_Piace2ExplainName = (char*)"data\\texture\\ƒqƒ“ƒg.jpg";
+static char* g_Piace2ExplainName = (char*)"data\\texture\\Piace2Explain.png";
 static int	  g_Piace2ExplainNo = 0;
 // Piace3 ƒqƒ“ƒg
 static ID3D11ShaderResourceView* g_Piace3Explain;
-static char* g_Piace3ExplainName = (char*)"data\\texture\\ƒqƒ“ƒg.jpg";
+static char* g_Piace3ExplainName = (char*)"data\\texture\\Piace3Explain.png";
 static int	  g_Piace3ExplainNo = 0;
 // Block ƒqƒ“ƒg
 static ID3D11ShaderResourceView* g_BlockExplain;
-static char* g_BlockExplainName = (char*)"data\\texture\\ƒqƒ“ƒg.jpg";
+static char* g_BlockExplainName = (char*)"data\\texture\\BlockExplain.png";
 static int	  g_BlockExplainNo = 0;
 // Enemy ƒqƒ“ƒg
 static ID3D11ShaderResourceView* g_EnemyExplain;
-static char* g_EnemyExplainName = (char*)"data\\texture\\ƒqƒ“ƒg.jpg";
+static char* g_EnemyExplainName = (char*)"data\\texture\\EnemyExplain.png";
 static int	  g_EnemyExplainNo = 0;
 // BrokenBlock ƒqƒ“ƒg
 static ID3D11ShaderResourceView* g_BrokenExplain;
-static char* g_BrokenExplainName = (char*)"data\\texture\\ƒqƒ“ƒg.jpg";
+static char* g_BrokenExplainName = (char*)"data\\texture\\BrokenExplain.png";
 static int	  g_BrokenExplainNo = 0;
 // MoveBlock ƒqƒ“ƒg
 static ID3D11ShaderResourceView* g_MoveExplain;
-static char* g_MoveExplainName = (char*)"data\\texture\\ƒqƒ“ƒg.jpg";
+static char* g_MoveExplainName = (char*)"data\\texture\\MoveExplain.png";
 static int	  g_MoveExplainNo = 0;
 // SheerBlock ƒqƒ“ƒg
 static ID3D11ShaderResourceView* g_SheerExplain;
-static char* g_SheerExplainName = (char*)"data\\texture\\ƒqƒ“ƒg.jpg";
+static char* g_SheerExplainName = (char*)"data\\texture\\SheerExplain.png";
 static int	  g_SheerExplainNo = 0;
 
 
