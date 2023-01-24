@@ -697,6 +697,7 @@ void UpdateCollision(){
 		//====================================================================
 		//プレイヤーと落ちるブロックの当たり判定(PlayerとFallBlockの当たり判定)
 		//====================================================================
+		bool FallFlag = false;
 		for (int i = 0; i < FALLBLOCK_MAX; i++) {
 			if ((pFallBlock + i)->UseFlag) {
 				//プレイヤー左・ブロック右判定
@@ -735,9 +736,16 @@ void UpdateCollision(){
 					pPlayer->jump = false;
 					pPlayer->fall = false;
 					pPlayer->frame = 50;
-					pPlayer->sp.y = -2.0f;
+					pPlayer->sp.y = -0.4f;
+					pPlayer->isFallBlock = true;
 					(pFallBlock + i)->oldpos = (pFallBlock + i)->Position;
 					(pFallBlock + i)->Position.y -= 3.0f;
+					FallFlag = true;
+
+				}
+				else if(!FallFlag)
+				{
+					pPlayer->isFallBlock = false;
 
 				}
 

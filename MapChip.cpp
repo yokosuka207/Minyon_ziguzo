@@ -486,6 +486,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteSwitchWall(g_PieceMapChip[PieceNo].no);
 	DeleteKey(g_PieceMapChip[PieceNo].no);
 	DeleteOpenKey(g_PieceMapChip[PieceNo].no);
+	DeleteFallBlock(g_PieceMapChip[PieceNo].no);
 	DeleteBroken(g_PieceMapChip[PieceNo].no);
 	DeleteHigh(g_PieceMapChip[PieceNo].no);
 	DeleteSheet(g_PieceMapChip[PieceNo].no);
