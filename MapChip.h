@@ -61,8 +61,15 @@ enum class MAPCHIP_TYPE{
 	TYPE_ENEMY_LEFT,			//23	敵
 	TYPE_ENEMY_RIGHT,		//24	敵
 	TYPE_START,			//25    初期位置
-	TYPE_EXPLAIN,		//26	ヒントブロック
-	TYPE_STORYKEY,		//27	ストーリーキー
+	TYPE_PIACEEXPLAIN,		//26	ピース回転説明ブロック①
+	TYPE_PIACEEXPLAIN2,		//27	ピース回転説明ブロック②
+	TYPE_PIACEEXPLAIN3,		//28	ピース回転説明ブロック③
+	TYPE_BLOCKEXPLAIN,		//29	ブロック回転してもだいじょうぶだよヒントブロック
+	TYPE_ENEMYEXPLAIN,		//30	敵ヒントブロック
+	TYPE_BROKENEXPLAIN,		//31	壊れるブロックヒントブロック
+	TYPE_MOVEEXPLAIN,		//32	棘の上にブロックおけるよヒントブロック
+	TYPE_SHEEREXPLAIN,		//33	ブロックすけるよヒントブロック
+	TYPE_STORYKEY,		//34	ストーリーキー
 
 	TYPE_NUM		
 };
