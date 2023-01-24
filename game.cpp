@@ -39,7 +39,7 @@
 #include "scene.h"
 #include "pause.h"
 #include "goal_key.h"
-//#include "doppelganger.h" //ドッペルゲンガー
+#include "doppelganger.h" //ドッペルゲンガー
 #include "enemy.h"
 #include "bullet.h"
 #include"noizu.h"
@@ -94,7 +94,7 @@ void InitGame()
 		InitMoveBlock();
 		InitFallBlock();
 		InitNoizu();
-		//InitDoppelganger(); //ドッペルゲンガー
+		InitDoppelganger(); //ドッペルゲンガー
 		//SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1); //ドッペルゲンガー
 		InitEnemy();
 		InitPause();
@@ -152,7 +152,7 @@ void UninitGame()
 	UninitSwitch();
 	UninitSwitchWall();
 	UninitNoizu();
-	//UninitDoppelganger(); 	//ドッペルゲンガー
+	UninitDoppelganger(); 	//ドッペルゲンガー
 	UninitEnemy();
 	UninitBullet();
 	UninitPlayerLife();
@@ -195,6 +195,7 @@ void UpdateGame()
 		UpdateNoizu();
 		//PuzzleCollision();
 		UpdatePlayer();
+		UpdateDoppelganger();//ドッペルゲンガー
 		PieceCollision();
 		UpdateCollision();
 
@@ -220,7 +221,6 @@ void UpdateGame()
 		UpdateSwitchWall();
 		UpdateStoryKey();
 
-		//UpdateDoppelganger();//ドッペルゲンガー
 		UpdateEnemy();
 		UpdateBullet();
 
@@ -262,6 +262,7 @@ void DrawGame()
 		DrawPuzzleCip();
 		DrawStart();
 		DrawPlayer();
+		DrawDoppelganger();//ドッペルゲンガー
 		DrawGKey();
 		DrawWarp();
 		DrawJumpStand();
@@ -278,7 +279,6 @@ void DrawGame()
 		DrawBroken();		
 		DrawThornBlock();
 
-		//DrawDoppelganger();//ドッペルゲンガー
 		DrawEnemy();
 		DrawBullet();
 		DrawNoizu();

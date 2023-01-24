@@ -48,7 +48,7 @@
 #include "goal_key.h"		//ゴール専用鍵
 #include "StoryKey.h"		//ストーリー用鍵
 #include "bullet.h"			//ドッペルゲンガー発射弾
-#include "doppelganger.h"   //ドッペルゲンガー
+//#include "doppelganger.h"   //ドッペルゲンガー
 #include "enemy.h"			//エネミー
 
 #include "JumpStandExplain.h"		
@@ -1155,7 +1155,6 @@ void UpdateCollision(){
 	//		}
 	//	}
 	//}
-	
 }
 //----------------------------------------------------------------------------------------------------------
 
