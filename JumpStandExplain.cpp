@@ -196,7 +196,7 @@ void DrawExplain()
 					break;
 				}
 				SpriteDrawColorRotation(0, 0, 0.0f,
-					HINT_SIZE_X, HINT_SIZE_Y, 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+					HINT_SIZE_X, HINT_SIZE_Y, 180.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 					0, 1.0f, 1.0f, 1);
 			}
 		}
