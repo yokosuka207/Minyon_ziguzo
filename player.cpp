@@ -435,21 +435,18 @@ void UpdatePlayer()
 								}
 								else
 								{//â∫Ç…âΩÇ‡Ç»Ç≠éÄñSÇ∑ÇÈèÍçá
-									for (int i = 0; i < SPAWN_POINT_MAX; i++)
+
+									if (pSpawnPoint[i].UseFlag)
 									{
-										if (pSpawnPoint[i].UseFlag)
+										if (g_Player.PieceIndex == pSpawnPoint[i].PieceIndex)
 										{
-											if (g_Player.PieceIndex == pSpawnPoint[i].PieceIndex)
-											{
-												g_Player.Position = pSpawnPoint[i].Position;
-												g_Player.hp--;
-
-											}
-
-
+											g_Player.Position = pSpawnPoint[i].Position;
+											g_Player.hp--;
+											break;
 										}
-									}
 
+
+									}
 								}
 							}
 							else if (g_Player.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
