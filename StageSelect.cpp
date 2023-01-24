@@ -28,7 +28,7 @@
 //*****************************************************************************
 
 #define STAIRS_LEFT	75
-#define STAIRS_RIGHT	285
+#define STAIRS_RIGHT	245
 
 #define DOOR_SPACE	1050 / 7
 
@@ -304,7 +304,7 @@ void UpdateStageSelect() {
 				if (Keyboard_IsKeyDown(KK_DOWN))//âEÉLÅ[
 				{
 
-					if (ply.Position.y < SCREEN_HEIGHT - 80.0f)
+					if (ply.Position.y < SCREEN_HEIGHT - 100.0f)
 					{
 						ply.sp.x = 0;
 
