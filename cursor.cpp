@@ -16,6 +16,7 @@
 #include "xinput.h"
 #include "xkeyboard.h"
 #include"player.h"
+#include"doppelganger.h"
 #include"MapChip.h"
 #include"joint.h"
 #include"puzzlecip.h"
@@ -119,6 +120,7 @@ void UpdateCursor()
 	PUZZLE* pPuzzle = GetPuzzle();
 	BLOCK* pBlock = GetBlock();
 	PLAYER* pPlayer = GetPlayer();
+	DOPPELGANGER* pDoppel = GetDoppelganger();
 	Piece* pPiece = GetPiece();
 	BLOCK* pCipBlock = GetChipBlock();
 	JOINT* pJoint = GetJoint();
@@ -244,6 +246,17 @@ void UpdateCursor()
 					pPiece[g_CursorIndex].pos.y = -g_Cursor.pos.y + SCREEN_HEIGHT / 2;
 					//pPiece[g_CursorIndex].MoveFlag = true;
 					D3DXVECTOR2 temp = (pPiece[g_CursorIndex].pos - pPiece[g_CursorIndex].OldPos);
+
+
+					//ブロック動かす
+					if (pDoppel->UseFlag)
+					{
+						if (pDoppel->PieceIndex == NoIndex)
+						{
+							pDoppel->Position += temp;
+						}
+
+					}
 
 					for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 					{//ブロック動かす
