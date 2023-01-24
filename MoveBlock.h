@@ -12,6 +12,7 @@ typedef struct
 	D3DXVECTOR2 sp;		//スピード
 
 	int			PieceIndex;
+	int			NowPieceIndex;
 
 	bool bUse;	
 

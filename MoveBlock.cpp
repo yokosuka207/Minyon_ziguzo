@@ -39,6 +39,7 @@ HRESULT InitMoveBlock()
 		gMoveBlock[i].size = D3DXVECTOR2(MOVE_BLOCK_SIZE, MOVE_BLOCK_SIZE);
 
 		gMoveBlock[i].PieceIndex = -1;
+		gMoveBlock[i].NowPieceIndex = -1;
 
 		gMoveBlock[i].bUse = false;
 
@@ -199,6 +200,7 @@ void UpdateMoveBlock()
 							gMoveBlock[i].oldpos.y - gMoveBlock[i].size.y / 2 >= (cipblock + j)->Position.y + (cipblock + j)->Size.y / 2)
 						{
 							gMoveBlock[i].pos.y = (cipblock + j)->Position.y + (cipblock + j)->Size.y / 2 + gMoveBlock[i].size.y / 2;
+							gMoveBlock[i].NowPieceIndex = cipblock[j].PieceIndex;
 						}
 
 					}

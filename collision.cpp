@@ -2510,7 +2510,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	{
 		if (pMoveBlock[i].bUse)
 		{
-			if (pMoveBlock[i].PieceIndex == pinNo)
+			if (pMoveBlock[i].NowPieceIndex == pinNo)
 			{
 				pMoveBlock[i].pos += num;
 			}
