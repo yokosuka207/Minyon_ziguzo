@@ -23,7 +23,7 @@
 #include "scene.h"
 #include "goal.h"
 #include "start.h"
-
+#include"xkeyboard.h"
 #include "button.h"
 #include "time.h"
 #include "spawnpoint.h"
@@ -1003,7 +1003,13 @@ void UpdateCollision(){
 					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x-40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 						pEnemy[i].AIFlag = true;
 					}
+					if (Keyboard_IsKeyTrigger(KK_A))
+					{
+						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
+							pEnemy[i].UseFlag = false;
+						}
 
+					}
 
 				}
 				else
@@ -1011,6 +1017,14 @@ void UpdateCollision(){
 					if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 						pEnemy[i].AIFlag = true;
 					}
+					if (Keyboard_IsKeyTrigger(KK_A))
+					{
+						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
+							pEnemy[i].UseFlag = false;
+						}
+
+					}
+
 
 				}
 			}
