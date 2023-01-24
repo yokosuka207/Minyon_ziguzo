@@ -22,7 +22,7 @@ typedef struct
 	D3DXCOLOR	col;		//色
 
 	float	rot;				//回転
-	float	no;				//マップチップ番号
+	int		no;				//マップチップ番号
 
 	bool	bUse;			//使用中フラグ
 
@@ -39,6 +39,6 @@ void UninitStoryKey();
 void UpdateStoryKey();
 void DrawStoryKey();
 
-void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, float rot);
+void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, int direction);
 STORYKEY* GetStoryKey();
 void DeleteStoryKey(int no);

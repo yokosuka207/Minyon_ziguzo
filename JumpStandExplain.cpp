@@ -67,9 +67,7 @@ HRESULT InitExplain()
 		g_Explain[i].pos = D3DXVECTOR2(-127, 150);
 		g_Explain[i].size = D3DXVECTOR2(EXPLAIN_SIZE, EXPLAIN_SIZE);
 		g_Explain[i].rot = 180.0f;
-
-		g_Explain[i].PiaceIndex = -1;
-				 
+		g_Explain[i].PieceIndex = -1;
 		g_Explain[i].bUse = false;
 	}
 
@@ -208,16 +206,27 @@ void DrawExplain()
 }
 
 
-void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, float rot, int q)
+void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, int direction, int q)
 {
 	for (int i = 0; i < EXPLAIN_MAX; i++) {
 		if (!g_Explain[i].bUse)
 		{
+			switch (direction) {
+			case 0:g_Explain[i].rot = (direction - 2) * 90;
+				break;
+			case 1:g_Explain[i].rot = direction * 90;
+				break;
+			case 2:g_Explain[i].rot = (direction + 2) * 90;
+				break;
+			case 3:g_Explain[i].rot = direction * 90;
+				break;
+			default:
+				break;
+			}
+
 			g_Explain[i].pos = pos;
 			g_Explain[i].size = size;
 			g_Explain[i].bUse = true;
-
-			g_Explain[i].PiaceIndex = no;
 
 			g_Explain[i].tex = q;
 		}

@@ -191,6 +191,18 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 
 			}
 
+			switch (direction) {
+			case 0:g_Enemy[i].rot = direction * 90;
+				break;
+			case 1:g_Enemy[i].rot = (direction - 2) * 90;
+				break;
+			case 2:g_Enemy[i].rot = direction * 90;
+				break;
+			case 3:g_Enemy[i].rot = (direction + 2) * 90;
+				break;
+			default:
+				break;
+			}
 			g_Enemy[i].pos = pos;
 			g_Enemy[i].size = size * 2.0f;
 			g_Enemy[i].index = index;

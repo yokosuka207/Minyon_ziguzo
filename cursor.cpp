@@ -40,7 +40,8 @@
 #include"MoveBlock.h"
 #include"fallblock.h"
 #include"enemy.h"
-
+#include "JumpStandExplain.h"
+#include "StoryKey.h"
 //--------------------------------------------------
 // マクロ定義
 //--------------------------------------------------
@@ -142,6 +143,8 @@ void UpdateCursor()
 	HIGH* pHigh = GetHigh();
 	FALLBLOCK* pFallBlock = GetFallBlock();
 	ENEMY* pEnemy = GetEnemy();
+	EXPLAIN* pExplain = GetExplain();
+	STORYKEY* pStoryKey = GetStoryKey();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	static float MouseOldPosX = GetMousePosX();
@@ -363,6 +366,13 @@ void UpdateCursor()
 							}
 						}
 					}
+					for (int i = 0; i < EXPLAIN_MAX; i++) {
+						if (pExplain[i].bUse) {
+							if (pExplain[i].PieceIndex == NoIndex) {
+								pExplain[i].pos += temp;
+							}
+						}
+					}
 					//if (pGkey->UseFlag)
 					//{//ゴール
 					//	if (pGkey-> == NoIndex)
@@ -458,6 +468,13 @@ void UpdateCursor()
 							if (pEnemy[i].index == NoIndex)
 							{
 								pEnemy[i].pos += temp;
+							}
+						}
+					}
+					for (int i = 0; i < STORYKEY_MAX; i++) {
+						if (pStoryKey[i].bUse) {
+							if (pStoryKey[i].no == NoIndex) {
+								pStoryKey[i].pos += temp;
 							}
 						}
 					}
