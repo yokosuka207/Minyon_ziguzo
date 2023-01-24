@@ -20,6 +20,7 @@ Update:
 #include "puzzle.h"
 #include "MapChip.h"
 #include"mouse.h"
+#include "cursor.h"
 //**************************************************
 // マクロ定義
 //**************************************************
@@ -97,6 +98,7 @@ void UninitInventory()
 //==================================================
 void UpdateInventory()
 {
+	CURSOR* pCursor = GetCurso();		//  カーソル
 	MOUSE* pMouse = GetMouse();
 	D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
 
@@ -105,7 +107,7 @@ void UpdateInventory()
 		else g_bHave = false;
 	}
 
-	if (Mouse_IsLeftUp()) {
+	if (Mouse_IsLeftRelease()) {
 		g_bHave = false;
 	}
 
@@ -125,13 +127,15 @@ void UpdateInventory()
 				//----------Trigger挙動----------
 				if (!g_Inventory[i].IsCatch) {
 					// マウスと所持パズルが当たっていたら
-					float x = MousePos.x - SCREEN_WIDTH / 2 ;
-					float y = -MousePos.y + SCREEN_HEIGHT / 2;
+					float x = pCursor->pos.x - SCREEN_WIDTH / 2 ;
+					float y = -pCursor->pos.y + SCREEN_HEIGHT / 2;
+					//float x = MousePos.x - SCREEN_WIDTH / 2 ;
+					//float y = -MousePos.y + SCREEN_HEIGHT / 2;
 					//if (MousePos.y < 400) {
 					//	y = y * -1;
 					//	y += 30.0f;
 					//}
-					if (min.x < (x) && max.x >(x) && min.y < (y) && max.y >(y)) {
+					if (min.x < x && max.x > x && min.y < y && max.y > y) {
 						// 所持ピースを全部調べて誰もつかまれていなかったら自分がつかまる
 						for (int j = 0; j < INVENTORY_MAX; j++) {
 							if (g_Inventory[j].IsCatch == true) {
@@ -150,8 +154,10 @@ void UpdateInventory()
 				// つかまれていたら
 				if (g_Inventory[i].IsCatch) {
 					// パズルをマウスの位置に移動
-					float x = MousePos.x - SCREEN_WIDTH / 2 ;
-					float y = -MousePos.y + SCREEN_HEIGHT / 2;
+					float x = pCursor->pos.x - SCREEN_WIDTH / 2 ;
+					float y = -pCursor->pos.y + SCREEN_HEIGHT / 2;
+					//float x = MousePos.x - SCREEN_WIDTH / 2 ;
+					//float y = -MousePos.y + SCREEN_HEIGHT / 2;
 					//y = y * -1;
 
 					g_Inventory[i].pos.x = x;
