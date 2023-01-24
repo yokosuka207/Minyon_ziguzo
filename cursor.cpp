@@ -366,7 +366,7 @@ void UpdateCursor()
 					}
 					for (int i = 0; i < EXPLAIN_MAX; i++) {
 						if (pExplain[i].bUse) {
-							if (pExplain[i].tex == NoIndex) {
+							if (pExplain[i].PieceIndex == NoIndex) {
 								pExplain[i].pos += temp;
 							}
 						}

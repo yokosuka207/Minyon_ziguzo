@@ -2666,7 +2666,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	}
 	for (int i = 0; i < EXPLAIN_MAX; i++) {
 		if (pExplain[i].bUse) {
-			if (pExplain[i].tex == pinNo) {
+			if (pExplain[i].PieceIndex == pinNo) {
 				pExplain[i].pos += num;
 			}
 		}
