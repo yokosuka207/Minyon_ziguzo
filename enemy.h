@@ -27,11 +27,15 @@ typedef struct {
 	D3DXVECTOR2		size;
 	D3DXVECTOR2		sp;
 	D3DXCOLOR		color;
+	float			rot;
 	int				index;
 	int				texno;
-	int BulletWait;
+	int				BulletWait;
 	ENEMY_DIRECTION dir;
-	float uv_w;
+	float			PaternNo;
+	float			uv_w;
+	float			uv_h;
+	int				NumPatern;
 	bool			UseFlag;
 	bool			AIFlag; //player ÉgÅ@Ç¶ÇÀÇÒÇ›Å@ìñÇΩÇËîªíË
 }ENEMY;
@@ -40,7 +44,7 @@ HRESULT InitEnemy();
 void UninitEnemy();
 void UpdateEnemy();
 void DrawEnemy();
-void SetEnemy(D3DXVECTOR2 pos,D3DXVECTOR2 size,int index, ENEMY_DIRECTION d);
+void SetEnemy(D3DXVECTOR2 pos,D3DXVECTOR2 size, int direction,int index, ENEMY_DIRECTION d);
 ENEMY* GetEnemy();
 void DeleteEnemy(int index);
 

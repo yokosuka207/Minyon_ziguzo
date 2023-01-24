@@ -351,10 +351,10 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetDoppelGanger(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_LEFT)://23　敵
-				SetEnemy(position, DrawSize, no,ENEMY_DIRECTION::DIRECTION_LEFT);
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no,ENEMY_DIRECTION::DIRECTION_LEFT);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_RIGHT)://24　敵
-				SetEnemy(position, DrawSize, no, ENEMY_DIRECTION::DIRECTION_RIGHT);
+				SetEnemy(position, DrawSize, no, g_PieceMapChip[no].direction, ENEMY_DIRECTION::DIRECTION_RIGHT);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
@@ -486,6 +486,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteSwitchWall(g_PieceMapChip[PieceNo].no);
 	DeleteKey(g_PieceMapChip[PieceNo].no);
 	DeleteOpenKey(g_PieceMapChip[PieceNo].no);
+	DeleteFallBlock(g_PieceMapChip[PieceNo].no);
 	DeleteBroken(g_PieceMapChip[PieceNo].no);
 	DeleteHigh(g_PieceMapChip[PieceNo].no);
 	DeleteSheet(g_PieceMapChip[PieceNo].no);
@@ -640,10 +641,10 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetDoppelGanger(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_LEFT)://23　敵
-				SetEnemy(position, DrawSize, no, ENEMY_DIRECTION::DIRECTION_LEFT);
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_LEFT);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_RIGHT)://24　敵
-				SetEnemy(position, DrawSize, no, ENEMY_DIRECTION::DIRECTION_RIGHT);
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_RIGHT);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
