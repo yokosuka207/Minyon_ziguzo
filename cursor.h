@@ -29,6 +29,7 @@ typedef struct
 	float texNo;				// テクスチャインデックス
 	int RotIndex;	//回転した数
 	bool pFlag;	//プレーヤーがいるかどうか
+	bool dFlag;//ドッペルゲンガーがいるかどうか
 	bool bHave;					// ピースを持っているフラグ
 	bool useFlag;				// 使用中フラグ
 }CURSOR;

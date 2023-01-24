@@ -71,6 +71,7 @@ struct DOPPELGANGER
 	DOPPELGANGER_DIRECTION dir;			// 反プレイヤーの向き
 	int PieceIndex;	//動いでいるピースの番号
 
+	int hp;
 };
 
 //=============================================================================

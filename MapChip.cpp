@@ -40,6 +40,9 @@
 #include "start.h"
 #include "JumpStandExplain.h"
 #include "StoryKey.h"
+#include "lamp.h"
+#include "lamp_switch.h"
+#include "spawnpoint_d.h"
 
 #include "xkeyboard.h"
 
@@ -88,8 +91,8 @@ static char* g_MapChipTextureName[PIECE_TEX_MAX] = {
 static int g_MapChipTextureNo[PIECE_TEX_MAX];
 // ステージ情報が入っているファイルの名前
 static char* g_StageFileName[21] = {
-	//(char*)"data/MapData/map.txt",			// デバッグ用マップ
-	(char*)"data/MapData/Stage01.txt",
+	(char*)"data/MapData/map.txt",			// デバッグ用マップ
+	//(char*)"data/MapData/Stage01.txt",
 	(char*)"data/MapData/Stage02.txt",
 	(char*)"data/MapData/Stage03.txt",
 	(char*)"data/MapData/Stage04.txt",
@@ -364,6 +367,15 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY):	//26 ヒントブロック
 				SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_LAMP):	//28 街灯
+				SetLamp(position, DrawSize, no, g_PieceMapChip[no].direction, 4);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_LAMP_SWITCH):	//29 街灯スイッチ
+				SetLampSwitch(position, DrawSize, g_PieceMapChip[no].direction, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT_D)://20　スポーンポイント
+				SetSpawnPointD(position, DrawSize, no);
 				break;
 			default:
 				break;

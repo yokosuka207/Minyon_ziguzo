@@ -49,6 +49,8 @@
 #include "StoryKey.h"		//ストーリー用鍵
 #include "bullet.h"			//ドッペルゲンガー発射弾
 //#include "doppelganger.h"   //ドッペルゲンガー
+#include"lamp.h"
+#include"lamp_switch.h"
 #include "enemy.h"			//エネミー
 
 #include "JumpStandExplain.h"		
@@ -201,6 +203,8 @@ void UpdateCollision(){
 	OPENKEY* pOpenKey = GetOpenKey();
 	GKey* pGKey = GetGKey();
 	EXPLAIN* p_Explain = GetExplain();
+	LAMP* p_Lamp = GetLamp();
+	LAMP_SWITCH* p_LampSwitch = GetLampSwitch();
 
 	GOAL* pGoal = GetGoal();
 	START* pStart = GetStart();
@@ -390,6 +394,10 @@ void UpdateCollision(){
 				}
 			}
 		}
+
+
+
+
 		//=====================================
 		// start
 		//=====================================

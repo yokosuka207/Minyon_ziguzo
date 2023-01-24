@@ -63,6 +63,9 @@ enum class MAPCHIP_TYPE{
 	TYPE_START,			//25    初期位置
 	TYPE_EXPLAIN,		//26	ヒントブロック
 	TYPE_STORYKEY,		//27	ストーリーキー
+	TYPE_LAMP,			//28	街灯
+	TYPE_LAMP_SWITCH,	//29	街灯スイッチ
+	TYPE_SPWANPOINT_D,	//30	ドッペルゲンガーのスポーンポイント
 
 	TYPE_NUM		
 };
