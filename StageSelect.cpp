@@ -612,7 +612,9 @@ void DrawStageSelect() {
 		//g_StageSelect[i].pos.x -= 30;
 	}
 
-	DrawStory();
+	if (!pStory->KeyUse) {
+		DrawStory();
+	}
 
 		if (ply.UseFlag == true)
 		{
@@ -634,7 +636,9 @@ void DrawStageSelect() {
 				, 0.0f, color, 0, 1.0f, 1.0f, 1);
 
 		}
-
+		if (pStory->KeyUse) {
+			DrawStory();
+		}
 	
 }
 
