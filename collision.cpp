@@ -1618,7 +1618,8 @@ void PieceCollision()
 						pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pDoppel->Position.y &&
 						pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pDoppel->Position.x &&
 						pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pDoppel->Position.x &&
-						pPiece[i].no == pDoppel->PieceIndex)
+						pPiece[i].no == pDoppel->PieceIndex &&
+						pDoppel->UseFlag == true)
 					{
 						dFlag = true;
 					}

@@ -535,6 +535,9 @@ void DeleteMapChip(int PieceNo) {
 	DeleteStart(g_PieceMapChip[PieceNo].no);
 	DeleteExplain(g_PieceMapChip[PieceNo].no);
 	DeleteStoryKey(g_PieceMapChip[PieceNo].no);
+	DeleteLamp(g_PieceMapChip[PieceNo].no);
+	DeleteLampSwitch(g_PieceMapChip[PieceNo].no);
+	DeleteSpawnPointD(g_PieceMapChip[PieceNo].no);
 }
 Piece* GetPiece() {
 	return g_PieceMapChip;

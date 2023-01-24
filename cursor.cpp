@@ -233,8 +233,8 @@ void UpdateCursor()
 					if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pDoppel->Position.y &&
 						pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pDoppel->Position.y &&
 						pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pDoppel->Position.x &&
-						pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pDoppel->Position.x
-						)
+						pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pDoppel->Position.x &&
+						pDoppel->UseFlag == true)
 					{
 						g_Cursor.dFlag = true;
 
