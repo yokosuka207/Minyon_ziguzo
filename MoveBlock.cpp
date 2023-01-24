@@ -106,10 +106,6 @@ void UpdateMoveBlock()
 					gMoveBlock[i].MoveBlockNotMove = false;
 				}
 			}
-			if (!gMoveBlock[i].GetMoveBlock) {
-				gMoveBlock[i].sp.x = 0.0f;
-				gMoveBlock[i].pos.x = gMoveBlock[i].oldpos.x;
-			}
 			if (gMoveBlock[i].oldpos.x == gMoveBlock[i].pos.x && gMoveBlock[i].MoveBlockNotMove == false)//動かしてない時
 			{
 				gMoveBlock[i].MoveBlockNotMove = true;
@@ -230,8 +226,6 @@ MOVEBLOCK* GetMoveBlock()
 
 void SetMoveBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 	for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
-		if (PieceNo == gMoveBlock[i].PieceIndex)
-			break;
 		if (!gMoveBlock[i].bUse) {
 			gMoveBlock[i].pos = pos;
 			gMoveBlock[i].pos.y += 1.0f ;
@@ -244,8 +238,6 @@ void SetMoveBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 }
 
 void DeleteMoveBlock(int PieceNo) {
-	//配列にしないとマップ上に存在するジャンプ台全部消えることになる
-	//今消したいのは PieceNo番目 のピースに存在するジャンプ台のみ
 	for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 		if (gMoveBlock[i].bUse) {
 			if (gMoveBlock[i].PieceIndex == PieceNo)

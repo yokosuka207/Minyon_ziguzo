@@ -321,10 +321,10 @@ void UpdateCollision(){
 				}
 
 				if (pSwitch[i].PressFlag) {
-					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
+					for (int j = 0; j < SWITCHWALL_MAX; j++) {
 						//  switch index 0,1			switch wall	index 0,3
-						if (pSwitch[i].SwitchIndex == pSwitchWall[i].SwitchIndex) {
-							pSwitchWall[i + j].UseFlag = false;	//押されたら壁がなくなる
+						if (pSwitch[i].SwitchIndex * pSwitchWall[j].WallMax == pSwitchWall[j].SwitchIndex) {
+ 							pSwitchWall[j].UseFlag = false;	//押されたら壁がなくなる
 						}
 					}
 				}
@@ -649,24 +649,27 @@ void UpdateCollision(){
 					pPlayer->Position.y + pPlayer->size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
 					pPlayer->Position.y - pPlayer->size.y / 2 < pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2)
 				{
-					pMoveBlock[i].sp = pPlayer->sp;
-					pMoveBlock[i].pos.x += pMoveBlock[i].sp.x;
+					//pMoveBlock[i].sp = pPlayer->sp;
+					//pMoveBlock[i].pos.x += pMoveBlock[i].sp.x;
+					pPlayer->Position = pPlayer->oldpos;
 				}
 				if (pPlayer->Position.x - pPlayer->size.x / 2 < pMoveBlock[i].pos.x + pMoveBlock[i].size.x / 2 &&
 					pPlayer->oldpos.x - pPlayer->size.x / 2 >= pMoveBlock[i].pos.x + pMoveBlock[i].size.x / 2 &&
 					pPlayer->Position.y + pPlayer->size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
 					pPlayer->Position.y - pPlayer->size.y / 2 < pMoveBlock[i].pos.y + pMoveBlock[i].size.y / 2)
 				{
-					pMoveBlock[i].sp = pPlayer->sp;
-					pMoveBlock[i].pos.x += pMoveBlock[i].sp.x;
+					//pMoveBlock[i].sp = pPlayer->sp;
+					//pMoveBlock[i].pos.x += pMoveBlock[i].sp.x;
+					pPlayer->Position = pPlayer->oldpos;
 				}
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > pMoveBlock[i].pos.x - pMoveBlock[i].size.x / 2 &&
 					pPlayer->Position.x - pPlayer->size.x / 2 < pMoveBlock[i].pos.x + pMoveBlock[i].size.x / 2 &&
 					pPlayer->Position.y + pPlayer->size.y / 2 > pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2 &&
 					pPlayer->oldpos.y + pPlayer->size.y / 2 <= pMoveBlock[i].pos.y - pMoveBlock[i].size.y / 2)
 				{
-					pMoveBlock[i].sp = pPlayer->sp;
-					pMoveBlock[i].pos.y += pMoveBlock[i].sp.x;
+					//pMoveBlock[i].sp = pPlayer->sp;
+					//pMoveBlock[i].pos.y += pMoveBlock[i].sp.x;
+					pPlayer->Position = pPlayer->oldpos;
 
 				}
 				//プレイヤー下・ブロック上,落下する
