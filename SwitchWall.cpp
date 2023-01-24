@@ -81,8 +81,6 @@ void DrawSwitchWall() {
 void SetSwitchWall(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo, int direction, int WallMax) {
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
 		if (!g_SwitchWall[i].UseFlag) {
-			g_SwitchWall[i].WallMax = 0;
-			//方向変換できればドアもできる(0,2しか来ない)、あとはインデックスだけ
 			for (int j = 0; j < WallMax; j++) {
 				switch (direction) {
 				case 0:
