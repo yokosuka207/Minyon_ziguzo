@@ -113,28 +113,28 @@ static char* g_StageFileName[21] = {
 };
 
 // 各ステージ各ピースの情報
-static int g_StagePieceInfo[21][7] = {
-	{  82,  180,   01,    0,    0,    0,    0,},	// 1	○			 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
-	{ 121,  131,   61,    0,    0,    0,    0,},	// 2  	○			 ┃・21ステージ									 ┃
-	{  82,   91,  133,    0,    0,    0,    0,},	// 3	○			 ┃・各ステージ最大ピース数12					 ┃
-	{  00, -131,  143,  170,    0,    0,    0,},	// 4	○			 ┃・テクスチャの名前からした値が				 ┃
-	{  00, -131,  131,   63,    0,    0,    0,},	// 5	○			 ┃			十と百の位の数字					 ┃
-	{  32,   62, -142,  140,    0,    0,    0,},	// 6	○			 ┃・一の位は回転回数							 ┃
-	{ 182,  141,  171,   52,    0,    0,    0,},	// 7	○			 ┃				テクスチャを参考に左(反時計)回り ┃
-	{ 170,   00, -151,   80, -151,    0,    0,},	// 8	○			 ┃											     ┃
-	{  10,   10,   53,   30,   20,    0,    0,},	// 9	○			 ┃・左右を反転させたい場合は -(マイナス) にする ┃
-	{ 153,   10,  140,   51,   61,    0,    0,},	// 10	○			 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
-	{  43,  110, -131,  181,   10,    0,    0,},	// 11	○							
-	{ 101,  190, -140,   01,   01,    0,    0,},	// 12	○						
-	{  20,   63,   60,   73,   71,    0,    0,},	// 13	○					
-	{  52,   72,  181,   01,   10,    0,    0,},	// 14	○				
-	{-131, -153, -150, -141, -151,   10,    0,},	// 15	○							
-	{-150,  160,  171,  140,   72,   53,    0,},	// 16	○							
-	{ 101,  190,   60,   70,   53,   10,    0,},	// 17	○							
-	{  52,  190,  171, -143,  191,   10,    0,},	// 18	○							
-	{-131,   20,  132,  113,   10,   53, -151,},	// 19	○							
-	{  20,  161,   61,  132,   00,  133,  120,},	// 20	○							
-	{   0,    0,    0,    0,    0,    0,    0,},	// 21								
+static int g_StagePieceInfo[21][8] = {
+	{  82,  180,   01,    0,    0,    0,    0,    0,},	// 1	○			 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
+	{ 121,  131,   61,    0,    0,    0,    0,    0,},	// 2  	○			 ┃・21ステージ									 ┃
+	{  82,   91,  133,    0,    0,    0,    0,    0,},	// 3	○			 ┃・各ステージ最大ピース数7					 ┃
+	{  00, -131,  153,  170,    0,    0,    0,    0,},	// 4	○			 ┃・テクスチャの名前からした値が				 ┃
+	{  00, -131,  131,   63,    0,    0,    0,    0,},	// 5	○			 ┃			十と百の位の数字					 ┃
+	{  32,   62, -142,  140,    0,    0,    0,    0,},	// 6	○			 ┃・一の位は回転回数							 ┃
+	{ 182,  141,  171,   52,    0,    0,    0,    0,},	// 7	○			 ┃				テクスチャを参考に左(反時計)回り ┃
+	{ 170,   00, -151,   80, -151,    0,    0,    0,},	// 8	○			 ┃											     ┃
+	{  10,   10,   53,   30,   20,    0,    0,    0,},	// 9	○			 ┃・左右を反転させたい場合は -(マイナス) にする ┃
+	{ 153,   10,  140,   51,   61,    0,    0,    0,},	// 10	○			 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
+	{  43,  110, -131,  181,   10,    0,    0,    0,},	// 11	○							
+	{ 101,  190, -140,   01,   01,    0,    0,    0,},	// 12	○						
+	{  20,   63,   60,   73,   71,    0,    0,    0,},	// 13	○					
+	{  52,   72,  181,   01,   10,    0,    0,    0,},	// 14	○				
+	{-131, -153, -150, -141, -151,   10,    0,    0,},	// 15	○							
+	{-150,  160,  171,  140,   72,   53,    0,    0,},	// 16	○							
+	{ 101,  190,   60,   70,   53,   10,    0,    0,},	// 17	○							
+	{  52,  190,  171, -143,  191,   10,    0,    0,},	// 18	○							
+	{-131,   20,  132,  113,   10,   53, -151,    0,},	// 19	○							
+	{  20,  161,   61,  132,   00,  133,  120,    0,},	// 20	○							
+	{  43,   80,  180,  160,  190,  182,  180,  112,},	// 21								
 };										 
 
 /*　　　				　		／＼			↑触るな危険！  不用意に踏み込まない方がいいぞ！
@@ -241,25 +241,25 @@ void DrawMapChip() {
 					19, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
 				);
 			}
-			//// アニメーション部分を被せる
-			//if (g_PieceMapChip[p].bAnim) {
-			//	SetBlendState(BLEND_MODE_ADD);
-			//	if (g_PieceMapChip[p].no == 0) {
-			//		SpriteDrawColorRotation(
-			//			g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
-			//			DrawSize, -DrawSize, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f),
-			//			g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
-			//		);
-			//	}
-			//	else {
-			//		SpriteDrawColorRotation(
-			//			g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
-			//			DrawSize, -DrawSize, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f),
-			//			g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
-			//		);
-			//	}
-			//	SetBlendState(BLEND_MODE_ALPHABLEND);
-			//}
+			// アニメーション部分を被せる
+			if (g_PieceMapChip[p].bAnim) {
+				SetBlendState(BLEND_MODE_ADD);
+				if (g_PieceMapChip[p].no == 0) {
+					SpriteDrawColorRotation(
+						g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
+						DrawSize, -DrawSize, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f),
+						g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
+					);
+				}
+				else {
+					SpriteDrawColorRotation(
+						g_PieceMapChip[p].pos.x, g_PieceMapChip[p].pos.y, 0.0f,
+						DrawSize, -DrawSize, (g_PieceMapChip[p].startAngle + g_PieceMapChip[p].texDir) * 90, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f),
+						g_PieceMapChip[p].PatNo, g_PieceMapChip[p].uvW, g_PieceMapChip[p].uvH, PIECE_NUMPATTERN
+					);
+				}
+				SetBlendState(BLEND_MODE_ALPHABLEND);
+			}
 		}
 	}
 }
@@ -351,10 +351,10 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetDoppelGanger(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_LEFT)://23　敵
-				SetEnemy(position, DrawSize, no,ENEMY_DIRECTION::DIRECTION_LEFT);
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no,ENEMY_DIRECTION::DIRECTION_LEFT);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_RIGHT)://24　敵
-				SetEnemy(position, DrawSize, no, ENEMY_DIRECTION::DIRECTION_RIGHT);
+				SetEnemy(position, DrawSize, no, g_PieceMapChip[no].direction, ENEMY_DIRECTION::DIRECTION_RIGHT);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
@@ -486,6 +486,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteSwitchWall(g_PieceMapChip[PieceNo].no);
 	DeleteKey(g_PieceMapChip[PieceNo].no);
 	DeleteOpenKey(g_PieceMapChip[PieceNo].no);
+	DeleteFallBlock(g_PieceMapChip[PieceNo].no);
 	DeleteBroken(g_PieceMapChip[PieceNo].no);
 	DeleteHigh(g_PieceMapChip[PieceNo].no);
 	DeleteSheet(g_PieceMapChip[PieceNo].no);
@@ -640,10 +641,10 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetDoppelGanger(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_LEFT)://23　敵
-				SetEnemy(position, DrawSize, no, ENEMY_DIRECTION::DIRECTION_LEFT);
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_LEFT);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_RIGHT)://24　敵
-				SetEnemy(position, DrawSize, no, ENEMY_DIRECTION::DIRECTION_RIGHT);
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_RIGHT);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);

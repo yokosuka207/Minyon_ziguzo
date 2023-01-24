@@ -3,7 +3,6 @@
 #include "renderer.h"
 #include "polygon.h" 
 
-//#include "input.h"	//入力処理
 #include "xinput.h"
 #include "xkeyboard.h"
 
@@ -171,7 +170,8 @@ void UninitGame()
 void UpdateGame()
 {
 	//ポーズ処理
-	if (Keyboard_IsKeyTrigger(KK_TAB)) {
+	if (Keyboard_IsKeyTrigger(KK_TAB) ||				// keyboard TAB
+		IsButtonTriggered(0, XINPUT_GAMEPAD_START)) {		// GamePad START
 		//ポーズフラグがoff
 		if (!(*pause)) {
 			(*pause) = true;
@@ -186,9 +186,6 @@ void UpdateGame()
 			pTime->PauseElapsedTime();
 		}
 	}
-	//if (Keyboard_IsKeyTrigger(KK_R)) {
-	//	ResetGame();
-	//}
 	if (!(*pause)) {
 		//UpdatePolygon();	//ポリゴンの更新
 		BgUpdate();

@@ -105,6 +105,8 @@ static char* g_TextureNameBroken = (char*)"data\\texture\\ドッペルゲンガー.png";
 
 static Time		g_Time;
 
+bool g_bHave = false;
+
 //=============================================================================
 //初期化処理
 //=============================================================================
@@ -194,7 +196,22 @@ void UninitDoppelganger()
 void UpdateDoppelganger()
 {	
 	MOUSE* pMouse = GetMouse();
-	if (!Mouse_IsLeftDown())
+
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {		// GamePad B
+		if (!g_bHave) {
+			g_bHave = true;
+		}
+		else {
+			g_bHave = false;
+		}
+	}
+
+	if (Mouse_IsLeftRelease()) {		// moues 左
+		g_bHave = false;
+	}
+
+	if (!Mouse_IsLeftDown() &&			// mouse 左
+		!g_bHave)
 	{
 
 		if (g_Doppel.UseFlag == true)

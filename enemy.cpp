@@ -1,8 +1,8 @@
 //=============================================================================
 //
 //	エネミー処理[enemy.cpp]
-//															Author:	Fusegi
-//															Date:	Fusegi
+//															Author:	
+//															Date:	
 //-----------------------------------------------------------------------------
 //															Update:	22/12/06
 //=============================================================================
@@ -40,7 +40,10 @@ HRESULT InitEnemy() {
 		g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_LEFT;
 		g_Enemy[i].UseFlag = false;
 		g_Enemy[i].AIFlag = false;
+		g_Enemy[i].PaternNo = 0.0f;
 		g_Enemy[i].uv_w = -1.0f;
+		g_Enemy[i].uv_h = 1.0f;
+		g_Enemy[i].NumPatern = 1;
 		g_EnemySoundNo = LoadSound(g_EnemySoundName);
 	}
 	return S_OK;
@@ -111,23 +114,36 @@ void DrawEnemy() {
 				-0.1f,
 				g_Enemy[i].size.x,
 				g_Enemy[i].size.y,
-				180.0f,
+				g_Enemy[i].rot,
 				g_Enemy[i].color,
-				0.0f,
+				g_Enemy[i].PaternNo,
 				g_Enemy[i].uv_w,
-				1.0f / 1.0f,
-				1
+				g_Enemy[i].uv_h,
+				g_Enemy[i].NumPatern
 			);
 		}
 	}
 }
-void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index, ENEMY_DIRECTION d) {
+void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_DIRECTION d) {
 	for (int i = 0; i < ENEMY_MAX; i++) {
 		if (!g_Enemy[i].UseFlag) {
+			switch (direction) {
+			case 0:g_Enemy[i].rot = direction * 90;
+				break;
+			case 1:g_Enemy[i].rot = (direction + 2) * 90;
+				break;
+			case 2:g_Enemy[i].rot = direction * 90;
+				break;
+			case 3:g_Enemy[i].rot = (direction - 2) * 90;
+				break;
+			default:
+				break;
+			}
 			g_Enemy[i].pos = pos;
 			g_Enemy[i].size = size*2.0f;
 			g_Enemy[i].index = index;
 			g_Enemy[i].dir = d;
+			
 			g_Enemy[i].UseFlag = true;
 			break;
 		}
