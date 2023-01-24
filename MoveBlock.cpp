@@ -106,11 +106,15 @@ void UpdateMoveBlock()
 					gMoveBlock[i].MoveBlockNotMove = false;
 				}
 			}
-				if (gMoveBlock[i].oldpos.x == gMoveBlock[i].pos.x && gMoveBlock[i].MoveBlockNotMove == false)//“®‚©‚µ‚Ä‚È‚¢Žž
-				{
-					gMoveBlock[i].MoveBlockNotMove = true;
-					StopSound(g_MoveBlockMoveSoundNo);
-				}
+			if (!gMoveBlock[i].GetMoveBlock) {
+				gMoveBlock[i].sp.x = 0.0f;
+				gMoveBlock[i].pos.x = gMoveBlock[i].oldpos.x;
+			}
+			if (gMoveBlock[i].oldpos.x == gMoveBlock[i].pos.x && gMoveBlock[i].MoveBlockNotMove == false)//“®‚©‚µ‚Ä‚È‚¢Žž
+			{
+				gMoveBlock[i].MoveBlockNotMove = true;
+				StopSound(g_MoveBlockMoveSoundNo);
+			}
 
 				
 				gMoveBlock[i].pos.y--;
@@ -226,10 +230,12 @@ MOVEBLOCK* GetMoveBlock()
 
 void SetMoveBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 	for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
+		if (PieceNo == gMoveBlock[i].PieceIndex)
+			break;
 		if (!gMoveBlock[i].bUse) {
 			gMoveBlock[i].pos = pos;
-			gMoveBlock[i].pos.y +=1.0f ;
-			gMoveBlock[i].size = size;
+			gMoveBlock[i].pos.y += 1.0f ;
+			gMoveBlock[i].size = D3DXVECTOR2(size.x - 3.0f, size.y - 3.0f);
 			gMoveBlock[i].PieceIndex = PieceNo;
 			gMoveBlock[i].bUse = true;
 			break;
