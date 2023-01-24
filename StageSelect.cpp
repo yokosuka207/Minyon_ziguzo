@@ -28,7 +28,7 @@
 //*****************************************************************************
 
 #define STAIRS_LEFT	75
-#define STAIRS_RIGHT	285
+#define STAIRS_RIGHT	245
 
 #define DOOR_SPACE	1050 / 7
 
@@ -44,11 +44,11 @@ static STAGESELECT_BLOCK g_StageSelectBlock[3];
 static STAGESELECT_STAIRS g_StageSelectStairs[12];
 
 static ID3D11ShaderResourceView* g_StageSelectTexture;	//画像一枚で一つの変数が必要
-static char* g_StageSelectTextureName = (char*)"data\\texture\\ドア.png";	//テクスチャファイルパス
+static char* g_StageSelectTextureName = (char*)"data\\texture\\ドア3.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelect2Texture;	//画像一枚で一つの変数が必要
 static char* g_StageSelect2TextureName = (char*)"data\\texture\\black.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelectTextureBg;	//画像一枚で一つの変数が必要
-static char* g_StageSelectBgTextureName = (char*)"data\\texture\\スレージセレクト背景.png";	//テクスチャファイルパス
+static char* g_StageSelectBgTextureName = (char*)"data\\texture\\ステージセレクト背景.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelectTextureBlock;	//画像一枚で一つの変数が必要
 static char* g_StageSelectBlockTextureName = (char*)"data\\texture\\ステージ選択床.png";	//テクスチャファイルパス
 static ID3D11ShaderResourceView* g_StageSelectTextureStairs;	//画像一枚で一つの変数が必要
@@ -259,7 +259,7 @@ void UpdateStageSelect() {
 
 				//移動
 				if (GetThumbLeftX(0) > 0.3f ||					// GamePad	右スティック	右
-					Keyboard_IsKeyDown(KK_RIGHT))				// Keyboard	右
+					Keyboard_IsKeyDown(KK_D))				// Keyboard	D
 				{//押されているときの処理
 					ply.sp.x = 3.0f;
 					ply.PaternNo += 0.25f;
@@ -275,7 +275,7 @@ void UpdateStageSelect() {
 					ply.uv_w = PLAYER_UV_W;
 				}
 				else if (GetThumbLeftX(0) < -0.3f ||			// GamePad	右スティック	左
-					Keyboard_IsKeyDown(KK_LEFT))				// Keyboard	左
+					Keyboard_IsKeyDown(KK_A))				// Keyboard	A
 				{//押されているときの処理
 					ply.sp.x = -3.0f;
 					ply.PaternNo -= 0.25f;
@@ -301,10 +301,10 @@ void UpdateStageSelect() {
 				}
 			}
 			if (STAIRS_LEFT < ply.Position.x && ply.Position.x < STAIRS_RIGHT) {
-				if (Keyboard_IsKeyDown(KK_DOWN))//右キー
+				if (Keyboard_IsKeyDown(KK_S))		// keyboard S
 				{
 
-					if (ply.Position.y < SCREEN_HEIGHT - 110.0f)
+					if (ply.Position.y < SCREEN_HEIGHT - 100.0f)
 					{
 						ply.sp.x = 0;
 
@@ -447,7 +447,7 @@ void UpdateStageSelect() {
 					{
 						//ply.Position.x = g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 + ply.size.x / 2;
 						//ply.sp = D3DXVECTOR2(0.0f,-4.0f);
-						if (Keyboard_IsKeyDown(KK_UP))
+						if (Keyboard_IsKeyDown(KK_W))			// keyboard W
 						{
 							ply.isHigh = true;	//上に上る
 
@@ -501,7 +501,7 @@ void UpdateStageSelect() {
 					ply.Position.y + ply.size.y / 2 > g_StageSelect[i].pos.y - g_StageSelect[i].size.y / 2 &&
 					ply.Position.y - ply.size.y / 2 < g_StageSelect[i].pos.y + g_StageSelect[i].size.y / 2)
 				{
-					if (Keyboard_IsKeyTrigger(KK_A) ||					// keyboard A
+					if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||					// keyboard Ctrl 左
 						IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
 						//SetVolume(g_BrokenSoundNo, 0.5f);
 						PlaySound(g_StageSelectSoundNo, 0);
@@ -525,7 +525,7 @@ void UpdateStageSelect() {
 					pStory->KeyUse = true;
 				}
 				if (Keyboard_IsKeyTrigger(KK_M) ||					// keyboard M
-					IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
+					IsButtonTriggered(0, XINPUT_GAMEPAD_A)) {			// GamePad A
 					pStory->KeyUse = false;
 				}
 			}
@@ -554,7 +554,7 @@ void DrawStageSelect() {
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectBg.texno));
 		SpriteDrawColorRotation(
 			g_StageSelectBg.pos.x, g_StageSelectBg.pos.y, 0.5f, g_StageSelectBg.size.x, g_StageSelectBg.size.y
-			, 0.0f, color, 0, 1.0f, 1.0f, 1);
+			, 0.0f, D3DXCOLOR(0.7f,0.7f,0.76f,1.0f), 0, 1.0f, 1.0f, 1);
 	}
 	for (int i = 0; i < 3; i++)
 	{

@@ -11,13 +11,15 @@
 
 #include "main.h"
 
-#define ENEMY_MAX (1)
+#define ENEMY_MAX (10)
 #define ENEMY_SIZE_W (10)
 #define ENEMY_SIZE_H (30)
 
 enum class ENEMY_DIRECTION {
 	DIRECTION_LEFT = 0,
 	DIRECTION_RIGHT,
+	DIRECTION_UP,
+	DIRECTION_DOWN,
 
 	DIRECTION_MAX,
 };

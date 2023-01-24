@@ -40,6 +40,8 @@
 #include"MoveBlock.h"
 #include"fallblock.h"
 #include"enemy.h"
+#include "JumpStandExplain.h"
+#include "StoryKey.h"
 #include"lamp.h"
 #include"lamp_switch.h"
 #include"spawnpoint_d.h"
@@ -65,7 +67,6 @@ static char* g_CursorCatchTextureName = (char*)"data\\texture\\cursor_catch.png"
 static int g_CursorTextureNo[2];
 
 static bool oneFlag = false;	//ƒ}ƒEƒX‚ÅƒpƒYƒ‹‚ðˆê‚ÂŽ‚Á‚Ä‚¢‚é‚©
-static int g_CursorIndex = -1;	//ƒ}ƒEƒX‚Ì’Í‚ñ‚¾ƒpƒYƒ‹‚Ì”Ô†“ü‚ê
 static int NoIndex = -1;	//ƒ}ƒEƒX‚Å’Í‚ñ‚¾ƒs[ƒX”Ô†
 static bool g_CursorFlag = false;	//ƒ}ƒEƒX‚ðƒNƒŠƒbƒN‚µ‚Ä‚¢‚é‚©
 
@@ -80,7 +81,7 @@ static char g_CursorSoundName[] = "data\\SoundData\\SE\\ƒs[ƒX‚ð’Í‚Þ‰¹(Œø‰Ê‰¹ƒ‰ƒ
 HRESULT InitCursor()
 {
 	oneFlag = false;	//ƒ}ƒEƒX‚ÅƒpƒYƒ‹‚ðˆê‚ÂŽ‚Á‚Ä‚¢‚é‚©
-	g_CursorIndex = -1;	//ƒ}ƒEƒX‚Ì’Í‚ñ‚¾ƒpƒYƒ‹‚Ì”Ô†“ü‚ê
+	g_Cursor.PieceIndex = -1;	//ƒ}ƒEƒX‚Ì’Í‚ñ‚¾ƒpƒYƒ‹‚Ì”Ô†“ü‚ê
 	NoIndex = -1;	//ƒ}ƒEƒX‚Å’Í‚ñ‚¾ƒs[ƒX”Ô†
 	g_CursorFlag = false;	//ƒ}ƒEƒX‚ðƒNƒŠƒbƒN‚µ‚Ä‚¢‚é‚©
 
@@ -97,6 +98,7 @@ HRESULT InitCursor()
 		g_Cursor.dFlag = false;
 		g_Cursor.useFlag = false;
 		g_Cursor.type = 0;
+		g_Cursor.PieceIndex = -1;
 		g_Cursor.bHave = false;
 	}
 	g_CursorTextureNo[0] = LoadTexture(g_CursorTextureName);
@@ -146,6 +148,8 @@ void UpdateCursor()
 	HIGH* pHigh = GetHigh();
 	FALLBLOCK* pFallBlock = GetFallBlock();
 	ENEMY* pEnemy = GetEnemy();
+	EXPLAIN* pExplain = GetExplain();
+	STORYKEY* pStoryKey = GetStoryKey();
 	LAMP* pLamp = GetLamp();
 	LAMP_SWITCH* pLampSwitch = GetLampSwitch();
 	SpawnPointD* pSpawnPointD = GetSpawnPointD();
@@ -246,24 +250,24 @@ void UpdateCursor()
 						PlaySound(g_CursorSoundNo, 0);
 					}
 					pPiece[i].MoveFlag = true;
-					g_CursorIndex = i;
+					g_Cursor.PieceIndex = i;
 					NoIndex = pPiece[i].no;
 					pPiece[i].OldMovePos = pPiece[i].pos;
 					g_Cursor.type = 1;
 					g_Cursor.bHave = true;
 					break;
 				}
-				else if (oneFlag && i == g_CursorIndex)
+				else if (oneFlag && i == g_Cursor.PieceIndex)
 				{
 					g_Cursor.type = 1;
 					g_Cursor.bHave = true;
 
-					pPiece[g_CursorIndex].OldPos = pPiece[g_CursorIndex].pos;
+					pPiece[g_Cursor.PieceIndex].OldPos = pPiece[g_Cursor.PieceIndex].pos;
 
-					pPiece[g_CursorIndex].pos.x = g_Cursor.pos.x - SCREEN_WIDTH / 2;
-					pPiece[g_CursorIndex].pos.y = -g_Cursor.pos.y + SCREEN_HEIGHT / 2;
-					//pPiece[g_CursorIndex].MoveFlag = true;
-					D3DXVECTOR2 temp = (pPiece[g_CursorIndex].pos - pPiece[g_CursorIndex].OldPos);
+					pPiece[g_Cursor.PieceIndex].pos.x = g_Cursor.pos.x - SCREEN_WIDTH / 2;
+					pPiece[g_Cursor.PieceIndex].pos.y = -g_Cursor.pos.y + SCREEN_HEIGHT / 2;
+					//pPiece[g_Cursor.PieceIndex].MoveFlag = true;
+					D3DXVECTOR2 temp = (pPiece[g_Cursor.PieceIndex].pos - pPiece[g_Cursor.PieceIndex].OldPos);
 
 
 					if (pDoppel->UseFlag)
@@ -327,7 +331,7 @@ void UpdateCursor()
 					{
 						if (pMoveBlock[i].bUse)
 						{
-							if (pMoveBlock[i].PieceIndex == NoIndex)
+							if (pMoveBlock[i].NowPieceIndex == NoIndex)
 							{
 								pMoveBlock[i].pos += temp;
 							}
@@ -377,6 +381,13 @@ void UpdateCursor()
 						if (pStart[i].UseFlag) {
 							if (pStart[i].PieceIndex == NoIndex) {
 								pStart[i].pos += temp;
+							}
+						}
+					}
+					for (int i = 0; i < EXPLAIN_MAX; i++) {
+						if (pExplain[i].bUse) {
+							if (pExplain[i].PieceIndex == NoIndex) {
+								pExplain[i].pos += temp;
 							}
 						}
 					}
@@ -478,6 +489,15 @@ void UpdateCursor()
 							}
 						}
 					}
+					for (int i = 0; i < STORYKEY_MAX; i++) {
+						if (pStoryKey[i].bUse) {
+							if (pStoryKey[i].no == NoIndex) {
+								pStoryKey[i].pos += temp;
+							}
+						}
+					}
+						}
+					}
 					for (int i = 0; i < LAMP_MAX; i++)
 					{
 						if (pLamp[i].UseFlag)
@@ -512,13 +532,14 @@ void UpdateCursor()
 					if (!g_Cursor.pFlag && !g_Cursor.dFlag)
 					{
 						// ‰ñ“]
-						if (Keyboard_IsKeyTrigger(KK_A) ||								// keyboard A
-							IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_SHOULDER))		// GamePad R
+						if (Keyboard_IsKeyTrigger(KK_E) ||								// keyboard E
+							IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_SHOULDER))			// GamePad R
 						{
 							RotateMapChipR(NoIndex);
 							g_Cursor.RotIndex++;
 						}
-						else if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_SHOULDER)) {	// GamePad L
+						else if (Keyboard_IsKeyTrigger(KK_Q) ||					// keyboard Q
+							IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_SHOULDER)) {	// GamePad L
 							RotateMapChipL(NoIndex);
 							g_Cursor.RotIndex--;
 						}
@@ -565,18 +586,19 @@ void UpdateCursor()
 	if (!Mouse_IsLeftDown() &&						// mouse ¶
 		!g_Cursor.bHave)
 	{
-		if (g_CursorIndex != -1)
+		if (g_Cursor.PieceIndex != -1)
 		{
-			pPuzzle[g_CursorIndex].MoveFlag = false;
-			pPuzzle[g_CursorIndex].MoveEndFlag = true;
-			pPiece[g_CursorIndex].MoveEndFlag = true;
-			pPiece[g_CursorIndex].MoveFlag = false;
+			pPuzzle[g_Cursor.PieceIndex].MoveFlag = false;
+			pPuzzle[g_Cursor.PieceIndex].MoveEndFlag = true;
+			pPiece[g_Cursor.PieceIndex].MoveEndFlag = true;
+			pPiece[g_Cursor.PieceIndex].MoveFlag = false;
 
 			//g_Cursor.RotIndex = 0;
-			g_Cursor.pFlag = false;
 		}
+		g_Cursor.pFlag = false;
+
 		oneFlag = false;
-		g_CursorIndex = -1;
+		g_Cursor.PieceIndex = -1;
 		NoIndex = -1;
 		g_Cursor.type = 0;
 	}

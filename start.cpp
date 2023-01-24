@@ -12,10 +12,11 @@
 static START g_Start[START_MAX];
 
 static ID3D11ShaderResourceView* g_StartTexture;	//画像一枚で一つの変数が必要
-static char* g_StartTextureName = (char*)"data\\texture\\ドア.png";	//テクスチャファイルパス
+static char* g_StartTextureName = (char*)"data\\texture\\ドア3.png";	//テクスチャファイルパス
 static int g_StartTextureNo = 0;
 
-
+static float green;
+static bool GreenFlag;
 
 HRESULT InitStart() {
 	for (int i = 0; i < START_MAX; i++) {
@@ -29,7 +30,8 @@ HRESULT InitStart() {
 		g_Start[i].UseFlag = false;
 	}
 	g_StartTextureNo = LoadTexture(g_StartTextureName);
-
+	green = 1.0f;
+	GreenFlag = false;
 	return S_OK;
 }
 void UninitStart() {
@@ -39,7 +41,25 @@ void UninitStart() {
 	}
 }
 void UpdateStart() {
-
+	for (int i = 0; i < START_MAX; i++) {
+		if (g_Start[i].GoalFlag) {
+			g_Start[i].color = D3DXCOLOR(0.0f, green, 0.0f, 1.0f);
+			if (!GreenFlag) {
+				green -= 0.01f;
+			}
+			else {
+				green += 0.01f;
+			}
+			if (green < 0.0f) {
+				green = 0.0f;
+				GreenFlag = true;
+			}
+			if (green > 1.0f) {
+				green = 1.0f;
+				GreenFlag = false;
+			}
+		}
+	}
 }
 void DrawStart() {
 	//SetWorldViewProjection2D();
@@ -91,7 +111,6 @@ void SetStart(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int PieceNo) {
 			g_Start[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 			g_Start[i].PieceIndex = PieceNo;
 			g_Start[i].UseFlag = true;
-			g_Start[i].GoalFlag = false;
 		}
 	}
 }
