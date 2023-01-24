@@ -85,17 +85,27 @@ void DrawStoryKey()
 }
 
 
-void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, float rot)
+void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, int direction)
 {
-	for (int i = 0; i < STORYKEY_MAX; i++) 
-	{
+	for (int i = 0; i < STORYKEY_MAX; i++) {
+		switch (direction) {
+		case 0:gStoryKey[i].rot = (direction + 2) * 90;
+			break;
+		case 1:gStoryKey[i].rot = direction * 90;
+			break;
+		case 2:gStoryKey[i].rot = (direction - 2) * 90;
+			break;
+		case 3:gStoryKey[i].rot = direction * 90;
+			break;
+		default:
+			break;
+		}
+
 		if (!gStoryKey[i].bUse) {
 			gStoryKey[i].pos = p;
 			gStoryKey[i].size = s;
-			gStoryKey[i].rot = rot;
 
 			gStoryKey[i].no = no;
-
 			gStoryKey[i].bUse = true;
 		}
 	}

@@ -41,6 +41,7 @@
 #include"fallblock.h"
 #include"enemy.h"
 #include "JumpStandExplain.h"
+#include "StoryKey.h"
 //--------------------------------------------------
 // É}ÉNÉçíËã`
 //--------------------------------------------------
@@ -143,6 +144,7 @@ void UpdateCursor()
 	FALLBLOCK* pFallBlock = GetFallBlock();
 	ENEMY* pEnemy = GetEnemy();
 	EXPLAIN* pExplain = GetExplain();
+	STORYKEY* pStoryKey = GetStoryKey();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	static float MouseOldPosX = GetMousePosX();
@@ -466,6 +468,13 @@ void UpdateCursor()
 							if (pEnemy[i].index == NoIndex)
 							{
 								pEnemy[i].pos += temp;
+							}
+						}
+					}
+					for (int i = 0; i < STORYKEY_MAX; i++) {
+						if (pStoryKey[i].bUse) {
+							if (pStoryKey[i].no == NoIndex) {
+								pStoryKey[i].pos += temp;
 							}
 						}
 					}

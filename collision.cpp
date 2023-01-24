@@ -2452,6 +2452,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 	FALLBLOCK* pFallBlock = GetFallBlock();
 	ENEMY* pEnemy = GetEnemy();
 	EXPLAIN* pExplain = GetExplain();
+	STORYKEY* pStoryKey = GetStoryKey();
 
 	for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 	{
@@ -2671,7 +2672,13 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 			}
 		}
 	}
-
+	for (int i = 0; i < STORYKEY_MAX; i++) {
+		if (pStoryKey[i].bUse) {
+			if (pStoryKey[i].no == pinNo) {
+				pStoryKey[i].pos += num;
+			}
+		}
+	}
 }
 //--------------------------------------------
 //プレイヤーの移動先にピースがあるか
