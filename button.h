@@ -52,7 +52,7 @@ public:
 	D3DXVECTOR2 GetSize() { return m_size; }
 	
 	// セッター
-	// 引数：ポジション, サイズ, テクスチャ番号
+	// 引数：ポジション, 当たり判定サイズ, 表示サイズ, 色, テクスチャ番号
 	void SetButton(D3DXVECTOR2 po, D3DXVECTOR2 si, D3DXVECTOR2 ds, D3DXCOLOR co, float no);
 	void SetButtonTexNo(float no) { m_texNo = no; }			// テクスチャ切り替え
 	void SetButtonColor(D3DXCOLOR col) { m_color = col; }		// 色の切り替え
