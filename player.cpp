@@ -295,7 +295,7 @@ void UpdatePlayer()
 			//---------------
 			//透ける床の場合
 			//---------------
-
+			bool HitFlag = false;	//当たったか
 			SHEERFLOORS* pSheerFloors = GetSheerFloors();
 			for (int i = 0; i < SHEERFLOORS_NUM; i++)
 			{
@@ -335,19 +335,19 @@ void UpdatePlayer()
 							}
 							g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
 							g_Player.jump = false;
-							g_Player.sp.y = -0.3f;
-
+							g_Player.sp.y = -0.1f;
+							HitFlag = true;
 							g_Player.fall = false;
 							if (!g_Player.isSheerFloors) {
-								//g_Player.sp.y = 0.0f;
+								//g_Player.sp.y = -0.4f;
 								g_Player.isSheerFloors = true;
 
 							}
-							else {
-								g_Player.sp.y = 0.0f;
+						}
+						else if(!HitFlag){
+							//g_Player.sp.y = 0.0f;
 
-								g_Player.isSheerFloors = false;
-							}
+							g_Player.isSheerFloors = false;
 						}
 
 						//プレイヤー下・ブロック上,落下する

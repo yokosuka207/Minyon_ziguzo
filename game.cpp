@@ -270,6 +270,7 @@ void DrawGame()
 
 		DrawPuzzleCip();
 		DrawStart();
+		DrawLamp();
 		DrawPlayer();
 		DrawDoppelganger();//ドッペルゲンガー
 		DrawGKey();
@@ -287,7 +288,6 @@ void DrawGame()
 		DrawGoal();
 		DrawBroken();		
 		DrawThornBlock();
-		DrawLamp();
 		DrawLampSwitch();
 
 		DrawEnemy();

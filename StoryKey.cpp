@@ -40,7 +40,7 @@ HRESULT InitStoryKey()
 		//-127, 150)
 		gStoryKey[i].pos = D3DXVECTOR2(-127, 150);
 		gStoryKey[i].size = D3DXVECTOR2(STORYKEY_SIZE, STORYKEY_SIZE);
-		gStoryKey[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		gStoryKey[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f);
 		gStoryKey[i].rot = 0.0f;
 
 		gStoryKey[i].bUse = true;
