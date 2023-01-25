@@ -789,8 +789,8 @@ void UpdateCollision(){
 				//プレイヤー左・高所落ちるブロック右
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
 					pPlayer->oldpos.x + pPlayer->size.x / 2 <= (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
-					pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
-					pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
+					pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 3 &&
+					pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 3)
 				{
 					pPlayer->Position.x = (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 - pPlayer->size.x / 2;
 				}
@@ -808,7 +808,7 @@ void UpdateCollision(){
 					pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
 					pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
 				{
-					if (pPlayer->sp.y >= 5.0f) {
+					if (pPlayer->sp.y <= -5.0f) {
 						//pPlayer->isHigh = false;
 						(pHigh + i)->UseFlag = false;
 						//SetVolume(g_HighSoundNo, 0.5f);
@@ -817,8 +817,19 @@ void UpdateCollision(){
 					}
 					else {
 						//pPlayer->isHigh = true;
-						pPlayer->sp.y = 0.0f;
+						pPlayer->sp.y = -0.1f;
 						pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
+						// 着地中にする
+						if (!pPlayer->isHigh) {
+							pPlayer->sp.y = -0.1f;
+							pPlayer->isHigh = true;
+							break;
+						}
+						else {
+							pPlayer->isHigh = false;
+						}
+					}
+
 					}
 
 				}/*
@@ -835,21 +846,13 @@ void UpdateCollision(){
 					pPlayer->Position.y = (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 - pPlayer->size.y / 2;
 				}
 				// プレイヤーの下にブロックがあったら
-				if ((pPlayer->Position.y - pPlayer->size.y / 2 - 0.05f < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2) &&
-					(pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2) &&
-					(pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2) &&
-					(pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2))
+				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
+					pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
+					pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
+					pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
 				{
-					// 着地中にする
-					if (!pPlayer->isHigh) {
-						pPlayer->sp.y = 0.0f;
-						pPlayer->isHigh = true;
-						break;
-					}
-				}
-				else {
-					pPlayer->isHigh = false;
-				}
+					//pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
+
 			}
 		}
 		//-----------------------------------------------------
