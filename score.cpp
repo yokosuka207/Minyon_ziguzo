@@ -19,8 +19,8 @@
 static ID3D11ShaderResourceView* g_ScoreTexture;	//画像一枚で一つの変数が必要
 static ID3D11ShaderResourceView* g_ScoreRankTexture;	
 
-static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
-static char* g_ScoreRankTextureName = (char*)"data\\texture\\number.png";
+static char* g_ScoreTextureName = (char*)"data\\texture\\number1.png";	//テクスチャファイルパス
+static char* g_ScoreRankTextureName = (char*)"data\\texture\\number1.png";
 
 static int g_ScoreTextureNo = 0;
 static int g_ScoreRankTextureNo = 0;
@@ -110,7 +110,7 @@ void Score::DrawScore() {
 					1.0f / 1.0f,
 					10
 				);
-				g_ScoreParam.pos.x -= 30;
+				g_ScoreParam.pos.x -= 33.0f;
 			}
 		}
 	}
@@ -144,174 +144,213 @@ int Score::CulcScore() {
 }
 void Score::RankScore(int score) {
 	switch (StageNo) {
+		//================================================
+		//	チュートリアル
+		//================================================
 	case 0:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 40 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 80 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 120 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	チュートリアル
+		//================================================
 	case 1:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 40 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 80 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 120 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	チュートリアル
+		//================================================
 	case 2:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 40 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 80 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 120 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	(初)動くブロックと(初)ジャンプ台
+		//================================================
 	case 3:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 90 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 180 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 270 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	(初)壊れるブロックと(初)紐
+		//================================================
 	case 4:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 120 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 240 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 360 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	(初)スイッチと動くブロック
+		//================================================
 	case 5:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 120 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 240 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 360 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	(初)落ちるブロックとスイッチ
+		//================================================
 	case 6:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 150 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 300 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 450 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	(初)エネミーと紐
+		//================================================
 	case 7:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 120 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 180 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 240 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	(初)ワープ
+		//================================================
 	case 8:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 90 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 120 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 150 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	(初)高所落下で壊れるブロックと(初)鍵付き扉とジャンプ台と紐
+		//================================================
 	case 9:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 180 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 360 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 540 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	ジャンプ台と高所落下ブロックとトゲ
+		//================================================
 	case 10:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 120 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 240 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 360 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	ワープと鍵付き扉と高所落下とトゲ
+		//================================================
 	case 11:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 150 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 225 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 300 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	チュートリアル終わり
+		//================================================
 	case 12:
 		if (score < 30 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
@@ -326,6 +365,9 @@ void Score::RankScore(int score) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	チュートリアル終わり
+		//================================================
 	case 13:
 		if (score < 30 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
@@ -340,6 +382,9 @@ void Score::RankScore(int score) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	チュートリアル終わり
+		//================================================
 	case 14:
 		if (score < 30 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
@@ -354,6 +399,9 @@ void Score::RankScore(int score) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	チュートリアル終わり
+		//================================================
 	case 15:
 		if (score < 30 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
@@ -368,6 +416,9 @@ void Score::RankScore(int score) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	チュートリアル終わり
+		//================================================
 	case 16:
 		if (score < 30 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
@@ -382,6 +433,9 @@ void Score::RankScore(int score) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	チュートリアル終わり
+		//================================================
 	case 17:
 		if (score < 30 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
@@ -396,6 +450,9 @@ void Score::RankScore(int score) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	チュートリアル終わり
+		//================================================
 	case 18:
 		if (score < 30 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
@@ -410,6 +467,9 @@ void Score::RankScore(int score) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	チュートリアル終わり
+		//================================================
 	case 19:
 		if (score < 30 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
@@ -424,6 +484,9 @@ void Score::RankScore(int score) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	チュートリアル終わり
+		//================================================
 	case 20:
 		if (score < 30 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
@@ -438,6 +501,9 @@ void Score::RankScore(int score) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		}
 		break;
+		//================================================
+		//	ギミックすべて
+		//================================================
 	case 21:
 		if (score < 30 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;

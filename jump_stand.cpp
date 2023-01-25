@@ -199,7 +199,7 @@ void UpdateJumpStand()
 					{
 						g_JumpStand[i].JumpStandFlag = true;
 
-						SetVolume(g_JumpStandSoundNo, 1.5f);
+						SetVolume(g_JumpStandSoundNo, 0.25f);
 						PlaySound(g_JumpStandSoundNo, 0);
 
 						p_Player->sp.y = 0.0f;

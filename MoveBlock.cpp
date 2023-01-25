@@ -107,7 +107,7 @@ void UpdateMoveBlock()
 					//引きずる音
 					if (gMoveBlock[i].oldpos.x != gMoveBlock[i].pos.x && gMoveBlock[i].MoveBlockNotMove == true)//動かした瞬間
 					{
-						//SetVolume(g_MoveBlockMoveSoundNo, 0.5f);
+						SetVolume(g_MoveBlockMoveSoundNo, 0.25f);
 						PlaySound(g_MoveBlockMoveSoundNo, -1);
 						gMoveBlock[i].MoveBlockNotMove = false;
 					}
@@ -189,8 +189,8 @@ void UpdateMoveBlock()
 							//着地した瞬間だけ音が鳴る
 							if (gMoveBlock[i].oldoldpos.y != gMoveBlock[i].pos.y)
 							{
-								//SetVolume(g_MoveBolckLandingSoundNo, 0.5f);
-								//PlaySound(g_MoveBolckLandingSoundNo, 0);
+								SetVolume(g_MoveBolckLandingSoundNo, 0.25f);
+								PlaySound(g_MoveBolckLandingSoundNo, 0);
 							}
 						}
 						//動くブロック下・ブロック上,落下する
