@@ -243,6 +243,8 @@ void Save::Update()
 						m_type = SAVE_TYPE::TYPE_NONE;
 					}
 				}
+				g_DataButton[i].ChangeType();
+				break;
 			}
 		}
 	}

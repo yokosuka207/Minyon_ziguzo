@@ -50,13 +50,8 @@ void Button::Uninit()
 //==================================================
 void Button::Update()
 {
-	// 当たっている状態でマウスを押したら
-	if (Mouse_IsLeftTrigger() && CollisionMouse()) {
-		ChangeType(BUTTON_TYPE::TYPE_PRESSED);
-	}
-	else {			// 当たっていないし押されてもいない
-		ChangeType(BUTTON_TYPE::TYPE_NORMAL);
-	}
+	// ボタンの状態リセット
+	ChangeType(BUTTON_TYPE::TYPE_NORMAL);
 }
 
 
@@ -154,6 +149,15 @@ bool Button::TriggerButton()
 		}
 	}
 	return false;
+}
+
+//==================================================
+// ボタンのタイプ変更
+//==================================================
+void Button::ChangeType() 
+{
+	if (m_type == BUTTON_TYPE::TYPE_NORMAL) m_type = BUTTON_TYPE::TYPE_PRESSED;
+	else m_type = BUTTON_TYPE::TYPE_NORMAL;
 }
 
 //==================================================

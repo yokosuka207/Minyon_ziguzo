@@ -212,10 +212,12 @@ void	UpdatePause()
 						SetScene(SCENE::SCENE_GAME);
 						PauseClick = true;
 					}
-					// 1:Quit ステージセレクトに戻る
+					// 1:Exit Stage ステージセレクトに戻る
 					else {
 						SetScene(SCENE::SCENE_STAGESELECT);
 					}
+					g_pSelectPauseButton->ChangeType();
+					break;
 				}
 			}
 			else {
