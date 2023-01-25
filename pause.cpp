@@ -12,10 +12,13 @@
 #include	"time.h"
 #include	 "pause.h"
 #include	"game.h"
+#include	"button.h"
 
 //======================
 //マクロ定義
 //=======================
+#define BUTTON_MAX	2
+
 //======================
 //グローバル変数
 //======================
@@ -26,23 +29,22 @@ static	ID3D11ShaderResourceView* g_PauseOperationTexture = NULL;//操作説明情報
 static	char* g_PauseOperationTextureName = (char*)"data\\texture\\操作説明.png";
 
 static	ID3D11ShaderResourceView* g_PauseEndTexture = NULL;//テクスチャ情報
-static	char* g_PauseEndTextureName = (char*)"data\\texture\\再開.jpg";
-
-static	ID3D11ShaderResourceView* g_PauseResetTexture = NULL;//テクスチャ情報
-static	char* g_PauseResetTextureName = (char*)"data\\texture\\ステージリセット.jpg";
+static	char* g_PauseEndTextureName = (char*)"data\\texture\\Quit.png";
 
 static	ID3D11ShaderResourceView* g_PauseSelectTexture = NULL;//テクスチャ情報
-static	char* g_PauseSelectTextureName = (char*)"data\\texture\\ステージ選択.jpg";
+static	char* g_PauseSelectTextureName = (char*)"data\\texture\\Exit Stage.png";
 
 PAUSE	PauseObject[5];//タイトル画面オブジェクト
 
 int		PauseTextureNo = 0;			//テクスチャ番号
 int		PauseOperationTextureNo = 0;//テクスチャ番号
 int		PauseEndTextureNo = 0;		//テクスチャ番号
-int		PauseResetTextureNo = 0;	//テクスチャ番号
 int		PauseSelectTextureNo = 0;	//テクスチャ番号
 
 static bool		PauseFlag, PauseClick;
+
+Button g_PauseButton[2];
+Button* g_pSelectPauseButton = nullptr;
 //======================
 //初期化
 //======================
@@ -51,9 +53,6 @@ void	InitPause()
 	//	テクスチャのロード
 	PauseTextureNo = LoadTexture(g_PauseTextureName);
 	PauseOperationTextureNo = LoadTexture(g_PauseOperationTextureName);
-	PauseEndTextureNo = LoadTexture(g_PauseEndTextureName);
-	PauseResetTextureNo = LoadTexture(g_PauseResetTextureName);
-	PauseSelectTextureNo = LoadTexture(g_PauseSelectTextureName);
 
 	//背景テクスチャ
 	PauseObject[0].Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
@@ -88,6 +87,15 @@ void	InitPause()
 
 	PauseFlag = false;
 	PauseClick = false;
+
+	// ボタンのテクスチャのロード
+	PauseEndTextureNo = LoadTexture(g_PauseEndTextureName);
+	PauseSelectTextureNo = LoadTexture(g_PauseSelectTextureName);
+
+	// ボタンのセット
+	g_PauseButton[0].SetButton(D3DXVECTOR2(100.0f, 100.0f), D3DXVECTOR2(100.0f, 100.0f), D3DXVECTOR2(100.0f, 100.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), PauseEndTextureNo);
+	g_PauseButton[1].SetButton(D3DXVECTOR2(100.0f, 100.0f), D3DXVECTOR2(100.0f, 100.0f), D3DXVECTOR2(100.0f, 100.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), PauseSelectTextureNo);
+
 }
 //======================
 //終了処理
@@ -112,12 +120,6 @@ void	UninitPause()
 		g_PauseEndTexture = NULL;
 	}
 
-	if (g_PauseResetTexture)
-	{
-		g_PauseResetTexture->Release();
-		g_PauseResetTexture = NULL;
-	}
-
 	if (g_PauseSelectTexture)
 	{
 		g_PauseSelectTexture->Release();
@@ -133,39 +135,39 @@ void	UpdatePause()
 {
 	if (PauseFlag) 
 	{
-		MOUSE* pMouse = GetMouse();
-		D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
+		//MOUSE* pMouse = GetMouse();
+		//D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
 
-		D3DXVECTOR2 min1, max1, min2, max2;		// min左上, max右下
+		//D3DXVECTOR2 min1, max1, min2, max2;		// min左上, max右下
 		
-		//キー入力のチェック
+		////キー入力のチェック
 
-		min1 = D3DXVECTOR2(PauseObject[2].Position.x - PauseObject[2].Size.x / 2, PauseObject[2].Position.y - PauseObject[2].Size.y / 2);
-		max1 = D3DXVECTOR2(PauseObject[2].Position.x + PauseObject[2].Size.x / 2, PauseObject[2].Position.y + PauseObject[2].Size.y / 2);
-		//	ゲームに戻ります
-		if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
-			Keyboard_IsKeyTrigger(KK_L) ||						// Keyboard	L
-			Mouse_IsLeftDown())									// Mouse	左
-		{
-			if (min1.x < MousePos.x && max1.x > MousePos.x && min1.y < MousePos.y && max1.y > MousePos.y)
-			{
-				SetScene(SCENE::SCENE_GAME);
-				PauseClick = true;
-			}
-		}
+		//min1 = D3DXVECTOR2(PauseObject[2].Position.x - PauseObject[2].Size.x / 2, PauseObject[2].Position.y - PauseObject[2].Size.y / 2);
+		//max1 = D3DXVECTOR2(PauseObject[2].Position.x + PauseObject[2].Size.x / 2, PauseObject[2].Position.y + PauseObject[2].Size.y / 2);
+		////	ゲームに戻ります
+		//if (IsButtonTriggered(0, XINPUT_GAMEPAD_A) ||			// GamePad	A
+		//	Keyboard_IsKeyTrigger(KK_L) ||						// Keyboard	L
+		//	Mouse_IsLeftDown())									// Mouse	左
+		//{
+		//	if (min1.x < MousePos.x && max1.x > MousePos.x && min1.y < MousePos.y && max1.y > MousePos.y)
+		//	{
+		//		SetScene(SCENE::SCENE_GAME);
+		//		PauseClick = true;
+		//	}
+		//}
 
-		min2 = D3DXVECTOR2(PauseObject[4].Position.x - PauseObject[4].Size.x / 2, PauseObject[4].Position.y - PauseObject[4].Size.y / 2);
-		max2 = D3DXVECTOR2(PauseObject[4].Position.x + PauseObject[4].Size.x / 2, PauseObject[4].Position.y + PauseObject[4].Size.y / 2);
-		//	ゲーム選択画面に戻ります
-		if (IsButtonTriggered(0, XINPUT_GAMEPAD_X) ||			// GamePad	X
-			Keyboard_IsKeyTrigger(KK_M) ||					// Keyboard	M
-			Mouse_IsLeftDown())									// Mouse	左
-		{
-			if (min2.x < MousePos.x && max2.x > MousePos.x && min2.y < MousePos.y && max2.y > MousePos.y)
-			{
-				SetScene(SCENE::SCENE_STAGESELECT);
-			}
-		}
+		//min2 = D3DXVECTOR2(PauseObject[4].Position.x - PauseObject[4].Size.x / 2, PauseObject[4].Position.y - PauseObject[4].Size.y / 2);
+		//max2 = D3DXVECTOR2(PauseObject[4].Position.x + PauseObject[4].Size.x / 2, PauseObject[4].Position.y + PauseObject[4].Size.y / 2);
+		////	ゲーム選択画面に戻ります
+		//if (IsButtonTriggered(0, XINPUT_GAMEPAD_X) ||			// GamePad	X
+		//	Keyboard_IsKeyTrigger(KK_M) ||					// Keyboard	M
+		//	Mouse_IsLeftDown())									// Mouse	左
+		//{
+		//	if (min2.x < MousePos.x && max2.x > MousePos.x && min2.y < MousePos.y && max2.y > MousePos.y)
+		//	{
+		//		SetScene(SCENE::SCENE_STAGESELECT);
+		//	}
+		//}
 
 		/*リセットボタン*/
 		//if (Keyboard_IsKeyTrigger(KK_R)) {
@@ -247,22 +249,22 @@ void	DrawPause()
 			1
 		);
 
-		//ゲームに戻る選択テクスチャ
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseEndTextureNo));
-		SpriteDrawColorRotation
-		(
-			PauseObject[2].Position.x,
-			PauseObject[2].Position.y,
-			0.0f,		
-			PauseObject[2].Size.x,
-			PauseObject[2].Size.y,
-			PauseObject[2].Rotate,
-			PauseObject[2].Color,
-			0,
-			1.0f,
-			1.0f,
-			1
-		);
+		////ゲームに戻る選択テクスチャ
+		//GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseEndTextureNo));
+		//SpriteDrawColorRotation
+		//(
+		//	PauseObject[2].Position.x,
+		//	PauseObject[2].Position.y,
+		//	0.0f,		
+		//	PauseObject[2].Size.x,
+		//	PauseObject[2].Size.y,
+		//	PauseObject[2].Rotate,
+		//	PauseObject[2].Color,
+		//	0,
+		//	1.0f,
+		//	1.0f,
+		//	1
+		//);
 
 		//ゲームリセット選択テクスチャ
 		//GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseResetTextureNo));
@@ -281,22 +283,22 @@ void	DrawPause()
 		//	1
 		//);
 
-		//ゲーム選択画面に戻るテクスチャ
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseSelectTextureNo));
-		SpriteDrawColorRotation
-		(
-			PauseObject[4].Position.x,
-			PauseObject[4].Position.y,
-			0.0f,		
-			PauseObject[4].Size.x,
-			PauseObject[4].Size.y,
-			PauseObject[4].Rotate,
-			PauseObject[4].Color,
-			0,
-			1.0f,
-			1.0f,
-			1
-		);
+		////ゲーム選択画面に戻るテクスチャ
+		//GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(PauseSelectTextureNo));
+		//SpriteDrawColorRotation
+		//(
+		//	PauseObject[4].Position.x,
+		//	PauseObject[4].Position.y,
+		//	0.0f,		
+		//	PauseObject[4].Size.x,
+		//	PauseObject[4].Size.y,
+		//	PauseObject[4].Rotate,
+		//	PauseObject[4].Color,
+		//	0,
+		//	1.0f,
+		//	1.0f,
+		//	1
+		//);
 	}
 }
 

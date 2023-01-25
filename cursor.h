@@ -30,6 +30,7 @@ typedef struct
 	int RotIndex;	//回転した数
 	int PieceIndex;	//持ってるぴ－ス
 	bool pFlag;	//プレーヤーがいるかどうか
+	bool dFlag;//ドッペルゲンガーがいるかどうか
 	bool bHave;					// ピースを持っているフラグ
 	bool useFlag;				// 使用中フラグ
 }CURSOR;
