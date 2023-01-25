@@ -71,6 +71,7 @@ void InitScene(SCENE no){
 
 		break;
 	case SCENE::SCENE_STAGESELECT:
+		StopSound(g_GameSoundNo);
 		InitStageSelect();
 		InitStory();
 		//g_StageSelectSoundNo = LoadSound(StageSelectName[Irand(3)]);

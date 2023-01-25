@@ -40,7 +40,7 @@ HRESULT InitPuzzleCip()
 		g_ChipPuzzleChip[i].Size = D3DXVECTOR2(CIP_SIZE_X, CIP_SIZE_Y);
 		g_ChipPuzzleChip[i].DrawSize = D3DXVECTOR2(CIP_SIZE_X*2, CIP_SIZE_Y*2);
 		g_ChipPuzzleChip[i].Type = CIP_NONE;
-		g_ChipPuzzleChip[i].Col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_ChipPuzzleChip[i].Col = D3DXCOLOR(1.0f, 1.0f, 0.5f, 1.0f);
 		g_ChipPuzzleChip[i].Rotation = 0.0f;
 		g_ChipPuzzleChip[i].NextPieceIndex = -1;
 		g_ChipPuzzleChip[i].PieceIndex = -1;
