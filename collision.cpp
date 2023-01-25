@@ -1234,9 +1234,9 @@ void UpdateCollision(){
 
 
 
-////==========================
-////パズルピース当たり判定
-////==========================
+//==========================
+//パズルピース当たり判定
+//==========================
 //void PieceCollision()
 //{
 //
@@ -1684,10 +1684,11 @@ void PieceCollision()
 													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
 
 													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
+													PositionPlas(temp, pPiece[i].no);
 
 													if (fourPieceCollision(pPiece[i], i))
 													{
-														PositionPlas(temp, pPiece[i].no);
+														//PositionPlas(temp, pPiece[i].no);
 														pPiece[i].OldMovePos = pPiece[i].pos;
 														if (pFlag)
 														{
@@ -1729,12 +1730,13 @@ void PieceCollision()
 												{
 													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
 
-													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_SIZE, pPiece[pJoint[k].indexno].pos.y);
+													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
+													PositionPlas(temp, pPiece[i].no);
 
 													if (fourPieceCollision(pPiece[i], i))
 													{
 
-														PositionPlas(temp, pPiece[i].no);
+														//PositionPlas(temp, pPiece[i].no);
 														pPiece[i].OldMovePos = pPiece[i].pos;
 														if (pFlag)
 														{
@@ -1780,10 +1782,11 @@ void PieceCollision()
 													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT) - pPiece[i].pos;
 
 													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT);
+													PositionPlas(temp, pPiece[i].no);
 
 													if (fourPieceCollision(pPiece[i], i))
 													{
-														PositionPlas(temp, pPiece[i].no);
+														//PositionPlas(temp, pPiece[i].no);
 														pPiece[i].OldMovePos = pPiece[i].pos;
 														if (pFlag)
 														{
@@ -1829,10 +1832,11 @@ void PieceCollision()
 													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT) - pPiece[i].pos;
 
 													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT);
+													PositionPlas(temp, pPiece[i].no);
 
 													if (fourPieceCollision(pPiece[i], i))
 													{
-														PositionPlas(temp, pPiece[i].no);
+														//PositionPlas(temp, pPiece[i].no);
 														pPiece[i].OldMovePos = pPiece[i].pos;
 														if (pFlag)
 														{
@@ -3824,9 +3828,9 @@ bool SpritStageCollision(Piece p)
 	//左
 
 
-	if (x < left.x - 240 / 2);
+	if (x < left.x - 180 / 2);
 	{
-		if (p.pos.x < left.x - 240 / 2)
+		if (p.pos.x < left.x - 180 / 2)
 		{
 			return false;
 

@@ -111,6 +111,7 @@ HRESULT InitPlayer()
 	g_Player.frame = 0;
 	g_Player.CoolTime = PLAYER_COOLTIME;
 	g_Player.PieceIndex = 0;
+	g_Player.HaveKey = 0;
 
 	g_Player.SoundRightFlag = false;
 	g_Player.SoundLeftFlag = false;
@@ -367,7 +368,8 @@ void UpdatePlayer()
 
 			// ジャンプ
 			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock||g_Player.isBrokenBlock||g_Player.isFallBlock)
-				&& g_Player.sp.y <= 0 && (Keyboard_IsKeyDown(KK_SPACE)|| IsButtonPressed(0, XINPUT_GAMEPAD_A)))
+				&& g_Player.sp.y <= 0 && (Keyboard_IsKeyDown(KK_SPACE) ||		// keyboard SPACE
+					IsButtonTriggered(0, XINPUT_GAMEPAD_A)))						// GamePad A
 			{
 
 				g_Player.sp.y = 2.8f;			// スピードのyをマイナスにする
