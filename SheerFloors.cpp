@@ -29,6 +29,8 @@ HRESULT InitSheerFloors()
 
 		gSheerFloors[i].index = -1;
 
+		gSheerFloors[i].rot = 0.0f;
+
 		gSheerFloors[i].use = false;
 
 		gSheerFloorsNo = LoadTexture(gSheerFloorsTextureName);
@@ -38,7 +40,7 @@ HRESULT InitSheerFloors()
 }
 void UninitSheerFloors()
 {
-	if (gSheerFloorsTexture)
+	if (gSheerFloorsTexture != NULL)
 	{
 		gSheerFloorsTexture->Release();
 		gSheerFloorsTexture = NULL;
@@ -59,12 +61,15 @@ void DrawSheerFloors()
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(gSheerFloorsNo));
 
 			SpriteDrawColorRotation(
-				gSheerFloors[i].pos.x, gSheerFloors[i].pos.y,-0.1f,
-				gSheerFloors[i].size.x, gSheerFloors[i].size.y,
-				0.0f,
+				gSheerFloors[i].pos.x, 
+				gSheerFloors[i].pos.y,
+				-0.1f,
+				gSheerFloors[i].size.x,
+				-gSheerFloors[i].size.y,
+				gSheerFloors[i].rot,
 				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 				0,
-				1.0f / 10.0f,
+				1.0f / 1.0f,
 				1.0f / 1.0f,
 				1
 			);
@@ -72,11 +77,23 @@ void DrawSheerFloors()
 	}
 }
 
-void SetSheerFloors(D3DXVECTOR2 p, D3DXVECTOR2 s,int index)
+void SetSheerFloors(D3DXVECTOR2 p, D3DXVECTOR2 s, int direction, int index)
 {
 	for (int i = 0; i < SHEERFLOORS_NUM; i++) {
 		if (!gSheerFloors[i].use)
 		{
+			switch (direction) {
+			case 0:gSheerFloors[i].rot = (direction + 2) * 90;
+				break;
+			case 1:gSheerFloors[i].rot = direction * 90;
+				break;
+			case 2:gSheerFloors[i].rot = (direction - 2) * 90;
+				break;
+			case 3:gSheerFloors[i].rot = direction * 90;
+				break;
+			default:
+				break;
+			}
 			gSheerFloors[i].pos = p + D3DXVECTOR2(0.0f, BLOCK_CHIP_SIZE / 2);
 			gSheerFloors[i].size = s;
 			gSheerFloors[i].index = index;
