@@ -141,7 +141,7 @@ HRESULT InitStageSelect() {
 			b = 0;
 		}
 
-		g_StageSelectStairs[i].pos = D3DXVECTOR2(90.0f+(b*28.0f), 270.0f+(b*40.0f) + (250 * a));
+		g_StageSelectStairs[i].pos = D3DXVECTOR2(90.0f+ (b * 28.0f), 270.0f+(b * 40.0f) + (250 * a));
 		g_StageSelectStairs[i].size = D3DXVECTOR2(30.0f, 40.0f);
 		g_StageSelectStairs[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		b++;
@@ -605,7 +605,7 @@ void DrawStageSelect() {
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairsTexNo2));
 
 			SpriteDrawColorRotation(
-				g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x + 36.0f,
+				g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x + 24.0f,
 				g_StageSelectStairs[i].pos.y + 4.0f,
 				0.5f,
 				g_StageSelectStairs[i].size.x * 5,
