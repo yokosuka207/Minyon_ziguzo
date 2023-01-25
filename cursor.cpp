@@ -517,54 +517,54 @@ void UpdateCursor()
 							}
 						}
 					}
-					// ピースの中にプレイヤーがいない
-					if (!g_Cursor.pFlag && !g_Cursor.dFlag)
-					{
-						// 回転
-						if (Keyboard_IsKeyTrigger(KK_E) ||								// keyboard E
-							IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_SHOULDER))			// GamePad R
-						{
-							RotateMapChipR(NoIndex);
-							g_Cursor.RotIndex++;
-						}
-						else if (Keyboard_IsKeyTrigger(KK_Q) ||					// keyboard Q
-							IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_SHOULDER)) {	// GamePad L
-							RotateMapChipL(NoIndex);
-							g_Cursor.RotIndex--;
-						}
-					}
-					else
-					{
-						if (g_Cursor.pFlag)
-						{
-							pPlayer->Position += temp;
-							pPlayer->oldpos = pPlayer->Position;
-						}
-						if (g_Cursor.dFlag)
-						{
-							pDoppel->Position += temp;
-							pDoppel->oldpos = pDoppel->Position;
-						}
-					}
-					//if (!g_Cursor.pFlag)
+					//// ピースの中にプレイヤーがいない
+					//if (!g_Cursor.pFlag && !g_Cursor.dFlag)
 					//{
 					//	// 回転
-					//	if (Keyboard_IsKeyTrigger(KK_A) ||								// keyboard A
-					//		IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_SHOULDER))		// GamePad R
+					//	if (Keyboard_IsKeyTrigger(KK_E) ||								// keyboard E
+					//		IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_SHOULDER))			// GamePad R
 					//	{
 					//		RotateMapChipR(NoIndex);
 					//		g_Cursor.RotIndex++;
 					//	}
-					//	else if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_SHOULDER)) {	// GamePad L
+					//	else if (Keyboard_IsKeyTrigger(KK_Q) ||					// keyboard Q
+					//		IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_SHOULDER)) {	// GamePad L
 					//		RotateMapChipL(NoIndex);
 					//		g_Cursor.RotIndex--;
 					//	}
 					//}
 					//else
 					//{
-					//	pPlayer->Position += temp;
-					//	pPlayer->oldpos = pPlayer->Position;
+					//	if (g_Cursor.pFlag)
+					//	{
+					//		pPlayer->Position += temp;
+					//		pPlayer->oldpos = pPlayer->Position;
+					//	}
+					//	if (g_Cursor.dFlag)
+					//	{
+					//		pDoppel->Position += temp;
+					//		pDoppel->oldpos = pDoppel->Position;
+					//	}
 					//}
+					if (!g_Cursor.pFlag)
+					{
+						// 回転
+						if (Keyboard_IsKeyTrigger(KK_A) ||								// keyboard A
+							IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_SHOULDER))		// GamePad R
+						{
+							RotateMapChipR(NoIndex);
+							g_Cursor.RotIndex++;
+						}
+						else if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_SHOULDER)) {	// GamePad L
+							RotateMapChipL(NoIndex);
+							g_Cursor.RotIndex--;
+						}
+					}
+					else
+					{
+						pPlayer->Position += temp;
+						pPlayer->oldpos = pPlayer->Position;
+					}
 					break;
 				}
 				else {
