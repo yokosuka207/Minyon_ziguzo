@@ -155,6 +155,10 @@ void	UpdatePause()
 		g_PauseButton[0].Update();
 		g_PauseButton[1].Update();
 
+		// マウスの1フレーム前の座標
+		static float MouseOldPosX = GetMousePosX();
+		static float MouseOldPosY = GetMousePosY();
+
 		//[----------コントローラーによるボタンの選択----------
 		if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_DOWN)) {		// GamePad 十字キー　下
 			for (int i = 0; i < BUTTON_MAX; i++) {
@@ -194,9 +198,13 @@ void	UpdatePause()
 
 		//[----------ボタンの処理----------
 		for (int i = 0; i < BUTTON_MAX; i++) {
-			// マウスとボタンが当たっていたらそのボタンを選ぶ
-			if(g_PauseButton[i].CollisionMouse()) {
-				g_pSelectPauseButton = &g_PauseButton[i];
+			// マウスが動いていたら
+			if (MouseOldPosX != GetMousePosX() ||
+				MouseOldPosY != GetMousePosY()) {
+				// マウスとボタンが当たっていたらそのボタンを選ぶ
+				if (g_PauseButton[i].CollisionMouse()) {
+					g_pSelectPauseButton = &g_PauseButton[i];
+				}
 			}
 
 			// 選ばれているかいないか
@@ -225,7 +233,11 @@ void	UpdatePause()
 				g_PauseButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f));
 			}
 		}
+		// 次に備えて1フレーム前の座標に入れる
+		MouseOldPosX = GetMousePosX();
+		MouseOldPosY = GetMousePosY();
 		//----------ボタンの処理----------]
+
 	}
 }
 //======================

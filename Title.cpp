@@ -132,6 +132,10 @@ void	UpdateTitle()
 	g_TitleButton[1].Update();
 
 	UpdateGameMouse();
+	// マウスの1フレーム前の座標
+	static float MouseOldPosX = GetMousePosX();
+	static float MouseOldPosY = GetMousePosY();
+
 	FADEPARAM* pFadeParam = GetFadeParam();
 
 	//[----------コントローラーによるボタンの選択----------
@@ -173,9 +177,13 @@ void	UpdateTitle()
 
 	//[----------ボタンの処理----------
 	for (int i = 0; i < BUTTON_MAX; i++) {
-		// マウスとボタンが当たっていたらそのボタンを選ぶ
-		if (g_TitleButton[i].CollisionMouse()) {
-			g_pSelectTitleButton = &g_TitleButton[i];
+		// マウスが動いていたら
+		if (MouseOldPosX != GetMousePosX() ||
+			MouseOldPosY != GetMousePosY()) {
+			// マウスとボタンが当たっていたらそのボタンを選ぶ
+			if (g_TitleButton[i].CollisionMouse()) {
+				g_pSelectTitleButton = &g_TitleButton[i];
+			}
 		}
 
 		// 選ばれているかいないか
@@ -206,6 +214,10 @@ void	UpdateTitle()
 			g_TitleButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f));
 		}
 	}
+
+	// 次に備えて1フレーム前の座標に入れる
+	MouseOldPosX = GetMousePosX();
+	MouseOldPosY = GetMousePosY();
 	//----------ボタンの処理----------]
 	////キー入力のチェック
 	//if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||			// GamePad	B
