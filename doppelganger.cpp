@@ -193,7 +193,7 @@ void UpdateDoppelganger()
 		g_bHave = false;
 	}
 
-	if (!Mouse_IsLeftDown() &&			// mouse ç∂
+	if (!Mouse_IsLeftDown() ||			// mouse ç∂
 		!g_bHave)
 	{
 
