@@ -1,8 +1,8 @@
 //=============================================================================
 //
 //	エネミー処理[enemy.cpp]
-//															Author:	Fusegi
-//															Date:	Fusegi
+//															Author:	
+//															Date:	
 //-----------------------------------------------------------------------------
 //															Update:	22/12/06
 //=============================================================================
@@ -16,6 +16,7 @@
 #include "xkeyboard.h"
 #include "collision.h"
 #include "sound.h"
+#include"cursor.h"
 
 static ENEMY g_Enemy[ENEMY_MAX];
 
@@ -40,6 +41,10 @@ HRESULT InitEnemy() {
 		g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_LEFT;
 		g_Enemy[i].UseFlag = false;
 		g_Enemy[i].AIFlag = false;
+		g_Enemy[i].PaternNo = 0.0f;
+		g_Enemy[i].uv_w = -1.0f;
+		g_Enemy[i].uv_h = 1.0f;
+		g_Enemy[i].NumPatern = 1;
 		g_EnemySoundNo = LoadSound(g_EnemySoundName);
 	}
 	return S_OK;
@@ -56,21 +61,61 @@ void UninitEnemy() {
 
 
 void UpdateEnemy() {
-	for (int i = 0; i < ENEMY_MAX; i++) {
-		if (g_Enemy[i].UseFlag) {
-			if (g_Enemy[i].AIFlag)
-			{
-				g_Enemy[i].BulletWait++;
-				if (g_Enemy[i].BulletWait > 120)
+
+	CURSOR* pCursor = GetCurso();		//  カーソル
+	if (!pCursor->bHave)
+	{
+
+
+		for (int i = 0; i < ENEMY_MAX; i++) {
+			if (g_Enemy[i].UseFlag) {
+
+				switch (g_Enemy[i].dir)
 				{
-					SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), 1);
-					
+				case ENEMY_DIRECTION::DIRECTION_LEFT:
+					g_Enemy[i].uv_w = -1.0f;
+					break;
+				case ENEMY_DIRECTION::DIRECTION_RIGHT:
+					//g_Enemy[i].uv_w = 1.0f;
 
-					g_Enemy[i].BulletWait = 0;
-
+					break;
+				default:
+					break;
 				}
+				if (g_Enemy[i].AIFlag)
+				{
+					g_Enemy[i].BulletWait++;
+					if (g_Enemy[i].BulletWait > 120)
+					{
+						switch (g_Enemy[i].dir)
+						{
+						case ENEMY_DIRECTION::DIRECTION_LEFT:
+							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(-BULLET_SPEED, 0.0f));
+							break;
+						case ENEMY_DIRECTION::DIRECTION_RIGHT:
+							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(BULLET_SPEED, 0.0f));
+
+							break;
+						case ENEMY_DIRECTION::DIRECTION_UP:
+							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(0.0f, BULLET_SPEED));
+
+							break;
+						case ENEMY_DIRECTION::DIRECTION_DOWN:
+							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(0.0f, -BULLET_SPEED));
+
+							break;
+						default:
+							break;
+						}
+
+
+
+						g_Enemy[i].BulletWait = 0;
+
+					}
+				}
+
 			}
-			
 		}
 	}
 }
@@ -85,22 +130,83 @@ void DrawEnemy() {
 				-0.1f,
 				g_Enemy[i].size.x,
 				g_Enemy[i].size.y,
-				180.0f,
+				g_Enemy[i].rot,
 				g_Enemy[i].color,
-				0.0f,
-				-1.0f / 1.0f,
-				1.0f / 1.0f,
-				1
+				g_Enemy[i].PaternNo,
+				g_Enemy[i].uv_w,
+				g_Enemy[i].uv_h,
+				g_Enemy[i].NumPatern
 			);
 		}
 	}
 }
-void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index) {
+void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_DIRECTION d) {
 	for (int i = 0; i < ENEMY_MAX; i++) {
 		if (!g_Enemy[i].UseFlag) {
+			if (d==ENEMY_DIRECTION::DIRECTION_LEFT)
+			{
+				switch (direction) {
+				case 0:g_Enemy[i].rot = direction * 90;
+					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_RIGHT;
+
+					break;
+				case 1:g_Enemy[i].rot = (direction + 2) * 90;
+					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_DOWN;
+
+					break;
+				case 2:g_Enemy[i].rot = direction * 90;
+					g_Enemy[i].dir = d;
+					break;
+				case 3:g_Enemy[i].rot = (direction - 2) * 90;
+					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_UP;
+
+					break;
+				default:
+					break;
+				}
+
+			}
+			if (d == ENEMY_DIRECTION::DIRECTION_RIGHT)
+			{
+				switch (direction) {
+				case 0:g_Enemy[i].rot = direction * 90;
+					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_LEFT;
+
+					break;
+				case 1:g_Enemy[i].rot = (direction + 2) * 90;
+					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_UP;
+
+					break;
+				case 2:g_Enemy[i].rot = direction * 90;
+					g_Enemy[i].dir = d;
+					break;
+				case 3:g_Enemy[i].rot = (direction - 2) * 90;
+					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_DOWN;
+
+
+					break;
+				default:
+					break;
+				}
+
+			}
+
+			switch (direction) {
+			case 0:g_Enemy[i].rot = direction * 90;
+				break;
+			case 1:g_Enemy[i].rot = (direction - 2) * 90;
+				break;
+			case 2:g_Enemy[i].rot = direction * 90;
+				break;
+			case 3:g_Enemy[i].rot = (direction + 2) * 90;
+				break;
+			default:
+				break;
+			}
 			g_Enemy[i].pos = pos;
-			g_Enemy[i].size = size;
+			g_Enemy[i].size = size * 2.0f;
 			g_Enemy[i].index = index;
+			
 			g_Enemy[i].UseFlag = true;
 			break;
 		}

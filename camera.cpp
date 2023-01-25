@@ -88,63 +88,28 @@ void UninitCamera(void)
 void UpdateCamera(void)
 {
 	PLAYER* pPlayer = GetPlayer();
-	// カメラを初期に戻す
-	if (Keyboard_IsKeyTrigger(KK_P))
-	{
-		UninitCamera();
-		InitCamera();
-	}
+	MOUSE* pMouse = GetMouse();
 
-	// 視野角を変更する
-	//if (Keyboard_IsKeyTrigger(KK_O))
-	//{// 角度を大きくする
-	//	g_Camera.fov += 1.0f;
-	//}
-	//else if (Keyboard_IsKeyTrigger(KK_L))
-	//{// 角度を小さくする
-	//	g_Camera.fov -= 1.0f;
-	//}
-	if (Keyboard_IsKeyDown(KK_UP))//W
-	{
-		g_Camera.fov = 20.0f;
-		g_Camera.zoomFlag = true;
-		if (g_Camera.fov < 20.0f)
-		{
-			g_Camera.fov = 20.0f;
-
-		}
-
-	}
-	if (Keyboard_IsKeyDown(KK_DOWN))//S
-	{
-		g_Camera.fov = 48.0f;
-		if (g_Camera.fov > 47.0f)
-		{
-			InitCamera();
-			g_Camera.fov = 45.0f;
-
-			g_Camera.zoomFlag = false;
-
-		}
-
-	}
-	if (Keyboard_IsKeyDown(KK_Z))
-	{
-
-	}
-
-
-
-
-	if (GetThumbLeftX(0) != 0|| GetThumbLeftY(0) != 0|| IsButtonPressed(0, XINPUT_GAMEPAD_A))
+	// ズームイン
+	if (Keyboard_IsKeyDown(KK_UP) ||		// 矢印　上
+		IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_UP) ||		// GamePad　十字キー　上
+		//GetThumbLeftX(0) != 0 ||			// GamePad　左スティック 
+		//GetThumbLeftY(0) != 0 ||
+		pPlayer->Position != pPlayer->oldpos)
 	{
 		g_Camera.fov = 20.0f;
 		g_Camera.zoomFlag = true;
 	}
-	if (GetThumbRightX(0) != 0 || GetThumbRightY(0) != 0)
+	// ズームアウト
+	if (Keyboard_IsKeyDown(KK_DOWN) ||						// 矢印　下
+		IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_DOWN) ||		// GamePad 十字キー　下
+		GetThumbRightX(0) != 0 ||			// GamePad　右スティック
+		GetThumbRightY(0) != 0 ||
+		pMouse->PosX != pMouse->oldPosX ||
+		pMouse->PosY != pMouse->oldPosY)
 	{
-		InitCamera();
 		g_Camera.fov = 45.0f;
+		InitCamera();
 		g_Camera.zoomFlag = false;
 	}
 	if (g_Camera.zoomFlag)

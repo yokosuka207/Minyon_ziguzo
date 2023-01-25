@@ -16,6 +16,7 @@
 #include "xinput.h"
 #include "xkeyboard.h"
 #include"player.h"
+#include"doppelganger.h"
 #include"MapChip.h"
 #include"joint.h"
 #include"puzzlecip.h"
@@ -24,6 +25,9 @@
 //#include"puzzlecip.h"
 #include"jump_stand.h"
 #include"spawnpoint.h"
+#include "Key.h"
+#include "OpenKey.h"
+#include "MoveBlock.h"
 #include "switch.h"
 #include "SwitchWall.h"
 #include"warp.h"
@@ -33,6 +37,14 @@
 #include "start.h"
 #include"high_broken.h"
 #include "sound.h"
+#include"MoveBlock.h"
+#include"fallblock.h"
+#include"enemy.h"
+#include "JumpStandExplain.h"
+#include "StoryKey.h"
+#include"lamp.h"
+#include"lamp_switch.h"
+#include"spawnpoint_d.h"
 
 //--------------------------------------------------
 // マクロ定義
@@ -55,13 +67,12 @@ static char* g_CursorCatchTextureName = (char*)"data\\texture\\cursor_catch.png"
 static int g_CursorTextureNo[2];
 
 static bool oneFlag = false;	//マウスでパズルを一つ持っているか
-static int g_CursorIndex = -1;	//マウスの掴んだパズルの番号入れ
 static int NoIndex = -1;	//マウスで掴んだピース番号
 static bool g_CursorFlag = false;	//マウスをクリックしているか
 
 //マウスクリックSE
 static int g_CursorSoundNo = 0;
-static char g_CursorSoundName[] = "data\\SoundData\\SE\\ピース掴む音（カーソル移動2）.wav";
+static char g_CursorSoundName[] = "data\\SoundData\\SE\\ピースを掴む音(効果音ラボ).wav";
 
 
 //==================================================
@@ -70,7 +81,7 @@ static char g_CursorSoundName[] = "data\\SoundData\\SE\\ピース掴む音（カーソル移
 HRESULT InitCursor()
 {
 	oneFlag = false;	//マウスでパズルを一つ持っているか
-	g_CursorIndex = -1;	//マウスの掴んだパズルの番号入れ
+	g_Cursor.PieceIndex = -1;	//マウスの掴んだパズルの番号入れ
 	NoIndex = -1;	//マウスで掴んだピース番号
 	g_CursorFlag = false;	//マウスをクリックしているか
 
@@ -84,8 +95,11 @@ HRESULT InitCursor()
 		g_Cursor.texNo = LoadTexture(g_CursorTextureName);
 		g_Cursor.RotIndex = 0;
 		g_Cursor.pFlag = false;
+		g_Cursor.dFlag = false;
 		g_Cursor.useFlag = false;
 		g_Cursor.type = 0;
+		g_Cursor.PieceIndex = -1;
+		g_Cursor.bHave = false;
 	}
 	g_CursorTextureNo[0] = LoadTexture(g_CursorTextureName);
 	g_CursorTextureNo[1] = LoadTexture(g_CursorCatchTextureName);
@@ -112,11 +126,15 @@ void UpdateCursor()
 	PUZZLE* pPuzzle = GetPuzzle();
 	BLOCK* pBlock = GetBlock();
 	PLAYER* pPlayer = GetPlayer();
+	DOPPELGANGER* pDoppel = GetDoppelganger();
 	Piece* pPiece = GetPiece();
 	BLOCK* pCipBlock = GetChipBlock();
 	JOINT* pJoint = GetJoint();
 	PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
 	GOAL* pGoal = GetGoal();
+	KEY* pKey = GetKey();
+	OPENKEY* pOpenKey = GetOpenKey();
+	MOVEBLOCK* pMoveBlock = GetMoveBlock();
 	THORNBLOCK* pThornBlock = GetThornBlock();
 	JUMPSTAND* pJumpStand = GetJumpStand();
 	SpawnPoint* pSpawnPoint = GetSpawnPoint();
@@ -128,348 +146,458 @@ void UpdateCursor()
 	GKey* pGkey = GetGKey();
 	START* pStart = GetStart();
 	HIGH* pHigh = GetHigh();
+	FALLBLOCK* pFallBlock = GetFallBlock();
+	ENEMY* pEnemy = GetEnemy();
+	EXPLAIN* pExplain = GetExplain();
+	STORYKEY* pStoryKey = GetStoryKey();
+	LAMP* pLamp = GetLamp();
+	LAMP_SWITCH* pLampSwitch = GetLampSwitch();
+	SpawnPointD* pSpawnPointD = GetSpawnPointD();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
-	g_Cursor.pos.x = GetXMousePosX();
-	g_Cursor.pos.y = GetXMousePosY();
+	static float MouseOldPosX = GetMousePosX();
+	static float MouseOldPosY = GetMousePosY();
+
+	if (MouseOldPosX != GetMousePosX() || MouseOldPosY != GetMousePosY()) {
+		// 絶対モード時 カーソル移動
+		g_Cursor.pos.x = GetXMousePosX();
+		g_Cursor.pos.y = GetXMousePosY();
+	}
+
 	//g_Cursor.oldPos.x = g_Cursor.pos.x -= SCREEN_WIDTH / 2;
 	//g_Cursor.pos.y = -g_Cursor.pos.y + SCREEN_HEIGHT / 2;
 
-	if (Mouse_IsLeftDown()) {
+	g_Cursor.oldPos = g_Cursor.pos;
+	//[----------移動----------
+	if (GetThumbRightX(0) < -0.2f || GetThumbRightX(0) > 0.2f) {				// 右スティック	左右
+		g_Cursor.pos.x += GetThumbRightX(0) * 12;	// 左右移動
+	}
+	if (GetThumbRightY(0) < -0.2f || GetThumbRightY(0) > 0.2f) {				// 右スティック	上下
+		g_Cursor.pos.y -= GetThumbRightY(0) * 12;	// 上下移動
+	}
+	//----------移動----------]
 
-	
-		g_Cursor.oldPos = g_Cursor.pos;
-		//[----------移動----------
-		if (GetThumbRightX(0) < -0.2f || GetThumbRightX(0) > 0.2f) {				// 右スティック	左右
-			g_Cursor.pos.x += GetThumbRightX(0) * 12;	// 左右移動
+	//[----------壁判定 (壁の上下左右)----------
+	// 上下
+	if (g_Cursor.pos.y - g_Cursor.size.y / 2 < SCREEN_LIMIT_UP ||
+		g_Cursor.pos.y + g_Cursor.size.y / 2 > SCREEN_LIMIT_DOWN) 
+	{
+		g_Cursor.pos.y = g_Cursor.oldPos.y;
+	}
+	// 左右
+	if(	g_Cursor.pos.x - g_Cursor.size.x / 2 < SCREEN_LIMIT_LEFT ||
+		g_Cursor.pos.x + g_Cursor.size.x / 2 > SCREEN_LIMIT_RIGHT) 
+	{
+		g_Cursor.pos.x = g_Cursor.oldPos.x;
+	}
+	//-----------------------------------------]
+
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {		// GamePad B
+		if (!g_Cursor.bHave) {
+			g_Cursor.bHave = true;
 		}
-		if (GetThumbRightY(0) < -0.2f || GetThumbRightY(0) > 0.2f) {				// 右スティック	上下
-			g_Cursor.pos.y -= GetThumbRightY(0) * 12;	// 上下移動
+		else {
+			g_Cursor.bHave = false;
 		}
-		//----------移動----------]
+	}
 
-		// 絶対モード時
-		g_Cursor.pos.x = GetXMousePosX();
-		g_Cursor.pos.y = GetXMousePosY();
-		// 相対モード時
-		//g_Cursor.pos.x += GetXMousePosX();
-		//g_Cursor.pos.y += GetXMousePosY();
+	if (Mouse_IsLeftRelease()) {		// moues 左
+		g_Cursor.bHave = false;
+	}
 
-		//[----------壁判定 (壁の上下左右)----------
-		// 上下
-		if (g_Cursor.pos.y - g_Cursor.size.y / 2 < SCREEN_LIMIT_UP ||
-			g_Cursor.pos.y + g_Cursor.size.y / 2 > SCREEN_LIMIT_DOWN) 
+	if (Mouse_IsLeftDown() ||						// mouse 左
+		g_Cursor.bHave)
+	{
+		for (int i = 0; i < PUZZLE_MAX; i++)
 		{
-			g_Cursor.pos.y = g_Cursor.oldPos.y;
-		}
-		// 左右
-		if(	g_Cursor.pos.x - g_Cursor.size.x / 2 < SCREEN_LIMIT_LEFT ||
-			g_Cursor.pos.x + g_Cursor.size.x / 2 > SCREEN_LIMIT_RIGHT) 
-		{
-			g_Cursor.pos.x = g_Cursor.oldPos.x;
-		}
-		//-----------------------------------------]
-
-		if (Mouse_IsLeftDown())
-		{
-			
-
-			for (int i = 0; i < PUZZLE_MAX; i++)
+			if (pPiece[i].UseFlag)
 			{
-				//if (pPuzzle[i].UseFlag)
-				//{
-				//	pPuzzle[i].MoveEndFlag = false;
-				//	if (pPuzzle[i].Position.y - pPuzzle[i].Size.y / 3 < g_Cursor.PosY&&
-				//		pPuzzle[i].Position.y + pPuzzle[i].Size.y / 3 > g_Cursor.PosY&&
-				//		pPuzzle[i].Position.x - pPuzzle[i].Size.x / 3 < g_Cursor.PosX&&
-				//		pPuzzle[i].Position.x + pPuzzle[i].Size.x / 3 > g_Cursor.PosX&&
-				//		!oneFlag)
-				//	{
-				//		if (pPuzzle[i].Position.y - pPuzzle[i].Size.y / 2 < pPlayer->Position.y&&
-				//			pPuzzle[i].Position.y + pPuzzle[i].Size.y / 2 > pPlayer->Position.y&&
-				//			pPuzzle[i].Position.x - pPuzzle[i].Size.x / 2 < pPlayer->Position.x&&
-				//			pPuzzle[i].Position.x + pPuzzle[i].Size.x / 2 > pPlayer->Position.x
-				//			)
-				//		{
-				//		}
-				//		else
-				//		{
-				//			oneFlag = true;
-				//			g_CursorIndex = i;
-				//			pPuzzle[i].oldPosition = pPuzzle[i].Position;
-				//		}
-				//	}
-				//	else if (oneFlag && i == g_CursorIndex)
-				//	{
-				//		pPuzzle[g_CursorIndex].Position.x = g_Cursor.PosX;
-				//		pPuzzle[g_CursorIndex].Position.y = g_Cursor.PosY;
-				//		pPuzzle[g_CursorIndex].MoveFlag = true;
-				//		if (GetKeyboardTrigger(DIK_A))	//aキーが押されたら
-				//		{				//押されてる時の処理
-				//			pPuzzle[g_CursorIndex].Rotation += 90.0f;
-				//			pPuzzle[g_CursorIndex].RotNum++;
-				//			if (pPuzzle[g_CursorIndex].RotNum >=4)
-				//			{
-				//				pPuzzle[g_CursorIndex].RotNum = 0;
-				//			}
-				//			if (pPuzzle[g_CursorIndex].Block_Type == TYPE_GRAND)
-				//			{
-				//				for (int j = 0; j < 4; j++)
-				//				{
-				//					if (pPuzzle[g_CursorIndex].blockIndex[j] != -1)
-				//					{
-				//						//pBlock[pPuzzle[g_CursorIndex].blockIndex[j]].Rotation += 90.0f;
-				//					}
-				//				}
-				//			}
-				//			PuzzleTypeShift(g_CursorIndex);
-				//		}
-				//	}
-				//}
-
-				if (pPiece[i].UseFlag)
+				if (pPiece[i].pos.y - PUZZLE_HEIGHT / 3 < -g_Cursor.pos.y + SCREEN_HEIGHT / 2 &&
+					pPiece[i].pos.y + PUZZLE_HEIGHT / 3 > -g_Cursor.pos.y + SCREEN_HEIGHT / 2 &&
+					pPiece[i].pos.x - PUZZLE_WIDHT / 3 < g_Cursor.pos.x - SCREEN_WIDTH / 2 &&
+					pPiece[i].pos.x + PUZZLE_WIDHT / 3 > g_Cursor.pos.x - SCREEN_WIDTH / 2 &&
+					!oneFlag)
 				{
-
-					if (pPiece[i].pos.y - PUZZLE_HEIGHT / 3 < -g_Cursor.pos.y+SCREEN_HEIGHT/2 &&
-						pPiece[i].pos.y + PUZZLE_HEIGHT / 3 > -g_Cursor.pos.y + SCREEN_HEIGHT / 2 &&
-						pPiece[i].pos.x - PUZZLE_WIDHT / 3 < g_Cursor.pos.x - SCREEN_WIDTH / 2 &&
-						pPiece[i].pos.x + PUZZLE_WIDHT / 3 > g_Cursor.pos.x - SCREEN_WIDTH / 2 &&
-						!oneFlag)
+					//持ったピースの中にプレーヤーがいたら
+					if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pPlayer->Position.y &&
+						pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pPlayer->Position.y &&
+						pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pPlayer->Position.x &&
+						pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pPlayer->Position.x
+						)
 					{
+						g_Cursor.pFlag = true;
 						
-
-						//プレーヤーが持ったピースの中にいたら
-						if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pPlayer->Position.y &&
-							pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pPlayer->Position.y &&
-							pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pPlayer->Position.x &&
-							pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pPlayer->Position.x
-							)
-						{
-							g_Cursor.pFlag = true;
-							
-							pPlayer->OneOldpos = pPlayer->Position;
-						}
-
-						g_Cursor.RotIndex = 0;
-
-						oneFlag = true;
-						if (oneFlag == true)
-						{
-							//SetVolume(g_CursorSoundNo, 0.5f);
-							PlaySound(g_CursorSoundNo, 0);
-						}
-						pPiece[i].MoveFlag = true;
-						g_CursorIndex = i;
-						NoIndex = pPiece[i].no;
-						pPiece[i].OldMovePos = pPiece[i].pos;
-						g_Cursor.type = 1;
+						pPlayer->OneOldpos = pPlayer->Position;
 					}
-					else if (oneFlag && i == g_CursorIndex)
+					//持ったピースの中にドッペルゲンガーがいたら
+					if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pDoppel->Position.y &&
+						pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pDoppel->Position.y &&
+						pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pDoppel->Position.x &&
+						pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pDoppel->Position.x &&
+						pDoppel->UseFlag == true)
 					{
-						pPiece[g_CursorIndex].OldPos = pPiece[g_CursorIndex].pos;
+						g_Cursor.dFlag = true;
 
-						pPiece[g_CursorIndex].pos.x = g_Cursor.pos.x - SCREEN_WIDTH / 2;
-						pPiece[g_CursorIndex].pos.y = -g_Cursor.pos.y + SCREEN_HEIGHT / 2;
-						//pPiece[g_CursorIndex].MoveFlag = true;
-						D3DXVECTOR2 temp = (pPiece[g_CursorIndex].pos - pPiece[g_CursorIndex].OldPos);
+						pDoppel->OneOldpos = pDoppel->Position;
+					}
 
-						for (int i = 0; i < BLOCK_CHIP_MAX; i++)
-						{//ブロック動かす
-							if (pCipBlock[i].UseFlag)
-							{
-								if (pCipBlock[i].PieceIndex == NoIndex)
-								{
-									pCipBlock[i].Position += temp;
-								}
+					g_Cursor.RotIndex = 0;
 
-							}
+					oneFlag = true;
+					if (oneFlag == true)
+					{
+						//SetVolume(g_CursorSoundNo, 0.5f);
+						PlaySound(g_CursorSoundNo, 0);
+					}
+					pPiece[i].MoveFlag = true;
+					g_Cursor.PieceIndex = i;
+					NoIndex = pPiece[i].no;
+					pPiece[i].OldMovePos = pPiece[i].pos;
+					g_Cursor.type = 1;
+					g_Cursor.bHave = true;
+					break;
+				}
+				else if (oneFlag && i == g_Cursor.PieceIndex)
+				{
+					g_Cursor.type = 1;
+					g_Cursor.bHave = true;
 
-						}
-						for (int i = 0; i < BROKEN_MAX; i++)
-						{//ブロック動かす
-							if (pBroken[i].UseFlag)
-							{
-								if (pBroken[i].index == NoIndex)
-								{
-									pBroken[i].Postion += temp;
-								}
+					pPiece[g_Cursor.PieceIndex].OldPos = pPiece[g_Cursor.PieceIndex].pos;
 
-							}
+					pPiece[g_Cursor.PieceIndex].pos.x = g_Cursor.pos.x - SCREEN_WIDTH / 2;
+					pPiece[g_Cursor.PieceIndex].pos.y = -g_Cursor.pos.y + SCREEN_HEIGHT / 2;
+					//pPiece[g_Cursor.PieceIndex].MoveFlag = true;
+					D3DXVECTOR2 temp = (pPiece[g_Cursor.PieceIndex].pos - pPiece[g_Cursor.PieceIndex].OldPos);
 
-						}
-						for (int i = 0; i < HIGH_MAX; i++)
-						{//ブロック動かす
-							if (pHigh[i].UseFlag)
-							{
-								if (pHigh[i].index == NoIndex)
-								{
-									pHigh[i].Postion += temp;
-								}
 
-							}
-
-						}
-						for (int i = 0; i < SHEERFLOORS_NUM; i++)
-						{//ブロック動かす
-							if (pSheerFloors[i].use)
-							{
-								if (pSheerFloors[i].index == NoIndex)
-								{
-									pSheerFloors[i].pos += temp;
-								}
-
-							}
-
-						}
-						for (int i = 0; i < JOINT_MAX; i++)
-						{//凹凸
-							if (pJoint[i].useFlag)
-							{
-								if (pJoint[i].pieNo == NoIndex)
-								{
-									pJoint[i].pos += temp;
-								}
-
-							}
-						}
-						for (int i = 0; i < PUZZLE_MAX; i++)
-						{//ピースチップ
-							if (pPuzzleCip[i].UseFlag)
-							{
-								if (pPuzzleCip[i].PieceIndex == NoIndex)
-								{
-									pPuzzleCip[i].Position += temp;
-								}
-							}
-						}
-						if (pGoal->UseFlag)
-						{//ゴール
-							if (pGoal->pieceIndex == NoIndex)
-							{
-								pGoal->Pos += temp;
-							}
-						}
-						for (int i = 0; i < START_MAX; i++) {
-							if (pStart[i].UseFlag) {
-								if (pStart[i].PieceIndex == NoIndex) {
-									pStart[i].pos += temp;
-								}
-							}
-						}
-						//if (pGkey->UseFlag)
-						//{//ゴール
-						//	if (pGkey-> == NoIndex)
-						//	{
-						//		pGkey->Pos += temp;
-						//	}
-						//}
-
-						for (int i = 0; i < THORN_BLOCK_MAX; i++)
-						{//とげ
-							if (pThornBlock[i].UseFlag)
-							{
-								if (pThornBlock[i].PieceIndex == NoIndex)
-								{
-									pThornBlock[i].Postion += temp;
-								}
-							}
-
-						}
-						for (int i = 0; i < JUMPSTAND_MAX; i++)
-						{//ジャンプスタンド
-							if (pJumpStand[i].UseJumpStand)
-							{
-								if (pJumpStand[i].NowPieceIndex == NoIndex)
-								{
-									pJumpStand[i].pos += temp;
-								}
-							}
-						}
-						for (int i = 0; i < SPAWN_POINT_MAX; i++)
-						{//スポーンポイント
-							if (pSpawnPoint[i].UseFlag)
-							{
-								if (pSpawnPoint[i].PieceIndex == NoIndex)
-								{
-									pSpawnPoint[i].Position += temp;
-								}
-
-							}
-
-						}
-						for (int i = 0; i < SWITCH_MAX; i++)
-						{//スイッチ
-							if (pSwitch[i].UseFlag)
-							{
-								if (pSwitch[i].PieceIndex == NoIndex)
-								{
-									pSwitch[i].pos += temp;
-								}
-
-							}
-						}
-						for (int i = 0; i < SWITCHWALL_MAX; i++)
-						{//スイッチ壁
-							if (pSwitchWall[i].UseFlag)
-							{
-								if (pSwitchWall[i].PieceIndex == NoIndex)
-								{
-									pSwitchWall[i].pos += temp;
-								}
-
-							}
-						}
-						for (int i = 0; i < WARP_MAX; i++)
-						{//ワープ
-							if (pWarp[i].UseFlag)
-							{
-								if (pWarp[i].PieceIndex == NoIndex)
-								{
-									pWarp[i].Position += temp;
-								}
-
-							}
-						}
-
-						if (!g_Cursor.pFlag)
+					for (int i = 0; i < BLOCK_CHIP_MAX; i++)
+					{//ブロック動かす
+						if (pCipBlock[i].UseFlag)
 						{
-							if (Keyboard_IsKeyTrigger(KK_A))	//aキーが押されたら
+							if (pCipBlock[i].PieceIndex == NoIndex)
 							{
-								RotateMapChipR(NoIndex);
-								g_Cursor.RotIndex += 1;
+								pCipBlock[i].Position += temp;
+							}
 
+						}
+
+					}
+					for (int i = 0; i < BROKEN_MAX; i++)
+					{//ブロック動かす
+						if (pBroken[i].UseFlag)
+						{
+							if (pBroken[i].index == NoIndex)
+							{
+								pBroken[i].Postion += temp;
+							}
+
+						}
+
+					}
+					for (int i = 0; i < HIGH_MAX; i++)
+					{//ブロック動かす
+						if (pHigh[i].UseFlag)
+						{
+							if (pHigh[i].index == NoIndex)
+							{
+								pHigh[i].Postion += temp;
+							}
+
+						}
+
+					}
+					for (int i = 0; i < SHEERFLOORS_NUM; i++)
+					{//ブロック動かす
+						if (pSheerFloors[i].use)
+						{
+							if (pSheerFloors[i].index == NoIndex)
+							{
+								pSheerFloors[i].pos += temp;
+							}
+
+						}
+
+					}
+					for (int i = 0; i < MOVE_BLOCK_MAX; i++)
+					{
+						if (pMoveBlock[i].bUse)
+						{
+							if (pMoveBlock[i].NowPieceIndex == NoIndex)
+							{
+								pMoveBlock[i].pos += temp;
+							}
+
+						}
+
+					}
+					for (int i = 0; i < FALLBLOCK_MAX; i++)
+					{
+						if (pFallBlock[i].UseFlag)
+						{
+							if (pFallBlock[i].PieceIndex == NoIndex)
+							{
+								pFallBlock[i].Position += temp;
 							}
 						}
-						else
+					}
+					for (int i = 0; i < JOINT_MAX; i++)
+					{//凹凸
+						if (pJoint[i].useFlag)
+						{
+							if (pJoint[i].pieNo == NoIndex)
+							{
+								pJoint[i].pos += temp;
+							}
+
+						}
+					}
+					for (int i = 0; i < PUZZLE_MAX; i++)
+					{//ピースチップ
+						if (pPuzzleCip[i].UseFlag)
+						{
+							if (pPuzzleCip[i].PieceIndex == NoIndex)
+							{
+								pPuzzleCip[i].Position += temp;
+							}
+						}
+					}
+					if (pGoal->UseFlag)
+					{//ゴール
+						if (pGoal->pieceIndex == NoIndex)
+						{
+							pGoal->Pos += temp;
+						}
+					}
+					for (int i = 0; i < START_MAX; i++) {
+						if (pStart[i].UseFlag) {
+							if (pStart[i].PieceIndex == NoIndex) {
+								pStart[i].pos += temp;
+							}
+						}
+					}
+					for (int i = 0; i < EXPLAIN_MAX; i++) {
+						if (pExplain[i].bUse) {
+							if (pExplain[i].PieceIndex == NoIndex) {
+								pExplain[i].pos += temp;
+							}
+						}
+					}
+					//if (pGkey->UseFlag)
+					//{//ゴール
+					//	if (pGkey-> == NoIndex)
+					//	{
+					//		pGkey->Pos += temp;
+					//	}
+					//}
+					for (int i = 0; i < KEY_MAX; i++) {
+						if (pKey[i].UseFlag) {
+							if (pKey[i].index == NoIndex) {
+								pKey[i].Position += temp;
+							}
+						}
+					}
+					
+					for (int i = 0; i < OPEN_KEY_MAX * STAGE_OPEN_KEY_MAX; i++) {
+						if ((pOpenKey + i)->UseFlag) {
+							if ((pOpenKey + i)->index == NoIndex) {
+								(pOpenKey + i)->Position += temp;
+							}
+						}
+					}
+					
+					for (int i = 0; i < THORN_BLOCK_MAX; i++)
+					{//とげ
+						if (pThornBlock[i].UseFlag)
+						{
+							if (pThornBlock[i].PieceIndex == NoIndex)
+							{
+								pThornBlock[i].Postion += temp;
+							}
+						}
+
+					}
+					for (int i = 0; i < JUMPSTAND_MAX; i++)
+					{//ジャンプスタンド
+						if (pJumpStand[i].UseJumpStand)
+						{
+							if (pJumpStand[i].NowPieceIndex == NoIndex)
+							{
+								pJumpStand[i].pos += temp;
+							}
+						}
+					}
+					for (int i = 0; i < SPAWN_POINT_MAX; i++)
+					{//スポーンポイント
+						if (pSpawnPoint[i].UseFlag)
+						{
+							if (pSpawnPoint[i].PieceIndex == NoIndex)
+							{
+								pSpawnPoint[i].Position += temp;
+							}
+
+						}
+
+					}
+					for (int i = 0; i < SWITCH_MAX; i++)
+					{//スイッチ
+						if (pSwitch[i].UseFlag)
+						{
+							if (pSwitch[i].PieceIndex == NoIndex)
+							{
+								pSwitch[i].pos += temp;
+							}
+
+						}
+					}
+					for (int i = 0; i < SWITCHWALL_MAX * SWITCHWALL_LIMIT; i++)
+					{//スイッチ壁
+						if (pSwitchWall[i].UseFlag)
+						{
+							if (pSwitchWall[i].PieceIndex == NoIndex)
+							{
+								pSwitchWall[i].pos += temp;
+							}
+
+						}
+					}
+					for (int i = 0; i < WARP_MAX; i++)
+					{//ワープ
+						if (pWarp[i].UseFlag)
+						{
+							if (pWarp[i].PieceIndex == NoIndex)
+							{
+								pWarp[i].Position += temp;
+							}
+						}
+					}
+					for (int i = 0; i < ENEMY_MAX; i++)
+					{
+						if (pEnemy[i].UseFlag)
+						{
+							if (pEnemy[i].index == NoIndex)
+							{
+								pEnemy[i].pos += temp;
+							}
+						}
+					}
+					for (int i = 0; i < STORYKEY_MAX; i++) {
+						if (pStoryKey[i].bUse) {
+							if (pStoryKey[i].no == NoIndex) {
+								pStoryKey[i].pos += temp;
+							}
+						}
+					}
+					for (int i = 0; i < LAMP_MAX; i++)
+					{
+						if (pLamp[i].UseFlag)
+						{
+							if (pLamp[i].PieceIndex == NoIndex)
+							{
+								pLamp[i].pos += temp;
+							}
+						}
+					}
+					for (int i = 0; i < LAMP_SWITCH_MAX; i++)
+					{
+						if (pLampSwitch[i].UseFlag)
+						{
+							if (pLampSwitch[i].PieceIndex == NoIndex)
+							{
+								pLampSwitch[i].pos += temp;
+							}
+						}
+					}
+					for (int i = 0; i < SPAWN_POINT_D_MAX; i++)
+					{
+						if (pSpawnPointD[i].UseFlag)
+						{
+							if (pSpawnPointD[i].PieceIndex == NoIndex)
+							{
+								pSpawnPointD[i].Position += temp;
+							}
+						}
+					}
+					// ピースの中にプレイヤーがいない
+					if (!g_Cursor.pFlag && !g_Cursor.dFlag)
+					{
+						// 回転
+						if (Keyboard_IsKeyTrigger(KK_E) ||								// keyboard E
+							IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_SHOULDER))			// GamePad R
+						{
+							RotateMapChipR(NoIndex);
+							g_Cursor.RotIndex++;
+						}
+						else if (Keyboard_IsKeyTrigger(KK_Q) ||					// keyboard Q
+							IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_SHOULDER)) {	// GamePad L
+							RotateMapChipL(NoIndex);
+							g_Cursor.RotIndex--;
+						}
+					}
+					else
+					{
+						if (g_Cursor.pFlag)
 						{
 							pPlayer->Position += temp;
 							pPlayer->oldpos = pPlayer->Position;
 						}
+						if (g_Cursor.dFlag)
+						{
+							pDoppel->Position += temp;
+							pDoppel->oldpos = pDoppel->Position;
+						}
 					}
-					else {
-						g_Cursor.type = 0;
-					}
+					//if (!g_Cursor.pFlag)
+					//{
+					//	// 回転
+					//	if (Keyboard_IsKeyTrigger(KK_A) ||								// keyboard A
+					//		IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_SHOULDER))		// GamePad R
+					//	{
+					//		RotateMapChipR(NoIndex);
+					//		g_Cursor.RotIndex++;
+					//	}
+					//	else if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_SHOULDER)) {	// GamePad L
+					//		RotateMapChipL(NoIndex);
+					//		g_Cursor.RotIndex--;
+					//	}
+					//}
+					//else
+					//{
+					//	pPlayer->Position += temp;
+					//	pPlayer->oldpos = pPlayer->Position;
+					//}
+					break;
+				}
+				else {
+					g_Cursor.type = 0;
+					g_Cursor.bHave = false;
 				}
 			}
 		}
 	}
-	if (!Mouse_IsLeftDown())
+	
+	if (!Mouse_IsLeftDown() &&						// mouse 左
+		!g_Cursor.bHave)
 	{
-		if (g_CursorIndex != -1)
+		if (g_Cursor.PieceIndex != -1)
 		{
-			pPuzzle[g_CursorIndex].MoveFlag = false;
-			pPuzzle[g_CursorIndex].MoveEndFlag = true;
-			pPiece[g_CursorIndex].MoveEndFlag = true;
-			pPiece[g_CursorIndex].MoveFlag = false;
+			pPuzzle[g_Cursor.PieceIndex].MoveFlag = false;
+			pPuzzle[g_Cursor.PieceIndex].MoveEndFlag = true;
+			pPiece[g_Cursor.PieceIndex].MoveEndFlag = true;
+			pPiece[g_Cursor.PieceIndex].MoveFlag = false;
 
 			//g_Cursor.RotIndex = 0;
-			g_Cursor.pFlag = false;
 		}
+		g_Cursor.pFlag = false;
+		g_Cursor.dFlag = false;
+
 		oneFlag = false;
-		g_CursorIndex = -1;
+		g_Cursor.PieceIndex = -1;
 		NoIndex = -1;
 		g_Cursor.type = 0;
 	}
+
+	MouseOldPosX = GetMousePosX();
+	MouseOldPosY = GetMousePosY();
 }
 
 //==================================================

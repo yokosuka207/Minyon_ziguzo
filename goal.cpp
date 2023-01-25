@@ -11,6 +11,7 @@
 #include "fade.h"
 #include"StageSelect.h"
 #include "start.h"
+#include "save.h"
 
 GOAL g_Goal;
 GKey g_GKey;
@@ -32,6 +33,7 @@ HRESULT InitGoal(){
 	g_Goal.uv_h = CIP_UV_H;
 
 	g_Goal.UseFlag = false;
+	g_Goal.GetFlag = false;
 	return S_OK;
 }
 
@@ -72,11 +74,14 @@ void UpdateGoal()
 				if (ReturnStageNo() != STAGE_MAX)
 				{
 					pStageSelect[ReturnStageNo() + 1].StageUseFlag = true;
-					pStageSelect[ReturnStageNo() + 1].size = D3DXVECTOR2(120.0f, 140.f);
+				}
+				else {		// 最後のステージだったら
+					SetStageAllClear(true);
 				}
 				for (int i = 0; i < START_MAX; i++) {
 					if (pStart[i].UseFlag) {
 						g_Goal.UseFlag = false;
+						g_Goal.GetFlag = true;
 						pStart[i].GoalFlag = true;
 						//SetResultType(WIN);
 						//StartFade(FADE::FADE_ALPHA_OUT);
@@ -110,10 +115,13 @@ void SetGoal(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index)
 {
 		if (!g_Goal.UseFlag)
 		{
-			g_Goal.Pos = pos;
-			g_Goal.Size = size;
-			g_Goal.pieceIndex = index;
-			g_Goal.UseFlag = true;
+			if (!g_Goal.GetFlag)
+			{
+				g_Goal.Pos = pos;
+				g_Goal.Size = size;
+				g_Goal.pieceIndex = index;
+				g_Goal.UseFlag = true;
+			}
 		}
 	
 

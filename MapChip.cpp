@@ -38,6 +38,11 @@
 #include "enemy.h"
 #include "player.h"
 #include "start.h"
+#include "JumpStandExplain.h"
+#include "StoryKey.h"
+#include "lamp.h"
+#include "lamp_switch.h"
+#include "spawnpoint_d.h"
 
 #include "xkeyboard.h"
 
@@ -86,8 +91,8 @@ static char* g_MapChipTextureName[PIECE_TEX_MAX] = {
 static int g_MapChipTextureNo[PIECE_TEX_MAX];
 // ステージ情報が入っているファイルの名前
 static char* g_StageFileName[21] = {
-	(char*)"data/MapData/map.txt",			// デバッグ用マップ
-	//(char*)"data/MapData/Stage01.txt",
+	//(char*)"data/MapData/map.txt",			// デバッグ用マップ
+	(char*)"data/MapData/Stage01.txt",
 	(char*)"data/MapData/Stage02.txt",
 	(char*)"data/MapData/Stage03.txt",
 	(char*)"data/MapData/Stage04.txt",
@@ -111,28 +116,28 @@ static char* g_StageFileName[21] = {
 };
 
 // 各ステージ各ピースの情報
-static int g_StagePieceInfo[21][12] = {
-	{  82,  180,   01,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 1				 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
-	{  92,   61,   61,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 2  				 ┃・21ステージ									 ┃
-	{  82,   91,  133,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 3  ←ここまで	 ┃・各ステージ最大ピース数12					 ┃
-	{  00, -130,  143,   00,    0,    0,    0,    0,    0,    0,    0,    0},	// 4				 ┃・テクスチャの名前からした値が				 ┃
-	{ 190,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 5				 ┃			十と百の位の数字					 ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 6				 ┃・一の位は回転回数							 ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 7				 ┃				テクスチャを参考に左(反時計)回り ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 8				 ┃											     ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 9				 ┃・左右を反転させたい場合は -(マイナス) にする ┃
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 10				 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 11								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 12							
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 13						
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 14					
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 15								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 16								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 17								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 18								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 19								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 20								
-	{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0},	// 21								
+static int g_StagePieceInfo[21][8] = {
+	{  82,  180,   01,    0,    0,    0,    0,    0,},	// 1	○			 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
+	{ 121,  131,   61,    0,    0,    0,    0,    0,},	// 2  	○			 ┃・21ステージ									 ┃
+	{  82,   91,  133,    0,    0,    0,    0,    0,},	// 3	○			 ┃・各ステージ最大ピース数7					 ┃
+	{  00, -131,  153,  170,    0,    0,    0,    0,},	// 4	○			 ┃・テクスチャの名前からした値が				 ┃
+	{  00, -131,  131,   63,    0,    0,    0,    0,},	// 5	○			 ┃			十と百の位の数字					 ┃
+	{  32,   62, -142,  140,    0,    0,    0,    0,},	// 6	○			 ┃・一の位は回転回数							 ┃
+	{ 182,  141,  171,   52,    0,    0,    0,    0,},	// 7	○			 ┃				テクスチャを参考に左(反時計)回り ┃
+	{ 170,   00, -141,   80, -141,    0,    0,    0,},	// 8	○			 ┃											     ┃
+	{  10,   10,   53,   30,   20,    0,    0,    0,},	// 9	○			 ┃・左右を反転させたい場合は -(マイナス) にする ┃
+	{ 153,   10,  140,   51,   61,    0,    0,    0,},	// 10	○			 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
+	{  43,  110, -131,  181,   10,    0,    0,    0,},	// 11	○							
+	{ 101,  190, -140,   01,   01,    0,    0,    0,},	// 12	○						
+	{  20,   63,   60,   73,   71,    0,    0,    0,},	// 13	○					
+	{  52,   72,  181,   01,   10,    0,    0,    0,},	// 14	○				
+	{-131, -153, -150, -141, -151,   10,    0,    0,},	// 15	○							
+	{-150,  160,  171,  140,   72,   53,    0,    0,},	// 16	○							
+	{ 101,  190,   60,   70,   53,   10,    0,    0,},	// 17	○							
+	{  52,  190,  171, -143,  191,   10,    0,    0,},	// 18	○							
+	{-131,   20,  132,  113,   10,   53, -151,    0,},	// 19	○							
+	{  20,  161,   61,  132,   00,  133,  120,    0,},	// 20	○							
+	{  43,  180,  160,  190,  182,  180,  112,   80,},	// 21	○							
 };										 
 
 /*　　　				　		／＼			↑触るな危険！  不用意に踏み込まない方がいいぞ！
@@ -187,6 +192,9 @@ HRESULT InitMapChip() {
 
 	SplitStage* pSplitStage = GetSplitStage();
 	SetPieceMapChip(pSplitStage->Split34[0][0], 0);
+	if (ReturnStageNo() == 20) {
+		SetPieceMapChip(pSplitStage->Split34[1][1], 7);
+	}
 
 	return S_OK;
 }
@@ -276,7 +284,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			D3DXVECTOR2 position = D3DXVECTOR2((pos.x + PUZZLE_SIZE / 2) - j * BLOCK_CHIP_SIZE - BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
 			D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
 
-			switch (g_PieceMapChip[Pin].chip[g_PieceMapChip[no].direction][i][j]) {
+			switch (g_PieceMapChip[Pin].chip[g_PieceMapChip[Pin].direction][i][j]) {
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BLANK) :	//0				
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_PUSH) :	//1　凸
@@ -348,14 +356,50 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER)://22　ドッペルゲンガー
 				SetDoppelGanger(position, DrawSize, no);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY)://23　敵
-				SetEnemy(position, DrawSize, no);
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_LEFT)://23　敵
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_LEFT);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_PLAYER)://24　敵
-				SetPlayerPosition(position);
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_RIGHT)://24　敵
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_RIGHT);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN):	//26 ヒントブロック(Piace)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 26);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN2):	//27 ②ヒントブロック(Piace)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 27);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN3):	//28 ③ヒントブロック(Piace)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 28);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_BLOCKEXPLAIN):	//29 ヒントブロック(Block)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 29);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMYEXPLAIN):	//30 ヒントブロック(Enemy)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 30);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_BROKENEXPLAIN): //31 ヒントブロック(BrokenBlock)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 31);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEEXPLAIN):	//32 ヒントブロック(MoveBlock)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 32);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_SHEEREXPLAIN):	//33 ヒントブロック(SheerFloorsBlock)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 33);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY):	//34 ストーリー解放鍵
+				SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_LAMP):	//35 街灯
+				SetLamp(position, DrawSize, no, g_PieceMapChip[no].direction, 4);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_LAMP_SWITCH):	//36 街灯スイッチ
+				SetLampSwitch(position, DrawSize, g_PieceMapChip[no].direction, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT_D)://37　ドッペルゲンガーの初期位置?
+				SetSpawnPointD(position, DrawSize, no);
 				break;
 			default:
 				break;
@@ -478,6 +522,8 @@ void DeleteMapChip(int PieceNo) {
 	DeleteSwitchWall(g_PieceMapChip[PieceNo].no);
 	DeleteKey(g_PieceMapChip[PieceNo].no);
 	DeleteOpenKey(g_PieceMapChip[PieceNo].no);
+	DeleteFallBlock(g_PieceMapChip[PieceNo].no);
+	DeleteMoveBlock(g_PieceMapChip[PieceNo].no);
 	DeleteBroken(g_PieceMapChip[PieceNo].no);
 	DeleteHigh(g_PieceMapChip[PieceNo].no);
 	DeleteSheet(g_PieceMapChip[PieceNo].no);
@@ -487,6 +533,11 @@ void DeleteMapChip(int PieceNo) {
 	DeleteEnemy(g_PieceMapChip[PieceNo].no);
 	DeleteWarp(g_PieceMapChip[PieceNo].no);
 	DeleteStart(g_PieceMapChip[PieceNo].no);
+	DeleteExplain(g_PieceMapChip[PieceNo].no);
+	DeleteStoryKey(g_PieceMapChip[PieceNo].no);
+	DeleteLamp(g_PieceMapChip[PieceNo].no);
+	DeleteLampSwitch(g_PieceMapChip[PieceNo].no);
+	DeleteSpawnPointD(g_PieceMapChip[PieceNo].no);
 }
 Piece* GetPiece() {
 	return g_PieceMapChip;
@@ -498,25 +549,41 @@ Piece* GetPiece() {
 void SetPieceMapChip(D3DXVECTOR2 pos, int PieceNo) {
 	int stageNo = ReturnStageNo();
 	int PieceInfo = g_StagePieceInfo[stageNo][PieceNo];
-	for (int p = 0; p < PUZZLE_MAX; p++) {
-		if (!g_PieceMapChip[p].UseFlag) {
-			g_PieceMapChip[p].pos = pos;
-			g_PieceMapChip[p].no = PieceNo;
-			SetMapChip(pos, PieceNo, p);
-			if (PieceInfo < 0) {
-				g_PieceMapChip[p].uvW = -PIECE_UV_W;
-			}
-			else {
-				g_PieceMapChip[p].uvW = PIECE_UV_W;
-			}
-			g_PieceMapChip[p].TexNo = g_MapChipTextureNo[abs(PieceInfo / 10)];
-			g_PieceMapChip[p].startAngle = abs(PieceInfo % 10) - 2;
-			g_PieceMapChip[p].InventoryFlag = false;
-
-			g_PieceMapChip[p].UseFlag = true;
-			break;
+	if (!g_PieceMapChip[PieceNo].UseFlag) {
+		g_PieceMapChip[PieceNo].pos = pos;
+		g_PieceMapChip[PieceNo].no = PieceNo;
+		SetMapChip(pos, PieceNo, PieceNo);
+		if (PieceInfo < 0) {
+			g_PieceMapChip[PieceNo].uvW = -PIECE_UV_W;
 		}
+		else {
+			g_PieceMapChip[PieceNo].uvW = PIECE_UV_W;
+		}
+		g_PieceMapChip[PieceNo].TexNo = g_MapChipTextureNo[abs(PieceInfo / 10)];
+		g_PieceMapChip[PieceNo].startAngle = abs(PieceInfo % 10) - 2;
+		g_PieceMapChip[PieceNo].InventoryFlag = false;
+		g_PieceMapChip[PieceNo].UseFlag = true;
 	}
+
+	//for (int p = 0; p < PUZZLE_MAX; p++) {
+	//	if (!g_PieceMapChip[p].UseFlag) {
+	//		g_PieceMapChip[p].pos = pos;
+	//		g_PieceMapChip[p].no = PieceNo;
+	//		SetMapChip(pos, PieceNo, p);
+	//		if (PieceInfo < 0) {
+	//			g_PieceMapChip[p].uvW = -PIECE_UV_W;
+	//		}
+	//		else {
+	//			g_PieceMapChip[p].uvW = PIECE_UV_W;
+	//		}
+	//		g_PieceMapChip[p].TexNo = g_MapChipTextureNo[abs(PieceInfo / 10)];
+	//		g_PieceMapChip[p].startAngle = abs(PieceInfo % 10) - 2;
+	//		g_PieceMapChip[p].InventoryFlag = false;
+
+	//		g_PieceMapChip[p].UseFlag = true;
+	//		break;
+	//	}
+	//}
 }
 //--------------------------------
 //インベントリ内のマップチップ
@@ -629,11 +696,41 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER)://22　ドッペルゲンガー
 				SetDoppelGanger(position, DrawSize, no);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY)://23　敵
-				SetEnemy(position, DrawSize, no);
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_LEFT)://23　敵
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_LEFT);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_RIGHT)://24　敵
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_RIGHT);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN):	//26 ヒントブロック(Piace)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 26);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN2):	//27 ②ヒントブロック(Piace)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 27);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN3):	//28 ③ヒントブロック(Piace)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 28);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_BLOCKEXPLAIN):	//29 ヒントブロック(Block)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 29);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMYEXPLAIN):	//30 ヒントブロック(Enemy)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 30);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_BROKENEXPLAIN): //31 ヒントブロック(BrokenBlock)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 31);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEEXPLAIN):	//32 ヒントブロック(MoveBlock)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 32);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_SHEEREXPLAIN):	//33 ヒントブロック(SheerFloorsBlock)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 33);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY):	//34 ストーリー解放鍵
+				SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction);
 				break;
 			default:
 				break;

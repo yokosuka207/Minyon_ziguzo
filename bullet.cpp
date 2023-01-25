@@ -14,7 +14,9 @@
 #include "sprite.h"
 #include "texture.h"
 #include "input.h"
+#include"collision.h"
 #include "sound.h"
+#include"block.h"
 
 //=============================================================================
 //マクロ定義
@@ -32,7 +34,7 @@ static char* g_TextureName = (char*)"data\\texture\\弾.png";
 
 //弾発射音SE
 static int g_BulletSoundNo = 0;
-static char g_BulletSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
+static char g_BulletSoundName[] = "data\\SoundData\\SE\\銃声(On-Jin).wav";
 
 //=============================================================================
 //初期化処理
@@ -82,13 +84,28 @@ void UninitBullet()
 //=============================================================================
 void UpdateBullet()
 {
+	BLOCK* pBlock = GetChipBlock();
+
+
 	for (int i = 0; i < BULLET_MAX; i++)
 	{
 		if (g_Bullet[i].use == true)
 		{
 			g_Bullet[i].pos.x += g_Bullet[i].sp.x;
-		}
 
+			for (int j = 0; j < BLOCK_CHIP_MAX; j++)
+			{
+				if (!pBlock[j].UseFlag)continue;
+
+				if (CollisionBB(g_Bullet[i].pos,pBlock[j].Position, D3DXVECTOR2(g_Bullet[i].w,g_Bullet[i].h),pBlock[j].Size))
+				{
+					g_Bullet[i].use = false;
+				}
+
+			}
+
+
+		}
 		if (g_Bullet[i].pos.y < SCREEN_LIMIT_UP - (g_Bullet[i].h / 2.0f))
 		{
 			g_Bullet[i].use = false;
@@ -118,13 +135,14 @@ void DrawBullet()
 //=============================================================================
 //セット関数
 //=============================================================================
-void SetBullet(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index)
+void SetBullet(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 spd)
 {
 	for (int i = 0; i < BULLET_MAX; i++)
 	{
 		if (g_Bullet[i].use == false)
 		{
 			g_Bullet[i].pos = pos;
+			g_Bullet[i].sp = spd;
 			g_Bullet[i].h = BULLET_SIZE_H;
 			g_Bullet[i].w = BULLET_SIZE_W;
 			g_Bullet[i].use = true;

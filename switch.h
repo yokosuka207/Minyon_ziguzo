@@ -12,7 +12,7 @@
 
 #include "main.h"
 
-#define SWITCH_MAX (2)
+#define SWITCH_MAX (5)
 
 typedef struct {
 	D3DXVECTOR2 pos;
@@ -23,6 +23,7 @@ typedef struct {
 	int			SwitchIndex;
 	bool		PressFlag;
 	bool		UseFlag;
+	bool		NotPressed;
 
 	int			PaternNo;
 

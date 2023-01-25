@@ -58,9 +58,22 @@ enum class MAPCHIP_TYPE{
 	TYPE_SPWANPOINT,	//20	スポーンポイント
 	TYPE_MOVEBLOCK,		//21	動くブロック
 	TYPE_DOPPELGANGER,	//22	ドッペルゲンガー
-	TYPE_ENEMY,			//23	敵
-	TYPE_PLAYER,		//24	敵
+	TYPE_ENEMY_LEFT,			//23	敵
+	TYPE_ENEMY_RIGHT,		//24	敵
 	TYPE_START,			//25    初期位置
+	TYPE_PIACEEXPLAIN,		//26	ピース回転説明ブロック①
+	TYPE_PIACEEXPLAIN2,		//27	ピース回転説明ブロック②
+	TYPE_PIACEEXPLAIN3,		//28	ピース回転説明ブロック③
+	TYPE_BLOCKEXPLAIN,		//29	ブロック回転してもだいじょうぶだよヒントブロック
+	TYPE_ENEMYEXPLAIN,		//30	敵ヒントブロック
+	TYPE_BROKENEXPLAIN,		//31	壊れるブロックヒントブロック
+	TYPE_MOVEEXPLAIN,		//32	棘の上にブロックおけるよヒントブロック
+	TYPE_SHEEREXPLAIN,		//33	ブロックすけるよヒントブロック
+	TYPE_STORYKEY,		//34	ストーリーキー
+	TYPE_EXPLAIN,		//35	ヒントブロック
+	TYPE_LAMP,			//36	街灯
+	TYPE_LAMP_SWITCH,	//37	街灯スイッチ
+	TYPE_SPWANPOINT_D,	//38	ドッペルゲンガーのスポーンポイント
 
 	TYPE_NUM		
 };

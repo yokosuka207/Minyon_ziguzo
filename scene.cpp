@@ -9,10 +9,10 @@
 #include "time.h"
 #include "pause.h"
 #include "score.h"
-#include "tutorial.h"
 #include "fade.h"
 #include "noizu.h"
 #include "sound.h"
+#include "story.h"
 
 #define SOUND_FADE_OUT_VOLUME (0.02f)
 
@@ -62,7 +62,6 @@ void InitScene(SCENE no){
 		SetVolume(g_TitleSoundNo, 1.0f);//’Êí‚Ívolume 1.0f
 		break;
 	case SCENE::SCENE_TUTORIAL:
-		InitTutorial();
 		InitNoizu();
 
 		break;
@@ -73,6 +72,7 @@ void InitScene(SCENE no){
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		InitStageSelect();
+		InitStory();
 		//g_StageSelectSoundNo = LoadSound(StageSelectName[Irand(3)]);
 		g_StageSelectSoundNo = LoadSound(StageSelectName);
 		PlaySound(g_StageSelectSoundNo, -1);
@@ -90,7 +90,7 @@ void InitScene(SCENE no){
 	case SCENE::SCENE_RESULT:
 		InitResult();
 		InitNoizu();
-
+		g_SaveScene.DataSave();
 		break;
 	default:
 		break;
@@ -106,7 +106,6 @@ void UninitScene(){
 		UninitNoizu();
 		break;
 	case SCENE::SCENE_TUTORIAL:
-		UninitTutorial();
 		UninitNoizu();
 
 		break;
@@ -118,6 +117,7 @@ void UninitScene(){
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UninitStageSelect();
+		UninitStory();
 		UninitNoizu();
 		StopSound(g_StageSelectSoundNo);
 		g_SoundFadeOutVolume = 0.0f;
@@ -147,7 +147,6 @@ void UpdateScene(){
 		UpdateNoizu();
 		break;
 	case SCENE::SCENE_TUTORIAL:
-		UpdateTutorial();
 		UpdateNoizu();
 
 		break;
@@ -165,6 +164,7 @@ void UpdateScene(){
 		break;
 	case SCENE::SCENE_STAGESELECT:
 		UpdateStageSelect();
+		UpdateStory();
 		UpdateNoizu();
 		if (pFade->FadeFlag) {
 			SetVolume(g_StageSelectSoundNo, 0.4f - g_SoundFadeOutVolume);
@@ -206,7 +206,6 @@ void DrawScene(){
 
 		break;
 	case SCENE::SCENE_TUTORIAL:
-		DrawTutorial();
 		DrawNoizu();
 
 

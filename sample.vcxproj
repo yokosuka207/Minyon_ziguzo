@@ -143,6 +143,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="cursor.cpp" />
+    <ClCompile Include="EffectLight.cpp" />
     <ClCompile Include="EffectSpark.cpp" />
     <ClCompile Include="doppelganger.cpp" />
     <ClCompile Include="enemy.cpp" />
@@ -154,13 +155,16 @@
     <ClCompile Include="high_broken.cpp" />
     <ClCompile Include="input.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="inventory.cpp" />
-    <ClCompile Include="issuer.cpp" />
     <ClCompile Include="joint.cpp" />
     <ClCompile Include="JumpStandExplain.cpp" />
     <ClCompile Include="jump_stand.cpp" />
     <ClCompile Include="Key.cpp" />
+    <ClCompile Include="KeyDisplay.cpp" />
+    <ClCompile Include="lamp.cpp" />
+    <ClCompile Include="lamp_switch.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapChip.cpp" />
     <ClCompile Include="mouse.cpp" />
@@ -176,7 +180,6 @@
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="puzzle.cpp" />
     <ClCompile Include="puzzlecip.cpp" />
-    <ClCompile Include="ray.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="save.cpp" />
@@ -185,17 +188,22 @@
     <ClCompile Include="SheerFloors.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="spawnpoint.cpp" />
+    <ClCompile Include="spawnpoint_d.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="SplitStage.cpp" />
     <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="start.cpp" />
+    <ClCompile Include="story.cpp" />
+    <ClCompile Include="StoryKey.cpp" />
     <ClCompile Include="switch.cpp" />
     <ClCompile Include="SwitchWall.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="thorn_block.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="Title.cpp" />
-    <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="tutorial.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="warp.cpp" />
     <ClCompile Include="xinput.cpp" />
     <ClCompile Include="xkeyboard.cpp" />
@@ -210,6 +218,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="cursor.h" />
+    <ClInclude Include="EffectLight.h" />
     <ClInclude Include="EffectSpark.h" />
     <ClInclude Include="doppelganger.h" />
     <ClInclude Include="enemy.h" />
@@ -221,13 +230,16 @@
     <ClInclude Include="high_broken.h" />
     <ClInclude Include="input.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="inventory.h" />
-    <ClInclude Include="issuer.h" />
     <ClInclude Include="joint.h" />
     <ClInclude Include="JumpStandExplain.h" />
     <ClInclude Include="jump_stand.h" />
     <ClInclude Include="Key.h" />
+    <ClInclude Include="KeyDisplay.h" />
+    <ClInclude Include="lamp.h" />
+    <ClInclude Include="lamp_switch.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MapChip.h" />
     <ClInclude Include="mouse.h" />
@@ -243,7 +255,6 @@
     <ClInclude Include="polygon.h" />
     <ClInclude Include="puzzle.h" />
     <ClInclude Include="puzzlecip.h" />
-    <ClInclude Include="ray.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="save.h" />
@@ -252,17 +263,22 @@
     <ClInclude Include="SheerFloors.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="spawnpoint.h" />
+    <ClInclude Include="spawnpoint_d.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="SplitStage.h" />
     <ClInclude Include="StageSelect.h" />
     <ClInclude Include="start.h" />
+    <ClInclude Include="story.h" />
+    <ClInclude Include="StoryKey.h" />
     <ClInclude Include="switch.h" />
     <ClInclude Include="SwitchWall.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="thorn_block.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="Title.h" />
-    <ClInclude Include="tutorial.h" />
+    <ClInclude Include="tutorial.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="warp.h" />
     <ClInclude Include="xinput.h" />
     <ClInclude Include="xkeyboard.h" />

@@ -56,12 +56,17 @@
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="noizu.cpp" />
-    <ClCompile Include="issuer.cpp" />
-    <ClCompile Include="ray.cpp" />
     <ClCompile Include="EffectSpark.cpp" />
     <ClCompile Include="PlayerLife.cpp" />
     <ClCompile Include="start.cpp" />
     <ClCompile Include="JumpStandExplain.cpp" />
+    <ClCompile Include="story.cpp" />
+    <ClCompile Include="StoryKey.cpp" />
+    <ClCompile Include="KeyDisplay.cpp" />
+    <ClCompile Include="lamp.cpp" />
+    <ClCompile Include="lamp_switch.cpp" />
+    <ClCompile Include="spawnpoint_d.cpp" />
+    <ClCompile Include="EffectLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -131,11 +136,16 @@
     <ClInclude Include="xinput.h" />
     <ClInclude Include="xkeyboard.h" />
     <ClInclude Include="xmouse.h" />
-    <ClInclude Include="issuer.h" />
-    <ClInclude Include="ray.h" />
     <ClInclude Include="EffectSpark.h" />
     <ClInclude Include="PlayerLife.h" />
     <ClInclude Include="start.h" />
     <ClInclude Include="JumpStandExplain.h" />
+    <ClInclude Include="story.h" />
+    <ClInclude Include="StoryKey.h" />
+    <ClInclude Include="KeyDisplay.h" />
+    <ClInclude Include="lamp.h" />
+    <ClInclude Include="lamp_switch.h" />
+    <ClInclude Include="spawnpoint_d.h" />
+    <ClInclude Include="EffectLight.h" />
   </ItemGroup>
 </Project>

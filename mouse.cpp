@@ -4,9 +4,6 @@
 #include"block.h"
 #include"texture.h"
 #include"sprite.h"
-//#include"input.h"
-#include "xinput.h"
-#include "xkeyboard.h"
 #include"player.h"
 #include"MapChip.h"
 #include"joint.h"
@@ -43,8 +40,6 @@ HRESULT InitGameMouse()
 	Mouse.UseFlag = false;
 	Mouse.pFlag = false;
 
-	//Mouse_SetMode(MOUSE_POSITION_MODE_RELATIVE);		// ëäëŒÉÇÅ[ÉhÇ…Ç∑ÇÈ
-
 	return S_OK;
 }
 
@@ -58,29 +53,27 @@ void UpdateGameMouse()
 	g_OldMouse = g_Mouse;
 	Mouse_GetState(&g_Mouse);
 
-	PUZZLE* pPuzzle = GetPuzzle();
-	BLOCK* pBlock = GetBlock();
-	PLAYER* pPlayer = GetPlayer();
-	Piece* pPiece = GetPiece();
-	BLOCK* pCipBlock = GetChipBlock();
-	JOINT* pJoint = GetJoint();
-	PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
-	GOAL* pGoal = GetGoal();
-	THORNBLOCK* pThornBlock = GetThornBlock();
-	JUMPSTAND* pJumpStand = GetJumpStand();
-	SpawnPoint* pSpawnPoint = GetSpawnPoint();
-	SWITCH* pSwitch = GetSwitch();
-	SWITCHWALL* pSwitchWall = GetSwitchWall();
-	Mouse.oldPosX = GetMousePosX();
-	Mouse.oldPosY = GetMousePosY();
+	//PUZZLE* pPuzzle = GetPuzzle();
+	//BLOCK* pBlock = GetBlock();
+	//PLAYER* pPlayer = GetPlayer();
+	//Piece* pPiece = GetPiece();
+	//BLOCK* pCipBlock = GetChipBlock();
+	//JOINT* pJoint = GetJoint();
+	//PUZZLE_CIP* pPuzzleCip = GetPuzzleCip();
+	//GOAL* pGoal = GetGoal();
+	//THORNBLOCK* pThornBlock = GetThornBlock();
+	//JUMPSTAND* pJumpStand = GetJumpStand();
+	//SpawnPoint* pSpawnPoint = GetSpawnPoint();
+	//SWITCH* pSwitch = GetSwitch();
+	//SWITCHWALL* pSwitchWall = GetSwitchWall();
+	Mouse.oldPosX = Mouse.PosX;
+	Mouse.oldPosY = Mouse.PosY;
 
 	y = Mouse.PosY - Mouse.oldPosY;
 	x = Mouse.PosX - Mouse.oldPosX;
 
-	Mouse.PosX = GetMousePosX();
-	Mouse.PosY = GetMousePosY();
-	Mouse.oldPosX = Mouse.PosX -= SCREEN_WIDTH / 2;
-	Mouse.oldPosY = Mouse.PosY -= SCREEN_HEIGHT / 2;
+	Mouse.PosX = GetMousePosX() - SCREEN_WIDTH / 2;
+	Mouse.PosY = GetMousePosY() - SCREEN_HEIGHT / 2;
 
 	Mouse.UseFlag = Mouse_IsLeftDown();
 	Mouse.ScrollFlag = Mouse_IsMiddleDown();

@@ -3,7 +3,6 @@
 #include "renderer.h"
 #include "polygon.h" 
 
-//#include "input.h"	//入力処理
 #include "xinput.h"
 #include "xkeyboard.h"
 
@@ -29,6 +28,8 @@
 #include "score.h"
 #include "SheerFloors.h"
 #include "high_broken.h"
+#include "Key.h"
+#include "OpenKey.h"
 #include "MoveBlock.h"
 #include "switch.h"
 #include "SwitchWall.h"
@@ -37,16 +38,20 @@
 #include "scene.h"
 #include "pause.h"
 #include "goal_key.h"
-#include "doppelganger.h"
+#include "doppelganger.h" //ドッペルゲンガー
 #include "enemy.h"
 #include "bullet.h"
 #include"noizu.h"
-#include "issuer.h"		// 光線発射装置
-#include "ray.h"		// 光線
 #include "EffectSpark.h"	// ヒバナエフェクト
 #include "PlayerLife.h"
 #include "start.h"
 #include "JumpStandExplain.h"
+#include"fallblock.h"
+#include "StoryKey.h"
+#include"KeyDisplay.h"
+#include"lamp.h"
+#include"lamp_switch.h"
+#include "EffectLight.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -83,23 +88,28 @@ void InitGame()
 		InitInventory();			// インベントリの初期化
 		InitCursor();				// カーソルの初期化
 		InitThornBlock();
+		InitKey();
+		InitOpenKey();
 		InitHigh();
 		InitSwitch();
 		InitSwitchWall();
 		InitMoveBlock();
+		InitFallBlock();
 		InitNoizu();
-		InitDoppelganger();
-		SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1);
+		InitDoppelganger(); //ドッペルゲンガー
+		//SetDoppelGanger(D3DXVECTOR2(50, 100),D3DXVECTOR2(DOPPELGANGER_SIZE_W,DOPPELGANGER_SIZE_H),1); //ドッペルゲンガー
 		InitEnemy();
 		InitPause();
-		InitRay();				// 光線の初期化
-		InitIssuer();			// 光線発射装置の初期化
 		InitEffectSpark();		// ヒバナエフェクト
+		InitEffectLight();
 		InitBullet();
 		InitPlayerLife();
+		InitKeyDisplay();
 		InitExplain();
-
+		InitStoryKey();
 		InitCollision();
+		InitLamp();
+		InitLampSwitch();
 	}
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
@@ -138,31 +148,39 @@ void UninitGame()
 	UninitMapChip();
 	UninitCursor();				// カーソルの終了
 	UninitThornBlock();
+	UninitKey();
+	UninitOpenKey();
 	UninitMoveBlock();
+	UninitFallBlock();
 	UninitHigh();
 	UninitSwitch();
 	UninitSwitchWall();
 	UninitNoizu();
-	UninitDoppelganger();
+	UninitDoppelganger(); 	//ドッペルゲンガー
 	UninitEnemy();
 	UninitBullet();
 	UninitPlayerLife();
+	UninitKeyDisplay();
 	UninitExplain();
+	UninitStoryKey();
 	UninitCollision();
+	UninitLamp();
+	UninitLampSwitch();
 
 	UninitPause();
 	pScore->UninitScore();
 	pTime->UninitTime();
 	g_Player3D.Uninit();
-	UninitRay();				// 光線の終了
-	UninitIssuer();				// 光線発射装置の終了
 	UninitEffectSpark();		// ヒバナエフェクト
+	UninitEffectLight();
 }
 
 void UpdateGame()
 {
 	//ポーズ処理
-	if (Keyboard_IsKeyTrigger(KK_TAB)) {
+	if (Keyboard_IsKeyTrigger(KK_TAB) ||				// keyboard TAB
+		IsButtonTriggered(0, XINPUT_GAMEPAD_START) ||	// GamePad START
+		IsButtonTriggered(0, XINPUT_GAMEPAD_BACK)) {	// Gamepad BACK
 		//ポーズフラグがoff
 		if (!(*pause)) {
 			(*pause) = true;
@@ -177,17 +195,15 @@ void UpdateGame()
 			pTime->PauseElapsedTime();
 		}
 	}
-	//if (Keyboard_IsKeyTrigger(KK_R)) {
-	//	ResetGame();
-	//}
 	if (!(*pause)) {
 		//UpdatePolygon();	//ポリゴンの更新
 		BgUpdate();
 		UpdateNoizu();
 		//PuzzleCollision();
 		UpdatePlayer();
-		PieceCollision();
+		UpdateDoppelganger();//ドッペルゲンガー
 		UpdateCollision();
+		PieceCollision();
 
 		UpdateBlock();
 		UpdateJoint();
@@ -202,12 +218,17 @@ void UpdateGame()
 		UpdateJumpStand();
 		UpdateSheerFloors();
 		UpdateThornBlock();
+		UpdateKey();
+		UpdateOpenKey();
 		UpdateMoveBlock();
+		UpdateFallBlock();
 		UpdateHigh();
 		UpdateSwitch();
 		UpdateSwitchWall();
+		UpdateStoryKey();
+		UpdateLamp();
+		UpdateLampSwitch();
 
-		UpdateDoppelganger();
 		UpdateEnemy();
 		UpdateBullet();
 
@@ -217,11 +238,11 @@ void UpdateGame()
 		UpdateCursor();				// カーソルの更新
 		g_Player3D.Update();
 		UpdateCamera();
-		UpdateRay();			// 光線の更新
-		UpdateIssuer();			// 光線発射装置の更新
 		UpdateEffectSpark();	// ヒバナエフェクト
+		UpdateEffectLight();
 
 		UpdatePlayerLife();
+		UpdateKeyDisplay();
 		UpdateExplain();
 	}
 	else {
@@ -244,40 +265,46 @@ void DrawGame()
 		DrawPuzzle();
 		DrawMapChip();
 
-		DrawJoint();				// いずれ必ずこの世から消してやる！
+		//DrawJoint();				// （#^ω^）
 		DrawBlock();
 
 		DrawPuzzleCip();
 		DrawStart();
 		DrawPlayer();
+		DrawDoppelganger();//ドッペルゲンガー
 		DrawGKey();
 		DrawWarp();
 		DrawJumpStand();
 		DrawSheerFloors();
 		DrawThornBlock();
+		DrawKey();
+		DrawOpenKey();
 		DrawMoveBlock();
+		DrawFallBlock();
 		DrawHigh();
 		DrawSwitch();
 		DrawSwitchWall();
 		DrawGoal();
 		DrawBroken();		
 		DrawThornBlock();
+		DrawLamp();
+		DrawLampSwitch();
 
-		DrawDoppelganger();
 		DrawEnemy();
 		DrawBullet();
 		DrawNoizu();
 
 		DrawPlayerLife();
+		DrawKeyDisplay();
 
-		//DrawRay();				// 光線の描画
-		//DrawIssuer();			// 光線発射装置の描画
 		DrawInventory();			// インベントリの描画
 		pTime->DrawGameTime();
 		DrawCursor();				// カーソルの描画
 		g_Player3D.Draw();
 		DrawEffectSpark();		// ヒバナエフェクト
+		DrawEffectLight();
 		SetCamera();
+		DrawStoryKey();
 		DrawExplain();
 	}
 	else {
