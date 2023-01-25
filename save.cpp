@@ -50,7 +50,8 @@ char* g_saveFileName[] = { (char*)"data/SaveData/Data1.bin",			// データ１
 							(char*)"data/SaveData/Data3.bin" };			// データ３
 
 char* g_DataDeleteTextureName = (char*)"data/texture/Erase.png";
-char* g_SaveTitleTextureName = (char*)"data/texture/Select a File.png";
+//char* g_SaveTitleTextureName = (char*)"data/texture/Select a File.png";
+char* g_SaveTitleTextureName = (char*)"data/texture/Save.png";
 int g_SaveTitleTextureNo = -1;
 
 // 各データのボタンを作る
@@ -243,6 +244,8 @@ void Save::Update()
 						m_type = SAVE_TYPE::TYPE_NONE;
 					}
 				}
+				g_DataButton[i].ChangeType();
+				break;
 			}
 		}
 	}

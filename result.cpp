@@ -12,36 +12,38 @@
 #include	"score.h"
 #include	"fade.h"
 #include	"sound.h"
+#include	"button.h"
 //======================
 //マクロ定義
 //=======================
+#define BUTTON_MAX	2
+#define BUTTON_SIZE_X	200
+#define BUTTON_SIZE_Y	100
+#define BUTTON_DRAWSIZE_X	400
+#define BUTTON_DRAWSIZE_Y	200
+ 
 //======================
 //グローバル変数
 //======================
-static	ID3D11ShaderResourceView* g_ResultTexture = NULL;//テクスチャ情報
-static	char* g_ResultTextureName = (char*)"data\\texture\\セーブ画面背景.png";
+static	char* g_ResultBGTextureName = (char*)"data\\texture\\black.png";
 
-static	ID3D11ShaderResourceView* g_ResultGameEndTexture = NULL;//テクスチャ情報
-static	char* g_ResultGameEndTextureName = (char*)"data\\texture\\black.png";
+//static	char* g_ResultGameEndTextureName = (char*)"data\\texture\\black.png";
 
-static	ID3D11ShaderResourceView* g_ResultTextureButton = NULL;//テクスチャ情報
-static	char* g_ResultButtonTextureName = (char*)"data\\texture\\GameEnd_contie_button.jpg";
-
-static	ID3D11ShaderResourceView* g_ResultTextureButton2 = NULL;//テクスチャ情報
-static	char* g_ResultButtonTextureName2 = (char*)"data\\texture\\GameEnd_end_button.jpg";
+// ボタンのテクスチャ
+static	char* g_ResultButtonTextureName[BUTTON_MAX] = { (char*)"data\\texture\\text_exit stage.png" ,
+												(char*)"data\\texture\\text_continue game.png" };
 
 static int g_ChangeSceneResultSoundNo = 0;
 static char g_ChangeSceneResultSoundName[] = "data\\SoundData\\SE\\シーン遷移(魔王魂).wav";
 
 
 
-RESULT	ResultObject[3];//タイトル画面オブジェクト	テクスチャ枚数分の配列
+RESULT	ResultObject;//タイトル画面オブジェクト	背景分
 
-int		ResultTextureNo;//テクスチャ番号
+int		ResultBGTextureNo;//テクスチャ番号
 
-int		ResultGameEndTextureNo;//テクスチャ番号
-int		ResultButtonTextureNo;//テクスチャ番号
-int		ResultButtonTextureNo2;//テクスチャ番号
+//int		ResultGameEndTextureNo;//テクスチャ番号
+int		ResultButtonTextureNo[BUTTON_MAX];//テクスチャ番号
 
 int ResultSoundNo;	//タイトルサウンド番号
 int ResultSoundNo2;	//タイトルサウンド番号
@@ -51,48 +53,49 @@ static TimeParam*	pTimeParam = pTime->GetTimeParam();
 static Score* pScore = pScore->GetScore();
 static FADEPARAM* pFadeParam = GetFadeParam();
 static ANIMEPARAM* pAnimeParam = pScore->GetAnimeParam();
+
+// ボタン
+Button g_ResultButton[BUTTON_MAX];
+Button* g_pSelectResultButton = nullptr;
 //======================
 //初期化
 //======================
 void	InitResult()
 {
 	//	テクスチャのロード
-	ResultTextureNo = LoadTexture(g_ResultTextureName);
-	if (ResultTextureNo == -1)
+	ResultBGTextureNo = LoadTexture(g_ResultBGTextureName);
+	if (ResultBGTextureNo == -1)
 	{//読み込みエラー
 		exit(999);	//強制終了
 	}
-	ResultGameEndTextureNo = LoadTexture(g_ResultGameEndTextureName);
-	if (ResultGameEndTextureNo == -1)
-	{//読み込みエラー
-		exit(999);	//強制終了
-	}
-	ResultButtonTextureNo = LoadTexture(g_ResultButtonTextureName);
-	if (ResultButtonTextureNo == -1)
-	{//読み込みエラー
-		exit(999);	//強制終了
-	}
-	ResultButtonTextureNo2 = LoadTexture(g_ResultButtonTextureName2);
-	if (ResultButtonTextureNo2 == -1)
-	{//読み込みエラー
-		exit(999);	//強制終了
+	//ResultGameEndTextureNo = LoadTexture(g_ResultGameEndTextureName);
+	//if (ResultGameEndTextureNo == -1)
+	//{//読み込みエラー
+	//	exit(999);	//強制終了
+	//}
+
+	for (int i = 0; i < BUTTON_MAX; i++) {
+		ResultButtonTextureNo[i] = LoadTexture(g_ResultButtonTextureName[i]);
+		if (ResultButtonTextureNo[i] == -1)
+		{//読み込みエラー
+			exit(999);	//強制終了
+		}
 	}
 
-	ResultObject[0].Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
-	ResultObject[0].Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
-	ResultObject[0].Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	ResultObject[0].Rotate = 0.0f;
-	//ResultObject[0].type = LOSE;
+	// 背景分
+	ResultObject.Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
+	ResultObject.Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
+	ResultObject.Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	ResultObject.Rotate = 0.0f;
 
-	ResultObject[1].Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, 0);
-	ResultObject[1].Size = D3DXVECTOR2(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 8);
-	ResultObject[1].Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	ResultObject[1].Rotate = 0.0f;
-
-	ResultObject[2].Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 * 3, 0);
-	ResultObject[2].Size = D3DXVECTOR2(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 8);
-	ResultObject[2].Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	ResultObject[2].Rotate = 0.0f;
+	// ボタンの初期化とセット
+	for (int i = 0; i < BUTTON_MAX; i++) {
+		g_ResultButton[i].Init();
+		g_ResultButton[i].SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 4) * (i * 2 + 1)), D3DXVECTOR2(BUTTON_SIZE_X, BUTTON_SIZE_Y), 
+			D3DXVECTOR2(BUTTON_DRAWSIZE_X, BUTTON_DRAWSIZE_Y), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_ResultButtonTextureName[i]));
+	}
+	// 選択されているボタンの初期化
+	g_pSelectResultButton = &g_ResultButton[0];
 
 	pScore->SetScore(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50), D3DXVECTOR2(50.0f, 50.0f));
 
@@ -103,28 +106,9 @@ void	InitResult()
 //======================
 void	UninitResult()
 {
-	if (g_ResultTexture)
-	{
-		g_ResultTexture->Release();//使い終わったので解放する
-		g_ResultTexture = NULL;
-	}
-
-	if (g_ResultGameEndTexture)
-	{
-		g_ResultGameEndTexture->Release();//使い終わったので解放する
-		g_ResultGameEndTexture = NULL;
-	}
-
-	if (g_ResultTextureButton)
-	{
-		g_ResultTextureButton->Release();//使い終わったので解放する
-		g_ResultTextureButton = NULL;
-	}
-
-	if (g_ResultTextureButton2)
-	{
-		g_ResultTextureButton2->Release();//使い終わったので解放する
-		g_ResultTextureButton2 = NULL;
+	// ボタンの終了処理
+	for (Button& b : g_ResultButton) {
+		b.Uninit();
 	}
 
 	StopSound(g_ChangeSceneResultSoundNo);
@@ -137,8 +121,12 @@ void	UpdateResult()
 {
 	UpdateGameMouse();
 
+	// マウスの1フレーム前の座標
+	static float MouseOldPosX = GetMousePosX();
+	static float MouseOldPosY = GetMousePosY();
+
 	FADEPARAM* pFadeParam = GetFadeParam();
-	if (ResultObject[0].type == WIN) 
+	if (ResultObject.type == WIN) 
 	{
 		//キー入力のチェック
 		if (Keyboard_IsKeyTrigger(KK_SPACE) ||				// keyboard SPACE
@@ -146,75 +134,150 @@ void	UpdateResult()
 		{
 			//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
 			PlaySound(g_ChangeSceneResultSoundNo, 0);
-			//SetScene(SCENE::SCENE_TITLE);
+			// ステージセレクトへ
 			StartFade(FADE::FADE_ALPHA_OUT);
 		}
 	}
-	else if (ResultObject[0].type == LOSE)
+	else if (ResultObject.type == LOSE)
 	{
-		MOUSE* pMouse = GetMouse();
-		D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
-
-		// 当たり判定用座標
-		D3DXVECTOR2 min, max, min2, max2;		// min左上, max右下
-		min = D3DXVECTOR2(ResultObject[1].Position.x - ResultObject[1].Size.x / 2, ResultObject[1].Position.y - ResultObject[1].Size.y / 2);
-		max = D3DXVECTOR2(ResultObject[1].Position.x + ResultObject[1].Size.x / 2, ResultObject[1].Position.y + ResultObject[1].Size.y / 2);
-		min2 = D3DXVECTOR2(ResultObject[2].Position.x - ResultObject[2].Size.x / 2, ResultObject[2].Position.x - ResultObject[2].Size.x / 2);
-		max2 = D3DXVECTOR2(ResultObject[2].Position.x + ResultObject[2].Size.x / 2, ResultObject[2].Position.x + ResultObject[2].Size.x / 2);
-
-
-		// マウスとcontinyボタンの当たり判定
-		if (Mouse_IsLeftDown())
-		{
-			if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y) 
-			{
-				pTimeParam->UseFlag = false;
-				pTime->StartTime();
-				for (int i = 0; i < SCORE_MAX; i++) {
-					pAnimeParam[i].AnimeFlag = false;
+		// ボタンの更新処理
+		for (Button& b : g_ResultButton) {
+			b.Update();
+		}
+		//[----------コントローラーによるボタンの選択----------
+		if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_UP)) {		// GamePad 十字キー 上
+			for (int i = 0; i < BUTTON_MAX; i++) {
+				// 選ばれているボタンを見つけたら
+				if (g_pSelectResultButton == &g_ResultButton[i]) {
+					// そのボタンが最後のボタンなら
+					if (i == BUTTON_MAX - 1) {
+						// 0番目のボタンを選ぶ
+						g_pSelectResultButton = &g_ResultButton[0];
+					}
+					else {	// 最後以外なら
+						// 次のボタンを選ぶ
+						g_pSelectResultButton = &g_ResultButton[i + 1];
+					}
+					break;
 				}
-				//SetScene(SCENE::SCENE_GAME);
-				pFadeParam->ExceptFlag = true;
-				pFadeParam->TitleFlag = false;
-				if (!pFadeParam->FadeFlag)
-				{
-					//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
-					PlaySound(g_ChangeSceneResultSoundNo, 0);
-					StartFade(FADE::FADE_ALPHA_OUT);
-					//SetScene(SCENE::SCENE_GAME);
-				}
-				
 			}
 		}
-		
-		// マウスと終了ボタンの当たり判定
-		if (Mouse_IsLeftDown())
-		{
-			if (min2.x < MousePos.x && max2.x > MousePos.x && min2.y < MousePos.y && max2.y > MousePos.y)
-			{
-				//DestroyWindow(GetHwnd());
-				//SetScene(SCENE::SCENE_TITLE);
-				pFadeParam->ExceptFlag = false;
-				pFadeParam->TitleFlag = true;
-				if (!pFadeParam->FadeFlag) 
-				{
-					//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
-					PlaySound(g_ChangeSceneResultSoundNo, 0);
-					StartFade(FADE::FADE_ALPHA_OUT);
+		if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_DOWN)) {		// GamePad 十字キー 下
+			for (int i = 0; i < BUTTON_MAX; i++) {
+				// 選ばれているボタンを見つけたら
+				if (g_pSelectResultButton == &g_ResultButton[i]) {
+					// そのボタンが0番目のボタンなら
+					if (i == 0) {
+						// 最後のボタンを選ぶ
+						g_pSelectResultButton = &g_ResultButton[BUTTON_MAX - 1];
+					}
+					else {		// 0番目以外
+						// ひとつ前のボタンを選ぶ
+						g_pSelectResultButton = &g_ResultButton[i - 1];
+					}
+					break;
 				}
-				pTimeParam->UseFlag = false;
 			}
 		}
-		
-	}
+		//----------コントローラーによるボタンの選択----------]
 
-	//キー入力のチェック
-	if (IsButtonTriggered(0, XINPUT_GAMEPAD_Y) ||		// GamePad	Y
-		Keyboard_IsKeyTrigger(KK_SPACE))				// Keyboard	SPACE	
-	{
-		//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
-		PlaySound(g_ChangeSceneResultSoundNo, 0);
-		SetScene(SCENE::SCENE_TITLE);
+		//[----------ボタンの処理----------
+		for (int i = 0; i < BUTTON_MAX; i++) {
+			// マウスが動いていたら
+			if (MouseOldPosX != GetMousePosX() ||
+				MouseOldPosY != GetMousePosY()) {
+				// マウスとボタンが当たっていたらそのボタンを選ぶ
+				if (g_ResultButton[i].CollisionMouse()) {
+					g_pSelectResultButton = &g_ResultButton[i];
+				}
+			}
+
+			// 選ばれているかいないか
+			if (g_pSelectResultButton == &g_ResultButton[i]) {
+				// 色を変える
+				g_ResultButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+				// ボタンが押された時の処理
+				if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad B
+					(Mouse_IsLeftTrigger() && g_pSelectResultButton->CollisionMouse())) {		// Mouse 左クリック (当たっている状態で)
+					// 0:Exit Stage ステージセレクトシーンへ
+					if (i == 0) {
+						//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
+						PlaySound(g_ChangeSceneResultSoundNo, 0);
+						// ステージセレクトへ
+						StartFade(FADE::FADE_ALPHA_OUT);
+					}
+					// 1:Continue ゲームシーンへ
+					else {
+						//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
+						PlaySound(g_ChangeSceneResultSoundNo, 0);
+						pFadeParam->ExceptFlag = true;
+						StartFade(FADE::FADE_ALPHA_OUT);
+					}
+					g_pSelectResultButton->ChangeType();
+					break;
+				}
+			}
+			else {
+				// 色を変える
+				g_ResultButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f));
+			}
+		}
+		// 次に備えて1フレーム前の座標に入れる
+		MouseOldPosX = GetMousePosX();
+		MouseOldPosY = GetMousePosY();
+
+	//	// マウスとcontinyボタンの当たり判定
+	//	if (Mouse_IsLeftDown())
+	//	{
+	//		if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y) 
+	//		{
+	//			pTimeParam->UseFlag = false;
+	//			pTime->StartTime();
+	//			for (int i = 0; i < SCORE_MAX; i++) {
+	//				pAnimeParam[i].AnimeFlag = false;
+	//			}
+	//			//SetScene(SCENE::SCENE_GAME);
+	//			pFadeParam->ExceptFlag = true;
+	//			pFadeParam->TitleFlag = false;
+	//			if (!pFadeParam->FadeFlag)
+	//			{
+	//				//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
+	//				PlaySound(g_ChangeSceneResultSoundNo, 0);
+	//				StartFade(FADE::FADE_ALPHA_OUT);
+	//				//SetScene(SCENE::SCENE_GAME);
+	//			}
+	//			
+	//		}
+	//	}
+	//	
+	//	// マウスと終了ボタンの当たり判定
+	//	if (Mouse_IsLeftDown())
+	//	{
+	//		if (min2.x < MousePos.x && max2.x > MousePos.x && min2.y < MousePos.y && max2.y > MousePos.y)
+	//		{
+	//			//DestroyWindow(GetHwnd());
+	//			//SetScene(SCENE::SCENE_TITLE);
+	//			pFadeParam->ExceptFlag = false;
+	//			pFadeParam->TitleFlag = true;
+	//			if (!pFadeParam->FadeFlag) 
+	//			{
+	//				//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
+	//				PlaySound(g_ChangeSceneResultSoundNo, 0);
+	//				StartFade(FADE::FADE_ALPHA_OUT);
+	//			}
+	//			pTimeParam->UseFlag = false;
+	//		}
+	//	}
+	//	
+	//}
+	////キー入力のチェック
+	//if (IsButtonTriggered(0, XINPUT_GAMEPAD_Y) ||		// GamePad	Y
+	//	Keyboard_IsKeyTrigger(KK_SPACE))				// Keyboard	SPACE	
+	//{
+	//	//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
+	//	PlaySound(g_ChangeSceneResultSoundNo, 0);
+	//	SetScene(SCENE::SCENE_TITLE);
 	}
 }
 //======================
@@ -226,72 +289,46 @@ void	DrawResult()
 	SetWorldViewProjection2D();
 
 	//テクスチャのセット
-	if (ResultObject[0].type == LOSE)
+	if (ResultObject.type == LOSE)		// ゲームオーバー
 	{
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultGameEndTextureNo));
+		// 背景
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultBGTextureNo));
 		//スプライトの描画
 		SpriteDrawColorRotation
 		(
-			ResultObject[0].Position.x,
-			ResultObject[0].Position.y,
+			ResultObject.Position.x,
+			ResultObject.Position.y,
 			0.0f,
-			ResultObject[0].Size.x,
-			ResultObject[0].Size.y,
-			ResultObject[0].Rotate,
-			ResultObject[0].Color,
+			ResultObject.Size.x,
+			ResultObject.Size.y,
+			ResultObject.Rotate,
+			ResultObject.Color,
 			0,
 			1.0f,
 			1.0f,
 			1
 		);
 
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultButtonTextureNo));
-		SpriteDrawColorRotation
-		(//countinuButton
-			ResultObject[1].Position.x,
-			ResultObject[1].Position.y,
-			0.0f,
-			ResultObject[1].Size.x,
-			ResultObject[1].Size.y,
-			ResultObject[1].Rotate,
-			ResultObject[1].Color,
-			0,
-			1.0f,
-			1.0f,
-			1
-		);
-
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultButtonTextureNo2));
-		SpriteDrawColorRotation
-		(//endButton
-			ResultObject[2].Position.x,
-			ResultObject[2].Position.y,
-			0.0f,
-			ResultObject[2].Size.x,
-			ResultObject[2].Size.y,
-			ResultObject[2].Rotate,
-			ResultObject[2].Color,
-			0,
-			1.0f,
-			1.0f,
-			1
-		);
+		// ボタン
+		for (Button& b : g_ResultButton) {
+			b.Draw();
+		}
 	}
-	else if (ResultObject[0].type == WIN)
+	else if (ResultObject.type == WIN)		// クリア
 	{
 
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultTextureNo));
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultBGTextureNo));
 
 		//スプライトの描画
 		SpriteDrawColorRotation
 		(
-			ResultObject[0].Position.x,
-			ResultObject[0].Position.y,
+			ResultObject.Position.x,
+			ResultObject.Position.y,
 			0.0f,
-			ResultObject[0].Size.x,
-			ResultObject[0].Size.y,
-			ResultObject[0].Rotate,
-			ResultObject[0].Color,
+			ResultObject.Size.x,
+			ResultObject.Size.y,
+			ResultObject.Rotate,
+			ResultObject.Color,
 			0,
 			1.0f,
 			1.0f,
@@ -302,10 +339,10 @@ void	DrawResult()
 
 void SetResultType(RESULT_TYPE ty)
 {
-	ResultObject[0].type = ty;
+	ResultObject.type = ty;
 }
 
 RESULT* GetResult()
 {
-	return &ResultObject[0];
+	return &ResultObject;
 }
