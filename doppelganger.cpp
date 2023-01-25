@@ -655,7 +655,7 @@ void UpdateDoppelganger()
 
 		}
 
-	}
+	
 
 
 
@@ -1256,7 +1256,7 @@ void UpdateDoppelganger()
 
 
 
-
+	
 
 
 
@@ -2328,6 +2328,7 @@ void UpdateDoppelganger()
 	//		}
 	//	}
 	//}
+}
 }
 
 
