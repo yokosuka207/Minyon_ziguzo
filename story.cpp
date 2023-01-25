@@ -115,10 +115,10 @@ void	InitStory()
 	pSKey = GetStoryKey();
 
 	if (gStory.n == 0) {
-		pSKey[0].HaveSKey = 8;
+		pSKey[0].HaveSKey = 1;
 		gStory.n++;
 	}
-	if (pSKey[0].HaveSKey <= 9) {
+	if (pSKey[0].HaveSKey >= 9) {
 		pSKey[0].HaveSKey = 8;
 	}
 	gStory.HaveKey = pSKey[0].HaveSKey;
