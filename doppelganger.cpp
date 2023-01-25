@@ -152,6 +152,8 @@ HRESULT InitDoppelganger()
 	g_Doppel.CoolTime = PLAYER_COOLTIME;
 	g_Doppel.PieceIndex = 0;
 
+	g_Doppel.LightFrame = 0;
+
 	g_Doppel.hp = 3;
 
 	for (int i = 0; i < LAMP_SWITCH_MAX; i++)
@@ -1506,15 +1508,20 @@ void UpdateDoppelganger()
 				if (p_LampSwitch[i].LampSwitchIndex == p_Lamp[i].SwitchIndex)
 				{
 					SetEffectLight(p_Lamp[i].pos, p_Lamp[i].rot, i);
-					p_Lamp[i].color = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
+					p_Lamp[i].PaternNo = 1.0f;
 					if (CollisionBB(g_Doppel.Position, p_Lamp[i].pos, g_Doppel.size, p_Lamp[i].size))
 					{
-						g_Doppel.hp--;
-						g_Doppel.LampSwitchFlag[i] = false;
-						for (int i = 0; i < SPAWN_POINT_D_MAX; i++) {//リスポンせずにHPが減り続けている
-							if (pSpawnPointD[i].UseFlag) {
-								if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex) {
-									g_Doppel.Position = pSpawnPointD[i].Position;
+						g_Doppel.LightFrame++;
+						if (g_Doppel.LightFrame >= 100)
+						{
+							g_Doppel.LightFrame = 0;
+							g_Doppel.hp--;
+							g_Doppel.LampSwitchFlag[i] = false;
+							for (int i = 0; i < SPAWN_POINT_D_MAX; i++) {//リスポンせずにHPが減り続けている
+								if (pSpawnPointD[i].UseFlag) {
+									if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex) {
+										g_Doppel.Position = pSpawnPointD[i].Position;
+									}
 								}
 							}
 						}
@@ -1523,8 +1530,8 @@ void UpdateDoppelganger()
 			}
 			else
 			{
-				p_Lamp[i].color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
 				StopEffectLight(i);
+				p_Lamp[i].PaternNo = 0.0f;
 			}
 			//if (p_LampSwitch[i].PressFlag) 
 			//{
