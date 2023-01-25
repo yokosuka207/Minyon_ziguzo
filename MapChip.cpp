@@ -392,13 +392,13 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY):	//34 ストーリー解放鍵
 				SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_LAMP):	//28 街灯
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_LAMP):	//35 街灯
 				SetLamp(position, DrawSize, no, g_PieceMapChip[no].direction, 4);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_LAMP_SWITCH):	//29 街灯スイッチ
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_LAMP_SWITCH):	//36 街灯スイッチ
 				SetLampSwitch(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT_D)://20　スポーンポイント
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT_D)://37　ドッペルゲンガーの初期位置?
 				SetSpawnPointD(position, DrawSize, no);
 				break;
 			default:
