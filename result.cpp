@@ -25,9 +25,9 @@
 //======================
 //グローバル変数
 //======================
-static	char* g_ResultTextureName = (char*)"data\\texture\\セーブ画面背景.png";
+static	char* g_ResultBGTextureName = (char*)"data\\texture\\black.png";
 
-static	char* g_ResultGameEndTextureName = (char*)"data\\texture\\black.png";
+//static	char* g_ResultGameEndTextureName = (char*)"data\\texture\\black.png";
 
 // ボタンのテクスチャ
 static	char* g_ResultButtonTextureName[BUTTON_MAX] = { (char*)"data\\texture\\text_exit stage.png" ,
@@ -40,9 +40,9 @@ static char g_ChangeSceneResultSoundName[] = "data\\SoundData\\SE\\シーン遷移(魔
 
 RESULT	ResultObject;//タイトル画面オブジェクト	背景分
 
-int		ResultTextureNo;//テクスチャ番号
+int		ResultBGTextureNo;//テクスチャ番号
 
-int		ResultGameEndTextureNo;//テクスチャ番号
+//int		ResultGameEndTextureNo;//テクスチャ番号
 int		ResultButtonTextureNo[BUTTON_MAX];//テクスチャ番号
 
 int ResultSoundNo;	//タイトルサウンド番号
@@ -63,16 +63,16 @@ Button* g_pSelectResultButton = nullptr;
 void	InitResult()
 {
 	//	テクスチャのロード
-	ResultTextureNo = LoadTexture(g_ResultTextureName);
-	if (ResultTextureNo == -1)
+	ResultBGTextureNo = LoadTexture(g_ResultBGTextureName);
+	if (ResultBGTextureNo == -1)
 	{//読み込みエラー
 		exit(999);	//強制終了
 	}
-	ResultGameEndTextureNo = LoadTexture(g_ResultGameEndTextureName);
-	if (ResultGameEndTextureNo == -1)
-	{//読み込みエラー
-		exit(999);	//強制終了
-	}
+	//ResultGameEndTextureNo = LoadTexture(g_ResultGameEndTextureName);
+	//if (ResultGameEndTextureNo == -1)
+	//{//読み込みエラー
+	//	exit(999);	//強制終了
+	//}
 
 	for (int i = 0; i < BUTTON_MAX; i++) {
 		ResultButtonTextureNo[i] = LoadTexture(g_ResultButtonTextureName[i]);
@@ -271,12 +271,10 @@ void	UpdateResult()
 	//	}
 	//	
 	//}
-
 	////キー入力のチェック
 	//if (IsButtonTriggered(0, XINPUT_GAMEPAD_Y) ||		// GamePad	Y
 	//	Keyboard_IsKeyTrigger(KK_SPACE))				// Keyboard	SPACE	
 	//{
-
 	//	//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
 	//	PlaySound(g_ChangeSceneResultSoundNo, 0);
 	//	SetScene(SCENE::SCENE_TITLE);
@@ -294,7 +292,7 @@ void	DrawResult()
 	if (ResultObject.type == LOSE)		// ゲームオーバー
 	{
 		// 背景
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultGameEndTextureNo));
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultBGTextureNo));
 		//スプライトの描画
 		SpriteDrawColorRotation
 		(
@@ -319,7 +317,7 @@ void	DrawResult()
 	else if (ResultObject.type == WIN)		// クリア
 	{
 
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultTextureNo));
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ResultBGTextureNo));
 
 		//スプライトの描画
 		SpriteDrawColorRotation
