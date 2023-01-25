@@ -27,7 +27,7 @@
 //	マクロ定義
 //*****************************************************************************
 
-#define STAIRS_LEFT	75
+#define STAIRS_LEFT	65
 #define STAIRS_RIGHT	245
 
 #define DOOR_SPACE	1050 / 7
@@ -140,7 +140,7 @@ HRESULT InitStageSelect() {
 			b = 0;
 		}
 
-		g_StageSelectStairs[i].pos = D3DXVECTOR2(90.0f+(b*25.0f), 270.0f+(b*40.0f) + (250 * a));
+		g_StageSelectStairs[i].pos = D3DXVECTOR2(90.0f+(b*28.0f), 270.0f+(b*40.0f) + (250 * a));
 		g_StageSelectStairs[i].size = D3DXVECTOR2(30.0f, 40.0f);
 		g_StageSelectStairs[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		b++;
@@ -274,8 +274,8 @@ void UpdateStageSelect() {
 					ply.PaternNo += 0.25f;
 					if (ply.isHigh)
 					{
-						ply.sp.x = 3.0f;
-						ply.sp.y = 4.0f;
+						ply.sp.x = 2.0f;
+						ply.sp.y = 5.0f;
 
 					}
 
@@ -303,14 +303,15 @@ void UpdateStageSelect() {
 				{
 					if (ply.isHigh)
 					{
-						ply.sp.y = 0.0f;
+						//ply.sp.y = 0.0f;
 					}
 					ply.sp.x = 0;
 
 				}
 			}
 			if (STAIRS_LEFT < ply.Position.x && ply.Position.x < STAIRS_RIGHT) {
-				if (Keyboard_IsKeyDown(KK_S))		// keyboard S
+				if (GetThumbLeftY(0) < -0.3f ||		// GamePad 左スティック 下
+					Keyboard_IsKeyDown(KK_S))		// keyboard S
 				{
 
 					if (ply.Position.y < SCREEN_HEIGHT - 100.0f)
@@ -456,7 +457,8 @@ void UpdateStageSelect() {
 					{
 						//ply.Position.x = g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 + ply.size.x / 2;
 						//ply.sp = D3DXVECTOR2(0.0f,-4.0f);
-						if (Keyboard_IsKeyDown(KK_W))			// keyboard W
+						if (GetThumbLeftY(0) > 0.3f ||			// GamePad 左スティック 上
+							Keyboard_IsKeyDown(KK_W))			// keyboard W
 						{
 							ply.isHigh = true;	//上に上る
 
@@ -476,7 +478,7 @@ void UpdateStageSelect() {
 						ply.fall = false;
 						ply.WarpFlag = false;
 						//ply.isGround = true;
-						ply.sp.y = 4.0f;
+						ply.sp.y = 5.0f;
 						ply.frame = 0;
 					}
 					//プレイヤー下・ブロック上,落下する

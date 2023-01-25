@@ -283,6 +283,7 @@ void UpdateCollision(){
 		//=========================================
 		//プレーヤーとスイッチ系(switch,SwitchWall)
 		//=========================================
+		DOPPELGANGER* pDoppel = GetDoppelganger();
 		for (int i = 0; i < SWITCH_MAX; i++) {
 			//スイッチとプレイヤーの当たり判定
 			if (pSwitch[i].UseFlag) {
@@ -325,6 +326,18 @@ void UpdateCollision(){
 					//}
 				}
 
+				if (CollisionBB(pSwitch[i].pos, pDoppel->Position, pSwitch[i].size, pDoppel->size)) {
+					pSwitch[i].PressFlag = true;//押されたら
+					pSwitch[i].PaternNo = 1;
+					if (pSwitch[i].NotPressed == true)
+					{
+						//SetVolume(g_SwitchSoundNo, 0.5f);
+						PlaySound(g_SwitchSoundNo, 0);
+						pSwitch[i].NotPressed = false;
+					}
+				}
+
+			
 				if (pSwitch[i].PressFlag) {
 					for (int j = 0; j < SWITCHWALL_MAX * SWITCHWALL_LIMIT; j++) {
 						if (pSwitch[i].SwitchIndex == pSwitchWall[j].SwitchIndex) {
