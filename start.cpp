@@ -12,7 +12,7 @@
 static START g_Start[START_MAX];
 
 static ID3D11ShaderResourceView* g_StartTexture;	//画像一枚で一つの変数が必要
-static char* g_StartTextureName = (char*)"data\\texture\\ドア.png";	//テクスチャファイルパス
+static char* g_StartTextureName = (char*)"data\\texture\\ドア3.png";	//テクスチャファイルパス
 static int g_StartTextureNo = 0;
 
 static float green;

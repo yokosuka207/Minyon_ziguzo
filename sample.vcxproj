@@ -143,6 +143,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="cursor.cpp" />
+    <ClCompile Include="EffectLight.cpp" />
     <ClCompile Include="EffectSpark.cpp" />
     <ClCompile Include="doppelganger.cpp" />
     <ClCompile Include="enemy.cpp" />
@@ -162,6 +163,8 @@
     <ClCompile Include="jump_stand.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="KeyDisplay.cpp" />
+    <ClCompile Include="lamp.cpp" />
+    <ClCompile Include="lamp_switch.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapChip.cpp" />
     <ClCompile Include="mouse.cpp" />
@@ -185,6 +188,7 @@
     <ClCompile Include="SheerFloors.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="spawnpoint.cpp" />
+    <ClCompile Include="spawnpoint_d.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="SplitStage.cpp" />
     <ClCompile Include="StageSelect.cpp" />
@@ -214,6 +218,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="cursor.h" />
+    <ClInclude Include="EffectLight.h" />
     <ClInclude Include="EffectSpark.h" />
     <ClInclude Include="doppelganger.h" />
     <ClInclude Include="enemy.h" />
@@ -233,6 +238,8 @@
     <ClInclude Include="jump_stand.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="KeyDisplay.h" />
+    <ClInclude Include="lamp.h" />
+    <ClInclude Include="lamp_switch.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MapChip.h" />
     <ClInclude Include="mouse.h" />
@@ -256,6 +263,7 @@
     <ClInclude Include="SheerFloors.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="spawnpoint.h" />
+    <ClInclude Include="spawnpoint_d.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="SplitStage.h" />
     <ClInclude Include="StageSelect.h" />

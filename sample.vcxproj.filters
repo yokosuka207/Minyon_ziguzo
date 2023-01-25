@@ -63,6 +63,10 @@
     <ClCompile Include="story.cpp" />
     <ClCompile Include="StoryKey.cpp" />
     <ClCompile Include="KeyDisplay.cpp" />
+    <ClCompile Include="lamp.cpp" />
+    <ClCompile Include="lamp_switch.cpp" />
+    <ClCompile Include="spawnpoint_d.cpp" />
+    <ClCompile Include="EffectLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -139,5 +143,9 @@
     <ClInclude Include="story.h" />
     <ClInclude Include="StoryKey.h" />
     <ClInclude Include="KeyDisplay.h" />
+    <ClInclude Include="lamp.h" />
+    <ClInclude Include="lamp_switch.h" />
+    <ClInclude Include="spawnpoint_d.h" />
+    <ClInclude Include="EffectLight.h" />
   </ItemGroup>
 </Project>

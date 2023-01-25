@@ -16,7 +16,7 @@
 //=============================================================================
 #define FALLBLOCK_W (20)
 #define FALLBLOCK_H (20)
-#define FALLBLOCK_MAX (10)
+#define FALLBLOCK_MAX (40)
 typedef struct
 {
 

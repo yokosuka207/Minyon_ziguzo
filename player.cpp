@@ -145,7 +145,7 @@ void UpdatePlayer()
 		{
 			//移動
 			if (GetThumbLeftX(0) > 0.3f ||					// GamePad	右スティック	右
-				Keyboard_IsKeyDown(KK_RIGHT))				// Keyboard	右
+				Keyboard_IsKeyDown(KK_D))				// Keyboard	D
 			{//押されているときの処理
 				g_Player.sp.x = 1.3f;
 				g_Player.PaternNo -= 0.25f;
@@ -155,7 +155,7 @@ void UpdatePlayer()
 				g_Player.uv_w = -PLAYER_UV_W;
 			}
 			else if (GetThumbLeftX(0) < -0.3f ||			// GamePad	右スティック	左
-				Keyboard_IsKeyDown(KK_LEFT))				// Keyboard	左
+				Keyboard_IsKeyDown(KK_A))				// Keyboard	A
 			{//押されているときの処理
 				g_Player.sp.x = -1.3f;
 				g_Player.PaternNo += 0.25f;
@@ -227,7 +227,7 @@ void UpdatePlayer()
 			for (int i = 0; i < JUMPSTAND_MAX; i++) {
 				if (p_JumpStand[i].UseJumpStand) {
 					if (IsButtonPressed(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
-						Keyboard_IsKeyDown(KK_B))						// Keyboard	B
+						Keyboard_IsKeyDown(KK_LEFTCONTROL))			// Keyboard	Ctrl　左
 					{
 						if (CollisionBB(g_Player.Position, p_JumpStand[i].pos, g_Player.size, p_JumpStand[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
 							p_JumpStand[i].GetJumpStand = true;
@@ -248,7 +248,7 @@ void UpdatePlayer()
 			for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 				if (pMoveBlock[i].bUse) {
 					if (IsButtonPressed(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
-						Keyboard_IsKeyDown(KK_B))						// Keyboard	B
+						Keyboard_IsKeyDown(KK_LEFTCONTROL))			// Keyboard	Ctrl　左
 					{
 						if (CollisionBB(g_Player.Position, pMoveBlock[i].pos, g_Player.size, pMoveBlock[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
 							pMoveBlock[i].GetMoveBlock = true;
@@ -315,7 +315,7 @@ void UpdatePlayer()
 
 					//プレイヤー上・ブロック下,着地する
 					if (!GetThumbLeftY(0) < -0.3f ||		// GamePad	左スティック	下
-						!Keyboard_IsKeyDown(KK_DOWN))		// Keyboard 下
+						!Keyboard_IsKeyDown(KK_S))		// Keyboard S
 					{
 						if (pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 < g_Player.Position.x + g_Player.size.x / 2 &&
 							pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 > g_Player.Position.x - g_Player.size.x / 2 &&
@@ -360,7 +360,7 @@ void UpdatePlayer()
 			}
 
 			if (GetThumbLeftY(0) < -0.3f ||			// GamePad	左スティック	下
-				Keyboard_IsKeyDown(KK_DOWN))		// Keyboard	下
+				Keyboard_IsKeyDown(KK_S))		// Keyboard	S
 			{
 				g_Player.isSheerFloors = false;
 			}
@@ -429,7 +429,6 @@ void UpdatePlayer()
 								}
 								else
 								{//下に何もなく死亡する場合
-
 									if (pSpawnPoint[i].UseFlag)
 									{
 										if (g_Player.PieceIndex == pSpawnPoint[i].PieceIndex)
@@ -438,9 +437,8 @@ void UpdatePlayer()
 											g_Player.hp--;
 											break;
 										}
-
-
 									}
+
 								}
 							}
 							else if (g_Player.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
