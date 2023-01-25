@@ -322,7 +322,7 @@ void UpdateCursor()
 					{
 						if (pMoveBlock[i].bUse)
 						{
-							if (pMoveBlock[i].NowPieceIndex == NoIndex)
+							if (pMoveBlock[i].PieceIndex == NoIndex)
 							{
 								pMoveBlock[i].pos += temp;
 							}
