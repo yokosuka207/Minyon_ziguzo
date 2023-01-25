@@ -12,7 +12,8 @@
 #include "main.h"
 #include "switch.h"
 
-#define SWITCHWALL_MAX (9)
+#define SWITCHWALL_MAX (3)
+#define SWITCHWALL_LIMIT (3)
 
 typedef struct {
 	D3DXVECTOR2 pos;
@@ -22,10 +23,10 @@ typedef struct {
 	float		rot;
 	int			PieceIndex;
 	int			SwitchIndex;//スイッチの番号が壁と同じなら処理が可能
-	int			WallMax;	//壁の個数（引数で変化）
 	int			PaternNo;
 	float		uv_w;
 	float		uv_h;
+	bool		PressFlag;
 	bool		UseFlag;
 }SWITCHWALL;
 

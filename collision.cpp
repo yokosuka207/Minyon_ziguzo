@@ -321,22 +321,23 @@ void UpdateCollision(){
 				}
 
 				if (pSwitch[i].PressFlag) {
-					for (int j = 0; j < SWITCHWALL_MAX; j++) {
-						//  switch index 0,1			switch wall	index 0,3
-						if (pSwitch[i].SwitchIndex * pSwitchWall[j].WallMax == pSwitchWall[j].SwitchIndex) {
- 							pSwitchWall[j].UseFlag = false;	//押されたら壁がなくなる
+					for (int j = 0; j < SWITCHWALL_MAX * SWITCHWALL_LIMIT; j++) {
+						if (pSwitch[i].SwitchIndex == pSwitchWall[j].SwitchIndex) {
+							pSwitchWall[j].PressFlag = true;	//押されたら壁がなくなる
 						}
 					}
 				}
 				else {
-					for (int j = 0; j < pSwitchWall[i].WallMax; j++) {
-						pSwitchWall[j].UseFlag = true;		//壁出現
+					for (int j = 0; j < SWITCHWALL_MAX * SWITCHWALL_LIMIT; j++) {
+						if (pSwitch[i].SwitchIndex == pSwitchWall[j].SwitchIndex) {
+							pSwitchWall[j].PressFlag = false;		//壁出現
+						}
 					}
 				}
 			}
 		}
-		for (int i = 0; i < SWITCHWALL_MAX; i++) {
-			if (pSwitchWall[i].UseFlag) {
+		for (int i = 0; i < SWITCHWALL_MAX * SWITCHWALL_LIMIT; i++) {
+			if (!pSwitchWall[i].PressFlag) {
 				//プレーヤーと壁の判定
 				//壁の左とプレイヤーの右
 				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
@@ -2631,7 +2632,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 
 		}
 	}
-	for (int i = 0; i < SWITCHWALL_MAX; i++)
+	for (int i = 0; i < SWITCHWALL_MAX * SWITCHWALL_LIMIT; i++)
 	{
 		if (pSwitchWall[i].UseFlag)
 		{

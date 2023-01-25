@@ -440,7 +440,7 @@ void UpdateCursor()
 
 						}
 					}
-					for (int i = 0; i < SWITCHWALL_MAX; i++)
+					for (int i = 0; i < SWITCHWALL_MAX * SWITCHWALL_LIMIT; i++)
 					{//スイッチ壁
 						if (pSwitchWall[i].UseFlag)
 						{

@@ -242,7 +242,7 @@ void DeleteExplain(int PieceNo)
 {
 	for (int i = 0; i < EXPLAIN_MAX; i++) {
 		if (g_Explain[i].bUse) {
-			if(g_Explain[i].tex == PieceNo)
+			if(g_Explain[i].PieceIndex == PieceNo)
 			g_Explain[i].bUse = false;
 		}
 	}
