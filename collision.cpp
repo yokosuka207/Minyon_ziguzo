@@ -821,6 +821,7 @@ void UpdateCollision(){
 						if (pPlayer->sp.y <= -5.0f) {
 							//pPlayer->isHigh = false;
 							(pHigh + i)->UseFlag = false;
+							pHigh[i].breakFlag = true;
 							//SetVolume(g_HighSoundNo, 0.5f);
 							//PlaySound(g_HighSoundNo, 0);
 							pPlayer->frame = 50;

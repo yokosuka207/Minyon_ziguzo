@@ -19,7 +19,7 @@
 static ID3D11ShaderResourceView* g_ScoreTexture;	//画像一枚で一つの変数が必要
 static ID3D11ShaderResourceView* g_ScoreRankTexture;	
 
-static char* g_ScoreTextureName = (char*)"data\\texture\\number1.png";	//テクスチャファイルパス
+static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
 static char* g_ScoreRankTextureName = (char*)"data\\texture\\number1.png";
 
 static int g_ScoreTextureNo = 0;
