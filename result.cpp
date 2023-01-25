@@ -20,7 +20,7 @@
 #define BUTTON_SIZE_X	200
 #define BUTTON_SIZE_Y	100
 #define BUTTON_DRAWSIZE_X	400
-#define BUTTON_DRAWSIZE_Y	200
+#define BUTTON_DRAWSIZE_Y	400
  
 //======================
 //ƒOƒ[ƒoƒ‹•Ï”
