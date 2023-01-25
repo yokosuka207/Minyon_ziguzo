@@ -64,10 +64,9 @@ public:
 	// ボタンが押された
 	bool TriggerButton();
 
-
-private:
 	// タイプ変更
 	void ChangeType(BUTTON_TYPE type) { m_type = type; }
+	void ChangeType();
 };
 
 // 座標と座標の距離をもらう

@@ -24,7 +24,6 @@
 #include "goal.h"
 #include "start.h"
 #include"xkeyboard.h"
-#include "button.h"
 #include "time.h"
 #include "spawnpoint.h"
 #include "joint.h"

@@ -193,7 +193,7 @@ void UpdateDoppelganger()
 		g_bHave = false;
 	}
 
-	if (!Mouse_IsLeftDown() &&			// mouse ç∂
+	if (!Mouse_IsLeftDown() ||			// mouse ç∂
 		!g_bHave)
 	{
 
@@ -2339,7 +2339,7 @@ void SetDoppelGanger(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index)
 {
 	if (!g_Doppel.UseFlag)
 	{
-		g_Doppel.Position = pos;
+		g_Doppel.Position = g_Doppel.OneOldpos = g_Doppel.oldpos = pos;
 		g_Doppel.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
 		g_Doppel.PieceIndex = index;
 		g_Doppel.UseFlag = true;

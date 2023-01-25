@@ -12,8 +12,8 @@
 
 #define	GOAL_MAX	10
 
-#define GOAL_SIEZX	20
-#define GOAL_SIZEY	20
+#define GOAL_SIEZX  30
+#define GOAL_SIZEY	30
 #define GOAL_UV_W 1.0f / 4
 #define GOAL_UV_H 1.0f / 4
 typedef struct
