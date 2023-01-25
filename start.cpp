@@ -65,7 +65,7 @@ void DrawStart() {
 	//SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StartTextureNo));
 	for (int i = 0; i < START_MAX; i++) {
-		g_Start[i].PaternNo += i;
+		g_Start[i].PaternNo = i;
 		if (g_Start[i].UseFlag) {
 			SpriteDrawColorRotation(
 				g_Start[i].pos.x,
