@@ -62,7 +62,7 @@ static int g_StageSelectStairsTexNo = 0;
 static int g_StageSelectStairsTexNo2 = 0;
 
 static ID3D11ShaderResourceView* g_StageSelectTexturefence;	//画像一枚で一つの変数が必要
-static char* g_StageSelectfenceTextureName = (char*)"data\\texture\\柵.png";	//テクスチャファイルパス
+static char* g_StageSelectfenceTextureName = (char*)"data\\texture\\新柵1.png";	//テクスチャファイルパス
 
 
 static PLAYER ply;
@@ -554,7 +554,7 @@ void DrawStageSelect() {
 		color = D3DXCOLOR(0, 0, 0, 0.5);
 	}
 	else {
-		color = D3DXCOLOR(1, 1, 1, 1);
+		color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	{	//背景ポリゴン表示
@@ -598,23 +598,6 @@ void DrawStageSelect() {
 				1
 			);
 		}
-		//else if (i == 2 || i == 8) {
-		//	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairsTexNo2));
-
-		//	SpriteDrawColorRotation(
-		//		g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x + 5.0f,
-		//		g_StageSelectStairs[i].pos.y - 6.0f,
-		//		0.5f,
-		//		g_StageSelectStairs[i].size.x * 4,
-		//		g_StageSelectStairs[i].size.y * 4,
-		//		0.0f,
-		//		color,
-		//		0,
-		//		1.0f,
-		//		1.0f,
-		//		1
-		//	);
-		//}
 		else if (i == 3 || i == 9) {
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairsTexNo2));
 
@@ -632,11 +615,9 @@ void DrawStageSelect() {
 				1
 			);
 		}
-
-
-	//SpriteDrawColorRotation(
-	//	g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x * 2, g_StageSelectStairs[i].size.y * 2,
-	//	0.0f, color, 0, 1.0f, 1.0f, 1);
+		//SpriteDrawColorRotation(
+		//	g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x * 2, g_StageSelectStairs[i].size.y * 2,
+		//	0.0f, color, 0, 1.0f, 1.0f, 1);
 	}
 
 
@@ -671,28 +652,39 @@ void DrawStageSelect() {
 
 	DrawStory();
 
-		if (ply.UseFlag == true)
-		{
-			SetWorldViewProjection2D();
+	if (ply.UseFlag == true)
+	{
+		SetWorldViewProjection2D();
 
-			//テクスチャの設定
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ply.texno));
-			//スプライトを表示
-			D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			SpriteDrawColorRotation(ply.Position.x, ply.Position.y, -0.0f, ply.size.x, ply.size.y, ply.rot, color, ply.PaternNo, ply.uv_w, ply.uv_h, ply.NumPatern);
-		}
+		//テクスチャの設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ply.texno));
+		//スプライトを表示
+		D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		SpriteDrawColorRotation(ply.Position.x, ply.Position.y, -0.0f, ply.size.x, ply.size.y, ply.rot, color, ply.PaternNo, ply.uv_w, ply.uv_h, ply.NumPatern);
+	}
 
-		for (int i = 0; i < 21; i++)
-		{
+	//===========================================================
+	// フェンス
+	//===========================================================
+	for (int i = 0; i < 21; i++)
+	{
 
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectfence[i].texno));
-			SpriteDrawColorRotation(
-				g_StageSelectfence[i].pos.x, g_StageSelectfence[i].pos.y, 0.5f, g_StageSelectfence[i].size.x, g_StageSelectfence[i].size.y
-				, 0.0f, color, 0, 1.0f, 1.0f, 1);
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectfence[i].texno));
+		SpriteDrawColorRotation(
+			g_StageSelectfence[i].pos.x, 
+			g_StageSelectfence[i].pos.y + g_StageSelectfence[i].size.y / 10,
+			0.5f,
+			g_StageSelectfence[i].size.x,
+			g_StageSelectfence[i].size.y / 2,
+			0.0f,
+			D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f),
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
 
-		}
-
-	
+	}
 }
 
 //-----------------------------------------------------------------------------
