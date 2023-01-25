@@ -39,7 +39,7 @@
 static STAGESELECT g_StageSelect[STAGE_MAX];
 static STAGESELECT g_StageSelectBlack[STAGE_MAX];
 static STAGESELECT_BG g_StageSelectBg;
-static STAGESELECT_BG g_StageSelectfence[21];
+static STAGESELECT_BG g_StageSelectfence[24];
 static STAGESELECT_BLOCK g_StageSelectBlock[3];
 static STAGESELECT_STAIRS g_StageSelectStairs[12];
 
@@ -96,7 +96,7 @@ static int g_ClearStageNum = 0;
 HRESULT InitStageSelect() {
 	//StageNo = 0;
 
-	g_StageSelectBg.pos = D3DXVECTOR2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+	g_StageSelectBg.pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	g_StageSelectBg.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	g_StageSelectBg.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_StageSelectBg.texno = LoadTexture(g_StageSelectBgTextureName);
@@ -104,16 +104,16 @@ HRESULT InitStageSelect() {
 
 	int a = 0;
 	int b = 0;
-
-	for (int i = 0; i < 21; i++)
+	//フェンス
+	for (int i = 0; i < 24; i++)
 	{
-		if (i % 7 == 0 && i != 0)
+		if (i % 8 == 0 && i != 0)
 		{
 			a++;
 			b = 0;
 		}
 
-		g_StageSelectfence[i].pos = D3DXVECTOR2(250.0f+(170.0f*b), 220.0f + (250 * a));
+		g_StageSelectfence[i].pos = D3DXVECTOR2(250.0f + (170.0f * b), 220.0f + (250 * a));
 		g_StageSelectfence[i].size = D3DXVECTOR2(170.0f, 110.0f);
 		g_StageSelectfence[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_StageSelectfence[i].texno = LoadTexture(g_StageSelectfenceTextureName);
@@ -132,6 +132,7 @@ HRESULT InitStageSelect() {
 	 a = 0;
 	 b = 0;
 
+	 //階段
 	for (int i = 0; i < 12; i++)
 	{
 		if (i % 6 == 0 && i != 0)
@@ -151,7 +152,7 @@ HRESULT InitStageSelect() {
 	//g_Texturenumber = LoadTexture(g_StageSelectStairsTextureName);
 
 
-	 a = 0;
+	a = 0;
 	b = 0;
 
 
@@ -666,16 +667,16 @@ void DrawStageSelect() {
 	//===========================================================
 	// フェンス
 	//===========================================================
-	for (int i = 0; i < 21; i++)
+	for (int i = 0; i < 24; i++)
 	{
 
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectfence[i].texno));
 		SpriteDrawColorRotation(
 			g_StageSelectfence[i].pos.x, 
-			g_StageSelectfence[i].pos.y + g_StageSelectfence[i].size.y / 10,
+			g_StageSelectfence[i].pos.y,
 			0.5f,
 			g_StageSelectfence[i].size.x,
-			g_StageSelectfence[i].size.y / 2,
+			g_StageSelectfence[i].size.y,
 			0.0f,
 			D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f),
 			0,
