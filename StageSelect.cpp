@@ -310,7 +310,8 @@ void UpdateStageSelect() {
 				}
 			}
 			if (STAIRS_LEFT < ply.Position.x && ply.Position.x < STAIRS_RIGHT) {
-				if (Keyboard_IsKeyDown(KK_S))		// keyboard S
+				if (GetThumbLeftY(0) < -0.3f ||		// GamePad 左スティック 下
+					Keyboard_IsKeyDown(KK_S))		// keyboard S
 				{
 
 					if (ply.Position.y < SCREEN_HEIGHT - 100.0f)
@@ -456,7 +457,8 @@ void UpdateStageSelect() {
 					{
 						//ply.Position.x = g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 + ply.size.x / 2;
 						//ply.sp = D3DXVECTOR2(0.0f,-4.0f);
-						if (Keyboard_IsKeyDown(KK_W))			// keyboard W
+						if (GetThumbLeftY(0) > 0.3f ||			// GamePad 左スティック 上
+							Keyboard_IsKeyDown(KK_W))			// keyboard W
 						{
 							ply.isHigh = true;	//上に上る
 
