@@ -27,16 +27,16 @@
 //グローバル変数
 //======================
 static	ID3D11ShaderResourceView* g_PauseTexture = NULL;//テクスチャ情報
-static	char* g_PauseTextureName = (char*)"data\\texture\\セーブ画面背景.png";
+static	char* g_PauseTextureName = (char*)"data\\texture\\black.png";
 
 static	ID3D11ShaderResourceView* g_PauseOperationTexture = NULL;//操作説明情報
 static	char* g_PauseOperationTextureName = (char*)"data\\texture\\操作説明.png";
 
 static	ID3D11ShaderResourceView* g_PauseEndTexture = NULL;//テクスチャ情報
-static	char* g_PauseEndTextureName = (char*)"data\\texture\\Quit.png";
+static	char* g_PauseEndTextureName = (char*)"data\\texture\\text_continue game.png";
 
 static	ID3D11ShaderResourceView* g_PauseSelectTexture = NULL;//テクスチャ情報
-static	char* g_PauseSelectTextureName = (char*)"data\\texture\\Exit Stage.png";
+static	char* g_PauseSelectTextureName = (char*)"data\\texture\\text_exit stage.png";
 
 PAUSE	PauseObject[5];//タイトル画面オブジェクト
 
