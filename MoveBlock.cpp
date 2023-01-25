@@ -249,6 +249,7 @@ void DeleteMoveBlock(int PieceNo) {
 		if (gMoveBlock[i].bUse) {
 			if (gMoveBlock[i].PieceIndex == PieceNo)
 			{
+				gMoveBlock[i].NowPieceIndex = gMoveBlock[i].PieceIndex;
 				gMoveBlock[i].bUse = false;
 
 			}
