@@ -81,6 +81,8 @@ HWND hWnd;
 int		g_CountFPS;							// FPSカウンタ
 char	g_DebugStr[2048] = WINDOW_CAPTION;	// デバッグ文字表示用
 
+bool g_GameEnd = false;		// ゲーム終了フラグ		true:ゲーム強制終了
+
 #endif
 
 											//=============================================================================
@@ -183,6 +185,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #endif
 
 				dwFrameCount++;		// 処理回数のカウントを加算
+
+				// ゲーム終了
+				if (g_GameEnd) break;
 			}
 		}
 	}
@@ -336,4 +341,12 @@ void Setclose()
 HWND GetHwnd()
 {
 	return hWnd;
+}
+
+//==================================================
+// ゲーム強制終了関数
+//==================================================
+void GameEnd()
+{
+	g_GameEnd = true;
 }

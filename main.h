@@ -48,3 +48,4 @@ long GetMousePosY(void);
 int Irand(int max);
 void Setclose();
 HWND GetHwnd();
+void GameEnd();
