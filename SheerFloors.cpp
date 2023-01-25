@@ -94,7 +94,7 @@ void SetSheerFloors(D3DXVECTOR2 p, D3DXVECTOR2 s, int direction, int index)
 			default:
 				break;
 			}
-			gSheerFloors[i].pos = p + D3DXVECTOR2(0.0f, BLOCK_CHIP_SIZE / 2);
+			gSheerFloors[i].pos = p;
 			gSheerFloors[i].size = s;
 			gSheerFloors[i].index = index;
 			gSheerFloors[i].use = true;
