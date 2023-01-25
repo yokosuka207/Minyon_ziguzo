@@ -202,8 +202,8 @@ void UpdateGame()
 		//PuzzleCollision();
 		UpdatePlayer();
 		UpdateDoppelganger();//ドッペルゲンガー
-		PieceCollision();
 		UpdateCollision();
+		PieceCollision();
 
 		UpdateBlock();
 		UpdateJoint();
