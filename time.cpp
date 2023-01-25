@@ -23,8 +23,8 @@
 //*****************************************************************************
 static ID3D11ShaderResourceView* g_TimeTexture;	//画像一枚で一つの変数が必要
 static ID3D11ShaderResourceView* g_TimeTexture2;	//画像一枚で一つの変数が必要
-static char* g_TimeTextureName = (char*)"data\\texture\\number1.png";	//テクスチャファイルパス
-static char* g_TimeTextureName2 = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
+static char* g_TimeTextureName = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
+static char* g_TimeTextureName2 = (char*)"data\\texture\\number1.png";	//テクスチャファイルパス
 static int g_TimeTextureNo = 0;
 static int g_TimeTextureNo2 = 0;
 static int g_Time = 0;
