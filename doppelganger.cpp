@@ -709,30 +709,89 @@ void UpdateDoppelganger()
 	//=========================================
 	//プレーヤーとスイッチ系(switch,SwitchWall)
 	//=========================================
-	for (int i = 0; i < SWITCH_MAX; i++) {
-		//スイッチとドッペルゲンガーの当たり判定
-		if (pSwitch[i].UseFlag) {
-			if (pSwitch[i].pos.x - pSwitch[i].size.x / 2 < g_Doppel.Position.x + g_Doppel.size.x / 2 &&
-				pSwitch[i].pos.x + pSwitch[i].size.x / 2 > g_Doppel.Position.x - g_Doppel.size.x / 2 &&
-				pSwitch[i].pos.y - pSwitch[i].size.y / 2 < g_Doppel.Position.y + g_Doppel.size.y / 2 &&
-				pSwitch[i].pos.y + pSwitch[i].size.y / 2 > g_Doppel.Position.y - g_Doppel.size.y / 2)
-			{
-				pSwitch[i].PressFlag = true;//押されたら
-				pSwitch[i].PaternNo = 1;
-				if (pSwitch[i].NotPressed)
-				{
-					//SetVolume(g_SwitchSoundNo, 0.5f);
-					///////////////////////////////////////////////////////////////PlaySound(g_SwitchSoundNo, 0);
-					pSwitch[i].NotPressed = false;
-				}
-			}
-			else {
-				pSwitch[i].PressFlag = false;
-				pSwitch[i].PaternNo = 0;
-				pSwitch[i].NotPressed = true;
-			}
-		}
-	}
+	//for (int i = 0; i < SWITCH_MAX; i++) {
+	//	//スイッチとドッペルゲンガーの当たり判定
+	//	if (pSwitch[i].UseFlag) {
+	//		if (pSwitch[i].pos.x - pSwitch[i].size.x / 2 < g_Doppel.Position.x + g_Doppel.size.x / 2 &&
+	//			pSwitch[i].pos.x + pSwitch[i].size.x / 2 > g_Doppel.Position.x - g_Doppel.size.x / 2 &&
+	//			pSwitch[i].pos.y - pSwitch[i].size.y / 2 < g_Doppel.Position.y + g_Doppel.size.y / 2 &&
+	//			pSwitch[i].pos.y + pSwitch[i].size.y / 2 > g_Doppel.Position.y - g_Doppel.size.y / 2)
+	//		{
+	//			pSwitch[i].PressFlag = true;//押されたら
+	//			pSwitch[i].PaternNo = 1;
+	//			if (pSwitch[i].NotPressed)
+	//			{
+	//				//SetVolume(g_SwitchSoundNo, 0.5f);
+	//				///////////////////////////////////////////////////////////////PlaySound(g_SwitchSoundNo, 0);
+	//				pSwitch[i].NotPressed = false;
+	//			}
+	//		}
+	//		else {
+	//			pSwitch[i].PressFlag = false;
+	//			pSwitch[i].PaternNo = 0;
+	//			pSwitch[i].NotPressed = true;
+	//		}
+	//	}
+	//}
+
+
+
+
+
+	//if (CollisionBB(pSwitch[i].pos, pDoppel->Position, pSwitch[i].size, pDoppel->size)) {
+	//	pSwitch[i].PressFlag = true;//押されたら
+	//	pSwitch[i].PaternNo = 1;
+	//	if (pSwitch[i].NotPressed == true)
+	//	{
+	//		//SetVolume(g_SwitchSoundNo, 0.5f);
+	//		PlaySound(g_SwitchSoundNo, 0);
+	//		pSwitch[i].NotPressed = false;
+	//	}
+	//}
+
+
+
+
+
+
+
+	//for (int i = 0; i < SWITCH_MAX; i++) {
+	//	//スイッチとプレイヤーの当たり判定
+	//	if (pSwitch[i].UseFlag) {
+	//		if (pSwitch[i].pos.x - pSwitch[i].size.x / 2 < g_Doppel.Position.x + g_Doppel.size.x / 2 &&
+	//			pSwitch[i].pos.x + pSwitch[i].size.x / 2 > g_Doppel.Position.x - g_Doppel.size.x / 2 &&
+	//			pSwitch[i].pos.y - pSwitch[i].size.y / 2 < g_Doppel.Position.y + g_Doppel.size.y / 2 &&
+	//			pSwitch[i].pos.y + pSwitch[i].size.y / 2 > g_Doppel.Position.y - g_Doppel.size.y / 2)
+	//		{
+	//			pSwitch[i].PressFlag = true;//押されたら
+	//			pSwitch[i].PaternNo = 1;
+	//			if (pSwitch[i].NotPressed)
+	//			{
+	//				//SetVolume(g_SwitchSoundNo, 0.5f);
+	//				//////////////////////////////////////PlaySound(g_SwitchSoundNo, 0);
+	//				pSwitch[i].NotPressed = false;
+	//			}
+	//		}
+	//		else {
+	//			/*pSwitch[i].PressFlag = false;
+	//			pSwitch[i].PaternNo = 0;
+	//			pSwitch[i].NotPressed = true;*/
+	//		}
+	//	}
+	//}
+
+
+
+
+
+
+
+
+
+
+
+
+
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
 		if (pSwitchWall[i].UseFlag) {
 			//プレーヤーと壁の判定
