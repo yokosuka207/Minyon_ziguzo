@@ -787,8 +787,8 @@ void UpdateCollision(){
 				//プレイヤー左・高所落ちるブロック右
 				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
 					pPlayer->oldpos.x + pPlayer->size.x / 2 <= (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
-					pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
-					pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
+					pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 3 &&
+					pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 3)
 				{
 					pPlayer->Position.x = (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 - pPlayer->size.x / 2;
 				}
@@ -806,7 +806,7 @@ void UpdateCollision(){
 					pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
 					pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
 				{
-					if (pPlayer->sp.y >= 5.0f) {
+					if (pPlayer->sp.y <= -5.0f) {
 						//pPlayer->isHigh = false;
 						(pHigh + i)->UseFlag = false;
 						//SetVolume(g_HighSoundNo, 0.5f);
@@ -815,8 +815,19 @@ void UpdateCollision(){
 					}
 					else {
 						//pPlayer->isHigh = true;
-						pPlayer->sp.y = 0.0f;
+						pPlayer->sp.y = -0.1f;
 						pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
+						// 着地中にする
+						if (!pPlayer->isHigh) {
+							pPlayer->sp.y = -0.1f;
+							pPlayer->isHigh = true;
+							break;
+						}
+						else {
+							pPlayer->isHigh = false;
+						}
+					}
+
 					}
 
 				}/*
@@ -833,21 +844,13 @@ void UpdateCollision(){
 					pPlayer->Position.y = (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 - pPlayer->size.y / 2;
 				}
 				// プレイヤーの下にブロックがあったら
-				if ((pPlayer->Position.y - pPlayer->size.y / 2 - 0.05f < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2) &&
-					(pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2) &&
-					(pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2) &&
-					(pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2))
+				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
+					pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
+					pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
+					pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
 				{
-					// 着地中にする
-					if (!pPlayer->isHigh) {
-						pPlayer->sp.y = 0.0f;
-						pPlayer->isHigh = true;
-						break;
-					}
-				}
-				else {
-					pPlayer->isHigh = false;
-				}
+					//pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
+
 			}
 		}
 		//-----------------------------------------------------
@@ -1234,9 +1237,9 @@ void UpdateCollision(){
 
 
 
-////==========================
-////パズルピース当たり判定
-////==========================
+//==========================
+//パズルピース当たり判定
+//==========================
 //void PieceCollision()
 //{
 //
@@ -1684,10 +1687,11 @@ void PieceCollision()
 													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
 
 													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x - PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
+													PositionPlas(temp, pPiece[i].no);
 
 													if (fourPieceCollision(pPiece[i], i))
 													{
-														PositionPlas(temp, pPiece[i].no);
+														//PositionPlas(temp, pPiece[i].no);
 														pPiece[i].OldMovePos = pPiece[i].pos;
 														if (pFlag)
 														{
@@ -1729,12 +1733,13 @@ void PieceCollision()
 												{
 													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y) - pPiece[i].pos;
 
-													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_SIZE, pPiece[pJoint[k].indexno].pos.y);
+													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x + PUZZLE_WIDHT, pPiece[pJoint[k].indexno].pos.y);
+													PositionPlas(temp, pPiece[i].no);
 
 													if (fourPieceCollision(pPiece[i], i))
 													{
 
-														PositionPlas(temp, pPiece[i].no);
+														//PositionPlas(temp, pPiece[i].no);
 														pPiece[i].OldMovePos = pPiece[i].pos;
 														if (pFlag)
 														{
@@ -1780,10 +1785,11 @@ void PieceCollision()
 													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT) - pPiece[i].pos;
 
 													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y + PUZZLE_HEIGHT);
+													PositionPlas(temp, pPiece[i].no);
 
 													if (fourPieceCollision(pPiece[i], i))
 													{
-														PositionPlas(temp, pPiece[i].no);
+														//PositionPlas(temp, pPiece[i].no);
 														pPiece[i].OldMovePos = pPiece[i].pos;
 														if (pFlag)
 														{
@@ -1829,10 +1835,11 @@ void PieceCollision()
 													D3DXVECTOR2 temp = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT) - pPiece[i].pos;
 
 													pPiece[i].pos = D3DXVECTOR2(pPiece[pJoint[k].indexno].pos.x, pPiece[pJoint[k].indexno].pos.y - PUZZLE_HEIGHT);
+													PositionPlas(temp, pPiece[i].no);
 
 													if (fourPieceCollision(pPiece[i], i))
 													{
-														PositionPlas(temp, pPiece[i].no);
+														//PositionPlas(temp, pPiece[i].no);
 														pPiece[i].OldMovePos = pPiece[i].pos;
 														if (pFlag)
 														{
@@ -3824,9 +3831,9 @@ bool SpritStageCollision(Piece p)
 	//左
 
 
-	if (x < left.x - 240 / 2);
+	if (x < left.x - 180 / 2);
 	{
-		if (p.pos.x < left.x - 240 / 2)
+		if (p.pos.x < left.x - 180 / 2)
 		{
 			return false;
 

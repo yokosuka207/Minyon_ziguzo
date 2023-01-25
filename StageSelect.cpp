@@ -45,14 +45,22 @@ static STAGESELECT_STAIRS g_StageSelectStairs[12];
 
 static ID3D11ShaderResourceView* g_StageSelectTexture;	//画像一枚で一つの変数が必要
 static char* g_StageSelectTextureName = (char*)"data\\texture\\ドア3.png";	//テクスチャファイルパス
+
 static ID3D11ShaderResourceView* g_StageSelect2Texture;	//画像一枚で一つの変数が必要
 static char* g_StageSelect2TextureName = (char*)"data\\texture\\black.png";	//テクスチャファイルパス
+
 static ID3D11ShaderResourceView* g_StageSelectTextureBg;	//画像一枚で一つの変数が必要
 static char* g_StageSelectBgTextureName = (char*)"data\\texture\\ステージセレクト背景.png";	//テクスチャファイルパス
+
 static ID3D11ShaderResourceView* g_StageSelectTextureBlock;	//画像一枚で一つの変数が必要
 static char* g_StageSelectBlockTextureName = (char*)"data\\texture\\ステージ選択床.png";	//テクスチャファイルパス
+
 static ID3D11ShaderResourceView* g_StageSelectTextureStairs;	//画像一枚で一つの変数が必要
-static char* g_StageSelectStairsTextureName = (char*)"data\\texture\\jumpstand.png";	//テクスチャファイルパス
+static char* g_StageSelectStairsTextureName = (char*)"data\\texture\\階段1.png";	//テクスチャファイルパス
+static char* g_StageSelectStairsTextureName2 = (char*)"data\\texture\\階段2.png";	//テクスチャファイルパス
+static int g_StageSelectStairsTexNo = 0;
+static int g_StageSelectStairsTexNo2 = 0;
+
 static ID3D11ShaderResourceView* g_StageSelectTexturefence;	//画像一枚で一つの変数が必要
 static char* g_StageSelectfenceTextureName = (char*)"data\\texture\\柵.png";	//テクスチャファイルパス
 
@@ -135,9 +143,10 @@ HRESULT InitStageSelect() {
 		g_StageSelectStairs[i].pos = D3DXVECTOR2(90.0f+(b*25.0f), 270.0f+(b*40.0f) + (250 * a));
 		g_StageSelectStairs[i].size = D3DXVECTOR2(30.0f, 40.0f);
 		g_StageSelectStairs[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		g_StageSelectStairs[i].texno = LoadTexture(g_StageSelectStairsTextureName);
 		b++;
 	}
+	g_StageSelectStairsTexNo = LoadTexture(g_StageSelectStairsTextureName);
+	g_StageSelectStairsTexNo2 = LoadTexture(g_StageSelectStairsTextureName2);
 
 	//g_Texturenumber = LoadTexture(g_StageSelectStairsTextureName);
 
@@ -541,7 +550,7 @@ void UpdateStageSelect() {
 //-----------------------------------------------------------------------------
 void DrawStageSelect() {
 
-	D3DXCOLOR color(1, 1, 1, 1);
+	D3DXCOLOR color(1.0f, 1.0f, 1.0f, 1.0f);
 
 	if (pStory->KeyUse) {
 		color = D3DXCOLOR(0, 0, 0, 0.5);
@@ -549,14 +558,14 @@ void DrawStageSelect() {
 	else {
 		color = D3DXCOLOR(1, 1, 1, 1);
 	}
-	
+
 	{	//背景ポリゴン表示
 		SetWorldViewProjection2D();
 
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectBg.texno));
 		SpriteDrawColorRotation(
 			g_StageSelectBg.pos.x, g_StageSelectBg.pos.y, 0.5f, g_StageSelectBg.size.x, g_StageSelectBg.size.y
-			, 0.0f, D3DXCOLOR(0.7f,0.7f,0.76f,1.0f), 0, 1.0f, 1.0f, 1);
+			, 0.0f, D3DXCOLOR(0.7f, 0.7f, 0.76f, 1.0f), 0, 1.0f, 1.0f, 1);
 	}
 	for (int i = 0; i < 3; i++)
 	{
@@ -571,18 +580,66 @@ void DrawStageSelect() {
 	}
 
 	//階段
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 12; i += 3)
 	{
 		SetWorldViewProjection2D();
+		if (i == 0 || i == 6) {
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairsTexNo));
 
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairs[i].texno));
+			SpriteDrawColorRotation(
+				g_StageSelectStairs[i].pos.x,
+				g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y - 18.0f,
+				0.5f,
+				g_StageSelectStairs[i].size.x * 5,
+				g_StageSelectStairs[i].size.y * 5,
+				0.0f,
+				color,
+				0,
+				1.0f,
+				1.0f,
+				1
+			);
+		}
+		//else if (i == 2 || i == 8) {
+		//	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairsTexNo2));
 
-		SpriteDrawColorRotation(
-			g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x + 10, g_StageSelectStairs[i].size.y + 10
-			, 0.0f, color, 0, 1.0f, 1.0f, 1);
+		//	SpriteDrawColorRotation(
+		//		g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x + 5.0f,
+		//		g_StageSelectStairs[i].pos.y - 6.0f,
+		//		0.5f,
+		//		g_StageSelectStairs[i].size.x * 4,
+		//		g_StageSelectStairs[i].size.y * 4,
+		//		0.0f,
+		//		color,
+		//		0,
+		//		1.0f,
+		//		1.0f,
+		//		1
+		//	);
+		//}
+		else if (i == 3 || i == 9) {
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairsTexNo2));
 
+			SpriteDrawColorRotation(
+				g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x + 36.0f,
+				g_StageSelectStairs[i].pos.y + 4.0f,
+				0.5f,
+				g_StageSelectStairs[i].size.x * 5,
+				g_StageSelectStairs[i].size.y * 5,
+				0.0f,
+				color,
+				0,
+				1.0f,
+				1.0f,
+				1
+			);
+		}
+
+
+	//SpriteDrawColorRotation(
+	//	g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x * 2, g_StageSelectStairs[i].size.y * 2,
+	//	0.0f, color, 0, 1.0f, 1.0f, 1);
 	}
-
 
 
 	for (int i = 0; i < STAGE_MAX; i++)
