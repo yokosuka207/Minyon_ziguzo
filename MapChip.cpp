@@ -329,10 +329,10 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 3);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15　ボタンで開く扉×4
-				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction ,4);
+				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 4);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
-				SetSheerFloors(position, DrawSize, no);
+				SetSheerFloors(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　着地で壊れる床
 				
@@ -674,7 +674,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 4);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
-				SetSheerFloors(position, DrawSize, no);
+				SetSheerFloors(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　着地で壊れる床
 				SetBroken(position, DrawSize, no, brokenIndex);
