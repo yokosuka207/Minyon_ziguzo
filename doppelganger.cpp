@@ -149,6 +149,11 @@ HRESULT InitDoppelganger()
 
 	g_Doppel.hp = 3;
 
+	for (int i = 0; i < LAMP_SWITCH_MAX; i++)
+	{
+		g_Doppel.LampSwitchFlag[i] = true;
+	}
+
 
 	return S_OK;
 }
@@ -1422,14 +1427,14 @@ void UpdateDoppelganger()
 	LAMP* p_Lamp = GetLamp();
 	LAMP_SWITCH* p_LampSwitch = GetLampSwitch();
 	for (int i = 0; i < LAMP_SWITCH_MAX; i++) {
-		//街灯スイッチとプレイヤーの当たり判定
 		if (p_LampSwitch[i].UseFlag) {
+			//街灯スイッチとプレイヤーの当たり判定
 			if (p_LampSwitch[i].pos.x - p_LampSwitch[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 				p_LampSwitch[i].pos.x + p_LampSwitch[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
 				p_LampSwitch[i].pos.y - p_LampSwitch[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-				p_LampSwitch[i].pos.y + p_LampSwitch[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+				p_LampSwitch[i].pos.y + p_LampSwitch[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
+				g_Doppel.LampSwitchFlag[i] == true)
 			{
-				SetEffectLight(p_Lamp->pos, p_Lamp->rot, i);
 				p_LampSwitch[i].PressFlag = true;//押されたら
 				p_LampSwitch[i].PaternNo = 1;
 				if (p_LampSwitch[i].NotPressed)
@@ -1439,16 +1444,40 @@ void UpdateDoppelganger()
 					p_LampSwitch[i].NotPressed = false;
 				}
 			}
-			else {
+			/*else {
 				StopEffectLight(i);
 				p_LampSwitch[i].PressFlag = false;
 				p_LampSwitch[i].PaternNo = 0;
 				p_LampSwitch[i].NotPressed = true;
+			}*/
+
+			//街灯スイッチとドッペルゲンガーの当たり判定
+			if (p_LampSwitch[i].pos.x - p_LampSwitch[i].size.x / 2 < g_Doppel.Position.x + g_Doppel.size.x / 2 &&
+				p_LampSwitch[i].pos.x + p_LampSwitch[i].size.x / 2 > g_Doppel.Position.x - g_Doppel.size.x / 2 &&
+				p_LampSwitch[i].pos.y - p_LampSwitch[i].size.y / 2 < g_Doppel.Position.y + g_Doppel.size.y / 2 &&
+				p_LampSwitch[i].pos.y + p_LampSwitch[i].size.y / 2 > g_Doppel.Position.y - g_Doppel.size.y / 2 &&
+				g_Doppel.LampSwitchFlag[i] == true)
+			{
+				p_LampSwitch[i].PressFlag = true;//押されたら
+				p_LampSwitch[i].PaternNo = 1;
+				if (p_LampSwitch[i].NotPressed)
+				{
+					//SetVolume(g_SwitchSoundNo, 0.5f);
+					//PlaySound(g_SwitchSoundNo, 0);
+					p_LampSwitch[i].NotPressed = false;
+				}
 			}
+			/*else {
+				StopEffectLight(i);
+				p_LampSwitch[i].PressFlag = false;
+				p_LampSwitch[i].PaternNo = 0;
+				p_LampSwitch[i].NotPressed = true;
+			}*/
 
 			//街灯スイッチと木箱の当たり判定
 			for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
-				if (CollisionBB(p_LampSwitch[i].pos, pMoveBlock[j].pos, p_LampSwitch[i].size, pMoveBlock[j].size)) {
+				if (CollisionBB(p_LampSwitch[i].pos, pMoveBlock[j].pos, p_LampSwitch[i].size, pMoveBlock[j].size) &&
+					g_Doppel.LampSwitchFlag[i] == true) {
 					p_LampSwitch[i].PressFlag = true;//押されたら
 					p_LampSwitch[i].PaternNo = 1;
 					if (p_LampSwitch[i].NotPressed == true)
@@ -1458,28 +1487,45 @@ void UpdateDoppelganger()
 						p_LampSwitch[i].NotPressed = false;
 					}
 				}
-				//else {
-				//	p_LampSwitch[i].PressFlag = false;
-				//	p_LampSwitch[i].PaternNo = 0;
-				//	p_LampSwitch[i].NotPressed = true;
-				//}
+				/*else {
+					StopEffectLight(i);
+					p_LampSwitch[i].PressFlag = false;
+					p_LampSwitch[i].PaternNo = 0;
+					p_LampSwitch[i].NotPressed = true;
+				}*/
 			}
 
-			if (p_LampSwitch[i].PressFlag) 
+
+			//全判定false
+			for (int j = 0; j < MOVE_BLOCK_MAX; j++) 
 			{
-				for (int j = 0; j < p_Lamp[i].LampMax; j++) 
+				if ((!CollisionBB(p_LampSwitch[i].pos, pPlayer->Position, p_LampSwitch[i].size, pPlayer->size))&&
+					(!CollisionBB(p_LampSwitch[i].pos, g_Doppel.Position, p_LampSwitch[i].size, g_Doppel.size)) &&
+					(!CollisionBB(p_LampSwitch[i].pos, pMoveBlock[j].pos, p_LampSwitch[i].size, pMoveBlock[j].size)))
 				{
-					//  switch index 0,1			switch wall	index 0,3
-					if (p_LampSwitch[i].LampSwitchIndex == p_Lamp[i].SwitchIndex) 
+					p_LampSwitch[i].PressFlag = false;
+					p_LampSwitch[i].PaternNo = 0;
+					p_LampSwitch[i].NotPressed = true;
+				}
+			}
+
+
+
+
+			if (p_LampSwitch[i].PressFlag)
+			{
+				//  switch index 0,1			switch wall	index 0,3
+				if (p_LampSwitch[i].LampSwitchIndex == p_Lamp[i].SwitchIndex)
+				{
+					SetEffectLight(p_Lamp[i].pos, p_Lamp[i].rot, i);
+					p_Lamp[i].color = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
+					if (CollisionBB(g_Doppel.Position, p_Lamp[i].pos, g_Doppel.size, p_Lamp[i].size))
 					{
-						p_Lamp[i + j].color = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
-						if (CollisionBB(g_Doppel.Position, p_Lamp[i + j].pos, g_Doppel.size, p_Lamp[i + j].size))
-						{
-							g_Doppel.hp--;
-							if (pSpawnPointD[i].UseFlag)
-							{
-								if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex)
-								{
+						g_Doppel.hp--;
+						g_Doppel.LampSwitchFlag[i] = false;
+						for (int i = 0; i < SPAWN_POINT_D_MAX; i++) {//リスポンせずにHPが減り続けている
+							if (pSpawnPointD[i].UseFlag) {
+								if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex) {
 									g_Doppel.Position = pSpawnPointD[i].Position;
 								}
 							}
@@ -1487,13 +1533,43 @@ void UpdateDoppelganger()
 					}
 				}
 			}
-			else 
+			else
 			{
-				for (int j = 0; j < p_Lamp[i].LampMax; j++) 
-				{
-					p_Lamp[i + j].color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
-				}
+				p_Lamp[i].color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+				StopEffectLight(i);
 			}
+			//if (p_LampSwitch[i].PressFlag) 
+			//{
+			//	for (int j = 0; j < p_Lamp[i].LampMax; j++) 
+			//	{
+			//		//  switch index 0,1			switch wall	index 0,3
+			//		if (p_LampSwitch[i].LampSwitchIndex == p_Lamp[i].SwitchIndex) 
+			//		{
+			//			SetEffectLight(p_Lamp[i + j].pos, p_Lamp[i + j].rot, i);
+			//			p_Lamp[i + j].color = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
+			//			if (CollisionBB(g_Doppel.Position, p_Lamp[i + j].pos, g_Doppel.size, p_Lamp[i + j].size))
+			//			{
+			//				g_Doppel.hp--;
+			//				g_Doppel.LampSwitchFlag[i] = false;
+			//				if (pSpawnPointD[i].UseFlag)
+			//				{
+			//					if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex)
+			//					{
+			//						g_Doppel.Position = pSpawnPointD[i].Position;
+			//					}
+			//				}
+			//			}
+			//		}
+			//	}
+			//}
+			//else 
+			//{
+			//	for (int j = 0; j < p_Lamp[i].LampMax; j++) 
+			//	{
+			//		p_Lamp[i + j].color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+			//		StopEffectLight(i + j);
+			//	}
+			//}
 		}
 	}
 

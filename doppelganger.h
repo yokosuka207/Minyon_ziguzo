@@ -9,6 +9,7 @@
 #include "main.h"
 #include "renderer.h"
 #include "goal_key.h"
+#include "lamp_switch.h"
 
 //=============================================================================
 //マクロ定義
@@ -50,6 +51,7 @@ struct DOPPELGANGER
 	bool isMoveBlock;
 	bool isHigh;
 	bool WarpFlag;
+	bool LampSwitchFlag[LAMP_SWITCH_MAX];
 
 	D3DXVECTOR2 size;//BOXサイズ
 	D3DXVECTOR2 Drawsize;//BOXサイズ
