@@ -12,7 +12,7 @@
 #include "main.h"
 #include "switch.h"
 
-#define SWITCHWALL_MAX (3)
+#define SWITCHWALL_MAX (5)
 #define SWITCHWALL_LIMIT (3)
 
 typedef struct {

@@ -12,7 +12,7 @@
 
 #include "main.h"
 
-#define SWITCH_MAX (3)
+#define SWITCH_MAX (5)
 
 typedef struct {
 	D3DXVECTOR2 pos;

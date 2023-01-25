@@ -398,7 +398,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_LAMP_SWITCH):	//29 街灯スイッチ
 				SetLampSwitch(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
-			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT_D)://20　スポーンポイント
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT_D)://30　ドッペルゲンガーの初期位置?
 				SetSpawnPointD(position, DrawSize, no);
 				break;
 			default:
