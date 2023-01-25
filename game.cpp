@@ -49,6 +49,9 @@
 #include"fallblock.h"
 #include "StoryKey.h"
 #include"KeyDisplay.h"
+#include"lamp.h"
+#include"lamp_switch.h"
+#include "EffectLight.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -98,13 +101,15 @@ void InitGame()
 		InitEnemy();
 		InitPause();
 		InitEffectSpark();		// ヒバナエフェクト
+		InitEffectLight();
 		InitBullet();
 		InitPlayerLife();
 		InitKeyDisplay();
 		InitExplain();
 		InitStoryKey();
-
 		InitCollision();
+		InitLamp();
+		InitLampSwitch();
 	}
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
@@ -159,12 +164,15 @@ void UninitGame()
 	UninitExplain();
 	UninitStoryKey();
 	UninitCollision();
+	UninitLamp();
+	UninitLampSwitch();
 
 	UninitPause();
 	pScore->UninitScore();
 	pTime->UninitTime();
 	g_Player3D.Uninit();
 	UninitEffectSpark();		// ヒバナエフェクト
+	UninitEffectLight();
 }
 
 void UpdateGame()
@@ -218,6 +226,8 @@ void UpdateGame()
 		UpdateSwitch();
 		UpdateSwitchWall();
 		UpdateStoryKey();
+		UpdateLamp();
+		UpdateLampSwitch();
 
 		UpdateEnemy();
 		UpdateBullet();
@@ -229,6 +239,7 @@ void UpdateGame()
 		g_Player3D.Update();
 		UpdateCamera();
 		UpdateEffectSpark();	// ヒバナエフェクト
+		UpdateEffectLight();
 
 		UpdatePlayerLife();
 		UpdateKeyDisplay();
@@ -276,6 +287,8 @@ void DrawGame()
 		DrawGoal();
 		DrawBroken();		
 		DrawThornBlock();
+		DrawLamp();
+		DrawLampSwitch();
 
 		DrawEnemy();
 		DrawBullet();
@@ -291,6 +304,7 @@ void DrawGame()
 		DrawCursor();				// カーソルの描画
 		g_Player3D.Draw();
 		DrawEffectSpark();		// ヒバナエフェクト
+		DrawEffectLight();
 		SetCamera();
 		DrawStoryKey();
 		DrawExplain();

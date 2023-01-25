@@ -111,6 +111,7 @@ HRESULT InitPlayer()
 	g_Player.frame = 0;
 	g_Player.CoolTime = PLAYER_COOLTIME;
 	g_Player.PieceIndex = 0;
+	g_Player.HaveKey = 0;
 
 	g_Player.SoundRightFlag = false;
 	g_Player.SoundLeftFlag = false;

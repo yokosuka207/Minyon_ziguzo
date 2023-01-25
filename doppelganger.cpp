@@ -45,7 +45,7 @@
 #include "goal_key.h"
 //#include "pause.h"
 
-#include"spawnpoint.h"
+#include"spawnpoint_d.h"
 
 #include "fade.h"
 #include "result.h"
@@ -75,6 +75,9 @@
 #include "StoryKey.h"		//ストーリー用鍵
 #include "bullet.h"			//ドッペルゲンガー発射弾
 #include "doppelganger.h"   //ドッペルゲンガー
+#include"lamp.h"
+#include"lamp_switch.h"
+#include "EffectLight.h"
 #include "enemy.h"			//エネミー
 
 #include "JumpStandExplain.h"		
@@ -114,7 +117,7 @@ HRESULT InitDoppelganger()
 	Piece* pPiece = GetPiece();
 
 	g_Doppel.Position = D3DXVECTOR2(pPiece->pos.x - 30.0f, pPiece->pos.y);
-	//g_Doppel.OneOldpos = g_Doppel.oldpos = g_Doppel.Position;
+	g_Doppel.OneOldpos = g_Doppel.oldpos = g_Doppel.Position;
 	g_Doppel.sp = D3DXVECTOR2(0.0f, -8.0f);
 	g_Doppel.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
 	g_Doppel.Drawsize = D3DXVECTOR2(33.0f, 33.0f);
@@ -143,37 +146,13 @@ HRESULT InitDoppelganger()
 	g_Doppel.frame = 0;
 	g_Doppel.CoolTime = PLAYER_COOLTIME;
 	g_Doppel.PieceIndex = 0;
-	
-	//g_Doppel.Position = D3DXVECTOR2(pPiece->pos.x - 30.0f, pPiece->pos.y);
-	////g_Doppel.OneOldpos = g_Doppel.oldpos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	//g_Doppel.sp = D3DXVECTOR2(0, -8);
-	//g_Doppel.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
-	//g_Doppel.Drawsize = D3DXVECTOR2(33.0f, 33.0f);
-	//g_Doppel.col = D3DXCOLOR(1.0f, 1.0f, 1.0, 1.0f);
-	//g_Doppel.rot = 180.0f;
-	//g_Doppel.UseFlag = false;
-	//g_Doppel.jump = false;
-	////g_Doppel.getjump = false;
-	//g_Doppel.GetJumpStand = false;		//ジャンプ台用
-	//g_Doppel.fall = false;
-	////g_Doppel.getfall = false;
-	//g_Doppel.WarpFlag = false;
-	//g_Doppel.isGround = true;
-	//g_Doppel.isSheerFloors = false;
-	//g_Doppel.isSheerFloorsUse = false;
-	//g_Doppel.isHigh = false;
-	//g_Doppel.isMoveBlock = false;
-	//g_Doppel.texno = LoadTexture(g_TextureNameBroken);
 
-	//g_Doppel.PaternNo = 0;//パターン番号
-	//g_Doppel.uv_w = DOPPELGANGER_UV_W;//横サイズ
-	//g_Doppel.uv_h = DOPPELGANGER_UV_H;//縦サイズ
-	//g_Doppel.NumPatern = 4;//横枚数
+	g_Doppel.hp = 3;
 
-
-	//g_Doppel.frame = 0;
-	//g_Doppel.CoolTime = PLAYER_COOLTIME;
-	//g_Doppel.PieceIndex = 0;
+	for (int i = 0; i < LAMP_SWITCH_MAX; i++)
+	{
+		g_Doppel.LampSwitchFlag[i] = true;
+	}
 
 
 	return S_OK;
@@ -269,27 +248,26 @@ void UpdateDoppelganger()
 				if (g_Doppel.PaternNo != 1.0f) {
 					g_Doppel.SoundLeftFlag = false;
 				}
-			}
+			}*/
 			if (g_Doppel.sp.x == 0)
 			{
 				g_Doppel.PaternNo = 17;
 
-				if (g_Doppel.uv_w < 0)
+				if (g_Doppel.uv_w > 0)
 				{
 					g_Doppel.PaternNo = 18;
-
 				}
 			}
 			if (g_Doppel.sp.y != 0)
 			{
 				g_Doppel.PaternNo = 16;
-				if (g_Doppel.uv_w < 0)
+				if (g_Doppel.uv_w > 0)
 				{
 					g_Doppel.PaternNo = 19;
-
 				}
 
-			}*/
+			}
+
 
 			//----------------
 			//ジャンプ台の場合
@@ -337,7 +315,7 @@ void UpdateDoppelganger()
 			//基本ブロックの場合
 			//-------------------
 			BLOCK* block = GetChipBlock();
-			SpawnPoint* pSpawnPoint = GetSpawnPoint();
+			SpawnPointD* pSpawnPointD = GetSpawnPointD();
 			for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
 				if (block[i].UseFlag)
 				{
@@ -504,21 +482,17 @@ void UpdateDoppelganger()
 								}
 								else
 								{//下に何もなく死亡する場合
-									for (int i = 0; i < SPAWN_POINT_MAX; i++)
+									for (int i = 0; i < SPAWN_POINT_D_MAX; i++)
 									{
-										if (pSpawnPoint[i].UseFlag)
+										if (pSpawnPointD[i].UseFlag)
 										{
-											if (g_Doppel.PieceIndex == pSpawnPoint[i].PieceIndex)
+											if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex)
 											{
-												g_Doppel.Position = pSpawnPoint[i].Position;
+												g_Doppel.Position = pSpawnPointD[i].Position;
 												/////////////////////////////////////////////////////g_Doppel.hp--;
-
 											}
-
-
 										}
 									}
-
 								}
 							}
 							else if (g_Doppel.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
@@ -606,13 +580,13 @@ void UpdateDoppelganger()
 							}
 							else
 							{//下に何もなく死亡する場合
-								for (int i = 0; i < SPAWN_POINT_MAX; i++)
+								for (int i = 0; i < SPAWN_POINT_D_MAX; i++)
 								{
-									if (pSpawnPoint[i].UseFlag)
+									if (pSpawnPointD[i].UseFlag)
 									{
-										if (g_Doppel.PieceIndex == pSpawnPoint[i].PieceIndex)
+										if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex)
 										{
-											g_Doppel.Position = pSpawnPoint[i].Position;
+											g_Doppel.Position = pSpawnPointD[i].Position;
 
 										}
 
@@ -681,7 +655,7 @@ void UpdateDoppelganger()
 
 		}
 
-	}
+	
 
 
 
@@ -706,7 +680,7 @@ void UpdateDoppelganger()
 
 	PLAYER* pPlayer = GetPlayer();
 	ENEMY* pEnemy = GetEnemy();
-	SpawnPoint* pSpawnPoint = GetSpawnPoint();
+	SpawnPointD* pSpawnPointD = GetSpawnPointD();
 
 	WARP* pWarp = GetWarp();
 
@@ -829,10 +803,10 @@ void UpdateDoppelganger()
 					/////////////////////////////////////////////////////g_Doppel.hp--;
 					//SetVolume(g_CandleSoundNo, 0.5f);
 					///////////////////////////////////////////////////////////////PlaySound(g_CandleSoundNo, 0);
-					for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
-						if (pSpawnPoint[i].UseFlag) {
-							if (g_Doppel.PieceIndex == pSpawnPoint[i].PieceIndex) {
-								g_Doppel.Position = pSpawnPoint[i].Position;
+					for (int i = 0; i < SPAWN_POINT_D_MAX; i++) {//リスポンせずにHPが減り続けている
+						if (pSpawnPointD[i].UseFlag) {
+							if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex) {
+								g_Doppel.Position = pSpawnPointD[i].Position;
 							}
 						}
 					}
@@ -845,10 +819,10 @@ void UpdateDoppelganger()
 		/////////////////////////////////////////////////////////////g_Doppel.hp--;
 		//SetVolume(g_CandleSoundNo, 0.5f);
 		///////////////////////////////////////////////////////////////PlaySound(g_CandleSoundNo, 0);
-		for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
-			if (pSpawnPoint[i].UseFlag) {
-				if (g_Doppel.PieceIndex == pSpawnPoint[i].PieceIndex) {
-					g_Doppel.Position = pSpawnPoint[i].Position;
+		for (int i = 0; i < SPAWN_POINT_D_MAX; i++) {//リスポンせずにHPが減り続けている
+			if (pSpawnPointD[i].UseFlag) {
+				if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex) {
+					g_Doppel.Position = pSpawnPointD[i].Position;
 				}
 			}
 		}
@@ -1282,7 +1256,7 @@ void UpdateDoppelganger()
 
 
 
-
+	
 
 
 
@@ -1430,6 +1404,189 @@ void UpdateDoppelganger()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//=========================================
+	//プレーヤーと街灯スイッチ系(switch,SwitchWall)
+	//=========================================
+	LAMP* p_Lamp = GetLamp();
+	LAMP_SWITCH* p_LampSwitch = GetLampSwitch();
+	for (int i = 0; i < LAMP_SWITCH_MAX; i++) {
+		if (p_LampSwitch[i].UseFlag) {
+			//街灯スイッチとプレイヤーの当たり判定
+			if (p_LampSwitch[i].pos.x - p_LampSwitch[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+				p_LampSwitch[i].pos.x + p_LampSwitch[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+				p_LampSwitch[i].pos.y - p_LampSwitch[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+				p_LampSwitch[i].pos.y + p_LampSwitch[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
+				g_Doppel.LampSwitchFlag[i] == true)
+			{
+				p_LampSwitch[i].PressFlag = true;//押されたら
+				p_LampSwitch[i].PaternNo = 1;
+				if (p_LampSwitch[i].NotPressed)
+				{
+					//SetVolume(g_SwitchSoundNo, 0.5f);
+					//PlaySound(g_SwitchSoundNo, 0);
+					p_LampSwitch[i].NotPressed = false;
+				}
+			}
+			/*else {
+				StopEffectLight(i);
+				p_LampSwitch[i].PressFlag = false;
+				p_LampSwitch[i].PaternNo = 0;
+				p_LampSwitch[i].NotPressed = true;
+			}*/
+
+			//街灯スイッチとドッペルゲンガーの当たり判定
+			if (p_LampSwitch[i].pos.x - p_LampSwitch[i].size.x / 2 < g_Doppel.Position.x + g_Doppel.size.x / 2 &&
+				p_LampSwitch[i].pos.x + p_LampSwitch[i].size.x / 2 > g_Doppel.Position.x - g_Doppel.size.x / 2 &&
+				p_LampSwitch[i].pos.y - p_LampSwitch[i].size.y / 2 < g_Doppel.Position.y + g_Doppel.size.y / 2 &&
+				p_LampSwitch[i].pos.y + p_LampSwitch[i].size.y / 2 > g_Doppel.Position.y - g_Doppel.size.y / 2 &&
+				g_Doppel.LampSwitchFlag[i] == true)
+			{
+				p_LampSwitch[i].PressFlag = true;//押されたら
+				p_LampSwitch[i].PaternNo = 1;
+				if (p_LampSwitch[i].NotPressed)
+				{
+					//SetVolume(g_SwitchSoundNo, 0.5f);
+					//PlaySound(g_SwitchSoundNo, 0);
+					p_LampSwitch[i].NotPressed = false;
+				}
+			}
+			/*else {
+				StopEffectLight(i);
+				p_LampSwitch[i].PressFlag = false;
+				p_LampSwitch[i].PaternNo = 0;
+				p_LampSwitch[i].NotPressed = true;
+			}*/
+
+			//街灯スイッチと木箱の当たり判定
+			for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
+				if (CollisionBB(p_LampSwitch[i].pos, pMoveBlock[j].pos, p_LampSwitch[i].size, pMoveBlock[j].size) &&
+					g_Doppel.LampSwitchFlag[i] == true) {
+					p_LampSwitch[i].PressFlag = true;//押されたら
+					p_LampSwitch[i].PaternNo = 1;
+					if (p_LampSwitch[i].NotPressed == true)
+					{
+						//SetVolume(g_SwitchSoundNo, 0.5f);
+						//PlaySound(g_SwitchSoundNo, 0);
+						p_LampSwitch[i].NotPressed = false;
+					}
+				}
+				/*else {
+					StopEffectLight(i);
+					p_LampSwitch[i].PressFlag = false;
+					p_LampSwitch[i].PaternNo = 0;
+					p_LampSwitch[i].NotPressed = true;
+				}*/
+			}
+
+
+			//全判定false
+			for (int j = 0; j < MOVE_BLOCK_MAX; j++) 
+			{
+				if ((!CollisionBB(p_LampSwitch[i].pos, pPlayer->Position, p_LampSwitch[i].size, pPlayer->size))&&
+					(!CollisionBB(p_LampSwitch[i].pos, g_Doppel.Position, p_LampSwitch[i].size, g_Doppel.size)) &&
+					(!CollisionBB(p_LampSwitch[i].pos, pMoveBlock[j].pos, p_LampSwitch[i].size, pMoveBlock[j].size)))
+				{
+					p_LampSwitch[i].PressFlag = false;
+					p_LampSwitch[i].PaternNo = 0;
+					p_LampSwitch[i].NotPressed = true;
+				}
+			}
+
+
+
+
+			if (p_LampSwitch[i].PressFlag)
+			{
+				//  switch index 0,1			switch wall	index 0,3
+				if (p_LampSwitch[i].LampSwitchIndex == p_Lamp[i].SwitchIndex)
+				{
+					SetEffectLight(p_Lamp[i].pos, p_Lamp[i].rot, i);
+					p_Lamp[i].color = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
+					if (CollisionBB(g_Doppel.Position, p_Lamp[i].pos, g_Doppel.size, p_Lamp[i].size))
+					{
+						g_Doppel.hp--;
+						g_Doppel.LampSwitchFlag[i] = false;
+						for (int i = 0; i < SPAWN_POINT_D_MAX; i++) {//リスポンせずにHPが減り続けている
+							if (pSpawnPointD[i].UseFlag) {
+								if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex) {
+									g_Doppel.Position = pSpawnPointD[i].Position;
+								}
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				p_Lamp[i].color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+				StopEffectLight(i);
+			}
+			//if (p_LampSwitch[i].PressFlag) 
+			//{
+			//	for (int j = 0; j < p_Lamp[i].LampMax; j++) 
+			//	{
+			//		//  switch index 0,1			switch wall	index 0,3
+			//		if (p_LampSwitch[i].LampSwitchIndex == p_Lamp[i].SwitchIndex) 
+			//		{
+			//			SetEffectLight(p_Lamp[i + j].pos, p_Lamp[i + j].rot, i);
+			//			p_Lamp[i + j].color = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
+			//			if (CollisionBB(g_Doppel.Position, p_Lamp[i + j].pos, g_Doppel.size, p_Lamp[i + j].size))
+			//			{
+			//				g_Doppel.hp--;
+			//				g_Doppel.LampSwitchFlag[i] = false;
+			//				if (pSpawnPointD[i].UseFlag)
+			//				{
+			//					if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex)
+			//					{
+			//						g_Doppel.Position = pSpawnPointD[i].Position;
+			//					}
+			//				}
+			//			}
+			//		}
+			//	}
+			//}
+			//else 
+			//{
+			//	for (int j = 0; j < p_Lamp[i].LampMax; j++) 
+			//	{
+			//		p_Lamp[i + j].color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+			//		StopEffectLight(i + j);
+			//	}
+			//}
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+	if (g_Doppel.hp <= 0)
+	{
+		g_Doppel.UseFlag = false;
+	}
 
 
 
@@ -2172,6 +2329,7 @@ void UpdateDoppelganger()
 	//	}
 	//}
 }
+}
 
 
 //=============================================================================
@@ -2194,7 +2352,7 @@ void SetDoppelGanger(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index)
 	if (!g_Doppel.UseFlag)
 	{
 		g_Doppel.Position = pos;
-		g_Doppel.size = size;
+		g_Doppel.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
 		g_Doppel.PieceIndex = index;
 		g_Doppel.UseFlag = true;
 	}

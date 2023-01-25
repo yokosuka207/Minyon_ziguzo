@@ -40,6 +40,9 @@
 #include "start.h"
 #include "JumpStandExplain.h"
 #include "StoryKey.h"
+#include "lamp.h"
+#include "lamp_switch.h"
+#include "spawnpoint_d.h"
 
 #include "xkeyboard.h"
 
@@ -389,6 +392,15 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY):	//34 ストーリー解放鍵
 				SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction);
 				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_LAMP):	//28 街灯
+				SetLamp(position, DrawSize, no, g_PieceMapChip[no].direction, 4);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_LAMP_SWITCH):	//29 街灯スイッチ
+				SetLampSwitch(position, DrawSize, g_PieceMapChip[no].direction, no);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT_D)://20　スポーンポイント
+				SetSpawnPointD(position, DrawSize, no);
+				break;
 			default:
 				break;
 			}
@@ -523,6 +535,9 @@ void DeleteMapChip(int PieceNo) {
 	DeleteStart(g_PieceMapChip[PieceNo].no);
 	DeleteExplain(g_PieceMapChip[PieceNo].no);
 	DeleteStoryKey(g_PieceMapChip[PieceNo].no);
+	DeleteLamp(g_PieceMapChip[PieceNo].no);
+	DeleteLampSwitch(g_PieceMapChip[PieceNo].no);
+	DeleteSpawnPointD(g_PieceMapChip[PieceNo].no);
 }
 Piece* GetPiece() {
 	return g_PieceMapChip;
