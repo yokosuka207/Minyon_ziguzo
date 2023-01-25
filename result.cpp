@@ -28,7 +28,7 @@ static	ID3D11ShaderResourceView* g_ResultTextureButton = NULL;//テクスチャ情報
 static	char* g_ResultButtonTextureName = (char*)"data\\texture\\text_continue game.png";
 
 static	ID3D11ShaderResourceView* g_ResultTextureButton2 = NULL;//テクスチャ情報
-static	char* g_ResultButtonTextureName2 = (char*)"data\\texture\\GameEnd_end_button.jpg";
+static	char* g_ResultButtonTextureName2 = (char*)"data\\texture\\text_exit stage.png";
 
 static int g_ChangeSceneResultSoundNo = 0;
 static char g_ChangeSceneResultSoundName[] = "data\\SoundData\\SE\\シーン遷移(魔王魂).wav";
