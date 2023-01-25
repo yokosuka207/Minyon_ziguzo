@@ -326,6 +326,17 @@ void UpdateCollision(){
 					//}
 				}
 
+				if (CollisionBB(pSwitch[i].pos, pDoppel->Position, pSwitch[i].size, pDoppel->size)) {
+					pSwitch[i].PressFlag = true;//‰Ÿ‚³‚ê‚½‚ç
+					pSwitch[i].PaternNo = 1;
+					if (pSwitch[i].NotPressed == true)
+					{
+						//SetVolume(g_SwitchSoundNo, 0.5f);
+						PlaySound(g_SwitchSoundNo, 0);
+						pSwitch[i].NotPressed = false;
+					}
+				}
+
 			
 				if (pSwitch[i].PressFlag) {
 					for (int j = 0; j < SWITCHWALL_MAX * SWITCHWALL_LIMIT; j++) {
