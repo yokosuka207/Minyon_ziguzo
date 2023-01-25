@@ -412,7 +412,8 @@ void UpdatePlayer()
 			{
 				//プレイヤーとパズルの画面外判定
 				Piece* pPiece = GetPiece();
-
+				bool SpawnFlag = false;
+				bool SpawnFlag2 = false;
 				for (int i = 0; i < PUZZLE_MAX; i++)
 				{
 					if (pPiece[i].UseFlag)
@@ -427,14 +428,16 @@ void UpdatePlayer()
 
 								if (!hitflag2)
 								{
-									g_Player.sp.y -= 0.2f;//加速
+									//g_Player.sp.y -= 0.2f;//加速
 								}
 								else
 								{//下に何もなく死亡する場合
+									SpawnFlag2 = true;
 									if (pSpawnPoint[i].UseFlag)
 									{
 										if (g_Player.PieceIndex == pSpawnPoint[i].PieceIndex)
 										{
+											SpawnFlag = true;
 											g_Player.Position = pSpawnPoint[i].Position;
 											g_Player.hp--;
 											break;
@@ -497,6 +500,12 @@ void UpdatePlayer()
 					}
 
 
+				}
+				if (!SpawnFlag&& SpawnFlag2)
+				{
+					START* pStart = GetStart();
+					g_Player.Position = pStart->pos;
+					g_Player.oldpos = g_Player.Position;
 				}
 
 

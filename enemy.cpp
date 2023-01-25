@@ -73,7 +73,7 @@ void UpdateEnemy() {
 				switch (g_Enemy[i].dir)
 				{
 				case ENEMY_DIRECTION::DIRECTION_LEFT:
-					g_Enemy[i].uv_w = -1.0f;
+					//g_Enemy[i].uv_w = -1.0f;
 					break;
 				case ENEMY_DIRECTION::DIRECTION_RIGHT:
 					//g_Enemy[i].uv_w = 1.0f;
@@ -145,6 +145,8 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 		if (!g_Enemy[i].UseFlag) {
 			if (d==ENEMY_DIRECTION::DIRECTION_LEFT)
 			{
+				g_Enemy[i].uv_w = -1.0f;
+
 				switch (direction) {
 				case 0:g_Enemy[i].rot = direction * 90;
 					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_RIGHT;
@@ -168,6 +170,8 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 			}
 			if (d == ENEMY_DIRECTION::DIRECTION_RIGHT)
 			{
+				g_Enemy[i].uv_w = 1.0f;
+
 				switch (direction) {
 				case 0:g_Enemy[i].rot = direction * 90;
 					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_LEFT;

@@ -108,12 +108,17 @@ static char* g_TextureNameBroken = (char*)"data\\texture\\ドッペルゲンガー.png";
 static Time		g_Time;
 
 bool g_bHave = false;
+static bool oneFlag = false;
+
+static D3DXVECTOR2 InitPos;
 
 //=============================================================================
 //初期化処理
 //=============================================================================
 HRESULT InitDoppelganger()
 {
+	oneFlag = false;
+	InitPos = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	Piece* pPiece = GetPiece();
 
 	g_Doppel.Position = D3DXVECTOR2(pPiece->pos.x - 30.0f, pPiece->pos.y);
@@ -561,7 +566,8 @@ void UpdateDoppelganger()
 
 			//ドッペルゲンガーとパズルの画面外判定
 			Piece* pPiece = GetPiece();
-
+			bool SpawnFlag = false;
+			bool SpawnFlag2 = false;
 			for (int i = 0; i < PUZZLE_MAX; i++)
 			{
 				if (pPiece[i].UseFlag)
@@ -580,19 +586,19 @@ void UpdateDoppelganger()
 							}
 							else
 							{//下に何もなく死亡する場合
-								for (int i = 0; i < SPAWN_POINT_D_MAX; i++)
-								{
+								SpawnFlag2 = true;
 									if (pSpawnPointD[i].UseFlag)
 									{
 										if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex)
 										{
+											SpawnFlag = true;
 											g_Doppel.Position = pSpawnPointD[i].Position;
 
 										}
 
 
 									}
-								}
+								
 
 							}
 						}
@@ -651,6 +657,12 @@ void UpdateDoppelganger()
 
 
 			}
+			if (!SpawnFlag && SpawnFlag2)
+			{
+				g_Doppel.Position = D3DXVECTOR2(pPiece[7].pos.x+70.0f, pPiece[7].pos.y+3.0f);
+				g_Doppel.oldpos = g_Doppel.Position;
+				g_Doppel.sp.y = 0.0f;
+			}
 
 
 		}
@@ -706,33 +718,9 @@ void UpdateDoppelganger()
 	Piece* pPiece = GetPiece();
 	BULLET* pBullet = GetBullet();
 	CURSOR* pCursor = GetCurso();
-	//=========================================
-	//プレーヤーとスイッチ系(switch,SwitchWall)
-	//=========================================
-	for (int i = 0; i < SWITCH_MAX; i++) {
-		//スイッチとドッペルゲンガーの当たり判定
-		if (pSwitch[i].UseFlag) {
-			if (pSwitch[i].pos.x - pSwitch[i].size.x / 2 < g_Doppel.Position.x + g_Doppel.size.x / 2 &&
-				pSwitch[i].pos.x + pSwitch[i].size.x / 2 > g_Doppel.Position.x - g_Doppel.size.x / 2 &&
-				pSwitch[i].pos.y - pSwitch[i].size.y / 2 < g_Doppel.Position.y + g_Doppel.size.y / 2 &&
-				pSwitch[i].pos.y + pSwitch[i].size.y / 2 > g_Doppel.Position.y - g_Doppel.size.y / 2)
-			{
-				pSwitch[i].PressFlag = true;//押されたら
-				pSwitch[i].PaternNo = 1;
-				if (pSwitch[i].NotPressed)
-				{
-					//SetVolume(g_SwitchSoundNo, 0.5f);
-					///////////////////////////////////////////////////////////////PlaySound(g_SwitchSoundNo, 0);
-					pSwitch[i].NotPressed = false;
-				}
-			}
-			else {
-				pSwitch[i].PressFlag = false;
-				pSwitch[i].PaternNo = 0;
-				pSwitch[i].NotPressed = true;
-			}
-		}
-	}
+
+
+
 	for (int i = 0; i < SWITCHWALL_MAX; i++) {
 		if (pSwitchWall[i].UseFlag) {
 			//プレーヤーと壁の判定
@@ -2355,6 +2343,8 @@ void SetDoppelGanger(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index)
 		g_Doppel.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
 		g_Doppel.PieceIndex = index;
 		g_Doppel.UseFlag = true;
+		InitPos = pos;
+
 	}
 }
 void DeleteDoppelGanger(int index) {

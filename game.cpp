@@ -180,7 +180,7 @@ void UpdateGame()
 	//ポーズ処理
 	if (Keyboard_IsKeyTrigger(KK_TAB) ||				// keyboard TAB
 		IsButtonTriggered(0, XINPUT_GAMEPAD_START) ||	// GamePad START
-		IsButtonTriggered(0, XINPUT_GAMEPAD_BACK)) {		// Gamepad BACK
+		IsButtonTriggered(0, XINPUT_GAMEPAD_BACK)) {	// Gamepad BACK
 		//ポーズフラグがoff
 		if (!(*pause)) {
 			(*pause) = true;
@@ -297,8 +297,6 @@ void DrawGame()
 		DrawPlayerLife();
 		DrawKeyDisplay();
 
-		//DrawRay();				// 光線の描画
-		//DrawIssuer();			// 光線発射装置の描画
 		DrawInventory();			// インベントリの描画
 		pTime->DrawGameTime();
 		DrawCursor();				// カーソルの描画
