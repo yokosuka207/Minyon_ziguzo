@@ -587,6 +587,7 @@ void UpdateCollision(){
 										if (!pPlayer->WarpFlag)
 										{
 											pPlayer->Position = (pWarp + i + 1)->Position;
+											pPlayer->oldpos = pPlayer->Position;
 											pPlayer->CoolTime = PLAYER_COOLTIME;
 											//SetVolume(g_WarpSoundNo, 0.5f);
 											PlaySound(g_WarpSoundNo, 0);
@@ -605,6 +606,8 @@ void UpdateCollision(){
 										if (!pPlayer->WarpFlag)
 										{
 											pPlayer->Position = (pWarp + i - 1)->Position;
+											pPlayer->oldpos = pPlayer->Position;
+
 											pPlayer->CoolTime = PLAYER_COOLTIME;
 											//SetVolume(g_WarpSoundNo, 0.5f);
 											PlaySound(g_WarpSoundNo, 0);

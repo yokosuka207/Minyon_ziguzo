@@ -88,8 +88,6 @@ void UpdateBullet()
 {
 	BLOCK* pBlock = GetChipBlock();
 	CURSOR* pCursor = GetCurso();
-	if (!Mouse_IsLeftDown() ||						// mouse ¶
-		!pCursor->.bHave) {
 
 		for (int i = 0; i < BULLET_MAX; i++)
 		{
@@ -127,7 +125,7 @@ void UpdateBullet()
 				g_Bullet[i].use = false;
 			}
 		}
-	}
+	
 }
 
 //=============================================================================
