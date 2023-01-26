@@ -590,7 +590,7 @@ void DrawStageSelect() {
 
 		SpriteDrawColorRotation(
 			g_StageSelectBlock[i].pos.x, g_StageSelectBlock[i].pos.y, 0.5f, g_StageSelectBlock[i].size.x, g_StageSelectBlock[i].size.y
-			, 0.0f, color, 0, 1.0f, 1.0f, 1);
+			, 0.0f, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f), 0, 1.0f, 1.0f, 1);
 
 	}
 

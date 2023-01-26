@@ -110,7 +110,7 @@ HRESULT InitPlayer()
 	g_Player.NumPatern = 4;//横枚数
 
 	g_Player.hp = PLAYER_HP;
-	g_Player.hp = g_Player.oldHP;
+	g_Player.oldHP = g_Player.hp;
 	g_Player.frame = 0;
 	g_Player.CoolTime = PLAYER_COOLTIME;
 	g_Player.PieceIndex = 0;
@@ -209,7 +209,8 @@ void UpdatePlayer()
 					g_Player.SoundLeftFlag = false;
 				}
 			}
-			if (g_Player.sp.x == 0)
+			//下に移行
+			/*if (g_Player.sp.x == 0)
 			{
 				g_Player.PaternNo = 17;
 
@@ -220,16 +221,6 @@ void UpdatePlayer()
 				}
 			}
 			if (g_Player.sp.y != 0)
-			{
-				g_Player.PaternNo = 16;
-				if (g_Player.uv_w < 0)
-				{
-					g_Player.PaternNo = 19;
-
-				}
-
-			}
-			/*if (g_Player.isGround == false && g_Player.isSheerFloors == false && g_Player.isHigh == false && g_Player.isMoveBlock == false && g_Player.isFallBlock == false && g_Player.isBrokenBlock == false)
 			{
 				g_Player.PaternNo = 16;
 				if (g_Player.uv_w < 0)
@@ -374,7 +365,7 @@ void UpdatePlayer()
 							}
 							g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
 							g_Player.jump = false;
-							g_Player.sp.y = -0.1f;
+							g_Player.sp.y = 0.0f;
 							HitFlag = true;
 							g_Player.fall = false;
 							if (!g_Player.isSheerFloors) {
@@ -398,6 +389,31 @@ void UpdatePlayer()
 
 						}
 					}
+				}
+
+			}
+
+
+
+			//プレイヤー停止テクスチャー
+			if (g_Player.sp.x == 0)
+			{
+				g_Player.PaternNo = 17;
+
+				if (g_Player.uv_w < 0)
+				{
+					g_Player.PaternNo = 18;
+
+				}
+			}
+			//プレイヤージャンプテクスチャー
+			if (g_Player.sp.y != 0)
+			{
+				g_Player.PaternNo = 16;
+				if (g_Player.uv_w < 0)
+				{
+					g_Player.PaternNo = 19;
+
 				}
 
 			}
@@ -445,6 +461,10 @@ void UpdatePlayer()
 			// 空中
 			if (!g_Player.isGround && !g_Player.isHigh && !g_Player.isSheerFloors && !g_Player.isMoveBlock&&!g_Player.isBrokenBlock&&!g_Player.isFallBlock) {
 				g_Player.sp.y -= 0.1f;			// スピードのyを増やす
+			}
+			else
+			{
+				g_Player.sp.y -= 0.0f;
 			}
 	
 			//反映
