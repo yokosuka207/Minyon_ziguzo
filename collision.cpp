@@ -488,12 +488,12 @@ void UpdateCollision(){
 							pPlayer->sp.y -= 1.0f;
 							break;
 						}
-						else if(j == SPAWN_POINT_MAX - 1){
-							pPlayer->Position = pSpawnPoint[0].Position;
-							pPlayer->oldpos = pSpawnPoint[0].Position;
-							pPlayer->sp.y -= 1.0f;
-							break;
-						}
+					}
+					else if (j == SPAWN_POINT_MAX - 1) {
+						pPlayer->Position = pSpawnPoint[0].Position;
+						pPlayer->oldpos = pSpawnPoint[0].Position;
+						pPlayer->sp.y -= 1.0f;
+						break;
 					}
 				}
 			}
