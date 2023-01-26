@@ -190,7 +190,7 @@ void UpdateDoppelganger()
 	}
 
 	if (Mouse_IsLeftRelease()) {		// moues ç∂
-		g_bHave = false;
+		//g_bHave = false;
 	}
 
 	if (!Mouse_IsLeftDown() ||			// mouse ç∂
@@ -665,7 +665,7 @@ void UpdateDoppelganger()
 			}
 
 
-		}
+		
 
 	
 
@@ -692,13 +692,13 @@ void UpdateDoppelganger()
 
 	PLAYER* pPlayer = GetPlayer();
 	ENEMY* pEnemy = GetEnemy();
-	SpawnPointD* pSpawnPointD = GetSpawnPointD();
+//	SpawnPointD* pSpawnPointD = GetSpawnPointD();
 
 	WARP* pWarp = GetWarp();
 
 	BLOCK* pBlock = GetBlock();
 	BLOCK* pChipblock = GetChipBlock();
-	MOVEBLOCK* pMoveBlock = GetMoveBlock();
+//	MOVEBLOCK* pMoveBlock = GetMoveBlock();
 	FALLBLOCK* pFallBlock = GetFallBlock();
 	THORNBLOCK* pThornBlock = GetThornBlock();
 
@@ -715,7 +715,7 @@ void UpdateDoppelganger()
 
 	RESULT* pResult = GetResult();
 
-	Piece* pPiece = GetPiece();
+//	Piece* pPiece = GetPiece();
 	BULLET* pBullet = GetBullet();
 	CURSOR* pCursor = GetCurso();
 
@@ -2316,6 +2316,7 @@ void UpdateDoppelganger()
 	//		}
 	//	}
 	//}
+}
 }
 }
 

@@ -1129,7 +1129,7 @@ void UpdateCollision(){
 				{
 					for (int j = 0; j < JUMPSTAND_MAX; j++) {
 						if (pJumpStand[j].UseJumpStand) {
-							if (CollisionBB(pBroken[i].Postion, pJumpStand[j].pos, pBroken[i].Size, pJumpStand[j].size)) {
+							if (CollisionBB(D3DXVECTOR2(pBroken[i].Postion.x, pBroken[i].Postion.y), pJumpStand[j].pos, pBroken[i].Size, pJumpStand[j].size)) {
 								pJumpStand[j].pos = pJumpStand[j].oldpos;
 							}
 						}
