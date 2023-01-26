@@ -587,6 +587,7 @@ void UpdateCollision(){
 										if (!pPlayer->WarpFlag)
 										{
 											pPlayer->Position = (pWarp + i + 1)->Position;
+											pPlayer->oldpos = pPlayer->Position;
 											pPlayer->CoolTime = PLAYER_COOLTIME;
 											//SetVolume(g_WarpSoundNo, 0.5f);
 											PlaySound(g_WarpSoundNo, 0);
@@ -605,6 +606,8 @@ void UpdateCollision(){
 										if (!pPlayer->WarpFlag)
 										{
 											pPlayer->Position = (pWarp + i - 1)->Position;
+											pPlayer->oldpos = pPlayer->Position;
+
 											pPlayer->CoolTime = PLAYER_COOLTIME;
 											//SetVolume(g_WarpSoundNo, 0.5f);
 											PlaySound(g_WarpSoundNo, 0);
@@ -1074,7 +1077,8 @@ void UpdateCollision(){
 							pEnemy[i].AIFlag = true;
 						}
 						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
-							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
+							Keyboard_IsKeyTrigger(KK_C) ||					// keyboard C
+							IsButtonTriggered(0, XINPUT_GAMEPAD_B))			// GamePad B
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 5.0f, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
@@ -1089,7 +1093,8 @@ void UpdateCollision(){
 							pEnemy[i].AIFlag = true;
 						}
 						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
-							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
+							Keyboard_IsKeyTrigger(KK_C) ||					// keyboard C
+							IsButtonTriggered(0, XINPUT_GAMEPAD_B))			// GamePad B
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
@@ -1105,7 +1110,8 @@ void UpdateCollision(){
 							pEnemy[i].AIFlag = true;
 						}
 						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
-							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
+							Keyboard_IsKeyTrigger(KK_C) ||					// keyboard C
+							IsButtonTriggered(0, XINPUT_GAMEPAD_B))			// GamePad B
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y - 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
@@ -1120,7 +1126,8 @@ void UpdateCollision(){
 							pEnemy[i].AIFlag = true;
 						}
 						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
-							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
+							Keyboard_IsKeyTrigger(KK_C) ||					// keyboard C
+							IsButtonTriggered(0, XINPUT_GAMEPAD_B))			// GamePad B
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
