@@ -116,7 +116,7 @@ HRESULT InitStageSelect() {
 		}
 
 		//g_StageSelectfence[i].pos = D3DXVECTOR2(300.0f + (170.0f * b), 190.0f + (250 * a));
-		g_StageSelectfence[i].pos = D3DXVECTOR2(410.0f + (170.0f * b), 190.0f + (250 * a));
+		g_StageSelectfence[i].pos = D3DXVECTOR2(420.0f + (170.0f * b), 190.0f + (250 * a));
 		g_StageSelectfence[i].size = D3DXVECTOR2(170.0f, 110.0f);
 		g_StageSelectfence[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_StageSelectfence[i].texno = LoadTexture(g_StageSelectfenceTextureName);
@@ -177,7 +177,7 @@ HRESULT InitStageSelect() {
 			//ƒhƒA
 			//g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (180.0f) + (250.0f * a));
 			//g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (DOOR_SPACE * b), (180.0f) + (250.0f * a));
-			g_StageSelect[i].pos = D3DXVECTOR2((460.0f) + (DOOR_SPACE * b), (180.0f) + (250.0f * a));
+			g_StageSelect[i].pos = D3DXVECTOR2((420.0f) + (DOOR_SPACE * b), (180.0f) + (250.0f * a));
 			g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
 			g_StageSelect[i].UseFlag = true;
 			g_StageSelect[i].StagePieceIndex = i;
