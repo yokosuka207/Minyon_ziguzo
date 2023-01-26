@@ -13,6 +13,7 @@ Update:
 #include "texture.h"
 #include "sprite.h"
 #include "lamp_switch.h"
+#include "lamp.h"
 
 // デバッグ用
 #include "mouse.h"
@@ -95,6 +96,12 @@ void UpdateEffectLight()
 					g_EffectLight[i].bUse = false;
 				}
 			}*/
+			LAMP* pLamp = GetLamp();
+			for (int i = 0; i <= LAMP_MAX; i++)
+			{
+				g_EffectLight[i].pos = pLamp[i].pos;
+				g_EffectLight[i].rot = pLamp[i].rot;
+			}
 		}
 	}
 }

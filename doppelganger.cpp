@@ -1578,6 +1578,7 @@ void UpdateDoppelganger()
 
 
 
+
 	if (g_Doppel.hp <= 0)
 	{
 		g_Doppel.UseFlag = false;
