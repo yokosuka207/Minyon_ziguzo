@@ -47,6 +47,7 @@
 #include "sound.h"
 #include "start.h"
 #include"camera.h"
+#include "goal.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -109,6 +110,7 @@ HRESULT InitPlayer()
 	g_Player.NumPatern = 4;//横枚数
 
 	g_Player.hp = PLAYER_HP;
+	g_Player.hp = g_Player.oldHP;
 	g_Player.frame = 0;
 	g_Player.CoolTime = PLAYER_COOLTIME;
 	g_Player.PieceIndex = 0;
@@ -142,6 +144,9 @@ void UpdatePlayer()
 	MOUSE* pMouse = GetMouse();
 	CAMERA* pCamera = GetCamera();
 	CURSOR* pCursor = GetCurso();
+	GOAL* pGoal = GetGoal();
+	START* pStart = GetStart();
+
 	if (!Mouse_IsLeftDown() &&
 		!pCursor->bHave)
 	{
@@ -223,6 +228,18 @@ void UpdatePlayer()
 
 				}
 
+			}
+
+			//===================================================
+			// ゴールピースを持った状態でダメージを受けた場合
+			//===================================================
+			g_Player.oldHP = g_Player.hp;
+			if (g_Player.hp != g_Player.oldHP) {
+				pGoal->GetFlag = false;
+				pGoal->UseFlag = true;
+				for (int i = 0; i < START_MAX; i++) {
+					pStart[i].GoalFlag = false;
+				}
 			}
 
 			//----------------
