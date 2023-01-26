@@ -26,6 +26,7 @@ Update:
 #define INVENTORYBG_POS_Y		(SCREEN_HEIGHT / 2)
 #define INVENTORYBG_POS_X		(INVENTORYBG_SIZE_X / 2)
 
+#define INVENTORY_MAX			(4)
 
 //**************************************************
 // ç\ë¢ëÃ

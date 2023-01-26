@@ -24,7 +24,6 @@ Update:
 //**************************************************
 // マクロ定義
 //**************************************************
-#define INVENTORY_MAX			(4)
 #define INVENTORY_SIZE_X		(96)
 #define INVENTORY_SIZE_Y		(96)
 #define INVENTORY_BIGSIZE_X		(120)
@@ -172,8 +171,7 @@ void UpdateInventory()
 				//----------Release挙動----------
 				if (g_Inventory[i].IsCatch) {
 					// 初期位置に戻る
-					//g_Inventory[i].pos = D3DXVECTOR2(i * INVENTORY_POS_X, INVENTORY_POS_Y);		// 下ver
-					g_Inventory[i].pos = g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f * 2 - i * 150.0f);// 左ver
+					g_Inventory[i].pos = g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f * 2 - i * 150.0f);
  					DeleteMapChip(g_Inventory[i].PieNo);
 					SetInventoryMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo, g_Inventory[i].PieNo);
 

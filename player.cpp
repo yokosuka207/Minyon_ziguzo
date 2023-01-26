@@ -300,7 +300,6 @@ void UpdatePlayer()
 						block[i].Position.y + block[i].Size.y / 2 > g_Player.Position.y - g_Player.size.y / 2 &&
 						block[i].Position.y + block[i].Size.y / 2 <= g_Player.oldpos.y - g_Player.size.y / 2)
 					{
-						g_Player.PieceIndex = block[i].PieceIndex;
 						//break;
 					}
 
@@ -313,6 +312,8 @@ void UpdatePlayer()
 						if (!g_Player.isGround) {
 							//g_Player.sp.y = 0.0f;
 							g_Player.isGround = true;
+							g_Player.PieceIndex = block[i].PieceIndex;
+
 							break;
 						}
 					}
