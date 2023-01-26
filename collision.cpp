@@ -212,6 +212,7 @@ void UpdateCollision(){
 	//-------------------------------------
 
 	bool pFlag = false;	//プレーヤーがピースの中にいるか
+	bool dFlag = false;	//ドッペルゲンガーがピースの中にいるか
 	InventoryFlag = false;
 	//プレーヤーが動いているピースの中にいるか
 	for (int i = 0; i < PUZZLE_MAX; i++) {
@@ -230,10 +231,26 @@ void UpdateCollision(){
 		}
 	}
 
+	for (int i = 0; i < PUZZLE_MAX; i++) {
+		if (pPiece[i].MoveFlag) {
+
+			if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pDoppel->Position.y &&
+				pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pDoppel->Position.y &&
+				pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pDoppel->Position.x &&
+				pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pDoppel->Position.x &&
+				pPiece[i].no == pDoppel->PieceIndex &&
+				pDoppel->UseFlag == true)
+			{
+				dFlag = true;
+				break;
+			}
+		}
+	}
+
 	//============================
 	//インベントリ系
 	//============================
-	if (!pFlag) {
+	if (!pFlag&&!dFlag) {
 		// ピースとインベントリ範囲の当たり判定
 		for (int i = 0; i < PUZZLE_MAX; i++) {
 			// ピースをインベントリにしまう
