@@ -24,7 +24,6 @@ Update:
 //**************************************************
 // É}ÉNÉçíËã`
 //**************************************************
-#define INVENTORY_MAX			(4)
 #define INVENTORY_SIZE_X		(96)
 #define INVENTORY_SIZE_Y		(96)
 #define INVENTORY_BIGSIZE_X		(120)
