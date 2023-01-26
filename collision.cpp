@@ -440,13 +440,22 @@ void UpdateCollision(){
 					if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
 
 						pPlayer->hp--;
-						//SetVolume(g_CandleSoundNo, 0.5f);
+						SetVolume(g_CandleSoundNo, 0.25f);
 						PlaySound(g_CandleSoundNo, 0);
-						for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
-							if (pSpawnPoint[i].UseFlag) {
-								if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
-									pPlayer->Position = pSpawnPoint[i].Position;
+						for (int j = 0; j < SPAWN_POINT_MAX; j++) {//リスポンせずにHPが減り続けている
+							if (pSpawnPoint[j].UseFlag) {
+								if (pPlayer->PieceIndex == pSpawnPoint[j].PieceIndex) {
+									pPlayer->Position = pSpawnPoint[j].Position;
+									pPlayer->oldpos = pSpawnPoint[j].Position;
+									pPlayer->sp.y -= 1.0f;
+									break;
 								}
+							}
+							else if (j == SPAWN_POINT_MAX - 1) {
+								pPlayer->Position = pSpawnPoint[0].Position;
+								pPlayer->oldpos = pSpawnPoint[0].Position;
+								pPlayer->sp.y -= 1.0f;
+								break;
 							}
 						}
 					}
@@ -456,12 +465,21 @@ void UpdateCollision(){
 			//プレイヤーが落下死
 			if (pPlayer->Position.y - pPlayer->size.y < -SCREEN_HEIGHT / 2) {
 				pPlayer->hp--;
-				//SetVolume(g_CandleSoundNo, 0.5f);
+				SetVolume(g_CandleSoundNo, 0.25f);
 				PlaySound(g_CandleSoundNo, 0);
-				for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
-					if (pSpawnPoint[i].UseFlag) {
-						if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
-							pPlayer->Position = pSpawnPoint[i].Position;
+				for (int j = 0; j < SPAWN_POINT_MAX; j++) {//リスポンせずにHPが減り続けている
+					if (pSpawnPoint[j].UseFlag) {
+						if (pPlayer->PieceIndex == pSpawnPoint[j].PieceIndex) {
+							pPlayer->Position = pSpawnPoint[j].Position;
+							pPlayer->oldpos = pSpawnPoint[j].Position;
+							pPlayer->sp.y -= 1.0f;
+							break;
+						}
+						else if(j == SPAWN_POINT_MAX - 1){
+							pPlayer->Position = pSpawnPoint[0].Position;
+							pPlayer->oldpos = pSpawnPoint[0].Position;
+							pPlayer->sp.y -= 1.0f;
+							break;
 						}
 					}
 				}

@@ -46,6 +46,7 @@
 #include "PlayerLife.h"
 #include "start.h"
 #include "JumpStandExplain.h"
+#include "spawnpoint.h"
 #include"fallblock.h"
 #include "StoryKey.h"
 #include"KeyDisplay.h"
@@ -110,6 +111,7 @@ void InitGame()
 		InitCollision();
 		InitLamp();
 		InitLampSwitch();
+		InitSpawnPoint();
 	}
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
@@ -166,6 +168,7 @@ void UninitGame()
 	UninitCollision();
 	UninitLamp();
 	UninitLampSwitch();
+	UninitSpawnPoint();
 
 	UninitPause();
 	pScore->UninitScore();

@@ -348,7 +348,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				//Set
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT)://20　スポーンポイント
-				SetSpawnPoint(position,DrawSize,no);
+				SetSpawnPoint(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEBLOCK)://21　動かすブロック
 				SetMoveBlock(position, DrawSize, no);
@@ -364,6 +364,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
+				SetSpawnPoint(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN):	//26 ヒントブロック(Piace)
 				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 26);
@@ -704,6 +705,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
+				SetSpawnPoint(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN):	//26 ヒントブロック(Piace)
 				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 26);
