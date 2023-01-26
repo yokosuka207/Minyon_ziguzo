@@ -615,8 +615,10 @@ void DrawStageSelect() {
 		);
 		//g_StageSelect[i].pos.x -= 30;
 	}
-
-	DrawStory();
+	if (!pStory->KeyUse)
+	{
+		DrawStory();
+	}
 	//===========================================
 	// ƒvƒŒƒCƒ„[
 	//===========================================
@@ -647,7 +649,7 @@ void DrawStageSelect() {
 				g_StageSelectStairs[i].size.x * 8,
 				g_StageSelectStairs[i].size.y * 8,
 				0.0f,
-				color,
+				D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f),
 				0,
 				1.0f,
 				1.0f,
@@ -697,6 +699,10 @@ void DrawStageSelect() {
 			1
 		);
 
+	}
+	if (pStory->KeyUse)
+	{
+		DrawStory();
 	}
 }
 

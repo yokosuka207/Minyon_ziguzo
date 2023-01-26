@@ -106,8 +106,8 @@ void UpdateCamera(void)
 		IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_DOWN) ||		// GamePad 十字キー　下
 		GetThumbRightX(0) != 0 ||			// GamePad　右スティック
 		GetThumbRightY(0) != 0 ||
-		pMouse->PosX != pMouse->oldPosX ||
-		pMouse->PosY != pMouse->oldPosY)
+		abs(pMouse->PosX - pMouse->oldPosX) > 5 ||
+		abs(pMouse->PosY - pMouse->oldPosY) > 5)
 	{
 		g_Camera.MoveFlag = false;
 		g_Camera.fov = 45.0f;
