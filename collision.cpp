@@ -120,9 +120,6 @@ static char g_KeySoundName[] = "data\\SoundData\\SE\\鍵入手.wav";
 //鍵扉
 static int g_OpenKeySoundNo = 0;
 static char g_OpenKeySoundName[] = "data\\SoundData\\SE\\鍵を開ける(無料効果音で遊ぼう！).wav";
-//ゴールピース
-static int g_GKeySoundNo = 0;
-static char g_GKeySoundName[] = "data\\SoundData\\SE\\ピース入手(効果音ラボ).wav";
 //ピースの合体
 static int g_MatchPieceSoundNo = 0;
 static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\ピースはめ込む音(無料効果音で遊ぼう！).wav";
@@ -148,7 +145,6 @@ void InitCollision()
 	g_HighSoundNo = LoadSound(g_HighSoundName);
 	g_KeySoundNo = LoadSound(g_KeySoundName);
 	g_OpenKeySoundNo = LoadSound(g_OpenKeySoundName);
-	g_GKeySoundNo = LoadSound(g_GKeySoundName);
 	g_MatchPieceSoundNo = LoadSound(g_MatchPieceSoundName);
 	g_CandleSoundNo = LoadSound(g_CandleSoundName);
 	g_GoalSoundNo = LoadSound(g_GoalSoundName);
@@ -166,7 +162,6 @@ void UninitCollision()
 	StopSound(g_HighSoundNo);
 	StopSound(g_KeySoundNo);
 	StopSound(g_OpenKeySoundNo);
-	StopSound(g_GKeySoundNo);
 	StopSound(g_MatchPieceSoundNo);
 	StopSound(g_CandleSoundNo);
 	//StopSound(g_GoalSoundNo);
@@ -205,6 +200,7 @@ void UpdateCollision(){
 	EXPLAIN* p_Explain = GetExplain();
 	LAMP* p_Lamp = GetLamp();
 	LAMP_SWITCH* p_LampSwitch = GetLampSwitch();
+	DOPPELGANGER* pDoppel = GetDoppelganger();
 
 	GOAL* pGoal = GetGoal();
 	START* pStart = GetStart();
@@ -282,7 +278,6 @@ void UpdateCollision(){
 		//=========================================
 		//ドッペルゲンガーーとスイッチ系(switch,SwitchWall)
 		//=========================================
-		DOPPELGANGER* pDoppel = GetDoppelganger();
 		for (int i = 0; i < SWITCH_MAX; i++) {
 			//スイッチとプレイヤーの当たり判定
 			if (pSwitch[i].UseFlag) {
@@ -998,8 +993,6 @@ void UpdateCollision(){
 				if (CollisionBB(pGKey->pos, pPlayer->Position, pGKey->size, pPlayer->size)) {
 					pGKey->UseFlag = false;
 					pGKey->GetGKey = true;
-					//SetVolume(g_GKeySoundNo, 0.5f);
-					PlaySound(g_GKeySoundNo, 0);
 				}
 			}
 			//-------------------------------------------------------------------
@@ -1218,6 +1211,22 @@ void UpdateCollision(){
 					}
 				}
 
+			}
+		}
+	}
+	//------------------------------------
+	//ドッペルゲンガーとプレイヤーの当たり判定
+	//------------------------------------
+	if (CollisionBB(pDoppel->Position, pPlayer->Position, pDoppel->size, pPlayer->size))
+	{
+		pPlayer->hp--;
+		//SetVolume(g_CandleSoundNo, 0.5f);
+		PlaySound(g_CandleSoundNo, 0);
+		for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
+			if (pSpawnPoint[i].UseFlag) {
+				if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
+					pPlayer->Position = pSpawnPoint[i].Position;
+				}
 			}
 		}
 	}
