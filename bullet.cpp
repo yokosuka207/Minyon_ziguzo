@@ -17,6 +17,8 @@
 #include"collision.h"
 #include "sound.h"
 #include"block.h"
+#include"mouse.h"
+#include"cursor.h"
 
 //=============================================================================
 //ƒ}ƒNƒ’è‹`
@@ -85,42 +87,45 @@ void UninitBullet()
 void UpdateBullet()
 {
 	BLOCK* pBlock = GetChipBlock();
+	CURSOR* pCursor = GetCurso();
+	if (!Mouse_IsLeftDown() ||						// mouse ¶
+		!pCursor->.bHave) {
 
-
-	for (int i = 0; i < BULLET_MAX; i++)
-	{
-		if (g_Bullet[i].use == true)
+		for (int i = 0; i < BULLET_MAX; i++)
 		{
-			g_Bullet[i].pos += g_Bullet[i].sp;
-
-			for (int j = 0; j < BLOCK_CHIP_MAX; j++)
+			if (g_Bullet[i].use == true)
 			{
-				if (!pBlock[j].UseFlag)continue;
+				g_Bullet[i].pos += g_Bullet[i].sp;
 
-				if (CollisionBB(g_Bullet[i].pos,pBlock[j].Position, D3DXVECTOR2(g_Bullet[i].w,g_Bullet[i].h),pBlock[j].Size))
+				for (int j = 0; j < BLOCK_CHIP_MAX; j++)
 				{
-					g_Bullet[i].use = false;
+					if (!pBlock[j].UseFlag)continue;
+
+					if (CollisionBB(g_Bullet[i].pos, pBlock[j].Position, D3DXVECTOR2(g_Bullet[i].w, g_Bullet[i].h), pBlock[j].Size))
+					{
+						g_Bullet[i].use = false;
+					}
+
 				}
 
+
 			}
-
-
-		}
-		if (g_Bullet[i].pos.y < -SCREEN_HEIGHT/2 + (g_Bullet[i].h / 2.0f))
-		{
-			g_Bullet[i].use = false;
-		}
-		if (g_Bullet[i].pos.y > SCREEN_HEIGHT / 2 - (g_Bullet[i].h / 2.0f))
-		{
-			g_Bullet[i].use = false;
-		}
-		if (g_Bullet[i].pos.x < -SCREEN_WIDTH/2 - (g_Bullet[i].w / 2.0f))
-		{
-			g_Bullet[i].use = false;
-		}
-		if (g_Bullet[i].pos.x > SCREEN_WIDTH / 2 - (g_Bullet[i].w / 2.0f))
-		{
-			g_Bullet[i].use = false;
+			if (g_Bullet[i].pos.y < -SCREEN_HEIGHT / 2 + (g_Bullet[i].h / 2.0f))
+			{
+				g_Bullet[i].use = false;
+			}
+			if (g_Bullet[i].pos.y > SCREEN_HEIGHT / 2 - (g_Bullet[i].h / 2.0f))
+			{
+				g_Bullet[i].use = false;
+			}
+			if (g_Bullet[i].pos.x < -SCREEN_WIDTH / 2 - (g_Bullet[i].w / 2.0f))
+			{
+				g_Bullet[i].use = false;
+			}
+			if (g_Bullet[i].pos.x > SCREEN_WIDTH / 2 - (g_Bullet[i].w / 2.0f))
+			{
+				g_Bullet[i].use = false;
+			}
 		}
 	}
 }
