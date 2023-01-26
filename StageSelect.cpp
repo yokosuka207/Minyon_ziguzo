@@ -521,7 +521,8 @@ void UpdateStageSelect() {
 					ply.Position.y - ply.size.y / 2 < g_StageSelect[i].pos.y + g_StageSelect[i].size.y / 2)
 				{
 					if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||					// keyboard Ctrl ¶
-						IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
+						Keyboard_IsKeyTrigger(KK_C) ||								// keyboard C
+						IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {					// GamePad B
 						//SetVolume(g_BrokenSoundNo, 0.5f);
 						PlaySound(g_StageSelectSoundNo, 0);
 						StageNo = i;
@@ -538,7 +539,8 @@ void UpdateStageSelect() {
 		if (pStory->bUse) {
 			if (CollisionBB(ply.Position, pStory->pos, ply.size, pStory->size))
 			{
-				if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL)) {	// keyboard Ctrl ¶
+				if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||	// keyboard Ctrl ¶
+					Keyboard_IsKeyTrigger(KK_C)) {				// keyboard C
 					if (pStory->KeyUse) pStory->KeyUse = false;
 					else pStory->KeyUse = true;
 				}

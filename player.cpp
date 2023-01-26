@@ -233,7 +233,8 @@ void UpdatePlayer()
 			for (int i = 0; i < JUMPSTAND_MAX; i++) {
 				if (p_JumpStand[i].UseJumpStand) {
 					if (IsButtonPressed(0, XINPUT_GAMEPAD_X) ||		// GamePad	X
-						Keyboard_IsKeyDown(KK_LEFTCONTROL))			// Keyboard	Ctrl　左
+						Keyboard_IsKeyDown(KK_LEFTCONTROL) ||			// keyboard	Ctrl　左
+						Keyboard_IsKeyDown(KK_C))						// keyoard C
 					{
 						if (CollisionBB(g_Player.Position, p_JumpStand[i].pos, g_Player.size, p_JumpStand[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
 							p_JumpStand[i].GetJumpStand = true;
@@ -254,7 +255,8 @@ void UpdatePlayer()
 			for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 				if (pMoveBlock[i].bUse) {
 					if (IsButtonPressed(0, XINPUT_GAMEPAD_X) ||		// GamePad	X
-						Keyboard_IsKeyDown(KK_LEFTCONTROL))			// Keyboard	Ctrl　左
+						Keyboard_IsKeyDown(KK_LEFTCONTROL)	||		// Keyboard	Ctrl　左
+						Keyboard_IsKeyDown(KK_C))					// Keyboard	C
 					{
 						if (CollisionBB(g_Player.Position, pMoveBlock[i].pos, g_Player.size, pMoveBlock[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
 							pMoveBlock[i].GetMoveBlock = true;
@@ -383,8 +385,8 @@ void UpdatePlayer()
 
 			// ジャンプ
 			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock||g_Player.isBrokenBlock||g_Player.isFallBlock)
-				&& g_Player.sp.y <= 0 && (Keyboard_IsKeyTrigger(KK_SPACE) ||		// keyboard SPACE
-					IsButtonTriggered(0, XINPUT_GAMEPAD_A)))						// GamePad A
+				&& g_Player.sp.y <= 0 && (Keyboard_IsKeyDown(KK_SPACE) ||		// keyboard SPACE
+					IsButtonPressed(0, XINPUT_GAMEPAD_A)))						// GamePad A
 			{
 
 				g_Player.sp.y = 2.8f;			// スピードのyをマイナスにする
