@@ -485,7 +485,7 @@ void UpdateCollision(){
 				PlaySound(g_CandleSoundNo, 0);
 				for (int j = 0; j < SPAWN_POINT_MAX; j++) {//ƒŠƒXƒ|ƒ“‚¹‚¸‚ÉHP‚ªŒ¸‚è‘±‚¯‚Ä‚¢‚é
 					if (pSpawnPoint[j].UseFlag) {
-						if (pPlayer->PieceIndex == pSpawnPoint[j].PieceIndex) {
+						if (pPlayer->PieceIndex == pSpawnPoint[j].PieceIndex - 1) {
 							pPlayer->Position = pSpawnPoint[j].Position;
 							pPlayer->oldpos = pSpawnPoint[j].Position;
 							pPlayer->sp.y -= 1.0f;
