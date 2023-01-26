@@ -276,7 +276,7 @@ void Save::Draw()
 	//----------背景の表示----------]
 	// セーブのタイトルの表示
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SaveTitleTextureNo));
-	SpriteDrawColorRotation(SCREEN_WIDTH / 2 - 50, 100.0f, 0.0f, 1000, 500, 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, 1.0f, 1.0f, 1);
+	SpriteDrawColorRotation(SCREEN_WIDTH / 2, 100.0f, 0.0f, 1000, 500, 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, 1.0f, 1.0f, 1);
 
 	// 各ボタンの描画
 	for (int i = 0; i < BUTTON_MAX; i++) {
