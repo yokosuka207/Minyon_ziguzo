@@ -133,7 +133,7 @@ void UpdateExplain()
 		{
 			if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||					// keyboard Ctrl ç∂
 				Keyboard_IsKeyTrigger(KK_C) ||								// keyboard C
-				IsButtonTriggered(0, XINPUT_GAMEPAD_X)) {					// GamePad X
+				IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {					// GamePad B
 				if (g_Explain[i].No == 0) {
 					g_Explain[i].HintUse = true;
 					g_Explain[i].No++;

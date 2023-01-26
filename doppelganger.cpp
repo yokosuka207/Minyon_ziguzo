@@ -311,7 +311,7 @@ void UpdateDoppelganger()
 
 			for (int i = 0; i < JUMPSTAND_MAX; i++) {
 				if (p_JumpStand[i].UseJumpStand) {
-					if (IsButtonPressed(0, XINPUT_GAMEPAD_X) ||					// GamePad	X
+					if (IsButtonPressed(0, XINPUT_GAMEPAD_B) ||					// GamePad	B
 						Keyboard_IsKeyDown(KK_LEFTCONTROL) ||					// Keyboard	Ctrl@¶
 						Keyboard_IsKeyDown(KK_C))								// Keyboard	C
 					{
@@ -333,7 +333,7 @@ void UpdateDoppelganger()
 
 			for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 				if (pMoveBlock[i].bUse) {
-					if (IsButtonPressed(0, XINPUT_GAMEPAD_X) ||					// GamePad	X
+					if (IsButtonPressed(0, XINPUT_GAMEPAD_B) ||					// GamePad	B
 						Keyboard_IsKeyDown(KK_LEFTCONTROL) ||					// Keyboard	Ctrl ¶
 						Keyboard_IsKeyDown(KK_C))								// Keyboard	C
 					{

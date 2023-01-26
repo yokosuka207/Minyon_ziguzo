@@ -1078,7 +1078,7 @@ void UpdateCollision(){
 						}
 						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
 							Keyboard_IsKeyTrigger(KK_C) ||					// keyboard C
-							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
+							IsButtonTriggered(0, XINPUT_GAMEPAD_B))			// GamePad B
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 5.0f, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
@@ -1094,7 +1094,7 @@ void UpdateCollision(){
 						}
 						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
 							Keyboard_IsKeyTrigger(KK_C) ||					// keyboard C
-							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
+							IsButtonTriggered(0, XINPUT_GAMEPAD_B))			// GamePad B
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
@@ -1111,7 +1111,7 @@ void UpdateCollision(){
 						}
 						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
 							Keyboard_IsKeyTrigger(KK_C) ||					// keyboard C
-							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
+							IsButtonTriggered(0, XINPUT_GAMEPAD_B))			// GamePad B
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y - 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
@@ -1127,7 +1127,7 @@ void UpdateCollision(){
 						}
 						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
 							Keyboard_IsKeyTrigger(KK_C) ||					// keyboard C
-							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
+							IsButtonTriggered(0, XINPUT_GAMEPAD_B))			// GamePad B
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
