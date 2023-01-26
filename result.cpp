@@ -27,18 +27,29 @@
 //======================
 static	char* g_ResultBGTextureName = (char*)"data\\texture\\black.png";
 
-//static	char* g_ResultGameEndTextureName = (char*)"data\\texture\\black.png";
-
 // ボタンのテクスチャ
 static	char* g_ResultButtonTextureName[BUTTON_MAX] = { (char*)"data\\texture\\text_exit stage.png" ,
 												(char*)"data\\texture\\text_continue game.png" };
+
+static	char* g_ResultLifeTextureName = (char*)"data\\texture\\text_life.png";
+static	char* g_ResultScoreTextureName = (char*)"data\\texture\\text_rank.png";
+static	char* g_ResultRankTextureName = (char*)"data\\texture\\text_rank.png";
+static	char* g_ResultTimeTextureName = (char*)"data\\texture\\text_time.png";
+static	char* g_ResultClearTextureName = (char*)"data\\texture\\text_rank.png";
+
+static int g_ResultLifeTextureNo = 0;
+static int g_ResultScoreTextureNo = 0;
+static int g_ResultRankTextureNo = 0;
+static int g_ResultTimeTextureNo = 0;
+static int g_ResultClearTextureNo = 0;
 
 static int g_ChangeSceneResultSoundNo = 0;
 static char g_ChangeSceneResultSoundName[] = "data\\SoundData\\SE\\シーン遷移(魔王魂).wav";
 
 
-
 RESULT	ResultObject;//タイトル画面オブジェクト	背景分
+
+RESULT g_Result[RESULT_MAX];
 
 int		ResultBGTextureNo;//テクスチャ番号
 
@@ -88,6 +99,18 @@ void	InitResult()
 	ResultObject.Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	ResultObject.Rotate = 0.0f;
 
+	for (int i = 0; i < RESULT_MAX; i++) {
+		g_Result[i].Position = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_Result[i].Size = D3DXVECTOR2(0.0f, 0.0f);
+		g_Result[i].Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		g_Result[i].UseFlag = false;
+	}
+	g_ResultLifeTextureNo = LoadTexture(g_ResultLifeTextureName);
+	g_ResultScoreTextureNo = LoadTexture(g_ResultRankTextureName);
+	g_ResultRankTextureNo = LoadTexture(g_ResultRankTextureName);
+	g_ResultTimeTextureNo = LoadTexture(g_ResultTimeTextureName);
+	g_ResultClearTextureNo = LoadTexture(g_ResultClearTextureName);
+
 	// ボタンの初期化とセット
 	for (int i = 0; i < BUTTON_MAX; i++) {
 		g_ResultButton[i].Init();
@@ -97,7 +120,13 @@ void	InitResult()
 	// 選択されているボタンの初期化
 	g_pSelectResultButton = &g_ResultButton[0];
 
-	pScore->SetScore(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50), D3DXVECTOR2(50.0f, 50.0f));
+	pScore->SetScore(D3DXVECTOR2(SCORE_POS_X, SCREEN_HEIGHT / 2 + 190.0f), D3DXVECTOR2(50.0f, 50.0f));
+
+	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400.0f, 200.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Life
+	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400.0f, 600.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Score
+	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 + 400.0f, 200.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Rank
+	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400.0f, 400.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Time
+	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2, 100.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Clear
 
 	g_ChangeSceneResultSoundNo = LoadSound(g_ChangeSceneResultSoundName);
 }
@@ -284,11 +313,61 @@ void	DrawResult()
 			1
 		);
 	}
+
+	for (int i = 0; i < RESULT_MAX; i++) {
+
+		if (i == 0) {
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultLifeTextureNo));
+		}
+
+		if (i == 1) {
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultRankTextureNo));
+		}
+
+		if (i == 2) {
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultRankTextureNo));
+		}
+
+		if (i == 3) {
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultTimeTextureNo));
+		}
+
+		if (i == 4) {
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultClearTextureNo));
+		}
+
+
+		SpriteDrawColorRotation
+		(
+			g_Result[i].Position.x,
+			g_Result[i].Position.y,
+			0.0f,
+			g_Result[i].Size.x,
+			g_Result[i].Size.y,
+			g_Result[i].Rotate,
+			g_Result[i].Color,
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
+	}
 }
 
 void SetResultType(RESULT_TYPE ty)
 {
 	ResultObject.type = ty;
+}
+
+void SetResult(D3DXVECTOR3 pos, D3DXVECTOR2 size) {
+	for (int i = 0; i < RESULT_MAX; i++) {
+		if (!g_Result[i].UseFlag) {
+			g_Result[i].Position = pos;
+			g_Result[i].Size = size;
+			g_Result[i].UseFlag = true;
+			break;
+		}
+	}
 }
 
 RESULT* GetResult()
