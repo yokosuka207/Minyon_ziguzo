@@ -216,6 +216,9 @@ void UpdateMapChip() {
 			}
 		}
 	}
+	if (Keyboard_IsKeyTrigger(KK_S)) {
+		StartPieceAnimation(0);
+	}
 }
 void DrawMapChip() {
 	float DrawSize;
