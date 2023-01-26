@@ -64,11 +64,11 @@ HRESULT InitJumpStand()
 
 void UninitJumpStand()
 {
-	if (g_textureBlock)
-	{
-		g_textureBlock->Release();
-		g_textureBlock = NULL;
-	}
+	//if (g_textureBlock)
+	//{
+	//	g_textureBlock->Release();
+	//	g_textureBlock = NULL;
+	//}
 
 	StopSound(g_JumpStandSoundNo);
 	StopSound(g_JumpStandSoundMoveNo);
