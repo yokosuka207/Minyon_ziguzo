@@ -102,6 +102,7 @@ HRESULT InitPlayer()
 	g_Player.isMoveBlock = false;
 	g_Player.isBrokenBlock = false;
 	g_Player.isFallBlock = false;
+
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
 	g_Player.PaternNo = 0;//パターン番号
@@ -408,7 +409,7 @@ void UpdatePlayer()
 				}
 			}
 			//プレイヤージャンプテクスチャー
-			if (g_Player.sp.y != 0)
+			if (g_Player.sp.y != 0 && !g_Player.isFallBlock)
 			{
 				g_Player.PaternNo = 16;
 				if (g_Player.uv_w < 0)

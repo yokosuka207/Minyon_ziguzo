@@ -988,7 +988,7 @@ void UpdateCollision(){
 							(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
 							(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
 						{
-							pPlayer->Position.y = pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 + pPlayer->size.y / 2;
+							pPlayer->Position.y = pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 + pPlayer->size.y / 2 + 0.02f;
 							pPlayer->jump = false;
 							pPlayer->fall = false;
 							pPlayer->WarpFlag = false;
