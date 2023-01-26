@@ -14,16 +14,15 @@
 #include "sound.h"
 #include "StageSelect.h"
 #include "result.h"
+#include "player.h"
 #include <math.h>
 
 static ID3D11ShaderResourceView* g_ScoreTexture;	//画像一枚で一つの変数が必要
-static ID3D11ShaderResourceView* g_ScoreRankTexture;	
 
-static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
-static char* g_ScoreRankTextureName = (char*)"data\\texture\\number1.png";
+static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";
 
 static int g_ScoreTextureNo = 0;
-static int g_ScoreRankTextureNo = 0;
+
 static int g_ScoreSoundNo = 0;
 
 static Score g_Score;
@@ -33,12 +32,12 @@ static Time* pTime = pTime->GetTime();
 static RESULT* pResult = GetResult();
 static int StageNo = 0;
 
-static int g_ScoreDistance = SCORE_POS_X;
 static int score = 0;
 static int frame = 0;
 
 void Score::InitScore() {
 	g_ScoreTextureNo = LoadTexture(g_ScoreTextureName);
+
 	g_ScoreParam.pos = D3DXVECTOR2(0.0f, 0.0f);
 	g_ScoreParam.size = D3DXVECTOR2(0.0f, 0.0f);
 	g_ScoreParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
@@ -59,17 +58,13 @@ void Score::UninitScore() {
 		g_ScoreTexture->Release();
 		g_ScoreTexture = NULL;
 	}
-	if (g_ScoreRankTexture != NULL) {
-		g_ScoreRankTexture->Release();
-		g_ScoreRankTexture = NULL;
-	}
 }
 void Score::DrawScore() {
 	if (g_ScoreParam.UseFlag) {
 		SetWorldViewProjection2D();
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreTextureNo));
 
-		g_ScoreParam.pos.x = g_ScoreDistance;
+		g_ScoreParam.pos.x = SCREEN_WIDTH / 2 - 20.0f;
 		score = CulcScore();
 		
 		frame++;
@@ -110,7 +105,7 @@ void Score::DrawScore() {
 					1.0f / 1.0f,
 					10
 				);
-				g_ScoreParam.pos.x -= 33.0f;
+				g_ScoreParam.pos.x -= 30.0f;
 			}
 		}
 	}
@@ -140,6 +135,21 @@ int Score::CulcScore() {
 	default:
 		break;
 	}
+
+	PLAYER* pPlayer = GetPlayer();
+	switch (pPlayer->hp) {
+	case 0:m_score *= 0;
+		break;
+	case 1:m_score *= 1;
+		break;
+	case 2:m_score *= 2;
+		break;
+	case 3:m_score *= 3;
+		break;
+	default:
+		break;
+	}
+
 	return m_score;
 }
 void Score::RankScore(int score) {

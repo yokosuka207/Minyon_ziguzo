@@ -110,7 +110,7 @@ HRESULT InitPlayer()
 	g_Player.NumPatern = 4;//â°ñáêî
 
 	g_Player.hp = PLAYER_HP;
-	g_Player.hp = g_Player.oldHP;
+	g_Player.oldHP = g_Player.hp;
 	g_Player.frame = 0;
 	g_Player.CoolTime = PLAYER_COOLTIME;
 	g_Player.PieceIndex = 0;
