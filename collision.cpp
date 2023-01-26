@@ -254,13 +254,16 @@ void UpdateCollision(){
 	if (!pFlag&&!dFlag) {
 		// ピースとインベントリ範囲の当たり判定
 		for (int i = 0; i < PUZZLE_MAX; i++) {
-			// ピースをインベントリにしまう
-			if (!pPiece[i].InventoryFlag&&pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X*1.5f)) {
-				DeleteMapChip(i);
-				SetInventory(pPiece[i].no);
-				pPiece[i].InventoryFlag = true;
+			if (pPiece[i].UseFlag)
+			{
+				// ピースをインベントリにしまう
+				if (!pPiece[i].InventoryFlag && pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X * 1.5f)) {
+					DeleteMapChip(i);
+					SetInventory(pPiece[i].no);
+					pPiece[i].InventoryFlag = true;
 
-				break;
+					break;
+				}
 			}
 		}
 
