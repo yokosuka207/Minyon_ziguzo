@@ -227,57 +227,6 @@ void	UpdateResult()
 		MouseOldPosX = GetMousePosX();
 		MouseOldPosY = GetMousePosY();
 
-	//	// マウスとcontinyボタンの当たり判定
-	//	if (Mouse_IsLeftDown())
-	//	{
-	//		if (min.x < MousePos.x && max.x > MousePos.x && min.y < MousePos.y && max.y > MousePos.y) 
-	//		{
-	//			pTimeParam->UseFlag = false;
-	//			pTime->StartTime();
-	//			for (int i = 0; i < SCORE_MAX; i++) {
-	//				pAnimeParam[i].AnimeFlag = false;
-	//			}
-	//			//SetScene(SCENE::SCENE_GAME);
-	//			pFadeParam->ExceptFlag = true;
-	//			pFadeParam->TitleFlag = false;
-	//			if (!pFadeParam->FadeFlag)
-	//			{
-	//				//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
-	//				PlaySound(g_ChangeSceneResultSoundNo, 0);
-	//				StartFade(FADE::FADE_ALPHA_OUT);
-	//				//SetScene(SCENE::SCENE_GAME);
-	//			}
-	//			
-	//		}
-	//	}
-	//	
-	//	// マウスと終了ボタンの当たり判定
-	//	if (Mouse_IsLeftDown())
-	//	{
-	//		if (min2.x < MousePos.x && max2.x > MousePos.x && min2.y < MousePos.y && max2.y > MousePos.y)
-	//		{
-	//			//DestroyWindow(GetHwnd());
-	//			//SetScene(SCENE::SCENE_TITLE);
-	//			pFadeParam->ExceptFlag = false;
-	//			pFadeParam->TitleFlag = true;
-	//			if (!pFadeParam->FadeFlag) 
-	//			{
-	//				//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
-	//				PlaySound(g_ChangeSceneResultSoundNo, 0);
-	//				StartFade(FADE::FADE_ALPHA_OUT);
-	//			}
-	//			pTimeParam->UseFlag = false;
-	//		}
-	//	}
-	//	
-	//}
-	////キー入力のチェック
-	//if (IsButtonTriggered(0, XINPUT_GAMEPAD_Y) ||		// GamePad	Y
-	//	Keyboard_IsKeyTrigger(KK_SPACE))				// Keyboard	SPACE	
-	//{
-	//	//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
-	//	PlaySound(g_ChangeSceneResultSoundNo, 0);
-	//	SetScene(SCENE::SCENE_TITLE);
 	}
 }
 //======================

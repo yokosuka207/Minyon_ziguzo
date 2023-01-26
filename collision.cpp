@@ -24,6 +24,7 @@
 #include "goal.h"
 #include "start.h"
 #include"xkeyboard.h"
+#include "xinput.h"
 #include "time.h"
 #include "spawnpoint.h"
 #include "joint.h"
@@ -120,9 +121,6 @@ static char g_KeySoundName[] = "data\\SoundData\\SE\\鍵入手.wav";
 //鍵扉
 static int g_OpenKeySoundNo = 0;
 static char g_OpenKeySoundName[] = "data\\SoundData\\SE\\鍵を開ける(無料効果音で遊ぼう！).wav";
-//ゴールピース
-static int g_GKeySoundNo = 0;
-static char g_GKeySoundName[] = "data\\SoundData\\SE\\ピース入手(効果音ラボ).wav";
 //ピースの合体
 static int g_MatchPieceSoundNo = 0;
 static char g_MatchPieceSoundName[] = "data\\SoundData\\SE\\ピースはめ込む音(無料効果音で遊ぼう！).wav";
@@ -148,7 +146,6 @@ void InitCollision()
 	g_HighSoundNo = LoadSound(g_HighSoundName);
 	g_KeySoundNo = LoadSound(g_KeySoundName);
 	g_OpenKeySoundNo = LoadSound(g_OpenKeySoundName);
-	g_GKeySoundNo = LoadSound(g_GKeySoundName);
 	g_MatchPieceSoundNo = LoadSound(g_MatchPieceSoundName);
 	g_CandleSoundNo = LoadSound(g_CandleSoundName);
 	g_GoalSoundNo = LoadSound(g_GoalSoundName);
@@ -166,7 +163,6 @@ void UninitCollision()
 	StopSound(g_HighSoundNo);
 	StopSound(g_KeySoundNo);
 	StopSound(g_OpenKeySoundNo);
-	StopSound(g_GKeySoundNo);
 	StopSound(g_MatchPieceSoundNo);
 	StopSound(g_CandleSoundNo);
 	//StopSound(g_GoalSoundNo);
@@ -205,6 +201,7 @@ void UpdateCollision(){
 	EXPLAIN* p_Explain = GetExplain();
 	LAMP* p_Lamp = GetLamp();
 	LAMP_SWITCH* p_LampSwitch = GetLampSwitch();
+	DOPPELGANGER* pDoppel = GetDoppelganger();
 
 	GOAL* pGoal = GetGoal();
 	START* pStart = GetStart();
@@ -216,6 +213,7 @@ void UpdateCollision(){
 	//-------------------------------------
 
 	bool pFlag = false;	//プレーヤーがピースの中にいるか
+	bool dFlag = false;	//ドッペルゲンガーがピースの中にいるか
 	InventoryFlag = false;
 	//プレーヤーが動いているピースの中にいるか
 	for (int i = 0; i < PUZZLE_MAX; i++) {
@@ -234,10 +232,26 @@ void UpdateCollision(){
 		}
 	}
 
+	for (int i = 0; i < PUZZLE_MAX; i++) {
+		if (pPiece[i].MoveFlag) {
+
+			if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pDoppel->Position.y &&
+				pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pDoppel->Position.y &&
+				pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pDoppel->Position.x &&
+				pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pDoppel->Position.x &&
+				pPiece[i].no == pDoppel->PieceIndex &&
+				pDoppel->UseFlag == true)
+			{
+				dFlag = true;
+				break;
+			}
+		}
+	}
+
 	//============================
 	//インベントリ系
 	//============================
-	if (!pFlag) {
+	if (!pFlag&&!dFlag) {
 		// ピースとインベントリ範囲の当たり判定
 		for (int i = 0; i < PUZZLE_MAX; i++) {
 			// ピースをインベントリにしまう
@@ -280,9 +294,8 @@ void UpdateCollision(){
 		//}
 
 		//=========================================
-		//プレーヤーとスイッチ系(switch,SwitchWall)
+		//ドッペルゲンガーーとスイッチ系(switch,SwitchWall)
 		//=========================================
-		DOPPELGANGER* pDoppel = GetDoppelganger();
 		for (int i = 0; i < SWITCH_MAX; i++) {
 			//スイッチとプレイヤーの当たり判定
 			if (pSwitch[i].UseFlag) {
@@ -634,7 +647,7 @@ void UpdateCollision(){
 						pPlayer->Position.y + pPlayer->size.y / 2 > (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 3 &&
 						pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 3)
 					{
-						pPlayer->Position.x = (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 - pPlayer->size.x / 2;
+						//pPlayer->Position.x = (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 - pPlayer->size.x / 2;
 					}
 					//プレイヤー右・壊れるブロック左
 					if (pPlayer->Position.x - pPlayer->size.x / 2 < (pBroken + i)->Postion.x + (pBroken + i)->Size.x / 2 &&
@@ -642,7 +655,7 @@ void UpdateCollision(){
 						pPlayer->Position.y + pPlayer->size.y / 2 > (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2 &&
 						pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2)
 					{
-						pPlayer->Position.x = (pBroken + i)->Postion.x + (pBroken + i)->Size.x / 2 + pPlayer->size.x / 2;
+						//pPlayer->Position.x = (pBroken + i)->Postion.x + (pBroken + i)->Size.x / 2 + pPlayer->size.x / 2;
 					}
 					//プレイヤー上・壊れるブロック下
 					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
@@ -650,12 +663,18 @@ void UpdateCollision(){
 						pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2 &&
 						pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2)
 					{
+						for (int j = 0; j < JUMPSTAND_MAX; j++)
+						{
+							pJumpStand[j].JumpStandFlag = false;
+
+						}
+
 						pPlayer->Position.y = (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2 + pPlayer->size.y / 2;
 						pPlayer->jump = false;
 						pPlayer->fall = false;
 						pPlayer->frame = 0;
 						pPlayer->isBrokenBlock = true;
-						pPlayer->sp.y = -0.2f;
+						pPlayer->sp.y = 0.0f;
 						BrokenFlag = true;
 					}
 					else if (!BrokenFlag)
@@ -673,6 +692,7 @@ void UpdateCollision(){
 						//SetVolume(g_BrokenSoundNo, 0.5f);
 						PlaySound(g_BrokenSoundNo, 0);
 						(pBroken + i)->UseFlag = false;
+						SetBrokenAnime(pBroken[i].Postion, pBroken[i].Size, pBroken[i].index);
 						pPlayer->fall = true;
 						pPlayer->getfall = true;
 						pPlayer->frame = 50;
@@ -1002,39 +1022,39 @@ void UpdateCollision(){
 					}
 				}
 			}
-			//------------------------------------------------------------------
-			//ゴール専用鍵とプレイヤーの当たり判定(GKeyとPlayer)
-			//------------------------------------------------------------------
-			if (pGKey->UseFlag) {
-				if (CollisionBB(pGKey->pos, pPlayer->Position, pGKey->size, pPlayer->size)) {
-					pGKey->UseFlag = false;
-					pGKey->GetGKey = true;
-					//SetVolume(g_GKeySoundNo, 0.5f);
-					PlaySound(g_GKeySoundNo, 0);
-				}
-			}
-			//-------------------------------------------------------------------
-			//ゴール専用鍵取得プレイヤーと鍵で開く扉の当たり判定(PlayerとGoal)
-			//-------------------------------------------------------------------
+			////------------------------------------------------------------------
+			////ゴール専用鍵とプレイヤーの当たり判定(GKeyとPlayer)
+			////------------------------------------------------------------------
+			//if (pGKey->UseFlag) {
+			//	if (CollisionBB(pGKey->pos, pPlayer->Position, pGKey->size, pPlayer->size)) {
+			//		pGKey->UseFlag = false;
+			//		pGKey->GetGKey = true;
+			//		//SetVolume(g_GKeySoundNo, 0.5f);
+			//		PlaySound(g_GKeySoundNo, 0);
+			//	}
+			//}
+			////-------------------------------------------------------------------
+			////ゴール専用鍵取得プレイヤーと鍵で開く扉の当たり判定(PlayerとGoal)
+			////-------------------------------------------------------------------
 
-			if (pGoal->UseFlag) {
-				if (!Mouse_IsLeftDown() && pGKey->GetGKey) {
-					if (CollisionBB(pGoal->Pos, pPlayer->Position, pGoal->Size, pPlayer->size)) {
-						pGoal->UseFlag = false;
-						//SetVolume(g_GoalSoundNo, 0.5f);
-						PlaySound(g_GoalSoundNo, 0);
-						//
-						for (int i = 0; i < START_MAX; i++) {
-							pStart[i].GoalFlag = true;
-						}
-						//
-						//SetResultType(WIN);
-						//StartFade(FADE::FADE_OUT);
-						//pTime->EndTime();
-						//pTimeParam->EndFlag = true;
-					}
-				}
-			}
+			//if (pGoal->UseFlag) {
+			//	if (!Mouse_IsLeftDown() && !pCursor->bHave && pGKey->GetGKey) {
+			//		if (CollisionBB(pGoal->Pos, pPlayer->Position, pGoal->Size, pPlayer->size)) {
+			//			pGoal->UseFlag = false;
+			//			//SetVolume(g_GoalSoundNo, 0.5f);
+			//			PlaySound(g_GoalSoundNo, 0);
+			//			//
+			//			for (int i = 0; i < START_MAX; i++) {
+			//				pStart[i].GoalFlag = true;
+			//			}
+			//			//
+			//			//SetResultType(WIN);
+			//			//StartFade(FADE::FADE_OUT);
+			//			//pTime->EndTime();
+			//			//pTimeParam->EndFlag = true;
+			//		}
+			//	}
+			//}
 			//------------------------------------------------------
 			//敵の目の前とプレイヤー当たり判定(プレイヤーが死ぬ場合)
 			//------------------------------------------------------
@@ -1050,7 +1070,8 @@ void UpdateCollision(){
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 							pEnemy[i].AIFlag = true;
 						}
-						if (Keyboard_IsKeyDown(KK_B))
+						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
+							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 5.0f, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
@@ -1064,7 +1085,8 @@ void UpdateCollision(){
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 							pEnemy[i].AIFlag = true;
 						}
-						if (Keyboard_IsKeyTrigger(KK_B))
+						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
+							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
@@ -1079,7 +1101,8 @@ void UpdateCollision(){
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 40.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y + 80.0f), pPlayer->size)) {
 							pEnemy[i].AIFlag = true;
 						}
-						if (Keyboard_IsKeyTrigger(KK_B))
+						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
+							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y - 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
@@ -1093,7 +1116,8 @@ void UpdateCollision(){
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y - 40.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y + 80.0f), pPlayer->size)) {
 							pEnemy[i].AIFlag = true;
 						}
-						if (Keyboard_IsKeyTrigger(KK_B))
+						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
+							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
@@ -1142,13 +1166,22 @@ void UpdateCollision(){
 			//------------------------------------
 			//バネとトゲブロック当たり判定
 			//-----------------------------------
-			for (int i = 0; i < BROKEN_MAX; i++) {
+
+			for (int i = 0; i < BROKEN_MAX; i++) 
+			{
 				if (pBroken[i].UseFlag)
 				{
-					for (int j = 0; j < JUMPSTAND_MAX; j++) {
-						if (pJumpStand[j].UseJumpStand) {
-							if (CollisionBB(pBroken[i].Postion, pJumpStand[j].pos, pBroken[i].Size, pJumpStand[j].size)) {
-								pJumpStand[j].pos = pJumpStand[j].oldpos;
+					for (int j = 0; j < JUMPSTAND_MAX; j++) 
+					{
+						if (pJumpStand[j].UseJumpStand)
+						{
+							//プレイヤー上・高所落ちるブロック下
+							if (pBroken[i].Postion.x - pBroken[i].Size.x / 2 < pJumpStand[j].pos.x + pJumpStand[j].size.x / 3 &&
+								pBroken[i].Postion.x + pBroken[i].Size.x / 2 > pJumpStand[j].pos.x - pJumpStand[j].size.x / 3 &&
+								pBroken[i].Postion.y + pBroken[i].Size.y / 2 > pJumpStand[j].pos.y - pJumpStand[j].size.y / 2 &&
+								pBroken[i].Postion.y + pBroken[i].Size.y / 2 <= pJumpStand[j].oldpos.y - pJumpStand[j].size.y / 2)
+							{
+								pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 							}
 						}
 					}
@@ -1224,6 +1257,25 @@ void UpdateCollision(){
 		}
 	}
 	//------------------------------------
+	//ドッペルゲンガーとプレイヤーの当たり判定
+	//------------------------------------
+	if (CollisionBB(pDoppel->Position, pPlayer->Position, pDoppel->size, pPlayer->size))
+	{
+		if (pDoppel->UseFlag)
+		{
+			pPlayer->hp--;
+			//SetVolume(g_CandleSoundNo, 0.5f);
+			PlaySound(g_CandleSoundNo, 0);
+			for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
+				if (pSpawnPoint[i].UseFlag) {
+					if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
+						pPlayer->Position = pSpawnPoint[i].Position;
+					}
+				}
+			}
+		}
+	}
+	//------------------------------------
 	//ドッペルゲンガー弾用当たり判定
 	//------------------------------------
 	//DOPPELGANGER* pDoppel = GetDoppelganger();
@@ -1263,6 +1315,7 @@ void UpdateCollision(){
 	//		}
 	//	}
 	//}
+	
 }
 //----------------------------------------------------------------------------------------------------------
 
