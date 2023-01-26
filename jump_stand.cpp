@@ -81,8 +81,10 @@ void UpdateJumpStand()
 	MOUSE* pMouse = GetMouse();
 	p_Player = GetPlayer();
 	p_Block = GetChipBlock();
+	CURSOR* pCursor = GetCurso();
 
-	if (!Mouse_IsLeftDown())
+	if (!Mouse_IsLeftDown() && 
+		!pCursor->bHave)
 	{
 
 

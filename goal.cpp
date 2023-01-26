@@ -12,11 +12,15 @@
 #include"StageSelect.h"
 #include "start.h"
 #include "save.h"
+#include "cursor.h"
+#include "sound.h"
 
 GOAL g_Goal;
 GKey g_GKey;
 static ID3D11ShaderResourceView	*g_textureGoal;	//画像一枚で一つの変数が必要
 static char *g_textureName_Goal = (char*)"data\\texture\\ピース取得アイテム.png";	//テクスチャファイルパス
+static int g_GoalSoundNo = 0;
+static char g_GoalSoundName[] = "data\\SoundData\\SE\\ピース入手(効果音ラボ).wav";
 static Time* pTime = pTime->GetTime();
 static TimeParam* pTimeParam = pTime->GetTimeParam();
 HRESULT InitGoal(){
@@ -34,6 +38,9 @@ HRESULT InitGoal(){
 
 	g_Goal.UseFlag = false;
 	g_Goal.GetFlag = false;
+
+	g_GoalSoundNo = LoadSound(g_GoalSoundName);
+
 	return S_OK;
 }
 
@@ -43,7 +50,7 @@ void UninitGoal()
 		g_textureGoal->Release();
 		g_textureGoal = NULL;
 	}
-
+	StopSound(g_GoalSoundNo);
 }
 
 void UpdateGoal()
@@ -55,7 +62,8 @@ void UpdateGoal()
 		MOUSE* pMouse = GetMouse();
 		RESULT* pResult = GetResult();
 		START* pStart = GetStart();
-		if (!pMouse->UseFlag)// && pGKey->GetGKey)
+		CURSOR* pCursor = GetCurso();
+		if (!pMouse->UseFlag && !pCursor->bHave)// && pGKey->GetGKey)
 		{
 			g_Goal.PaternNo += 0.25f;
 			if (g_Goal.PaternNo > 16.0f)
@@ -70,6 +78,8 @@ void UpdateGoal()
 				&& g_Goal.Pos.y - g_Goal.Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2)
 			{
 				STAGESELECT* pStageSelect = GetSelect();
+				//SetVolume(g_GKeySoundNo, 0.5f);
+				PlaySound(g_GoalSoundNo, 0);
 
 				if (ReturnStageNo() != STAGE_MAX)
 				{
