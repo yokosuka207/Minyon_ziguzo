@@ -197,7 +197,7 @@ void StartFade(FADE state) {
 			{ 
 				START* pStart = GetStart();
 				
-				g_FadeParam.pos = D3DXVECTOR2(pStart[0].pos.x - SCREEN_WIDTH / 2, pStart[0].pos.y + SCREEN_HEIGHT / 6);
+				g_FadeParam.pos = D3DXVECTOR2(pStart[0].pos.x - SCREEN_WIDTH / 2, pStart[0].pos.y + SCREEN_HEIGHT / 4);
 
 			}
 

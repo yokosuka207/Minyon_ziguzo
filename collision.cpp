@@ -281,7 +281,7 @@ void UpdateCollision(){
 		//}
 
 		//=========================================
-		//プレーヤーとスイッチ系(switch,SwitchWall)
+		//ドッペルゲンガーーとスイッチ系(switch,SwitchWall)
 		//=========================================
 		DOPPELGANGER* pDoppel = GetDoppelganger();
 		for (int i = 0; i < SWITCH_MAX; i++) {
