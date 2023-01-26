@@ -632,12 +632,18 @@ void UpdateCollision(){
 						pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2 &&
 						pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2)
 					{
+						for (int j = 0; j < JUMPSTAND_MAX; j++)
+						{
+							pJumpStand[j].JumpStandFlag = false;
+
+						}
+
 						pPlayer->Position.y = (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2 + pPlayer->size.y / 2;
 						pPlayer->jump = false;
 						pPlayer->fall = false;
 						pPlayer->frame = 0;
 						pPlayer->isBrokenBlock = true;
-						pPlayer->sp.y = -0.2f;
+						pPlayer->sp.y = 0.0f;
 						BrokenFlag = true;
 					}
 					else if (!BrokenFlag)
@@ -655,6 +661,7 @@ void UpdateCollision(){
 						//SetVolume(g_BrokenSoundNo, 0.5f);
 						PlaySound(g_BrokenSoundNo, 0);
 						(pBroken + i)->UseFlag = false;
+						SetBrokenAnime(pBroken[i].Postion, pBroken[i].Size, pBroken[i].index);
 						pPlayer->fall = true;
 						pPlayer->getfall = true;
 						pPlayer->frame = 50;
@@ -1124,13 +1131,22 @@ void UpdateCollision(){
 			//------------------------------------
 			//バネとトゲブロック当たり判定
 			//-----------------------------------
-			for (int i = 0; i < BROKEN_MAX; i++) {
+
+			for (int i = 0; i < BROKEN_MAX; i++) 
+			{
 				if (pBroken[i].UseFlag)
 				{
-					for (int j = 0; j < JUMPSTAND_MAX; j++) {
-						if (pJumpStand[j].UseJumpStand) {
-							if (CollisionBB(D3DXVECTOR2(pBroken[i].Postion.x, pBroken[i].Postion.y), pJumpStand[j].pos, pBroken[i].Size, pJumpStand[j].size)) {
-								pJumpStand[j].pos = pJumpStand[j].oldpos;
+					for (int j = 0; j < JUMPSTAND_MAX; j++) 
+					{
+						if (pJumpStand[j].UseJumpStand)
+						{
+							//プレイヤー上・高所落ちるブロック下
+							if (pBroken[i].Postion.x - pBroken[i].Size.x / 2 < pJumpStand[j].pos.x + pJumpStand[j].size.x / 3 &&
+								pBroken[i].Postion.x + pBroken[i].Size.x / 2 > pJumpStand[j].pos.x - pJumpStand[j].size.x / 3 &&
+								pBroken[i].Postion.y + pBroken[i].Size.y / 2 > pJumpStand[j].pos.y - pJumpStand[j].size.y / 2 &&
+								pBroken[i].Postion.y + pBroken[i].Size.y / 2 <= pJumpStand[j].oldpos.y - pJumpStand[j].size.y / 2)
+							{
+								pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 							}
 						}
 					}
@@ -1245,6 +1261,7 @@ void UpdateCollision(){
 	//		}
 	//	}
 	//}
+	
 }
 //----------------------------------------------------------------------------------------------------------
 
