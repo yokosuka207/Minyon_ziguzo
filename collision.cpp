@@ -24,6 +24,7 @@
 #include "goal.h"
 #include "start.h"
 #include"xkeyboard.h"
+#include "xinput.h"
 #include "time.h"
 #include "spawnpoint.h"
 #include "joint.h"
@@ -1032,7 +1033,8 @@ void UpdateCollision(){
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 							pEnemy[i].AIFlag = true;
 						}
-						if (Keyboard_IsKeyDown(KK_B))
+						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
+							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 5.0f, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
@@ -1046,7 +1048,8 @@ void UpdateCollision(){
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 							pEnemy[i].AIFlag = true;
 						}
-						if (Keyboard_IsKeyTrigger(KK_B))
+						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
+							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
@@ -1061,7 +1064,8 @@ void UpdateCollision(){
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 40.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y + 80.0f), pPlayer->size)) {
 							pEnemy[i].AIFlag = true;
 						}
-						if (Keyboard_IsKeyTrigger(KK_B))
+						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
+							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y - 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
@@ -1075,7 +1079,8 @@ void UpdateCollision(){
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y - 40.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y + 80.0f), pPlayer->size)) {
 							pEnemy[i].AIFlag = true;
 						}
-						if (Keyboard_IsKeyTrigger(KK_B))
+						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
+							IsButtonTriggered(0, XINPUT_GAMEPAD_X))			// GamePad X
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
