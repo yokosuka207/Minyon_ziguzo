@@ -1196,6 +1196,8 @@ void UpdateCollision(){
 					{
 						if (pJumpStand[j].UseJumpStand)
 						{
+
+
 							//プレイヤー上・高所落ちるブロック下
 							if (pBroken[i].Postion.x - pBroken[i].Size.x / 2 < pJumpStand[j].pos.x + pJumpStand[j].size.x / 3 &&
 								pBroken[i].Postion.x + pBroken[i].Size.x / 2 > pJumpStand[j].pos.x - pJumpStand[j].size.x / 3 &&
@@ -3050,6 +3052,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 			if (pMoveBlock[i].NowPieceIndex == pinNo)
 			{
 				pMoveBlock[i].pos += num;
+				pMoveBlock[i].oldpos = pMoveBlock[i].pos;
 			}
 
 		}
@@ -3136,6 +3139,7 @@ void PositionPlas(D3DXVECTOR2 num,int pinNo)
 			if (pJumpStand[i].NowPieceIndex == pinNo)
 			{
 				pJumpStand[i].pos += num;
+				pJumpStand[i].oldpos = pJumpStand[i].pos;
 				pJumpStand[i].LookFlag = true;
 			}
 		}
