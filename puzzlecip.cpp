@@ -71,16 +71,19 @@ void UninitPuzzleCip()
 
 void UpdatePuzzleCip()
 {
+	SplitStage* pSplitStage = GetSplitStage();
+
+	PLAYER* pPlayer = GetPlayer();
+	MOUSE* pMouse = GetMouse();
+	PUZZLE* pPuzzle = GetPuzzle();
+	CURSOR* pCursor = GetCurso();
+	KEEP_PUZZLE* pInventory = GetInventory();
+
+	int InventoryIndex = 0;	//
 	for (int i = 0; i < CIP_MAX; i++)
 	{
 		if (g_ChipPuzzleChip[i].UseFlag)
 		{
-			SplitStage* pSplitStage = GetSplitStage();
-
-			PLAYER* pPlayer = GetPlayer();
-			MOUSE* pMouse = GetMouse();
-			PUZZLE* pPuzzle = GetPuzzle();
-			CURSOR* pCursor = GetCurso();
 			if (!pMouse->UseFlag && !pCursor->bHave)
 			{
 				g_ChipPuzzleChip[i].PaternNo += 0.25f;
@@ -88,18 +91,25 @@ void UpdatePuzzleCip()
 				{
 					g_ChipPuzzleChip[i].PaternNo = 0;
 				}
-						if (g_ChipPuzzleChip[i].Position.x + g_ChipPuzzleChip[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2
-							&& g_ChipPuzzleChip[i].Position.x - g_ChipPuzzleChip[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2
-							&& g_ChipPuzzleChip[i].Position.y + g_ChipPuzzleChip[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2
-							&& g_ChipPuzzleChip[i].Position.y - g_ChipPuzzleChip[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2)
+				if (g_ChipPuzzleChip[i].Position.x + g_ChipPuzzleChip[i].Size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2
+					&& g_ChipPuzzleChip[i].Position.x - g_ChipPuzzleChip[i].Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2
+					&& g_ChipPuzzleChip[i].Position.y + g_ChipPuzzleChip[i].Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2
+					&& g_ChipPuzzleChip[i].Position.y - g_ChipPuzzleChip[i].Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2)
+				{
+					for (int j = 0; j < INVENTORY_MAX; j++)
+					{
+						if (!pInventory[j].IsUse)
 						{
-							//SetPieceMapChip(pSplitStage->Split3[2][2], g_ChipPuzzleChip[i].NextPieceIndex);
 							SetInventory(g_ChipPuzzleChip[i].NextPieceIndex);
 							g_ChipPuzzleChip[i].GetFlag = true;
 							g_ChipPuzzleChip[i].UseFlag = false;
 							//SetVolume(g_WarpSoundNo, 0.5f);
 							PlaySound(g_PieceSoundNo, 0);
+
+							break;
 						}
+					}
+				}
 
 			}
 		}
