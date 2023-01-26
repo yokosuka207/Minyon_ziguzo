@@ -395,6 +395,12 @@ void UpdatePlayer()
 				if (g_Player.isMoveBlock) {
 					g_Player.isMoveBlock = false;
 				}
+				if (g_Player.isFallBlock) {
+					g_Player.isFallBlock = false;
+				}
+				if (g_Player.isBrokenBlock) {
+					g_Player.isBrokenBlock = false;
+				}
 			}
 
 			// ‹ó’†
@@ -494,10 +500,10 @@ void UpdatePlayer()
 								else
 								{
 
-									g_Player.fall = true;
+									//g_Player.fall = true;
 									//g_Player.sp.y = 0;
 									//g_Player.getfall = true;
-									g_Player.frame = 50;
+									//g_Player.frame = 50;
 									//g_Player.sp.y += 0.2;//‰Á‘¬
 								}
 
@@ -512,6 +518,8 @@ void UpdatePlayer()
 					START* pStart = GetStart();
 					g_Player.Position = pStart->pos;
 					g_Player.oldpos = g_Player.Position;
+					g_Player.hp--;
+
 				}
 
 
