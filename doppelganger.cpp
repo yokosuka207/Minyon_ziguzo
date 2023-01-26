@@ -195,7 +195,7 @@ void UpdateDoppelganger()
 		g_bHave = false;
 	}
 
-	if (!Mouse_IsLeftDown() ||			// mouse ç∂
+	if (!Mouse_IsLeftDown() &&			// mouse ç∂
 		!g_bHave)
 	{
 
@@ -283,7 +283,7 @@ void UpdateDoppelganger()
 
 			for (int i = 0; i < JUMPSTAND_MAX; i++) {
 				if (p_JumpStand[i].UseJumpStand) {
-					if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
+					if (IsButtonTriggered(0, XINPUT_GAMEPAD_X) ||		// GamePad	X
 						Keyboard_IsKeyDown(KK_LEFTCONTROL))						// Keyboard	CtrlÅ@ç∂
 					{
 						if (CollisionBB(g_Doppel.Position, p_JumpStand[i].pos, g_Doppel.size, p_JumpStand[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
@@ -304,7 +304,7 @@ void UpdateDoppelganger()
 
 			for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 				if (pMoveBlock[i].bUse) {
-					if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
+					if (IsButtonTriggered(0, XINPUT_GAMEPAD_X) ||		// GamePad	X
 						Keyboard_IsKeyDown(KK_LEFTCONTROL))						// Keyboard	Ctrl ç∂
 					{
 						if (CollisionBB(g_Doppel.Position, pMoveBlock[i].pos, g_Doppel.size, pMoveBlock[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
@@ -1244,21 +1244,8 @@ void UpdateDoppelganger()
 		}
 	}
 
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-	if (!Mouse_IsLeftDown())
+	if (!Mouse_IsLeftDown() &&
+		!pCursor->bHave)
 	{
 
 

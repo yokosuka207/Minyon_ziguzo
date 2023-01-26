@@ -984,39 +984,39 @@ void UpdateCollision(){
 					}
 				}
 			}
-			//------------------------------------------------------------------
-			//ゴール専用鍵とプレイヤーの当たり判定(GKeyとPlayer)
-			//------------------------------------------------------------------
-			if (pGKey->UseFlag) {
-				if (CollisionBB(pGKey->pos, pPlayer->Position, pGKey->size, pPlayer->size)) {
-					pGKey->UseFlag = false;
-					pGKey->GetGKey = true;
-					//SetVolume(g_GKeySoundNo, 0.5f);
-					PlaySound(g_GKeySoundNo, 0);
-				}
-			}
-			//-------------------------------------------------------------------
-			//ゴール専用鍵取得プレイヤーと鍵で開く扉の当たり判定(PlayerとGoal)
-			//-------------------------------------------------------------------
+			////------------------------------------------------------------------
+			////ゴール専用鍵とプレイヤーの当たり判定(GKeyとPlayer)
+			////------------------------------------------------------------------
+			//if (pGKey->UseFlag) {
+			//	if (CollisionBB(pGKey->pos, pPlayer->Position, pGKey->size, pPlayer->size)) {
+			//		pGKey->UseFlag = false;
+			//		pGKey->GetGKey = true;
+			//		//SetVolume(g_GKeySoundNo, 0.5f);
+			//		PlaySound(g_GKeySoundNo, 0);
+			//	}
+			//}
+			////-------------------------------------------------------------------
+			////ゴール専用鍵取得プレイヤーと鍵で開く扉の当たり判定(PlayerとGoal)
+			////-------------------------------------------------------------------
 
-			if (pGoal->UseFlag) {
-				if (!Mouse_IsLeftDown() && pGKey->GetGKey) {
-					if (CollisionBB(pGoal->Pos, pPlayer->Position, pGoal->Size, pPlayer->size)) {
-						pGoal->UseFlag = false;
-						//SetVolume(g_GoalSoundNo, 0.5f);
-						PlaySound(g_GoalSoundNo, 0);
-						//
-						for (int i = 0; i < START_MAX; i++) {
-							pStart[i].GoalFlag = true;
-						}
-						//
-						//SetResultType(WIN);
-						//StartFade(FADE::FADE_OUT);
-						//pTime->EndTime();
-						//pTimeParam->EndFlag = true;
-					}
-				}
-			}
+			//if (pGoal->UseFlag) {
+			//	if (!Mouse_IsLeftDown() && !pCursor->bHave && pGKey->GetGKey) {
+			//		if (CollisionBB(pGoal->Pos, pPlayer->Position, pGoal->Size, pPlayer->size)) {
+			//			pGoal->UseFlag = false;
+			//			//SetVolume(g_GoalSoundNo, 0.5f);
+			//			PlaySound(g_GoalSoundNo, 0);
+			//			//
+			//			for (int i = 0; i < START_MAX; i++) {
+			//				pStart[i].GoalFlag = true;
+			//			}
+			//			//
+			//			//SetResultType(WIN);
+			//			//StartFade(FADE::FADE_OUT);
+			//			//pTime->EndTime();
+			//			//pTimeParam->EndFlag = true;
+			//		}
+			//	}
+			//}
 			//------------------------------------------------------
 			//敵の目の前とプレイヤー当たり判定(プレイヤーが死ぬ場合)
 			//------------------------------------------------------

@@ -10,7 +10,7 @@
 #include "MapChip.h"
 #include "SplitStage.h"
 #include "sound.h"
-
+#include "cursor.h"
 #include"inventory.h"
 PUZZLE_CIP	g_PuzzleCip[CIP_MAX];
 //----------マップチップ用配列----------
@@ -80,7 +80,8 @@ void UpdatePuzzleCip()
 			PLAYER* pPlayer = GetPlayer();
 			MOUSE* pMouse = GetMouse();
 			PUZZLE* pPuzzle = GetPuzzle();
-			if (!pMouse->UseFlag)
+			CURSOR* pCursor = GetCurso();
+			if (!pMouse->UseFlag && !pCursor->bHave)
 			{
 				g_ChipPuzzleChip[i].PaternNo += 0.25f;
 				if (g_ChipPuzzleChip[i].PaternNo > 16.0f)

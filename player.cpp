@@ -141,7 +141,9 @@ void UpdatePlayer()
 
 	MOUSE* pMouse = GetMouse();
 	CAMERA* pCamera = GetCamera();
-	if (!Mouse_IsLeftDown())
+	CURSOR* pCursor = GetCurso();
+	if (!Mouse_IsLeftDown() &&
+		!pCursor->bHave)
 	{
 
 		if (g_Player.UseFlag == true)

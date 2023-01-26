@@ -3,15 +3,14 @@
 #include	"renderer.h"
 #include	"texture.h"
 #include	"sprite.h"
-//#include	"input.h"
-#include "xinput.h"
-#include "xkeyboard.h"
+#include	"xinput.h"
+#include	"xkeyboard.h"
+#include	"mouse.h"
 #include	"scene.h"
 #include	"fade.h"
-#include"mouse.h"
-#include"collision.h"
-#include"sound.h"
-#include "button.h"
+#include	"collision.h"
+#include	"sound.h"
+#include	"button.h"
 
 //======================
 //マクロ定義
@@ -219,39 +218,6 @@ void	UpdateTitle()
 	MouseOldPosX = GetMousePosX();
 	MouseOldPosY = GetMousePosY();
 	//----------ボタンの処理----------]
-	////キー入力のチェック
-	//if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||			// GamePad	B
-	//	Keyboard_IsKeyTrigger(KK_A))						// Keyboard	A
-	//{
-	//	if (!pFadeParam->FadeFlag)
-	//	{
-	//		//SetVolume(g_ChangeSceneTitleSoundNo, 0.5f);
-	//		PlaySound(g_ChangeSceneTitleSoundNo, 0);
-	//		//SetScene(SCENE::SCENE_DATASELECT);
-	//		StartFade(FADE::FADE_ALPHA_OUT);
-	//	}
-	//}
-	//D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
-
-	////if (CollisionBB(g_TitleSwith[0].Position, MousePos, g_TitleSwith[0].Size, D3DXVECTOR2(3.0f, 3.0f)))
-	//{
-	//	if (Mouse_IsLeftDown())
-	//	{
-	//		if (!pFadeParam->FadeFlag)
-	//		{
-	//			//SetVolume(g_ChangeSceneTitleSoundNo, 0.5f);
-	//			PlaySound(g_ChangeSceneTitleSoundNo, 0);
-	//			StartFade(FADE::FADE_ALPHA_OUT);
-	//		}
-	//	}
-	//}
-	//if (CollisionBB(g_TitleSwith[1].Position, MousePos, g_TitleSwith[1].Size, D3DXVECTOR2(3.0f, 3.0f)))
-	//{
-	//	if (Mouse_IsLeftDown())
-	//	{
-	//		DestroyWindow(GetHwnd());
-	//	}
-	//}
 }
 //======================
 //描画処理
