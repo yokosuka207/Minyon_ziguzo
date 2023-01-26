@@ -106,7 +106,19 @@ void UpdateBullet()
 
 
 		}
-		if (g_Bullet[i].pos.y < SCREEN_LIMIT_UP - (g_Bullet[i].h / 2.0f))
+		if (g_Bullet[i].pos.y < -SCREEN_HEIGHT/2 + (g_Bullet[i].h / 2.0f))
+		{
+			g_Bullet[i].use = false;
+		}
+		if (g_Bullet[i].pos.y > SCREEN_HEIGHT / 2 - (g_Bullet[i].h / 2.0f))
+		{
+			g_Bullet[i].use = false;
+		}
+		if (g_Bullet[i].pos.x < -SCREEN_WIDTH/2 - (g_Bullet[i].w / 2.0f))
+		{
+			g_Bullet[i].use = false;
+		}
+		if (g_Bullet[i].pos.x > SCREEN_WIDTH / 2 - (g_Bullet[i].w / 2.0f))
 		{
 			g_Bullet[i].use = false;
 		}
