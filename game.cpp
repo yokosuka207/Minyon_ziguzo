@@ -198,6 +198,7 @@ void UpdateGame()
 			pTime->PauseElapsedTime();
 		}
 	}
+	CAMERA* pCamera = GetCamera();
 	if (!(*pause)) {
 		//UpdatePolygon();	//ポリゴンの更新
 		BgUpdate();
@@ -238,7 +239,9 @@ void UpdateGame()
 		UpdateInventory();			// インベントリの更新
 		UpdateMapChip();
 		UpdateGameMouse();
-		UpdateCursor();				// カーソルの更新
+		if (!pCamera->MoveFlag) {
+			UpdateCursor();				// カーソルの更新
+		}
 		g_Player3D.Update();
 		UpdateCamera();
 		UpdateEffectSpark();	// ヒバナエフェクト
@@ -251,7 +254,9 @@ void UpdateGame()
 	else {
 		UpdatePause();
 		UpdateGameMouse();
-		UpdateCursor();				// カーソルの更新
+		if (!pCamera->MoveFlag) {
+			UpdateCursor();				// カーソルの更新
+		}
 	}
 }	
 
@@ -259,6 +264,7 @@ void UpdateGame()
 void DrawGame()
 {
 	if (!(*pause)) {
+		CAMERA* pCamera = GetCamera();
 		SetCamera();
 
 		BgDraw();
@@ -302,7 +308,9 @@ void DrawGame()
 
 		DrawInventory();			// インベントリの描画
 		pTime->DrawGameTime();
-		DrawCursor();				// カーソルの描画
+		if (!pCamera->MoveFlag) {
+			DrawCursor();				// カーソルの描画
+		}
 		g_Player3D.Draw();
 		DrawEffectSpark();		// ヒバナエフェクト
 		DrawEffectLight();
