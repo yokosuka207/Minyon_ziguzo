@@ -90,15 +90,13 @@ void UninitBroken()
 //=============================================================================
 //çXêVèàóù
 //=============================================================================
-void UpdateBroken()
-{
+void UpdateBroken(){
 	for (int i = 0; i < BROKEN_MAX; i++) {
 		if (g_Broken[i].breakFlag) {
 			SetBrokenAnime(g_Broken[i].Postion, g_Broken[i].Size, g_Broken[i].index);
 			g_Broken[i].breakFlag = false;
 		}
 	}
-
 }
 
 //=============================================================================
