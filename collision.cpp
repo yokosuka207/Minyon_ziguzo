@@ -808,12 +808,11 @@ void UpdateCollision(){
 						pPlayer->jump = false;
 						pPlayer->fall = false;
 						pPlayer->frame = 50;
-						pPlayer->sp.y = -0.4f;
+						//pPlayer->sp.y = -0.4f;
 						pPlayer->isFallBlock = true;
 						(pFallBlock + i)->oldpos = (pFallBlock + i)->Position;
 						(pFallBlock + i)->Position.y -= 3.0f;
 						FallFlag = true;
-
 					}
 					else if (!FallFlag)
 					{
