@@ -273,6 +273,15 @@ void UpdatePlayer()
 			for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
 				if (block[i].UseFlag)
 				{
+					if (block[i].Position.x - block[i].Size.x / 2 < g_Player.Position.x + g_Player.size.x / 2 &&
+						block[i].Position.x + block[i].Size.x / 2 > g_Player.Position.x - g_Player.size.x / 2 &&
+						block[i].Position.y + block[i].Size.y / 2 > g_Player.Position.y - g_Player.size.y / 2 &&
+						block[i].Position.y + block[i].Size.y / 2 <= g_Player.oldpos.y - g_Player.size.y / 2)
+					{
+						g_Player.PieceIndex = block[i].PieceIndex;
+						//break;
+					}
+
 					// プレイヤーの下にブロックがあったら
 					if ((g_Player.Position.y - g_Player.size.y / 2 - 0.05f < block[i].Position.y + block[i].Size.y / 2) &&
 						(g_Player.Position.y + g_Player.size.y / 2 > block[i].Position.y - block[i].Size.y / 2) &&
@@ -280,9 +289,8 @@ void UpdatePlayer()
 						(g_Player.Position.x - g_Player.size.x / 2 < block[i].Position.x + block[i].Size.x / 2))
 					{	// 着地中にする
 						if (!g_Player.isGround) {
-							g_Player.sp.y = 0.0f;
+							//g_Player.sp.y = 0.0f;
 							g_Player.isGround = true;
-							g_Player.PieceIndex = block[i].PieceIndex;
 							break;
 						}
 					}
@@ -440,7 +448,7 @@ void UpdatePlayer()
 
 								if (!hitflag2)
 								{
-									//g_Player.sp.y -= 0.2f;//加速
+									//g_Player.sp.y -=0.2f;//加速
 								}
 								else
 								{//下に何もなく死亡する場合
@@ -459,7 +467,7 @@ void UpdatePlayer()
 
 								}
 							}
-							else if (g_Player.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
+							else if (g_Player.Position.x > pPiece[i].pos.x + PUZZLE_WIDHT / 2)
 							{
 
 								bool hitflag2 = PlayerPieceOpen(pPiece[i], i, RIGHT);
@@ -475,7 +483,7 @@ void UpdatePlayer()
 
 
 							}
-							else if (g_Player.Position.x <= pPiece[i].pos.x - PUZZLE_WIDHT / 2)
+							else if (g_Player.Position.x < pPiece[i].pos.x - PUZZLE_WIDHT / 2)
 							{
 								bool hitflag2 = PlayerPieceOpen(pPiece[i], i, LEFT);
 
@@ -490,25 +498,18 @@ void UpdatePlayer()
 
 
 							}
-							else if (g_Player.Position.y >= pPiece[i].pos.y + PUZZLE_HEIGHT / 2)
+							else if (g_Player.Position.y > pPiece[i].pos.y + PUZZLE_HEIGHT / 2)
 							{
 								bool hitflag2 = PlayerPieceOpen(pPiece[i], i, UP);
 
 								if (!hitflag2)
 								{
-									//g_Player.sp.y += 0.2;//加速
 								}
 								else
 								{
-
-									//g_Player.fall = true;
-									//g_Player.sp.y = 0;
-									//g_Player.getfall = true;
-									//g_Player.frame = 50;
-									//g_Player.sp.y += 0.2;//加速
 								}
 
-							}
+							}//
 						}
 					}
 
@@ -534,7 +535,7 @@ void UpdatePlayer()
 			//プレイヤーとパズルの画面外判定
 			Piece* pPiece = GetPiece();
 
-			for (int i = 0; i < PUZZLE_MAX; i++)
+			/*for (int i = 0; i < PUZZLE_MAX; i++)
 			{
 				if (pPiece[i].UseFlag)
 				{
@@ -624,7 +625,7 @@ void UpdatePlayer()
 
 			}
 
-
+			*/
 			}
 
 		}
