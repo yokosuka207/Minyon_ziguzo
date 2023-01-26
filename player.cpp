@@ -82,7 +82,7 @@ HRESULT InitPlayer()
 	//プレイヤーの初期化
 	//g_Player.Position = D3DXVECTOR2(pPiece->pos.x+30.0f,pPiece->pos.y);
 	g_Player.Position = D3DXVECTOR2(pStart[0].pos.x, pStart[0].pos.y);
-	g_Player.OneOldpos = g_Player.oldpos = g_Player.Position;
+	g_Player.OneOldpos = g_Player.oldpos = g_Player.oldoldpos = g_Player.Position;
 	g_Player.sp = D3DXVECTOR2(0.0f,-8.0f);
 	g_Player.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
 	g_Player.Drawsize = D3DXVECTOR2(33.0f, 33.0f);
@@ -409,7 +409,7 @@ void UpdatePlayer()
 				}
 			}
 			//プレイヤージャンプテクスチャー
-			if (g_Player.sp.y != 0 && !g_Player.isFallBlock)
+			if (g_Player.sp.y != 0)
 			{
 				g_Player.PaternNo = 16;
 				if (g_Player.uv_w < 0)
@@ -470,6 +470,7 @@ void UpdatePlayer()
 			}
 	
 			//反映
+			g_Player.oldoldpos = g_Player.oldpos;
 			g_Player.oldpos = g_Player.Position;
 			g_Player.Position += g_Player.sp;
 

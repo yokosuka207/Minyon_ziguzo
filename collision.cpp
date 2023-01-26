@@ -818,7 +818,6 @@ void UpdateCollision(){
 					else if (!FallFlag)
 					{
 						pPlayer->isFallBlock = false;
-
 					}
 
 					for (int j = 0; j < BLOCK_CHIP_MAX; j++)

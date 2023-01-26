@@ -43,7 +43,6 @@ HRESULT InitFallBlock()
 		g_FallBlock[i].texno = LoadTexture(g_TextureNameBroken);
 		g_FallBlock[i].PieceIndex = -1;
 		g_FallBlock[i].UseFlag = false;
-
 	}
 
 	return S_OK;
