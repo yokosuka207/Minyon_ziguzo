@@ -222,6 +222,16 @@ void UpdatePlayer()
 				}
 
 			}
+			/*if (g_Player.isGround == false && g_Player.isSheerFloors == false && g_Player.isHigh == false && g_Player.isMoveBlock == false && g_Player.isFallBlock == false && g_Player.isBrokenBlock == false)
+			{
+				g_Player.PaternNo = 16;
+				if (g_Player.uv_w < 0)
+				{
+					g_Player.PaternNo = 19;
+
+				}
+
+			}*/
 
 			//----------------
 			//ƒWƒƒƒ“ƒv‘ä‚Ìê‡
