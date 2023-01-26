@@ -1487,7 +1487,7 @@ void UpdateDoppelganger()
 					if (CollisionBB(g_Doppel.Position, p_Lamp[i].pos, g_Doppel.size, p_Lamp[i].size))
 					{
 						g_Doppel.LightFrame++;
-						if (g_Doppel.LightFrame >= 100)
+						if (g_Doppel.LightFrame >= 60)
 						{
 							g_Doppel.LightFrame = 0;
 							g_Doppel.hp--;
