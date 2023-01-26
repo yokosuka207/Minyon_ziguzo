@@ -451,6 +451,7 @@ void UpdatePlayer()
 										{
 											SpawnFlag = true;
 											g_Player.Position = pSpawnPoint[i].Position;
+											g_Player.oldpos = g_Player.Position;
 											g_Player.hp--;
 											break;
 										}

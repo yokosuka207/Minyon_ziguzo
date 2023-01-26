@@ -1219,13 +1219,16 @@ void UpdateCollision(){
 	//------------------------------------
 	if (CollisionBB(pDoppel->Position, pPlayer->Position, pDoppel->size, pPlayer->size))
 	{
-		pPlayer->hp--;
-		//SetVolume(g_CandleSoundNo, 0.5f);
-		PlaySound(g_CandleSoundNo, 0);
-		for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
-			if (pSpawnPoint[i].UseFlag) {
-				if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
-					pPlayer->Position = pSpawnPoint[i].Position;
+		if (pDoppel->UseFlag)
+		{
+			pPlayer->hp--;
+			//SetVolume(g_CandleSoundNo, 0.5f);
+			PlaySound(g_CandleSoundNo, 0);
+			for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
+				if (pSpawnPoint[i].UseFlag) {
+					if (pPlayer->PieceIndex == pSpawnPoint[i].PieceIndex) {
+						pPlayer->Position = pSpawnPoint[i].Position;
+					}
 				}
 			}
 		}
