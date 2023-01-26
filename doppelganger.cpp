@@ -223,7 +223,7 @@ void UpdateDoppelganger()
 		//g_bHave = false;
 	}
 
-	if (!Mouse_IsLeftDown() ||			// mouse 左
+	if (!Mouse_IsLeftDown() &&			// mouse 左
 		!g_bHave)
 	{
 
@@ -311,7 +311,7 @@ void UpdateDoppelganger()
 
 			for (int i = 0; i < JUMPSTAND_MAX; i++) {
 				if (p_JumpStand[i].UseJumpStand) {
-					if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
+					if (IsButtonPressed(0, XINPUT_GAMEPAD_X) ||					// GamePad	X
 						Keyboard_IsKeyDown(KK_LEFTCONTROL))						// Keyboard	Ctrl　左
 					{
 						if (CollisionBB(g_Doppel.Position, p_JumpStand[i].pos, g_Doppel.size, p_JumpStand[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
@@ -332,7 +332,7 @@ void UpdateDoppelganger()
 
 			for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 				if (pMoveBlock[i].bUse) {
-					if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
+					if (IsButtonPressed(0, XINPUT_GAMEPAD_X) ||					// GamePad	X
 						Keyboard_IsKeyDown(KK_LEFTCONTROL))						// Keyboard	Ctrl 左
 					{
 						if (CollisionBB(g_Doppel.Position, pMoveBlock[i].pos, g_Doppel.size, pMoveBlock[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
@@ -455,7 +455,7 @@ void UpdateDoppelganger()
 				}
 
 			// ジャンプ
-			if ((g_Doppel.isGround || g_Doppel.isSheerFloors || g_Doppel.isHigh || g_Doppel.isMoveBlock) && g_Doppel.sp.y <= 0 && (Keyboard_IsKeyDown(KK_SPACE) || IsButtonPressed(0, XINPUT_GAMEPAD_A)))
+			if ((g_Doppel.isGround || g_Doppel.isSheerFloors || g_Doppel.isHigh || g_Doppel.isMoveBlock) && g_Doppel.sp.y <= 0 && (Keyboard_IsKeyTrigger(KK_SPACE) || IsButtonTriggered(0, XINPUT_GAMEPAD_A)))
 			{
 
 				g_Doppel.sp.y = 2.8f;			// スピードのyをマイナスにする
@@ -587,11 +587,6 @@ void UpdateDoppelganger()
 				}
 
 
-			}
-			if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_THUMB) || 	// GamePad	Lタブ
-				Keyboard_IsKeyTrigger(KK_R))						// Keyboard	R
-			{
-				ResetGame();
 			}
 
 			//ドッペルゲンガーとパズルの画面外判定
@@ -1234,21 +1229,8 @@ void UpdateDoppelganger()
 		}
 	}
 
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-	if (!Mouse_IsLeftDown())
+	if (!Mouse_IsLeftDown() &&
+		!pCursor->bHave)
 	{
 
 

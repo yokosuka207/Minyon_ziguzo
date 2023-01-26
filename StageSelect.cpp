@@ -538,13 +538,14 @@ void UpdateStageSelect() {
 		if (pStory->bUse) {
 			if (CollisionBB(ply.Position, pStory->pos, ply.size, pStory->size))
 			{
-
-				if (Keyboard_IsKeyTrigger(KK_B) ||					// keyboard B
-					IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
+				if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL)) {	// keyboard Ctrl ¶
+					if (pStory->KeyUse) pStory->KeyUse = false;
+					else pStory->KeyUse = true;
+				}
+				if (IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
 					pStory->KeyUse = true;
 				}
-				if (Keyboard_IsKeyTrigger(KK_M) ||					// keyboard M
-					IsButtonTriggered(0, XINPUT_GAMEPAD_A)) {			// GamePad A
+				if (IsButtonTriggered(0, XINPUT_GAMEPAD_A)) {			// GamePad A
 					pStory->KeyUse = false;
 				}
 			}

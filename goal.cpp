@@ -12,6 +12,7 @@
 #include"StageSelect.h"
 #include "start.h"
 #include "save.h"
+#include "cursor.h"
 #include "sound.h"
 
 GOAL g_Goal;
@@ -61,7 +62,8 @@ void UpdateGoal()
 		MOUSE* pMouse = GetMouse();
 		RESULT* pResult = GetResult();
 		START* pStart = GetStart();
-		if (!pMouse->UseFlag)// && pGKey->GetGKey)
+		CURSOR* pCursor = GetCurso();
+		if (!pMouse->UseFlag && !pCursor->bHave)// && pGKey->GetGKey)
 		{
 			g_Goal.PaternNo += 0.25f;
 			if (g_Goal.PaternNo > 16.0f)

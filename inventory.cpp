@@ -107,7 +107,7 @@ void UpdateInventory()
 		else g_bPieceHave = false;
 	}
 
-	if (Mouse_IsLeftRelease()) {
+	if (Mouse_IsLeftRelease()) {		// Mouse ¶ƒNƒŠƒbƒN
 		g_bPieceHave = false;
 	}
 
