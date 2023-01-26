@@ -131,8 +131,9 @@ void UpdateExplain()
 	for (int i = 0; i < EXPLAIN_MAX; i++) {
 		if (g_Explain[i].CollisionUse)
 		{
-			if (Keyboard_IsKeyDown(KK_B) ||					// keyboard B
-				IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {	// GamePad B
+			if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||					// keyboard Ctrl ¶
+				Keyboard_IsKeyTrigger(KK_C) ||								// keyboard C
+				IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {					// GamePad B
 				if (g_Explain[i].No == 0) {
 					g_Explain[i].HintUse = true;
 					g_Explain[i].No++;
@@ -147,7 +148,6 @@ void UpdateExplain()
 			g_Explain[i].HintUse = false;
 		}
 	}
-
 }
 
 void DrawExplain()

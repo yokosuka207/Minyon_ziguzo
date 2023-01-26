@@ -67,6 +67,7 @@ struct PLAYER
 	float uv_h;//縦サイズ
 	int NumPatern;//横枚数
 	int hp;
+	int oldHP;
 	int frame;
 	int CoolTime;//クールタイム
 	PLAYER_DIRECTION dir;			// プレイヤーの向き

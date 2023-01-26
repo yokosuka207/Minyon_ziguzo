@@ -67,10 +67,7 @@ HRESULT InitThornBlock()
 //=============================================================================
 void UninitThornBlock()
 {
-	for (int i = 0; i < THORN_BLOCK_MAX; i++)
-	{
 
-	}
 }
 
 //=============================================================================
@@ -78,9 +75,7 @@ void UninitThornBlock()
 //=============================================================================
 void UpdateThornBlock()
 {
-	for (int i = 0; i < THORN_BLOCK_MAX; i++) {
-		
-	}
+
 }
 
 //=============================================================================
@@ -91,9 +86,6 @@ void DrawThornBlock()
 	for (int i = 0; i < THORN_BLOCK_MAX; i++){
 		if (g_ThornBlock[i].UseFlag){
 			//SetWorldViewProjection2D();
-
-
-
 			//テクスチャの設定
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ThornBlock[i].texno));
 			//スプライトを表示

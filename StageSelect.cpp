@@ -391,6 +391,10 @@ void UpdateStageSelect() {
 		{
 			ply.Position.x = SCREEN_WIDTH;
 		}
+		if (ply.Position.x < 0)
+		{
+			ply.Position.x = 0;
+		}
 
 
 			for (int i = 0; i < 3; i++)
@@ -521,7 +525,8 @@ void UpdateStageSelect() {
 					ply.Position.y - ply.size.y / 2 < g_StageSelect[i].pos.y + g_StageSelect[i].size.y / 2)
 				{
 					if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||					// keyboard Ctrl ¶
-						IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
+						Keyboard_IsKeyTrigger(KK_C) ||								// keyboard C
+						IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {					// GamePad B
 						//SetVolume(g_BrokenSoundNo, 0.5f);
 						PlaySound(g_StageSelectSoundNo, 0);
 						StageNo = i;
@@ -538,13 +543,15 @@ void UpdateStageSelect() {
 		if (pStory->bUse) {
 			if (CollisionBB(ply.Position, pStory->pos, ply.size, pStory->size))
 			{
-
-				if (Keyboard_IsKeyTrigger(KK_B) ||					// keyboard B
-					IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
+				if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||	// keyboard Ctrl ¶
+					Keyboard_IsKeyTrigger(KK_C)) {				// keyboard C
+					if (pStory->KeyUse) pStory->KeyUse = false;
+					else pStory->KeyUse = true;
+				}
+				if (IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
 					pStory->KeyUse = true;
 				}
-				if (Keyboard_IsKeyTrigger(KK_M) ||					// keyboard M
-					IsButtonTriggered(0, XINPUT_GAMEPAD_A)) {			// GamePad A
+				if (IsButtonTriggered(0, XINPUT_GAMEPAD_A)) {			// GamePad A
 					pStory->KeyUse = false;
 				}
 			}
