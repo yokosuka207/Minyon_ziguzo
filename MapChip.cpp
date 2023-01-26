@@ -129,7 +129,7 @@ static int g_StagePieceInfo[21][8] = {
 	{  10,   10,   53,   33,   20,    0,    0,    0,},	// 9	○			 ┃・左右を反転させたい場合は -(マイナス) にする ┃
 	{ 143,   10,  150,   51,   61,    0,    0,    0,},	// 10	○			 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
 	{  43,  110, -131,  181,   10,    0,    0,    0,},	// 11	○							
-	{ 101,  190,  -70,   01,   01,    0,    0,    0,},	// 12	○						
+	{ 101,  190,   72,   01,   40,    0,    0,    0,},	// 12	○						
 	{  10,   43,  140,   43,   53,    0,    0,    0,},	// 13	○					
 	{  52,   72,  181,   01,   10,    0,    0,    0,},	// 14	○				
 	{-131, -143, -140, -151, -141,   10,    0,    0,},	// 15	○							
@@ -349,7 +349,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				//Set
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT)://20　スポーンポイント
-				SetSpawnPoint(position,DrawSize,no);
+				SetSpawnPoint(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEBLOCK)://21　動かすブロック
 				SetMoveBlock(position, DrawSize, no);
@@ -365,6 +365,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
+				SetSpawnPoint(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN):	//26 ヒントブロック(Piace)
 				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 26);
@@ -706,6 +707,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
+				SetSpawnPoint(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN):	//26 ヒントブロック(Piace)
 				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 26);
