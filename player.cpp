@@ -363,6 +363,8 @@ void UpdatePlayer()
 								p_JumpStand[i].JumpStandFlag = false;
 
 							}
+							g_Player.PieceIndex = pSheerFloors[i].index;
+
 							g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
 							g_Player.jump = false;
 							g_Player.sp.y = -0.1f;

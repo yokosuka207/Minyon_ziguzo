@@ -373,56 +373,59 @@ void UpdateCollision(){
 			}
 		}
 		for (int i = 0; i < SWITCHWALL_MAX * SWITCHWALL_LIMIT; i++) {
-			if (!pSwitchWall[i].PressFlag) {
-				//プレーヤーと壁の判定
-				//壁の左とプレイヤーの右
-				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
-				{
-					pPlayer->Position.x = pPlayer->oldpos.x;
-				}
-				//壁の右とプレイヤーの左
-				if (pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 <= pPlayer->oldpos.x - pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
-				{
-					pPlayer->Position.x = pPlayer->oldpos.x;
-				}
-				//壁の↓とプレイヤーの上
-				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y - pPlayer->size.y / 2 &&
-					pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 >= pPlayer->oldpos.y - pPlayer->size.y / 2)
-				{
-					pPlayer->Position = pPlayer->oldpos;
-				}
-				//壁の↑とプレイヤーの↓
-				if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y + pPlayer->size.y / 2 &&
-					pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y + pPlayer->size.y / 2)
-				{
-					pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 + pPlayer->size.y / 2 + 0.02f;
-					pPlayer->jump = false;
-					pPlayer->fall = false;
-					pPlayer->WarpFlag = false;
-					pPlayer->sp.y = 0;
-					pPlayer->frame = 0;
-				}
-
-				//壁とjumpstandの判定
-				for (int j = 0; j < JUMPSTAND_MAX; j++) {
-					if (CollisionBB(pSwitchWall[i].pos, pJumpStand[j].pos, pSwitchWall[i].size, pJumpStand[j].size)) {
-						pJumpStand[j].pos = pJumpStand[j].oldpos;
+			if (pSwitchWall[i].UseFlag)
+			{
+				if (!pSwitchWall[i].PressFlag) {
+					//プレーヤーと壁の判定
+					//壁の左とプレイヤーの右
+					if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+						pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
+						pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+					{
+						pPlayer->Position.x = pPlayer->oldpos.x;
 					}
-				}
-				//壁と動くブロックの判定
-				for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
-					if (CollisionBB(pSwitchWall[i].pos, pMoveBlock[j].pos, pSwitchWall[i].size, pMoveBlock[j].size)) {
-						pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+					//壁の右とプレイヤーの左
+					if (pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+						pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 <= pPlayer->oldpos.x - pPlayer->size.x / 2 &&
+						pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
+						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+					{
+						pPlayer->Position.x = pPlayer->oldpos.x;
+					}
+					//壁の↓とプレイヤーの上
+					if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+						pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+						pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y - pPlayer->size.y / 2 &&
+						pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 >= pPlayer->oldpos.y - pPlayer->size.y / 2)
+					{
+						pPlayer->Position = pPlayer->oldpos;
+					}
+					//壁の↑とプレイヤーの↓
+					if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
+						pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
+						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y + pPlayer->size.y / 2 &&
+						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y + pPlayer->size.y / 2)
+					{
+						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 + pPlayer->size.y / 2 + 0.02f;
+						pPlayer->jump = false;
+						pPlayer->fall = false;
+						pPlayer->WarpFlag = false;
+						pPlayer->sp.y = 0;
+						pPlayer->frame = 0;
+					}
+
+					//壁とjumpstandの判定
+					for (int j = 0; j < JUMPSTAND_MAX; j++) {
+						if (CollisionBB(pSwitchWall[i].pos, pJumpStand[j].pos, pSwitchWall[i].size, pJumpStand[j].size)) {
+							pJumpStand[j].pos = pJumpStand[j].oldpos;
+						}
+					}
+					//壁と動くブロックの判定
+					for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
+						if (CollisionBB(pSwitchWall[i].pos, pMoveBlock[j].pos, pSwitchWall[i].size, pMoveBlock[j].size)) {
+							pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+						}
 					}
 				}
 			}
@@ -677,7 +680,7 @@ void UpdateCollision(){
 							pJumpStand[j].JumpStandFlag = false;
 
 						}
-
+						pPlayer->PieceIndex = pBroken[i].index;
 						pPlayer->Position.y = (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2 + pPlayer->size.y / 2;
 						pPlayer->jump = false;
 						pPlayer->fall = false;
@@ -803,6 +806,8 @@ void UpdateCollision(){
 						pPlayer->Position.y - pPlayer->size.y / 2 < (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 &&
 						pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2)
 					{
+						pPlayer->PieceIndex = pFallBlock[i].PieceIndex;
+
 						pPlayer->Position.y = (pFallBlock + i)->Position.y + (pFallBlock + i)->Size.y / 2 + pPlayer->size.y / 2;
 						pPlayer->getfall = false;
 						pPlayer->jump = false;
@@ -842,7 +847,8 @@ void UpdateCollision(){
 			//プレイヤーと高所落下ブロックの当たり判定(PlayerとHighの当たり判定)
 			//====================================================================
 			for (int i = 0; i < HIGH_MAX; i++) {
-				if ((pHigh + i)->UseFlag) {
+				if ((pHigh + i)->UseFlag)
+				{
 					//プレイヤー左・高所落ちるブロック右
 					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
 						pPlayer->oldpos.x + pPlayer->size.x / 2 <= (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
@@ -865,6 +871,8 @@ void UpdateCollision(){
 						pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
 						pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
 					{
+						pPlayer->PieceIndex = pHigh[i].index;
+
 						if (pPlayer->sp.y <= -5.0f) {
 							//pPlayer->isHigh = false;
 							(pHigh + i)->UseFlag = false;
@@ -890,27 +898,28 @@ void UpdateCollision(){
 
 					}
 
-				}/*
-				else
-				{
-					pPlayer->isHigh = false;
-				}*/
-				//プレイヤー下・高所落ちるブロック上,
-				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
-					pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
-					pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
-					pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2)
-				{
-					pPlayer->Position.y = (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 - pPlayer->size.y / 2;
-				}
-				// プレイヤーの下にブロックがあったら
-				if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
-					pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
-					pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
-					pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
-				{
-					//pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
+					/*
+					else
+					{
+						pPlayer->isHigh = false;
+					}*/
+					//プレイヤー下・高所落ちるブロック上,
+					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
+						pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
+						pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
+						pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2)
+					{
+						pPlayer->Position.y = (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 - pPlayer->size.y / 2;
+					}
+					// プレイヤーの下にブロックがあったら
+					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
+						pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
+						pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
+						pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
+					{
+						//pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
 
+					}
 				}
 			}
 			//-----------------------------------------------------
@@ -1079,7 +1088,7 @@ void UpdateCollision(){
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 							pEnemy[i].AIFlag = true;
 						}
-						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
+						if (Keyboard_IsKeyDown(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
 							Keyboard_IsKeyTrigger(KK_C) ||					// keyboard C
 							IsButtonTriggered(0, XINPUT_GAMEPAD_B))			// GamePad B
 						{
@@ -1095,7 +1104,7 @@ void UpdateCollision(){
 						if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 40.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 80, pEnemy[i].size.y), pPlayer->size)) {
 							pEnemy[i].AIFlag = true;
 						}
-						if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
+						if (Keyboard_IsKeyDown(KK_LEFTCONTROL) ||		// keyboard Ctrl　左
 							Keyboard_IsKeyTrigger(KK_C) ||					// keyboard C
 							IsButtonTriggered(0, XINPUT_GAMEPAD_B))			// GamePad B
 						{
