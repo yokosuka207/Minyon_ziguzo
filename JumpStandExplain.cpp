@@ -12,7 +12,7 @@ static EXPLAIN g_Explain[EXPLAIN_MAX];
 
 // ヒント表示オブジェクト
 static ID3D11ShaderResourceView* g_ExplainBlock;
-static char* g_ExplainBlockName = (char*)"data\\texture\\ヒントブロック.jpg";
+static char* g_ExplainBlockName = (char*)"data\\texture\\ヒントブロック.png";
 static int	  g_ExplainBlockNo = 0;
 
 // Piace ヒント

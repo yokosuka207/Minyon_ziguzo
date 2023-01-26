@@ -115,7 +115,7 @@ HRESULT InitStageSelect() {
 			b = 0;
 		}
 
-		g_StageSelectfence[i].pos = D3DXVECTOR2(250.0f + (170.0f * b), 220.0f + (250 * a));
+		g_StageSelectfence[i].pos = D3DXVECTOR2(250.0f + (170.0f * b), 190.0f + (250 * a));
 		g_StageSelectfence[i].size = D3DXVECTOR2(170.0f, 110.0f);
 		g_StageSelectfence[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_StageSelectfence[i].texno = LoadTexture(g_StageSelectfenceTextureName);
@@ -615,8 +615,10 @@ void DrawStageSelect() {
 		);
 		//g_StageSelect[i].pos.x -= 30;
 	}
-
-	DrawStory();
+	if (!pStory->KeyUse)
+	{
+		DrawStory();
+	}
 	//===========================================
 	// ƒvƒŒƒCƒ„[
 	//===========================================
@@ -647,7 +649,7 @@ void DrawStageSelect() {
 				g_StageSelectStairs[i].size.x * 8,
 				g_StageSelectStairs[i].size.y * 8,
 				0.0f,
-				color,
+				D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f),
 				0,
 				1.0f,
 				1.0f,
@@ -697,9 +699,11 @@ void DrawStageSelect() {
 			1
 		);
 
-		}
-
-	
+	}
+	if (pStory->KeyUse)
+	{
+		DrawStory();
+	}
 }
 
 //-----------------------------------------------------------------------------

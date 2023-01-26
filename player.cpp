@@ -46,6 +46,7 @@
 #include"cursor.h"
 #include "sound.h"
 #include "start.h"
+#include"camera.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -139,6 +140,7 @@ void UpdatePlayer()
 	//-------------------------------------------------
 
 	MOUSE* pMouse = GetMouse();
+	CAMERA* pCamera = GetCamera();
 	if (!Mouse_IsLeftDown())
 	{
 
@@ -150,7 +152,7 @@ void UpdatePlayer()
 			{//押されているときの処理
 				g_Player.sp.x = 1.3f;
 				g_Player.PaternNo -= 0.25f;
-
+				pCamera->MoveFlag = true;
 				// 向きを変える
 				g_Player.dir = PLAYER_DIRECTION::RIGHT;
 				g_Player.uv_w = -PLAYER_UV_W;
@@ -160,6 +162,7 @@ void UpdatePlayer()
 			{//押されているときの処理
 				g_Player.sp.x = -1.3f;
 				g_Player.PaternNo += 0.25f;
+				pCamera->MoveFlag = true;
 
 				// 向きを変える
 				g_Player.dir = PLAYER_DIRECTION::LEFT;
@@ -292,7 +295,7 @@ void UpdatePlayer()
 			//---------------
 			//透ける床の場合
 			//---------------
-
+			bool HitFlag = false;	//当たったか
 			SHEERFLOORS* pSheerFloors = GetSheerFloors();
 			for (int i = 0; i < SHEERFLOORS_NUM; i++)
 			{
@@ -332,19 +335,19 @@ void UpdatePlayer()
 							}
 							g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
 							g_Player.jump = false;
-							g_Player.sp.y = -0.3f;
-
+							g_Player.sp.y = -0.1f;
+							HitFlag = true;
 							g_Player.fall = false;
 							if (!g_Player.isSheerFloors) {
-								//g_Player.sp.y = 0.0f;
+								//g_Player.sp.y = -0.4f;
 								g_Player.isSheerFloors = true;
 
 							}
-							else {
-								g_Player.sp.y = 0.0f;
+						}
+						else if(!HitFlag){
+							//g_Player.sp.y = 0.0f;
 
-								g_Player.isSheerFloors = false;
-							}
+							g_Player.isSheerFloors = false;
 						}
 
 						//プレイヤー下・ブロック上,落下する
@@ -363,6 +366,8 @@ void UpdatePlayer()
 			if (GetThumbLeftY(0) < -0.3f ||			// GamePad	左スティック	下
 				Keyboard_IsKeyDown(KK_S))		// Keyboard	S
 			{
+				pCamera->MoveFlag = true;
+
 				g_Player.isSheerFloors = false;
 			}
 
@@ -376,6 +381,7 @@ void UpdatePlayer()
 				//SetVolume(g_PlayerRightSoundNo, 0.5f);
 				PlaySound(g_PlayerRightSoundNo, 0);
 
+				pCamera->MoveFlag = true;
 
 				if (g_Player.isGround) {
 					g_Player.isGround = false;			// フラグをジャンプ中にする

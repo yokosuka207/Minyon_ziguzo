@@ -32,6 +32,7 @@ struct CAMERA
 
 	D3DXMATRIX			mtxInvView;		// ビューマトリックス	カメラの逆行列
 	bool zoomFlag;
+	bool MoveFlag;
 };
 
 //*****************************************************************************

@@ -13,12 +13,12 @@
 #include "renderer.h"
 #include "MapChip.h"
 
-#define LAMP_NUMPATERN (1)
+#define LAMP_NUMPATERN (2)
 
 static LAMP g_Lamp[LAMP_MAX];
 
 static ID3D11ShaderResourceView* g_LampTexture;	//画像一枚で一つの変数が必要
-static char* g_LampTextureName = (char*)"data\\texture\\鉄格子.png";	//テクスチャファイルパス
+static char* g_LampTextureName = (char*)"data\\texture\\街灯.png";	//テクスチャファイルパス
 static int g_LampTextureNo = 0;
 
 HRESULT InitLamp() {
@@ -29,8 +29,8 @@ HRESULT InitLamp() {
 		g_Lamp[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_Lamp[i].rot = 0;
 		g_Lamp[i].PaternNo = 0.0f;
-		g_Lamp[i].uv_w = 1.0f / 1.0f;
-		g_Lamp[i].uv_h = 1.0f / 3.0f;
+		g_Lamp[i].uv_w = 1.0f / 2.0f;
+		g_Lamp[i].uv_h = 1.0f / 1.0f;
 		g_Lamp[i].PieceIndex = -1;
 		g_Lamp[i].SwitchIndex = -1;
 		g_Lamp[i].UseFlag = false;
@@ -90,8 +90,8 @@ void SetLamp(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo, int direction, int 
 				break;
 			}
 			g_Lamp[i].pos = pos;
-			g_Lamp[i].size = size;
-			g_Lamp[i].color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+			g_Lamp[i].size = D3DXVECTOR2(size.x + 20, size.y + 28);
+			g_Lamp[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 			g_Lamp[i].PieceIndex = PieceNo;
 			g_Lamp[i].SwitchIndex = i;
 			g_Lamp[i].UseFlag = true;
