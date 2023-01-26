@@ -236,6 +236,7 @@ void SetMoveBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size, int PieceNo) {
 		if (!gMoveBlock[i].bUse) {
 			gMoveBlock[i].pos = pos;
 			gMoveBlock[i].pos.y += 1.0f ;
+			gMoveBlock[i].oldpos = gMoveBlock[i].pos;
 			gMoveBlock[i].size = D3DXVECTOR2(size.x - 3.0f, size.y - 3.0f);
 			gMoveBlock[i].PieceIndex = PieceNo;
 			gMoveBlock[i].bUse = true;

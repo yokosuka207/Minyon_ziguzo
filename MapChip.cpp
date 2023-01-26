@@ -45,6 +45,7 @@
 #include "spawnpoint_d.h"
 
 #include "xkeyboard.h"
+#include"bullet.h"
 
 //**************************************************
 //　マクロ定義
@@ -538,6 +539,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteLamp(g_PieceMapChip[PieceNo].no);
 	DeleteLampSwitch(g_PieceMapChip[PieceNo].no);
 	DeleteSpawnPointD(g_PieceMapChip[PieceNo].no);
+	DeleteBullet();
 }
 Piece* GetPiece() {
 	return g_PieceMapChip;

@@ -90,7 +90,7 @@
 #include"sound.h"
 #include"bullet.h"
 
- 
+#include "sound.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -111,6 +111,23 @@ bool g_bHave = false;
 static bool oneFlag = false;
 
 static D3DXVECTOR2 InitPos;
+
+//効果音
+//壊れるブロック
+static int g_BrokenSoundNo = 0;
+static char g_BrokenSoundName[] = "data\\SoundData\\SE\\木箱が壊れる(魔王魂).wav";
+//スイッチ
+static int g_SwitchSoundNo = 0;
+static char g_SwitchSoundName[] = "data\\SoundData\\SE\\スイッチ(ニコニ・コモンズ).wav";
+//街灯スイッチ
+static int g_LampSwitchSoundNo = 0;
+static char g_LampSwitchSoundName[] = "data\\SoundData\\SE\\スイッチ(ニコニ・コモンズ).wav";
+//ワープ
+static int g_WarpSoundNo = 0;
+static char g_WarpSoundName[] = "data\\SoundData\\SE\\ワープ(無料効果音で遊ぼう！).wav";
+//高いとこから壊れる床
+static int g_HighSoundNo = 0;
+static char g_HighSoundName[] = "data\\SoundData\\SE\\タイプライター.wav";
 
 //=============================================================================
 //初期化処理
@@ -161,6 +178,12 @@ HRESULT InitDoppelganger()
 		g_Doppel.LampSwitchFlag[i] = true;
 	}
 
+	g_BrokenSoundNo = LoadSound(g_BrokenSoundName);
+	g_SwitchSoundNo = LoadSound(g_SwitchSoundName);
+	g_LampSwitchSoundNo = LoadSound(g_LampSwitchSoundName);
+	g_WarpSoundNo = LoadSound(g_WarpSoundName);
+	g_HighSoundNo = LoadSound(g_HighSoundName);
+	
 
 	return S_OK;
 }
@@ -170,7 +193,12 @@ HRESULT InitDoppelganger()
 //=============================================================================
 void UninitDoppelganger()
 {
-
+	StopSound(g_BrokenSoundNo);
+	StopSound(g_SwitchSoundNo);
+	StopSound(g_LampSwitchSoundNo);
+	StopSound(g_WarpSoundNo);
+	StopSound(g_HighSoundNo);
+	
 }
 
 //=============================================================================
@@ -192,7 +220,7 @@ void UpdateDoppelganger()
 	}
 
 	if (Mouse_IsLeftRelease()) {		// moues 左
-		g_bHave = false;
+		//g_bHave = false;
 	}
 
 	if (!Mouse_IsLeftDown() &&			// mouse 左
@@ -662,40 +690,20 @@ void UpdateDoppelganger()
 			}
 
 
-		}
+		
 
 	
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	PLAYER* pPlayer = GetPlayer();
 	ENEMY* pEnemy = GetEnemy();
-	SpawnPointD* pSpawnPointD = GetSpawnPointD();
+//	SpawnPointD* pSpawnPointD = GetSpawnPointD();
 
 	WARP* pWarp = GetWarp();
 
 	BLOCK* pBlock = GetBlock();
 	BLOCK* pChipblock = GetChipBlock();
-	MOVEBLOCK* pMoveBlock = GetMoveBlock();
+//	MOVEBLOCK* pMoveBlock = GetMoveBlock();
 	FALLBLOCK* pFallBlock = GetFallBlock();
 	THORNBLOCK* pThornBlock = GetThornBlock();
 
@@ -712,7 +720,7 @@ void UpdateDoppelganger()
 
 	RESULT* pResult = GetResult();
 
-	Piece* pPiece = GetPiece();
+//	Piece* pPiece = GetPiece();
 	BULLET* pBullet = GetBullet();
 	CURSOR* pCursor = GetCurso();
 
@@ -903,8 +911,9 @@ void UpdateDoppelganger()
 								{
 									g_Doppel.Position = (pWarp + i + 1)->Position;
 									g_Doppel.CoolTime = PLAYER_COOLTIME;
-									//SetVolume(g_WarpSoundNo, 0.5f);
-									///////////////////////////////////////////////////////////////PlaySound(g_WarpSoundNo, 0);
+									//SetVolume(g_SwitchSoundNo, 0.5f);
+									PlaySound(g_WarpSoundNo, 0);
+									pSwitch[i].NotPressed = false;
 									g_Doppel.WarpFlag = true;
 								}
 							}
@@ -921,8 +930,8 @@ void UpdateDoppelganger()
 								{
 									g_Doppel.Position = (pWarp + i - 1)->Position;
 									g_Doppel.CoolTime = PLAYER_COOLTIME;
-									//SetVolume(g_WarpSoundNo, 0.5f);
-									///////////////////////////////////////////////////////////////PlaySound(g_WarpSoundNo, 0);
+									//SetVolume(g_SwitchSoundNo, 0.5f);
+									PlaySound(g_WarpSoundNo, 0); 
 									g_Doppel.WarpFlag = true;
 
 								}
@@ -933,26 +942,7 @@ void UpdateDoppelganger()
 			}
 		}
 	}
-	//-----------------------------------------------------
-	//ドッペルゲンガーとジャンプ台 当たり判定(DoppelGangerとJumpstand)
-	//-----------------------------------------------------
-	//for (int i = 0; i < JUMPSTAND_MAX; i++) {
-
-	//	JUMPSTAND* p_JumpStand = GetJumpStand();
-
-	//	if (p_JumpStand[i].UseJumpStand) {
-	//		if (GetKeyboardPress(DIK_B))
-	//		{
-	//			if (CollisionBB(g_Doppel.Position, p_JumpStand[i].pos, g_Doppel.size, p_JumpStand[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
-	//				p_JumpStand[i].GetJumpStand = true;
-	//			}
-	//		}
-	//		else
-	//		{
-	//			p_JumpStand[i].GetJumpStand = false;
-	//		}
-	//	}
-	//}
+	
 	//========================================================================
 	//ドッペルゲンガー・壊れるブロック　当たり判定(DoppelGangerとBrokenBlockの当たり判定)
 	//=========================================================================
@@ -992,8 +982,8 @@ void UpdateDoppelganger()
 				g_Doppel.oldpos.y + g_Doppel.size.y / 2 <= (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2)
 			{
 				(pBroken + i)->breakFlag = true;
-				//SetVolume(g_BrokenSoundNo, 0.5f);
-				///////////////////////////////////////////////////////////////PlaySound(g_BrokenSoundNo, 0);
+				//SetVolume(g_SwitchSoundNo, 0.5f);
+				PlaySound(g_BrokenSoundNo, 0);
 				(pBroken + i)->UseFlag = false;
 				g_Doppel.fall = true;
 				g_Doppel.getfall = true;
@@ -1412,7 +1402,7 @@ void UpdateDoppelganger()
 				if (p_LampSwitch[i].NotPressed)
 				{
 					//SetVolume(g_SwitchSoundNo, 0.5f);
-					//PlaySound(g_SwitchSoundNo, 0);
+					PlaySound(g_LampSwitchSoundNo, 0);
 					p_LampSwitch[i].NotPressed = false;
 				}
 			}
@@ -1434,8 +1424,8 @@ void UpdateDoppelganger()
 				p_LampSwitch[i].PaternNo = 1;
 				if (p_LampSwitch[i].NotPressed)
 				{
-					//SetVolume(g_SwitchSoundNo, 0.5f);
-					//PlaySound(g_SwitchSoundNo, 0);
+					PlaySound(g_LampSwitchSoundNo, 0);
+					p_LampSwitch[i].NotPressed = false;
 					p_LampSwitch[i].NotPressed = false;
 				}
 			}
@@ -1549,6 +1539,7 @@ void UpdateDoppelganger()
 			//}
 		}
 	}
+
 
 
 
@@ -2305,6 +2296,7 @@ void UpdateDoppelganger()
 	//		}
 	//	}
 	//}
+}
 }
 }
 

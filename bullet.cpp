@@ -91,7 +91,7 @@ void UpdateBullet()
 	{
 		if (g_Bullet[i].use == true)
 		{
-			g_Bullet[i].pos.x += g_Bullet[i].sp.x;
+			g_Bullet[i].pos += g_Bullet[i].sp;
 
 			for (int j = 0; j < BLOCK_CHIP_MAX; j++)
 			{
@@ -106,7 +106,19 @@ void UpdateBullet()
 
 
 		}
-		if (g_Bullet[i].pos.y < SCREEN_LIMIT_UP - (g_Bullet[i].h / 2.0f))
+		if (g_Bullet[i].pos.y < -SCREEN_HEIGHT/2 + (g_Bullet[i].h / 2.0f))
+		{
+			g_Bullet[i].use = false;
+		}
+		if (g_Bullet[i].pos.y > SCREEN_HEIGHT / 2 - (g_Bullet[i].h / 2.0f))
+		{
+			g_Bullet[i].use = false;
+		}
+		if (g_Bullet[i].pos.x < -SCREEN_WIDTH/2 - (g_Bullet[i].w / 2.0f))
+		{
+			g_Bullet[i].use = false;
+		}
+		if (g_Bullet[i].pos.x > SCREEN_WIDTH / 2 - (g_Bullet[i].w / 2.0f))
 		{
 			g_Bullet[i].use = false;
 		}
@@ -135,12 +147,24 @@ void DrawBullet()
 //=============================================================================
 //セット関数
 //=============================================================================
-void SetBullet(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 spd)
+void SetBullet(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 spd ,int direction)
 {
 	for (int i = 0; i < BULLET_MAX; i++)
 	{
 		if (g_Bullet[i].use == false)
 		{
+			switch (direction) {
+			case 0:g_Bullet[i].rot = (direction + 2)* 90;
+				break;
+			case 1:g_Bullet[i].rot = direction * 90;
+				break;
+			case 2:g_Bullet[i].rot = (direction - 2) * 90;
+				break;
+			case 3:g_Bullet[i].rot = direction * 90;
+				break;
+			default:
+				break;
+			}
 			g_Bullet[i].pos = pos;
 			g_Bullet[i].sp = spd;
 			g_Bullet[i].h = BULLET_SIZE_H;
@@ -151,6 +175,21 @@ void SetBullet(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 spd)
 			return;
 		}
 	}
+}
+//=============================================================================
+//デリート関数
+//=============================================================================
+
+void DeleteBullet()
+{
+	for (int i = 0; i < BULLET_MAX; i++)
+	{
+		if (g_Bullet[i].use)
+		{
+			g_Bullet[i].use = false;
+		}
+	}
+
 }
 
 //=============================================================================
