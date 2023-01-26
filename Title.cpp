@@ -19,8 +19,8 @@
 #define BUTTON_MAX	2
 #define BUTTON_SIZE_X	200
 #define BUTTON_SIZE_Y	100
-#define BUTTON_DRAWSIZE_X	400
-#define BUTTON_DRAWSIZE_Y	400
+#define BUTTON_DRAWSIZE_X	300
+#define BUTTON_DRAWSIZE_Y	300
 // 
 //======================
 //ÉOÉçÅ[ÉoÉãïœêî
