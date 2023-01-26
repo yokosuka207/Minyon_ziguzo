@@ -20,13 +20,25 @@
 static ID3D11ShaderResourceView* g_ScoreTexture;	//画像一枚で一つの変数が必要
 
 static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";
+static char* g_ScoreRankTextureName[] = {
+	(char*)"data\\texture\\number1.png" ,
+	(char*)"data\\texture\\number1.png" ,
+	(char*)"data\\texture\\number1.png" ,
+	(char*)"data\\texture\\number1.png" ,
+};
 
 static int g_ScoreTextureNo = 0;
+static int g_ScoreRankTextureNo[] = {
+	0,0,0,0,
+};
 
 static int g_ScoreSoundNo = 0;
+static int g_ScoreRankSoundNo = 0;
 
 static Score g_Score;
+
 static SCOREPARAM g_ScoreParam;	//構造体
+static SCOREPARAM g_ScoreRankParam;
 static ANIMEPARAM g_AnimeParam[SCORE_MAX];
 static Time* pTime = pTime->GetTime();
 static RESULT* pResult = GetResult();
@@ -37,21 +49,34 @@ static int frame = 0;
 
 void Score::InitScore() {
 	g_ScoreTextureNo = LoadTexture(g_ScoreTextureName);
-
+	for (int i = 0; i < 4; i++) {
+		g_ScoreRankTextureNo[i] = LoadTexture(g_ScoreRankTextureName[i]);
+	}
 	g_ScoreParam.pos = D3DXVECTOR2(0.0f, 0.0f);
 	g_ScoreParam.size = D3DXVECTOR2(0.0f, 0.0f);
 	g_ScoreParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_ScoreParam.UseFlag = false;
 	g_ScoreParam.CalcFlag = false;
 	g_ScoreParam.rank = SCORE_RANK::RANK_NONE;
-	frame = 0;
+
 	for (int i = 0; i < SCORE_MAX; i++) {
 		g_AnimeParam[i].AnimeFlag = false;
 		g_AnimeParam[i].num = 0;
 		g_AnimeParam[i].index = -1;
 	}
+
+	g_ScoreRankParam.pos = D3DXVECTOR2(SCREEN_WIDTH / 2 + 400.0f, 400.0f);
+	g_ScoreRankParam.size = D3DXVECTOR2(100.0f, 100.0f);
+	g_ScoreRankParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	g_ScoreRankParam.UseFlag = false;
+
+	frame = 0;
+
 	char filename[] = "data\\SoundData\\SE\\タイプライター.wav";
 	g_ScoreSoundNo = LoadSound(filename);
+
+	char filename2[] = "data\\SoundData\\SE\\タイプライター.wav";
+	g_ScoreRankSoundNo = LoadSound(filename2);
 }
 void Score::UninitScore() {
 	if (g_ScoreTexture != NULL) {
@@ -72,8 +97,8 @@ void Score::DrawScore() {
 		for (int i = 0; i < SCORE_MAX; i++) {
 			if (!g_AnimeParam[0].AnimeFlag && frame == 10) {
 				SetAnimeParam(score / pow(10, 0));
-				PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
 				SetVolume(g_ScoreSoundNo, 0.5f);
+				PlaySound(g_ScoreSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
 			}
 			if (!g_AnimeParam[1].AnimeFlag && frame == 30) {
 				SetAnimeParam(score / pow(10, 1));
@@ -107,6 +132,44 @@ void Score::DrawScore() {
 				);
 				g_ScoreParam.pos.x -= 30.0f;
 			}
+		}
+		if (frame == 150) {
+			g_ScoreRankParam.UseFlag = true;
+			SetVolume(g_ScoreRankSoundNo, 0.5f);
+			PlaySound(g_ScoreRankSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
+		}
+
+		if (g_ScoreRankParam.UseFlag) {
+
+			switch (g_ScoreParam.rank) {
+			case SCORE_RANK::RANK_S:
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreRankTextureNo[0]));
+				break;
+			case SCORE_RANK::RANK_A:
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreRankTextureNo[1]));
+				break;
+			case SCORE_RANK::RANK_B:
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreRankTextureNo[2]));
+				break;
+			case SCORE_RANK::RANK_C:
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreRankTextureNo[3]));
+				break;
+			}
+			
+			SpriteDrawColorRotation
+			(
+				g_ScoreRankParam.pos.x,
+				g_ScoreRankParam.pos.y,
+				0.0f,
+				g_ScoreRankParam.size.x,
+				g_ScoreRankParam.size.y,
+				0.0f,
+				g_ScoreRankParam.color,
+				0,
+				1.0f / 1.0f,
+				1.0f / 1.0f,
+				1
+			);
 		}
 	}
 }
