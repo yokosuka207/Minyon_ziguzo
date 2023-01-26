@@ -411,7 +411,7 @@ void UpdatePlayer()
 				}
 			}
 			//プレイヤージャンプテクスチャー
-			if (g_Player.sp.y != 0)
+			if (g_Player.sp.y != 0 && !g_Player.isFallBlock)
 			{
 				g_Player.PaternNo = 16;
 				if (g_Player.uv_w < 0)
