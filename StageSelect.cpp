@@ -339,7 +339,7 @@ void UpdateStageSelect() {
 			if (!ply.SoundRightFlag) {
 				if (ply.PaternNo == 9.0f) {
 					PlaySound(g_StageSelectPlayerRightSoundNo, 0);
-					SetVolume(g_StageSelectPlayerRightSoundNo, 0.5f);
+					SetVolume(g_StageSelectPlayerRightSoundNo, 1.5f);
 					ply.SoundRightFlag = true;
 				}
 			}
@@ -351,7 +351,7 @@ void UpdateStageSelect() {
 			if (!ply.SoundLeftFlag) {
 				if (ply.PaternNo == 1.0f) {
 					PlaySound(g_StageSelectPlayerLeftSoundNo, 0);
-					SetVolume(g_StageSelectPlayerLeftSoundNo, 0.5f);
+					SetVolume(g_StageSelectPlayerLeftSoundNo, 1.5f);
 					ply.SoundLeftFlag = true;
 				}
 			}
@@ -527,7 +527,7 @@ void UpdateStageSelect() {
 					if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||					// keyboard Ctrl ç∂
 						Keyboard_IsKeyTrigger(KK_C) ||								// keyboard C
 						IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {					// GamePad B
-						//SetVolume(g_BrokenSoundNo, 0.5f);
+						SetVolume(g_StageSelectSoundNo, 0.5f);
 						PlaySound(g_StageSelectSoundNo, 0);
 						StageNo = i;
 						//SetScene(SCENE::SCENE_GAME);

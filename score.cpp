@@ -97,7 +97,7 @@ void Score::DrawScore() {
 		for (int i = 0; i < SCORE_MAX; i++) {
 			if (!g_AnimeParam[0].AnimeFlag && frame == 10) {
 				SetAnimeParam(score / pow(10, 0));
-				SetVolume(g_ScoreSoundNo, 0.5f);
+				SetVolume(g_ScoreSoundNo, 0.3f);
 				PlaySound(g_ScoreSoundNo, 0);				//0 = ˆê‰ñ‚¾‚¯Ä¶ sound.hŽQÆ
 			}
 			if (!g_AnimeParam[1].AnimeFlag && frame == 30) {
@@ -135,7 +135,7 @@ void Score::DrawScore() {
 		}
 		if (frame == 150) {
 			g_ScoreRankParam.UseFlag = true;
-			SetVolume(g_ScoreRankSoundNo, 0.5f);
+			SetVolume(g_ScoreRankSoundNo, 0.3f);
 			PlaySound(g_ScoreRankSoundNo, 0);				//0 = ˆê‰ñ‚¾‚¯Ä¶ sound.hŽQÆ
 		}
 

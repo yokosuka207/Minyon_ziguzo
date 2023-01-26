@@ -300,7 +300,7 @@ void UpdateCollision(){
 		//}
 
 		//=========================================
-		//ドッペルゲンガーーとスイッチ系(switch,SwitchWall)
+		//スイッチ系(switch,SwitchWall)
 		//=========================================
 		for (int i = 0; i < SWITCH_MAX; i++) {
 			//スイッチとプレイヤーの当たり判定
@@ -314,7 +314,7 @@ void UpdateCollision(){
 					pSwitch[i].PaternNo = 1;
 					if (pSwitch[i].NotPressed)
 					{
-						//SetVolume(g_SwitchSoundNo, 0.5f);
+						SetVolume(g_SwitchSoundNo, 0.5f);
 						PlaySound(g_SwitchSoundNo, 0);
 						pSwitch[i].NotPressed = false;
 					}
@@ -332,7 +332,7 @@ void UpdateCollision(){
 						pSwitch[i].PaternNo = 1;
 						if (pSwitch[i].NotPressed == true)
 						{
-							//SetVolume(g_SwitchSoundNo, 0.5f);
+							SetVolume(g_SwitchSoundNo, 0.5f);
 							PlaySound(g_SwitchSoundNo, 0);
 							pSwitch[i].NotPressed = false;
 						}
@@ -349,7 +349,7 @@ void UpdateCollision(){
 					pSwitch[i].PaternNo = 1;
 					if (pSwitch[i].NotPressed == true)
 					{
-						//SetVolume(g_SwitchSoundNo, 0.5f);
+						SetVolume(g_SwitchSoundNo, 0.5f);
 						PlaySound(g_SwitchSoundNo, 0);
 						pSwitch[i].NotPressed = false;
 					}
@@ -462,7 +462,7 @@ void UpdateCollision(){
 					if (CollisionBB(pThornBlock[i].Postion, pPlayer->Position, pThornBlock[i].Size, pPlayer->size)) {
 
 						pPlayer->hp--;
-						SetVolume(g_CandleSoundNo, 0.25f);
+						SetVolume(g_CandleSoundNo, 0.8f);
 						PlaySound(g_CandleSoundNo, 0);
 						for (int j = 0; j < SPAWN_POINT_MAX; j++) {//リスポンせずにHPが減り続けている
 							if (pSpawnPoint[j].UseFlag) {
@@ -487,7 +487,7 @@ void UpdateCollision(){
 			//プレイヤーが落下死
 			if (pPlayer->Position.y - pPlayer->size.y < -SCREEN_HEIGHT / 2) {
 				pPlayer->hp--;
-				SetVolume(g_CandleSoundNo, 0.25f);
+				SetVolume(g_CandleSoundNo, 0.8f);
 				PlaySound(g_CandleSoundNo, 0);
 				for (int j = 0; j < SPAWN_POINT_MAX; j++) {//リスポンせずにHPが減り続けている
 					if (pSpawnPoint[j].UseFlag) {
@@ -595,7 +595,7 @@ void UpdateCollision(){
 											pPlayer->Position = (pWarp + i + 1)->Position;
 											pPlayer->oldpos = pPlayer->Position;
 											pPlayer->CoolTime = PLAYER_COOLTIME;
-											//SetVolume(g_WarpSoundNo, 0.5f);
+											SetVolume(g_WarpSoundNo, 0.5f);
 											PlaySound(g_WarpSoundNo, 0);
 											pPlayer->WarpFlag = true;
 										}
@@ -701,7 +701,7 @@ void UpdateCollision(){
 						pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2)
 					{
 						(pBroken + i)->breakFlag = true;
-						//SetVolume(g_BrokenSoundNo, 0.5f);
+						SetVolume(g_BrokenSoundNo, 0.5f);
 						PlaySound(g_BrokenSoundNo, 0);
 						(pBroken + i)->UseFlag = false;
 						SetBrokenAnime(pBroken[i].Postion, pBroken[i].Size, pBroken[i].index);
@@ -929,7 +929,7 @@ void UpdateCollision(){
 						pPlayer->HaveKey++;
 						pKey[i].GetKey = true;
 						pKey[i].UseFlag = false;
-						//SetVolume(g_BrokenSoundNo, 0.5f);
+						SetVolume(g_BrokenSoundNo, 0.5f);
 						PlaySound(g_KeySoundNo, 0);
 					}
 				}
@@ -1267,6 +1267,8 @@ void UpdateCollision(){
 					{
 						if (CollisionBB(pPlayer->Position, pBullet[i].pos, pPlayer->size, D3DXVECTOR2(pBullet[i].w, pBullet[i].h)))
 						{
+							SetVolume(g_CandleSoundNo, 0.8f);
+							PlaySound(g_CandleSoundNo, 0);
 							pPlayer->hp--;
 							pBullet[i].use = false;
 
@@ -1286,7 +1288,7 @@ void UpdateCollision(){
 		if (pDoppel->UseFlag)
 		{
 			pPlayer->hp--;
-			//SetVolume(g_CandleSoundNo, 0.5f);
+			SetVolume(g_CandleSoundNo, 0.8f);
 			PlaySound(g_CandleSoundNo, 0);
 			for (int i = 0; i < SPAWN_POINT_MAX; i++) {//リスポンせずにHPが減り続けている
 				if (pSpawnPoint[i].UseFlag) {

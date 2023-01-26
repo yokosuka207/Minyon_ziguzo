@@ -924,7 +924,7 @@ void UpdateDoppelganger()
 								{
 									g_Doppel.Position = (pWarp + i + 1)->Position;
 									g_Doppel.CoolTime = PLAYER_COOLTIME;
-									//SetVolume(g_SwitchSoundNo, 0.5f);
+									SetVolume(g_WarpSoundNo, 0.5f);
 									PlaySound(g_WarpSoundNo, 0);
 									pSwitch[i].NotPressed = false;
 									g_Doppel.WarpFlag = true;
@@ -1418,7 +1418,7 @@ void UpdateDoppelganger()
 				p_LampSwitch[i].PaternNo = 1;
 				if (p_LampSwitch[i].NotPressed)
 				{
-					//SetVolume(g_SwitchSoundNo, 0.5f);
+					SetVolume(g_LampSwitchSoundNo, 0.5f);
 					PlaySound(g_LampSwitchSoundNo, 0);
 					p_LampSwitch[i].NotPressed = false;
 				}
@@ -1441,6 +1441,7 @@ void UpdateDoppelganger()
 				p_LampSwitch[i].PaternNo = 1;
 				if (p_LampSwitch[i].NotPressed)
 				{
+					SetVolume(g_LampSwitchSoundNo, 0.5f);
 					PlaySound(g_LampSwitchSoundNo, 0);
 					p_LampSwitch[i].NotPressed = false;
 					p_LampSwitch[i].NotPressed = false;
