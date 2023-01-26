@@ -259,7 +259,7 @@ void UpdateCollision(){
 				if (pPlayer->PieceIndex != pPiece[i].no)
 				{
 					// ピースをインベントリにしまう
-					if (!pPiece[i].InventoryFlag && pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X * 1.5f)) {
+					if (!pPiece[i].InventoryFlag && pPiece[i].UseFlag && pPiece[i].pos.x < -INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X * 2.3f) {
 						DeleteMapChip(i);
 						SetInventory(pPiece[i].no);
 						pPiece[i].InventoryFlag = true;
