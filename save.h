@@ -12,8 +12,9 @@ Update:
 #ifndef _SAVE_H_
 #define _SAVE_H_
 
+#include "main.h"
 
-#include "button.h"
+class Button;
 
 //**************************************************
 // ƒ[ƒh‚©íœ‚©‚Ì—ñ‹“Œ^

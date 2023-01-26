@@ -105,7 +105,7 @@ void DrawGoal()
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Goal.texno));
 
 		SpriteDrawColorRotation(g_Goal.Pos.x, g_Goal.Pos.y,-0.1f,
-			g_Goal.Size.x + 10.0f, g_Goal.Size.y + 10.0f, g_Goal.Rotation, g_Goal.Col,
+			g_Goal.Size.x + 40.0f, g_Goal.Size.y + 40.0f, g_Goal.Rotation, g_Goal.Col,
 			g_Goal.PaternNo, g_Goal.uv_w, g_Goal.uv_h, g_Goal.NumPatern);
 	}
 

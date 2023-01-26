@@ -21,20 +21,20 @@ Update:
 // マクロ定義
 //**************************************************
 #define LIGHT_MAX	LAMP_SWITCH_MAX
-#define LIGHT_NUM_X	4
-#define LIGHT_NUM_Y	4
+#define LIGHT_NUM_X	1
+#define LIGHT_NUM_Y	1
 #define LIGHT_PATTERN_MAX	(LIGHT_NUM_X * LIGHT_NUM_Y)
 #define LIGHT_UV_W	(1.0f / LIGHT_NUM_X)
 #define LIGHT_UV_Y	(1.0f / LIGHT_NUM_Y)
-#define LIGHT_SIZE_X	300.0f
-#define LIGHT_SIZE_Y	300.0f
+#define LIGHT_SIZE_X	30.0f
+#define LIGHT_SIZE_Y	45.0f
 
 //**************************************************
 // グローバル変数
 //**************************************************
 static LIGHT g_EffectLight[LIGHT_MAX];
-static char* g_EffectTextureName1 = (char*)"data\\texture\\.png";
-static char* g_EffectTextureName2 = (char*)"data\\texture\\explosion.png";
+static char* g_EffectTextureName1 = (char*)"data\\texture\\街灯の光.png";
+//static char* g_EffectTextureName2 = (char*)"data\\texture\\explosion.png";
 
 //==================================================
 // 初期化
@@ -73,6 +73,14 @@ void UpdateEffectLight()
 		{
 			if (g_EffectLight[i].stop == false)
 			{
+				g_EffectLight[i].bUse = true;
+			}
+			else
+			{
+				g_EffectLight[i].bUse = false;
+			}
+			/*if (g_EffectLight[i].stop == false)
+			{
 				g_EffectLight[i].PatternNo += 0.5f;
 				if (g_EffectLight[i].PatternNo >= LIGHT_PATTERN_MAX / 2)
 				{
@@ -86,7 +94,7 @@ void UpdateEffectLight()
 				{
 					g_EffectLight[i].bUse = false;
 				}
-			}
+			}*/
 		}
 	}
 }

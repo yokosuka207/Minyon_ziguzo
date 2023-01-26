@@ -28,9 +28,15 @@
 //グローバル変数
 //=============================================================================
 static HIGH g_High[HIGH_MAX];
+static HIGH_ANIME g_HighAnime[HIGH_ANIME_MAX];
+
 static ID3D11ShaderResourceView* g_textureHigh;	//画像一枚で一つの変数が必要
+static ID3D11ShaderResourceView* g_textureHighAnime;	//画像一枚で一つの変数が必要
 
 static char* g_TextureNameHigh = (char*)"data\\texture\\high_broken.png";
+static char* g_TextureNameHighAnime = (char*)"data\\texture\\explosion.png";
+
+static int g_HighAnimeNo = 0;
 
 HIGH InitData[] =
 {
@@ -57,6 +63,18 @@ HRESULT InitHigh()
 		g_High[i].UseFlag = false;
 		g_High[i].breakFlag = false;
 	}
+	for (int i = 0; i < HIGH_ANIME_MAX; i++) {
+		g_HighAnime[i].Postion = D3DXVECTOR2(0.0f, 0.0f);
+		g_HighAnime[i].Size = D3DXVECTOR2(0.0f, 0.0f);
+		g_HighAnime[i].index = -1;
+		g_HighAnime[i].PaternNo = 0.0f;
+		g_HighAnime[i].uv_w = 1.0f / 4.0f;
+		g_HighAnime[i].uv_h = 1.0f / 4.0f;
+		g_HighAnime[i].NumPatern = 4;
+		g_HighAnime[i].UseFlag = false;
+	}
+	g_HighAnimeNo = LoadTexture(g_TextureNameHighAnime);
+
 	return S_OK;
 }
 
@@ -65,17 +83,26 @@ HRESULT InitHigh()
 //=============================================================================
 void UninitHigh()
 {
-	for (int i = 0; i < HIGH_MAX; i++)
-	{
-
+	if (g_textureHigh != NULL) {
+		g_textureHigh->Release();
+		g_textureHigh = NULL;
+	}
+	if (g_textureHighAnime != NULL) {
+		g_textureHighAnime->Release();
+		g_textureHighAnime = NULL;
 	}
 }
 
 //=============================================================================
 //更新処理
 //=============================================================================
-void UpdateHigh()
-{
+void UpdateHigh(){
+	for (int i = 0; i < HIGH_MAX; i++) {
+		if (g_High[i].breakFlag) {
+			g_High[i].breakFlag = false;
+			SetHighAnime(g_High[i].Postion, g_High[i].Size, g_High[i].index);
+		}
+	}
 }
 
 //=============================================================================
@@ -96,6 +123,31 @@ void DrawHigh()
 			SpriteDrawColorRotation(g_High[i].Postion.x, g_High[i].Postion.y,-0.1f, g_High[i].Size.x, g_High[i].Size.y,
 				g_High[i].rot, g_High[i].col, 0, 1.0f, 1.0f, 1);
 
+		}
+	}
+	for (int i = 0; i < HIGH_ANIME_MAX; i++) {
+		if (g_HighAnime[i].UseFlag) {
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_HighAnimeNo));
+			SpriteDrawColorRotation(
+				g_HighAnime[i].Postion.x,
+				g_HighAnime[i].Postion.y,
+				-0.1f,
+				g_HighAnime[i].Size.x,
+				-g_HighAnime[i].Size.y,
+				0.0f,
+				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+				g_HighAnime[i].PaternNo,
+				g_HighAnime[i].uv_w,
+				g_HighAnime[i].uv_h,
+				g_HighAnime[i].NumPatern
+			);
+			g_HighAnime[i].PaternNo += 0.5f;
+			if (g_HighAnime[i].PaternNo > 16.0f) {
+				g_HighAnime[i].PaternNo = 0.0f;
+			}
+			if (g_HighAnime[i].PaternNo == 16.0f) {
+				g_HighAnime[i].UseFlag = false;
+			}
 		}
 	}
 }
@@ -170,4 +222,15 @@ void DeleteHigh(int PieceNo) {
 HIGH* GetHigh()
 {
 	return g_High;
+}
+void SetHighAnime(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index) {
+	for (int i = 0; i < HIGH_ANIME_MAX; i++) {
+		if (!g_HighAnime[i].UseFlag) {
+			g_HighAnime[i].Postion = pos;
+			g_HighAnime[i].Size = size;
+			g_HighAnime[i].index = index;
+			g_HighAnime[i].UseFlag = true;
+			break;
+		}
+	}
 }

@@ -28,15 +28,19 @@
 //グローバル変数
 //=============================================================================
 static BROKEN g_Broken[BROKEN_MAX];
+static BROKEN_ANIME g_BrokenAnime[BROKEN_ANIME_MAX];
+
 static ID3D11ShaderResourceView	*g_textureBroken;	//画像一枚で一つの変数が必要
+static ID3D11ShaderResourceView	*g_textureBrokenAnime;	//画像一枚で一つの変数が必要
 
 static char* g_TextureNameBroken = (char*)"data\\texture\\jump_break.png";
+static char* g_TextureNameBrokenAnime = (char*)"data\\texture\\explosion.png";
 
-
-BROKEN InitData[]=
-{
-	{true,D3DXVECTOR2(BROKEN_SIZE_W,BROKEN_SIZE_H),D3DXVECTOR2(400,100),D3DXVECTOR2(0,2),0,0,D3DXCOLOR(1,0,0,1),1,8,16,8,60 * 0},
-};
+static int g_TextureNoBrokenAnime = 0;
+//BROKEN InitData[]=
+//{
+//	{true,D3DXVECTOR2(BROKEN_SIZE_W,BROKEN_SIZE_H),D3DXVECTOR2(400,100),D3DXVECTOR2(0,2),0,0,D3DXCOLOR(1,0,0,1),1,8,16,8,60 * 0},
+//};
 static int BrokenIndex;
 
 //=============================================================================
@@ -58,6 +62,17 @@ HRESULT InitBroken()
 		g_Broken[i].UseFlag = false;
 		g_Broken[i].breakFlag = false;
 	}
+	for (int i = 0; i < BROKEN_ANIME_MAX; i++) {
+		g_BrokenAnime[i].Postion = D3DXVECTOR2(0.0f, 0.0f);
+		g_BrokenAnime[i].Size = D3DXVECTOR2(0.0f, 0.0f);
+		g_BrokenAnime[i].index = -1;
+		g_BrokenAnime[i].PaternNo = 0.0f;
+		g_BrokenAnime[i].uv_w = 1.0f / 4.0f;
+		g_BrokenAnime[i].uv_h = 1.0f / 4.0f;
+		g_BrokenAnime[i].NumPatern = 4;
+		g_BrokenAnime[i].UseFlag = false;
+	}
+	g_TextureNoBrokenAnime = LoadTexture(g_TextureNameBrokenAnime);
 	return S_OK;
 }
 
@@ -66,9 +81,9 @@ HRESULT InitBroken()
 //=============================================================================
 void UninitBroken()
 {
-	for (int i = 0; i < BROKEN_MAX; i++)
-	{
-
+	if (g_textureBrokenAnime != NULL) {
+		g_textureBrokenAnime->Release();
+		g_textureBrokenAnime = NULL;
 	}
 }
 
@@ -77,6 +92,13 @@ void UninitBroken()
 //=============================================================================
 void UpdateBroken()
 {
+	//for (int i = 0; i < BROKEN_MAX; i++) {
+	//	if (g_Broken[i].breakFlag) {
+	//		SetBrokenAnime(g_Broken[i].Postion, g_Broken[i].Size, g_Broken[i].index);
+	//		//g_Broken[i].breakFlag = false;
+	//	}
+	//}
+
 }
 
 //=============================================================================
@@ -94,11 +116,48 @@ void DrawBroken()
 				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Broken[i].texno));
 				//スプライトを表示
 				D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-				SpriteDrawColorRotation(g_Broken[i].Postion.x, g_Broken[i].Postion.y,-0.1f, g_Broken[i].Size.x, g_Broken[i].Size.y, 
-					g_Broken[i].rot, g_Broken[i].col, 0, 1.0f, 1.0f, 1);
+				SpriteDrawColorRotation(
+					g_Broken[i].Postion.x,
+					g_Broken[i].Postion.y,
+					-0.1f,
+					g_Broken[i].Size.x,
+					g_Broken[i].Size.y, 
+					g_Broken[i].rot,
+					g_Broken[i].col,
+					0,
+					1.0f,
+					1.0f,
+					1
+				);
 				
 		}
 	}
+	for (int i = 0; i < BROKEN_ANIME_MAX; i++) {
+		if (g_BrokenAnime[i].UseFlag) {
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TextureNoBrokenAnime));
+			SpriteDrawColorRotation(
+				g_BrokenAnime[i].Postion.x,
+				g_BrokenAnime[i].Postion.y,
+				-0.1f,
+				g_BrokenAnime[i].Size.x,
+				-g_BrokenAnime[i].Size.y,
+				0.0f,
+				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+				g_BrokenAnime[i].PaternNo,
+				g_BrokenAnime[i].uv_w,
+				g_BrokenAnime[i].uv_h,
+				g_BrokenAnime[i].NumPatern
+			);
+			g_BrokenAnime[i].PaternNo += 0.5f;
+			if (g_BrokenAnime[i].PaternNo > 16.0f) {
+				g_BrokenAnime[i].PaternNo = 0.0f;
+			}
+			if (g_BrokenAnime[i].PaternNo == 16.0f) {
+				g_BrokenAnime[i].UseFlag = false;
+			}
+		}
+	}
+
 }
 
 void SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index, int number){
@@ -156,6 +215,19 @@ void SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index, int number){
 		}
 	}
 }
+
+void SetBrokenAnime(D3DXVECTOR2 pos, D3DXVECTOR2 size, int index) {
+	for (int i = 0; i < BROKEN_ANIME_MAX; i++) {
+		if (!g_BrokenAnime[i].UseFlag) {
+			g_BrokenAnime[i].Postion = pos;
+			g_BrokenAnime[i].Size = size;
+			g_BrokenAnime[i].index = index;
+			g_BrokenAnime[i].UseFlag = true;
+			break;
+		}
+	}
+}
+
 void DeleteBroken(int PieceNo) {
 	for (int i = 0; i < BROKEN_MAX; i++) {
 		if (g_Broken[i].index == PieceNo) {

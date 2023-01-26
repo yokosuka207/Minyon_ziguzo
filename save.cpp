@@ -50,7 +50,8 @@ char* g_saveFileName[] = { (char*)"data/SaveData/Data1.bin",			// データ１
 							(char*)"data/SaveData/Data3.bin" };			// データ３
 
 char* g_DataDeleteTextureName = (char*)"data/texture/Erase.png";
-char* g_SaveTitleTextureName = (char*)"data/texture/Select a File.png";
+//char* g_SaveTitleTextureName = (char*)"data/texture/Select a File.png";
+char* g_SaveTitleTextureName = (char*)"data/texture/Save.png";
 int g_SaveTitleTextureNo = -1;
 
 // 各データのボタンを作る
@@ -105,7 +106,7 @@ void Save::Init()
 	// 各ボタンのセット
 	for (int i = 0; i < DATA_MAX; i++) {
 		// ファイルがあったら
-		g_DataButton[i].SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5 * (i+1) + 150),D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), ButtonTexNo[i]);
+		g_DataButton[i].SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5 * (i+1) + 150),D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5), D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT/2.5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), ButtonTexNo[i]);
 
 		// ファイルを開く
 		fopen_s(&fp, g_saveFileName[i], "rb");			// 開く
@@ -120,7 +121,7 @@ void Save::Init()
 		g_DataButton[i].SetNum(m_saveData.clearStageNum);
 	}
 	// データ削除ボタン
-	g_DataButton[3].SetButton(D3DXVECTOR2((SCREEN_WIDTH / 3) * 2.5f, (SCREEN_HEIGHT / 4) * 3.5f), D3DXVECTOR2(SCREEN_WIDTH / 6, SCREEN_HEIGHT / 7), D3DXVECTOR2(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_DataDeleteTextureName));
+	g_DataButton[3].SetButton(D3DXVECTOR2((SCREEN_WIDTH / 3) * 2.5f, (SCREEN_HEIGHT / 4) * 3.5f), D3DXVECTOR2(SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6), D3DXVECTOR2(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 5), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_DataDeleteTextureName));
 
 	// サウンドデータのロード
 	g_ChangeSceneSaveSoundNo = LoadSound(g_ChangeSceneSaveSoundName);
@@ -243,6 +244,8 @@ void Save::Update()
 						m_type = SAVE_TYPE::TYPE_NONE;
 					}
 				}
+				g_DataButton[i].ChangeType();
+				break;
 			}
 		}
 	}

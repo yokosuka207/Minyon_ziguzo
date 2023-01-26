@@ -98,7 +98,8 @@ void	InitStory()
 
 	//ストーリー初期化
 	
-	gStory.pos = D3DXVECTOR2(30.0f, 210.0f);
+	//gStory.pos = D3DXVECTOR2(30.0f, 210.0f);
+	gStory.pos = D3DXVECTOR2(60.0f, 700.0f);
 	gStory.size = D3DXVECTOR2(60, 90);
 	gStory.color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
 

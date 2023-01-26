@@ -21,22 +21,22 @@
 #define BUTTON_SIZE_X	200
 #define BUTTON_SIZE_Y	100
 #define BUTTON_DRAWSIZE_X	400
-#define BUTTON_DRAWSIZE_Y	200
+#define BUTTON_DRAWSIZE_Y	400
 
 //======================
 //グローバル変数
 //======================
 static	ID3D11ShaderResourceView* g_PauseTexture = NULL;//テクスチャ情報
-static	char* g_PauseTextureName = (char*)"data\\texture\\セーブ画面背景.png";
+static	char* g_PauseTextureName = (char*)"data\\texture\\black.png";
 
 static	ID3D11ShaderResourceView* g_PauseOperationTexture = NULL;//操作説明情報
 static	char* g_PauseOperationTextureName = (char*)"data\\texture\\操作説明.png";
 
 static	ID3D11ShaderResourceView* g_PauseEndTexture = NULL;//テクスチャ情報
-static	char* g_PauseEndTextureName = (char*)"data\\texture\\Quit.png";
+static	char* g_PauseEndTextureName = (char*)"data\\texture\\text_continue game.png";
 
 static	ID3D11ShaderResourceView* g_PauseSelectTexture = NULL;//テクスチャ情報
-static	char* g_PauseSelectTextureName = (char*)"data\\texture\\Exit Stage.png";
+static	char* g_PauseSelectTextureName = (char*)"data\\texture\\text_exit stage.png";
 
 PAUSE	PauseObject[5];//タイトル画面オブジェクト
 
@@ -155,6 +155,10 @@ void	UpdatePause()
 		g_PauseButton[0].Update();
 		g_PauseButton[1].Update();
 
+		// マウスの1フレーム前の座標
+		static float MouseOldPosX = GetMousePosX();
+		static float MouseOldPosY = GetMousePosY();
+
 		//[----------コントローラーによるボタンの選択----------
 		if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_DOWN)) {		// GamePad 十字キー　下
 			for (int i = 0; i < BUTTON_MAX; i++) {
@@ -194,9 +198,13 @@ void	UpdatePause()
 
 		//[----------ボタンの処理----------
 		for (int i = 0; i < BUTTON_MAX; i++) {
-			// マウスとボタンが当たっていたらそのボタンを選ぶ
-			if(g_PauseButton[i].CollisionMouse()) {
-				g_pSelectPauseButton = &g_PauseButton[i];
+			// マウスが動いていたら
+			if (MouseOldPosX != GetMousePosX() ||
+				MouseOldPosY != GetMousePosY()) {
+				// マウスとボタンが当たっていたらそのボタンを選ぶ
+				if (g_PauseButton[i].CollisionMouse()) {
+					g_pSelectPauseButton = &g_PauseButton[i];
+				}
 			}
 
 			// 選ばれているかいないか
@@ -212,10 +220,12 @@ void	UpdatePause()
 						SetScene(SCENE::SCENE_GAME);
 						PauseClick = true;
 					}
-					// 1:Quit ステージセレクトに戻る
+					// 1:Exit Stage ステージセレクトに戻る
 					else {
 						SetScene(SCENE::SCENE_STAGESELECT);
 					}
+					g_pSelectPauseButton->ChangeType();
+					break;
 				}
 			}
 			else {
@@ -223,7 +233,11 @@ void	UpdatePause()
 				g_PauseButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f));
 			}
 		}
+		// 次に備えて1フレーム前の座標に入れる
+		MouseOldPosX = GetMousePosX();
+		MouseOldPosY = GetMousePosY();
 		//----------ボタンの処理----------]
+
 	}
 }
 //======================

@@ -121,21 +121,21 @@ static int g_StagePieceInfo[21][8] = {
 	{ 121,  131,   61,    0,    0,    0,    0,    0,},	// 2  	○			 ┃・21ステージ									 ┃
 	{  82,   91,  133,    0,    0,    0,    0,    0,},	// 3	○			 ┃・各ステージ最大ピース数7					 ┃
 	{  00, -131,  153,  170,    0,    0,    0,    0,},	// 4	○			 ┃・テクスチャの名前からした値が				 ┃
-	{  00, -131,  131,   63,    0,    0,    0,    0,},	// 5	○			 ┃			十と百の位の数字					 ┃
-	{  32,   62, -142,  140,    0,    0,    0,    0,},	// 6	○			 ┃・一の位は回転回数							 ┃
-	{ 182,  141,  171,   52,    0,    0,    0,    0,},	// 7	○			 ┃				テクスチャを参考に左(反時計)回り ┃
-	{ 170,   00, -141,   80, -141,    0,    0,    0,},	// 8	○			 ┃											     ┃
-	{  10,   10,   53,   30,   20,    0,    0,    0,},	// 9	○			 ┃・左右を反転させたい場合は -(マイナス) にする ┃
-	{ 153,   10,  140,   51,   61,    0,    0,    0,},	// 10	○			 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
+	{ 182, -131,  111,  111,    0,    0,    0,    0,},	// 5	○			 ┃			十と百の位の数字					 ┃
+	{  32,   62,  192, -150,    0,    0,    0,    0,},	// 6	○			 ┃・一の位は回転回数							 ┃
+	{ 182,  151,  171,   52,    0,    0,    0,    0,},	// 7	○			 ┃				テクスチャを参考に左(反時計)回り ┃
+	{ 170,   00, -141,   73, -141,    0,    0,    0,},	// 8	○			 ┃											     ┃
+	{  10,   10,   53,   33,   20,    0,    0,    0,},	// 9	○			 ┃・左右を反転させたい場合は -(マイナス) にする ┃
+	{ 143,   10,  150,   51,   61,    0,    0,    0,},	// 10	○			 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
 	{  43,  110, -131,  181,   10,    0,    0,    0,},	// 11	○							
-	{ 101,  190, -140,   01,   01,    0,    0,    0,},	// 12	○						
-	{  20,   63,   60,   73,   71,    0,    0,    0,},	// 13	○					
+	{ 101,  190,  -70,   01,   01,    0,    0,    0,},	// 12	○						
+	{  10,   43,  140,   43,   53,    0,    0,    0,},	// 13	○					
 	{  52,   72,  181,   01,   10,    0,    0,    0,},	// 14	○				
-	{-131, -153, -150, -141, -151,   10,    0,    0,},	// 15	○							
-	{-150,  160,  171,  140,   72,   53,    0,    0,},	// 16	○							
+	{-131, -143, -140, -151, -141,   10,    0,    0,},	// 15	○							
+	{-140,  160,  171,   73,   20,   63,    0,    0,},	// 16	○							
 	{ 101,  190,   60,   70,   53,   10,    0,    0,},	// 17	○							
-	{  52,  190,  171, -143,  191,   10,    0,    0,},	// 18	○							
-	{-131,   20,  132,  113,   10,   53, -151,    0,},	// 19	○							
+	{  52,  190,  171, -153,  191,   10,    0,    0,},	// 18	○							
+	{-131,   20,  132,  113,   10,   53, -141,    0,},	// 19	○							
 	{  20,  161,   61,  132,   00,  133,  120,    0,},	// 20	○							
 	{  43,  180,  160,  190,  182,  180,  112,   80,},	// 21	○							
 };										 
@@ -329,10 +329,10 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 3);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SWITCHWALL4):	//15　ボタンで開く扉×4
-				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction ,4);
+				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 4);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
-				SetSheerFloors(position, DrawSize, no);
+				SetSheerFloors(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　着地で壊れる床
 				
@@ -674,7 +674,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetSwitchWall(position, DrawSize, no, g_PieceMapChip[no].direction, 4);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_SHEET):	//16　透ける床
-				SetSheerFloors(position, DrawSize, no);
+				SetSheerFloors(position, DrawSize, g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_BROKEN):	//17　着地で壊れる床
 				SetBroken(position, DrawSize, no, brokenIndex);
