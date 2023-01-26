@@ -171,8 +171,7 @@ void UpdateInventory()
 				//----------ReleaseãììÆ----------
 				if (g_Inventory[i].IsCatch) {
 					// èâä˙à íuÇ…ñﬂÇÈ
-					//g_Inventory[i].pos = D3DXVECTOR2(i * INVENTORY_POS_X, INVENTORY_POS_Y);		// â∫ver
-					g_Inventory[i].pos = g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f * 2 - i * 150.0f);// ç∂ver
+					g_Inventory[i].pos = g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f * 2 - i * 150.0f);
  					DeleteMapChip(g_Inventory[i].PieNo);
 					SetInventoryMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo, g_Inventory[i].PieNo);
 

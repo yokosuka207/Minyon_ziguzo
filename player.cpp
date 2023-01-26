@@ -82,7 +82,7 @@ HRESULT InitPlayer()
 	//プレイヤーの初期化
 	//g_Player.Position = D3DXVECTOR2(pPiece->pos.x+30.0f,pPiece->pos.y);
 	g_Player.Position = D3DXVECTOR2(pStart[0].pos.x, pStart[0].pos.y);
-	g_Player.OneOldpos = g_Player.oldpos = g_Player.Position;
+	g_Player.OneOldpos = g_Player.oldpos = g_Player.oldoldpos = g_Player.Position;
 	g_Player.sp = D3DXVECTOR2(0.0f,-8.0f);
 	g_Player.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
 	g_Player.Drawsize = D3DXVECTOR2(33.0f, 33.0f);
@@ -102,6 +102,7 @@ HRESULT InitPlayer()
 	g_Player.isMoveBlock = false;
 	g_Player.isBrokenBlock = false;
 	g_Player.isFallBlock = false;
+
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
 	g_Player.PaternNo = 0;//パターン番号
@@ -209,7 +210,8 @@ void UpdatePlayer()
 					g_Player.SoundLeftFlag = false;
 				}
 			}
-			if (g_Player.sp.x == 0)
+			//下に移行
+			/*if (g_Player.sp.x == 0)
 			{
 				g_Player.PaternNo = 17;
 
@@ -228,7 +230,7 @@ void UpdatePlayer()
 
 				}
 
-			}
+			}*/
 
 			//===================================================
 			// ゴールピースを持った状態でダメージを受けた場合
@@ -367,7 +369,7 @@ void UpdatePlayer()
 
 							g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
 							g_Player.jump = false;
-							g_Player.sp.y = -0.1f;
+							g_Player.sp.y = 0.0f;
 							HitFlag = true;
 							g_Player.fall = false;
 							if (!g_Player.isSheerFloors) {
@@ -391,6 +393,31 @@ void UpdatePlayer()
 
 						}
 					}
+				}
+
+			}
+
+
+
+			//プレイヤー停止テクスチャー
+			if (g_Player.sp.x == 0)
+			{
+				g_Player.PaternNo = 17;
+
+				if (g_Player.uv_w < 0)
+				{
+					g_Player.PaternNo = 18;
+
+				}
+			}
+			//プレイヤージャンプテクスチャー
+			if (g_Player.sp.y != 0)
+			{
+				g_Player.PaternNo = 16;
+				if (g_Player.uv_w < 0)
+				{
+					g_Player.PaternNo = 19;
+
 				}
 
 			}
@@ -439,8 +466,13 @@ void UpdatePlayer()
 			if (!g_Player.isGround && !g_Player.isHigh && !g_Player.isSheerFloors && !g_Player.isMoveBlock&&!g_Player.isBrokenBlock&&!g_Player.isFallBlock) {
 				g_Player.sp.y -= 0.1f;			// スピードのyを増やす
 			}
+			else
+			{
+				g_Player.sp.y = 0.0f;
+			}
 	
 			//反映
+			g_Player.oldoldpos = g_Player.oldpos;
 			g_Player.oldpos = g_Player.Position;
 			g_Player.Position += g_Player.sp;
 

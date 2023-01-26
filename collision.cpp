@@ -259,7 +259,7 @@ void UpdateCollision(){
 				if (pPlayer->PieceIndex != pPiece[i].no)
 				{
 					// ピースをインベントリにしまう
-					if (!pPiece[i].InventoryFlag && pPiece[i].UseFlag && pPiece[i].pos.x < (-INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X * 1.5f)) {
+					if (!pPiece[i].InventoryFlag && pPiece[i].UseFlag && pPiece[i].pos.x < -INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X * 2.3f) {
 						DeleteMapChip(i);
 						SetInventory(pPiece[i].no);
 						pPiece[i].InventoryFlag = true;
@@ -659,7 +659,7 @@ void UpdateCollision(){
 						pPlayer->Position.y + pPlayer->size.y / 2 > (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 3 &&
 						pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 3)
 					{
-						//pPlayer->Position.x = (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 - pPlayer->size.x / 2;
+						pPlayer->Position.x = (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 - pPlayer->size.x / 2;
 					}
 					//プレイヤー右・壊れるブロック左
 					if (pPlayer->Position.x - pPlayer->size.x / 2 < (pBroken + i)->Postion.x + (pBroken + i)->Size.x / 2 &&
@@ -667,7 +667,7 @@ void UpdateCollision(){
 						pPlayer->Position.y + pPlayer->size.y / 2 > (pBroken + i)->Postion.y - (pBroken + i)->Size.y / 2 &&
 						pPlayer->Position.y - pPlayer->size.y / 2 < (pBroken + i)->Postion.y + (pBroken + i)->Size.y / 2)
 					{
-						//pPlayer->Position.x = (pBroken + i)->Postion.x + (pBroken + i)->Size.x / 2 + pPlayer->size.x / 2;
+						pPlayer->Position.x = (pBroken + i)->Postion.x + (pBroken + i)->Size.x / 2 + pPlayer->size.x / 2;
 					}
 					//プレイヤー上・壊れるブロック下
 					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pBroken + i)->Postion.x - (pBroken + i)->Size.x / 2 &&
@@ -823,7 +823,6 @@ void UpdateCollision(){
 					else if (!FallFlag)
 					{
 						pPlayer->isFallBlock = false;
-
 					}
 
 					for (int j = 0; j < BLOCK_CHIP_MAX; j++)
@@ -883,11 +882,11 @@ void UpdateCollision(){
 						}
 						else {
 							//pPlayer->isHigh = true;
-							pPlayer->sp.y = -0.1f;
+							//pPlayer->sp.y = -0.1f;
 							pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
 							// 着地中にする
 							if (!pPlayer->isHigh) {
-								pPlayer->sp.y = -0.1f;
+								//pPlayer->sp.y = -0.1f;
 								pPlayer->isHigh = true;
 								break;
 							}

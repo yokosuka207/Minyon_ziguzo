@@ -7,6 +7,7 @@
 #include "xkeyboard.h"
 #include "collision.h"
 #include "JumpStandExplain.h"
+#include "camera.h"
 
 static EXPLAIN g_Explain[EXPLAIN_MAX];
 
@@ -128,8 +129,10 @@ void UninitExplain()
 
 void UpdateExplain()
 {
+	CAMERA* pCamera = GetCamera();
 	for (int i = 0; i < EXPLAIN_MAX; i++) {
-		if (g_Explain[i].CollisionUse)
+		if (g_Explain[i].CollisionUse && 
+			pCamera->fov != 45.0f)
 		{
 			if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||					// keyboard Ctrl ç∂
 				Keyboard_IsKeyTrigger(KK_C) ||								// keyboard C
@@ -144,8 +147,9 @@ void UpdateExplain()
 				}
 			}
 		}
-		else if (!g_Explain[i].CollisionUse) {
+		else{
 			g_Explain[i].HintUse = false;
+			g_Explain[i].No = 0;
 		}
 	}
 }

@@ -28,7 +28,7 @@ void InitFade() {
 	g_FadeParam.TexNo2 = LoadTexture(g_FadeAlphaTextureName);
 
 	g_FadeParam.alpha = 0.0f;
-	g_FadeParam.scaling = D3DXVECTOR2(SCREEN_WIDTH * 100, SCREEN_HEIGHT * 100);
+	g_FadeParam.scaling = D3DXVECTOR2(SCREEN_WIDTH * 150, SCREEN_HEIGHT * 150);
 	g_FadeParam.state = FADE::FADE_NONE;
 	g_FadeParam.FadeFlag = false;
 	g_FadeParam.ExceptFlag = false;
