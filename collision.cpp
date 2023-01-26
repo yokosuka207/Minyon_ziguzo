@@ -875,11 +875,11 @@ void UpdateCollision(){
 						}
 						else {
 							//pPlayer->isHigh = true;
-							pPlayer->sp.y = -0.1f;
+							//pPlayer->sp.y = -0.1f;
 							pPlayer->Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + pPlayer->size.y / 2;
 							// ’…’n’†‚É‚·‚é
 							if (!pPlayer->isHigh) {
-								pPlayer->sp.y = -0.1f;
+								//pPlayer->sp.y = -0.1f;
 								pPlayer->isHigh = true;
 								break;
 							}

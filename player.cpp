@@ -464,7 +464,7 @@ void UpdatePlayer()
 			}
 			else
 			{
-				g_Player.sp.y -= 0.0f;
+				g_Player.sp.y = 0.0f;
 			}
 	
 			//”½‰f
