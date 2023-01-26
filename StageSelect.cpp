@@ -391,6 +391,10 @@ void UpdateStageSelect() {
 		{
 			ply.Position.x = SCREEN_WIDTH;
 		}
+		if (ply.Position.x < 0)
+		{
+			ply.Position.x = 0;
+		}
 
 
 			for (int i = 0; i < 3; i++)
