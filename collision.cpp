@@ -130,6 +130,9 @@ static char g_CandleSoundName[] = "data\\SoundData\\SE\\ろうそく(効果音ラボ).wav
 //スタート
 static int g_GoalSoundNo = 0;
 static char g_GoalSoundName[] = "data\\SoundData\\SE\\ドアを開ける音(無料効果音で遊ぼう！).wav";
+//敵死亡
+static int g_EnemySoundNo = 0;
+static char g_EnemySoundName[] = "data\\SoundData\\SE\\ろうそく(効果音ラボ).wav";
 
 
 
@@ -149,6 +152,7 @@ void InitCollision()
 	g_MatchPieceSoundNo = LoadSound(g_MatchPieceSoundName);
 	g_CandleSoundNo = LoadSound(g_CandleSoundName);
 	g_GoalSoundNo = LoadSound(g_GoalSoundName);
+	g_EnemySoundNo = LoadSound(g_EnemySoundName);
 }
 
 
@@ -166,6 +170,7 @@ void UninitCollision()
 	StopSound(g_MatchPieceSoundNo);
 	StopSound(g_CandleSoundNo);
 	//StopSound(g_GoalSoundNo);
+	StopSound(g_EnemySoundNo);
 }
 
 
@@ -373,6 +378,7 @@ void UpdateCollision(){
 				}
 			}
 		}
+		bool SwitchWallFlag = false;
 		for (int i = 0; i < SWITCHWALL_MAX * SWITCHWALL_LIMIT; i++) {
 			if (pSwitchWall[i].UseFlag)
 			{
@@ -381,8 +387,8 @@ void UpdateCollision(){
 					//壁の左とプレイヤーの右
 					if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 						pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
-						pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+						pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 3 &&
+						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 3)
 					{
 						pPlayer->Position.x = pPlayer->oldpos.x;
 					}
@@ -405,15 +411,29 @@ void UpdateCollision(){
 					//壁の↑とプレイヤーの↓
 					if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 						pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y + pPlayer->size.y / 2 &&
-						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y + pPlayer->size.y / 2)
+						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
+						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
 					{
-						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 + pPlayer->size.y / 2 + 0.02f;
-						pPlayer->jump = false;
-						pPlayer->fall = false;
-						pPlayer->WarpFlag = false;
-						pPlayer->sp.y = 0;
-						pPlayer->frame = 0;
+						if (!pPlayer->isSwithWall)
+						{
+							pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 + pPlayer->size.y / 2;
+							pPlayer->jump = false;
+							pPlayer->fall = false;
+							pPlayer->WarpFlag = false;
+							pPlayer->isSwithWall = true;
+							pPlayer->sp.y = 0;
+							pPlayer->frame = 0;
+							SwitchWallFlag = true;
+
+						}
+						else {
+							pPlayer->isSwithWall = false;
+
+						}
+					}
+					else if (!SwitchWallFlag) {
+						pPlayer->isSwithWall = false;
+
 					}
 
 					//壁とjumpstandの判定
@@ -1117,6 +1137,8 @@ void UpdateCollision(){
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 5.0f, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
 								pEnemy[i].DedFlag = true;
+								SetVolume(g_EnemySoundNo, 0.8f);
+								PlaySound(g_EnemySoundNo, 0);
 							}
 
 						}
@@ -1134,7 +1156,8 @@ void UpdateCollision(){
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
 								pEnemy[i].DedFlag = true;
-
+								SetVolume(g_EnemySoundNo, 0.8f);
+								PlaySound(g_EnemySoundNo, 0);
 							}
 
 						}
@@ -1153,7 +1176,8 @@ void UpdateCollision(){
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y - 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
 								pEnemy[i].DedFlag = true;
-
+								SetVolume(g_EnemySoundNo, 0.8f);
+								PlaySound(g_EnemySoundNo, 0);
 							}
 
 						}
@@ -1171,7 +1195,8 @@ void UpdateCollision(){
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
 								pEnemy[i].DedFlag = true;
-
+								SetVolume(g_EnemySoundNo, 0.8f);
+								PlaySound(g_EnemySoundNo, 0);
 							}
 
 						}

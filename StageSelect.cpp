@@ -27,7 +27,7 @@
 //	ƒ}ƒNƒ’è‹`
 //*****************************************************************************
 
-#define STAIRS_LEFT	65
+#define STAIRS_LEFT	75
 #define STAIRS_RIGHT	245
 
 #define DOOR_SPACE	1050 / 7
@@ -314,7 +314,7 @@ void UpdateStageSelect() {
 				{
 					if (ply.isHigh)
 					{
-						//ply.sp.y = 0.0f;
+						ply.sp.y = 0.0f;
 					}
 					ply.sp.x = 0;
 
@@ -543,7 +543,7 @@ void UpdateStageSelect() {
 			}
 			else
 			{
-				g_StageSelect[i].size = D3DXVECTOR2(300.0f, 140.0f);
+				g_StageSelect[i].size = D3DXVECTOR2(330.0f, 180.0f);
 
 				if (ply.Position.x - ply.size.x / 2 > g_StageSelect[i].pos.x - g_StageSelect[i].size.x / 2 &&
 					ply.Position.x + ply.size.x / 2 < g_StageSelect[i].pos.x + g_StageSelect[i].size.x / 2 &&
