@@ -40,6 +40,6 @@ void UninitStoryKey();
 void UpdateStoryKey();
 void DrawStoryKey();
 
-void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, int direction);
+void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, int direction, int tex);
 STORYKEY* GetStoryKey();
 void DeleteStoryKey(int no);

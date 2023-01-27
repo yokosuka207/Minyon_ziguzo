@@ -185,7 +185,7 @@ HRESULT InitStageSelect() {
 			g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
 			g_StageSelect[i].UseFlag = true;
 			g_StageSelect[i].StagePieceIndex = i;
-			g_StageSelect[i].StageUseFlag = true;		// true : 全ステージ開放チート	false : 通常
+			g_StageSelect[i].StageUseFlag = false;		// true : 全ステージ開放チート	false : 通常
 			g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
 			//ドアSE
 			g_StageSelectSoundNo = LoadSound(g_StageSelectSoundName);
@@ -195,7 +195,7 @@ HRESULT InitStageSelect() {
 			g_StageSelectNumber[i].size = D3DXVECTOR2(300.0f, 20.0f);
 			g_StageSelectNumber[i].UseFlag = true;
 			g_StageSelectNumber[i].StagePieceIndex = i;
-			g_StageSelectNumber[i].StageUseFlag = true;		// true : 全ステージ開放チート	false : 通常
+			g_StageSelectNumber[i].StageUseFlag = false;		// true : 全ステージ開放チート	false : 通常
 			g_StageSelectNumber[i].texno = LoadTexture(g_StageSelectNumberTextureName);
 
 			g_StageSelectBlack[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (175.0f) + (250.0f * a));

@@ -1253,7 +1253,7 @@ void UpdateCollision(){
 						if (pJumpStand[j].UseJumpStand) {
 
 							if (CollisionBB(pThornBlock[i].Postion, pJumpStand[j].pos, pThornBlock[i].Size, pJumpStand[j].size)) {
-								//pJumpStand[j].pos = pJumpStand[j].oldpos;
+								pJumpStand[j].pos = pJumpStand[j].oldpos;
 							}
 						}
 					}
@@ -1274,10 +1274,10 @@ void UpdateCollision(){
 
 
 							//プレイヤー上・高所落ちるブロック下
-							if (pBroken[i].Postion.x - pBroken[i].Size.x / 2 < pJumpStand[j].pos.x + pJumpStand[j].size.x / 3 &&
-								pBroken[i].Postion.x + pBroken[i].Size.x / 2 > pJumpStand[j].pos.x - pJumpStand[j].size.x / 3 &&
-								pBroken[i].Postion.y + pBroken[i].Size.y / 2 > pJumpStand[j].pos.y - pJumpStand[j].size.y / 2 &&
-								pBroken[i].Postion.y + pBroken[i].Size.y / 2 <= pJumpStand[j].oldpos.y - pJumpStand[j].size.y / 2)
+							if (pBroken[i].Postion.x - pBroken[i].Size.x / 2 < pJumpStand[j].pos.x + pJumpStand[j].size.x / 2 &&
+								pBroken[i].Postion.x + pBroken[i].Size.x / 2 > pJumpStand[j].pos.x - pJumpStand[j].size.x / 2 &&
+								pBroken[i].Postion.y + pBroken[i].Size.y / 2 > pJumpStand[j].pos.y - pJumpStand[j].size.y / 3 &&
+								pBroken[i].Postion.y + pBroken[i].Size.y / 2 <= pJumpStand[j].oldpos.y - pJumpStand[j].size.y / 3)
 							{
 								pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 							}
@@ -1326,7 +1326,7 @@ void UpdateCollision(){
 						if (pMoveBlock[j].bUse)
 						{
 							if (CollisionBB(pMoveBlock[j].pos, pThornBlock[i].Postion, pMoveBlock[j].size, pThornBlock[i].Size)) {
-								//pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
+								pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
 							}
 						}
 					}

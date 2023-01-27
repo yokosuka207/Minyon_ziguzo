@@ -664,7 +664,7 @@ void SetField(D3DXVECTOR2 position, D3DXVECTOR2 DrawSize, int no, int Pin, int i
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 30);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_BROKENEXPLAIN): //31 ヒントブロック(BrokenBlock)
-		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction - 1, 31);
+		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction + 1, 31);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEEXPLAIN):	//32 ヒントブロック(MoveBlock)
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 32);
@@ -672,8 +672,8 @@ void SetField(D3DXVECTOR2 position, D3DXVECTOR2 DrawSize, int no, int Pin, int i
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_SHEEREXPLAIN):	//33 ヒントブロック(SheerFloorsBlock)
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 33);
 		break;
-	case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY):	//34 ストーリー解放鍵
-		SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction);
+	case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY_1):	//34 ストーリー解放鍵
+		SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction, 1);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_LAMP):	//35 街灯
 		SetLamp(position, DrawSize, no, g_PieceMapChip[no].direction, 4);
@@ -695,6 +695,22 @@ void SetField(D3DXVECTOR2 position, D3DXVECTOR2 DrawSize, int no, int Pin, int i
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN7):	//41 ⑦ヒントブロック(Piace)
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 41);
+		break;
+
+	case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY_2):	//42 ストーリー解放鍵
+		SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction, 2);
+		break;
+	case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY_3):	//43 ストーリー解放鍵
+		SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction, 3);
+		break;
+	case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY_4):	//44 ストーリー解放鍵
+		SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction, 4);
+		break;
+	case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY_5):	//45 ストーリー解放鍵
+		SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction, 5);
+		break;
+	case static_cast<int>(MAPCHIP_TYPE::TYPE_STORYKEY_6):	//46 ストーリー解放鍵
+		SetStoryKey(position, DrawSize, no, g_PieceMapChip[no].direction, 6);
 		break;
 	default:
 		break;

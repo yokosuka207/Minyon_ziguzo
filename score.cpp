@@ -399,13 +399,13 @@ void Score::RankScore(int score) {
 		//	(初)ワープ
 		//================================================
 	case 8:
-		if (score < 90 && pResult[0].type == WIN) {
+		if (score < 120 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 120 && pResult[0].type == WIN) {
+		else if (score < 150 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 150 && pResult[0].type == WIN) {
+		else if (score < 180 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
@@ -450,13 +450,13 @@ void Score::RankScore(int score) {
 		//	ワープと鍵付き扉と高所落下とトゲ
 		//================================================
 	case 11:
-		if (score < 150 && pResult[0].type == WIN) {
+		if (score < 180 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 225 && pResult[0].type == WIN) {
+		else if (score < 270 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 300 && pResult[0].type == WIN) {
+		else if (score < 360 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
