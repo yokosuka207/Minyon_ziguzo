@@ -818,7 +818,7 @@ void UpdateDoppelganger()
 					for (int i = 0; i < SPAWN_POINT_D_MAX; i++) {//リスポンせずにHPが減り続けている
 						if (pSpawnPointD[i].UseFlag) {
 							if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex) {
-								g_Doppel.Position = pSpawnPointD[i].Position;
+								g_Doppel.Position = D3DXVECTOR2(pPiece[7].pos.x + 60.0f, pPiece[7].pos.y + 3.0f);
 							}
 						}
 					}
@@ -834,7 +834,7 @@ void UpdateDoppelganger()
 		for (int i = 0; i < SPAWN_POINT_D_MAX; i++) {//リスポンせずにHPが減り続けている
 			if (pSpawnPointD[i].UseFlag) {
 				if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex) {
-					g_Doppel.Position = pSpawnPointD[i].Position;
+					g_Doppel.Position = D3DXVECTOR2(pPiece[7].pos.x + 60.0f, pPiece[7].pos.y + 3.0f);
 				}
 			}
 		}
