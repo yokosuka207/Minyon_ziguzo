@@ -195,7 +195,7 @@ HRESULT InitStageSelect() {
 			g_StageSelectNumber[i].size = D3DXVECTOR2(300.0f, 20.0f);
 			g_StageSelectNumber[i].UseFlag = true;
 			g_StageSelectNumber[i].StagePieceIndex = i;
-			g_StageSelectNumber[i].StageUseFlag = true;		// true : 全ステージ開放チート	false : 通常
+			g_StageSelectNumber[i].StageUseFlag = false;		// true : 全ステージ開放チート	false : 通常
 			g_StageSelectNumber[i].texno = LoadTexture(g_StageSelectNumberTextureName);
 
 			g_StageSelectBlack[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (175.0f) + (250.0f * a));
