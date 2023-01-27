@@ -314,7 +314,7 @@ void UpdateStageSelect() {
 				{
 					if (ply.isHigh)
 					{
-						//ply.sp.y = 0.0f;
+						ply.sp.y = 0.0f;
 					}
 					ply.sp.x = 0;
 

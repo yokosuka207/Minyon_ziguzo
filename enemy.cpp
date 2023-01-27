@@ -144,7 +144,7 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 							g_Enemy[i].uv_w = -1.0f;
 
 							switch (direction) {
-							case 0:g_Enemy[i].rot = (direction + 2) * 90;
+							case 0:g_Enemy[i].rot = (direction - 2) * 90;
 
 								g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_RIGHT;
 								break;
@@ -152,19 +152,17 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 								g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_DOWN;
 
 								break;
-							case 2:g_Enemy[i].rot = (direction - 2) * 90;
+							case 2:g_Enemy[i].rot = (direction + 2) * 90;
 
 								break;
 							case 3:g_Enemy[i].rot = direction * 90;
 								g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_UP;
 
 								break;
-							default:
-								break;
 							}
 
 						}
-						if (d == ENEMY_DIRECTION::DIRECTION_RIGHT)
+						else if (d == ENEMY_DIRECTION::DIRECTION_RIGHT)
 						{
 							g_Enemy[i].uv_w = 1.0f;
 
@@ -185,24 +183,10 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 
 
 								break;
-							default:
-								break;
 							}
 
 						}
 
-						switch (direction) {
-						case 0:g_Enemy[i].rot = (direction + 2) * 90;
-							break;
-						case 1:g_Enemy[i].rot = direction * 90;
-							break;
-						case 2:g_Enemy[i].rot = (direction - 2) * 90;
-							break;
-						case 3:g_Enemy[i].rot = direction * 90;
-							break;
-						default:
-							break;
-						}
 
 						g_Enemy[i].pos = pos;
 						g_Enemy[i].pos.y -= 6.0f;
@@ -282,18 +266,6 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 
 				}
 
-				switch (direction) {
-				case 0:g_Enemy[i].rot = (direction + 2) * 90;
-					break;
-				case 1:g_Enemy[i].rot = direction * 90;
-					break;
-				case 2:g_Enemy[i].rot = (direction - 2) * 90;
-					break;
-				case 3:g_Enemy[i].rot = direction * 90;
-					break;
-				default:
-					break;
-				}
 				g_Enemy[i].pos = pos;
 				g_Enemy[i].pos.y -= 6.0f;
 

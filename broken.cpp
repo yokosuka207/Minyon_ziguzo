@@ -42,6 +42,7 @@ static int g_TextureNoBrokenAnime = 0;
 //	{true,D3DXVECTOR2(BROKEN_SIZE_W,BROKEN_SIZE_H),D3DXVECTOR2(400,100),D3DXVECTOR2(0,2),0,0,D3DXCOLOR(1,0,0,1),1,8,16,8,60 * 0},
 //};
 static int BrokenIndex;
+static int BrokenNoIndex[BROKEN_MAX];
 
 //=============================================================================
 //èâä˙âªèàóù
@@ -53,6 +54,7 @@ HRESULT InitBroken()
 
 	for (int i = 0; i < BROKEN_MAX; i++)
 	{
+		BrokenNoIndex[i] = -1;
 		g_Broken[i].Postion = D3DXVECTOR2(SCREEN_WIDTH / 2 - 50.0f, 600.0f);
 		g_Broken[i].Size = D3DXVECTOR2(BROKEN_SIZE_W, BROKEN_SIZE_H);
 		g_Broken[i].index = -1;
@@ -170,7 +172,7 @@ void SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index, int number){
 		{
 			if (g_Broken[i].index == index)
 			{
-				if (g_Broken[i].Number == number)
+				if (g_Broken[i].Number == number-1)
 				{
 					MatchFlag = true;
 					if (!g_Broken[i].breakFlag)
