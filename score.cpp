@@ -20,17 +20,10 @@
 static ID3D11ShaderResourceView* g_ScoreTexture;	//画像一枚で一つの変数が必要
 
 static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";
-static char* g_ScoreRankTextureName[] = {
-	(char*)"data\\texture\\ランクS.png" ,
-	(char*)"data\\texture\\ランクA.png" ,
-	(char*)"data\\texture\\ランクB.png" ,
-	(char*)"data\\texture\\ランクC.png" ,
-};
+static char* g_ScoreRankTextureName = (char*)"data\\texture\\ランク.png";
 
 static int g_ScoreTextureNo = 0;
-static int g_ScoreRankTextureNo[] = {
-	0,0,0,0,
-};
+static int g_ScoreRankTextureNo = 0;
 
 static int g_ScoreSoundNo = 0;
 static int g_ScoreRankSoundNo = 0;
@@ -55,9 +48,7 @@ void Score::InitScore() {
 	m_Rank_C = false;
 
 	g_ScoreTextureNo = LoadTexture(g_ScoreTextureName);
-	for (int i = 0; i < 4; i++) {
-		g_ScoreRankTextureNo[i] = LoadTexture(g_ScoreRankTextureName[i]);
-	}
+	g_ScoreRankTextureNo = LoadTexture(g_ScoreRankTextureName);
 	g_ScoreParam.pos = D3DXVECTOR2(0.0f, 0.0f);
 	g_ScoreParam.size = D3DXVECTOR2(0.0f, 0.0f);
 	g_ScoreParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
@@ -71,9 +62,10 @@ void Score::InitScore() {
 		g_AnimeParam[i].index = -1;
 	}
 
-	g_ScoreRankParam.pos = D3DXVECTOR2(SCREEN_WIDTH / 2 + 400.0f, 350.0f);
-	g_ScoreRankParam.size = D3DXVECTOR2(100.0f, 100.0f);
+	g_ScoreRankParam.pos = D3DXVECTOR2(SCREEN_WIDTH / 2 + 400.0f, 450.0f);
+	g_ScoreRankParam.size = D3DXVECTOR2(200.0f, 200.0f);
 	g_ScoreRankParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	g_ScoreRankParam.PaternNo = 0.0f;
 	g_ScoreRankParam.UseFlag = false;
 
 	frame = 0;
@@ -152,21 +144,22 @@ void Score::DrawScore() {
 
 		if (g_ScoreRankParam.UseFlag) {
 
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreRankTextureNo));
 			switch (g_ScoreParam.rank) {
-			case SCORE_RANK::RANK_S:
-				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreRankTextureNo[0]));
+			case (SCORE_RANK::RANK_S):
+				g_ScoreRankParam.PaternNo = 0.0f;
 				break;
-			case SCORE_RANK::RANK_A:
-				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreRankTextureNo[1]));
+			case (SCORE_RANK::RANK_A):
+				g_ScoreRankParam.PaternNo = 1.0f;
 				break;
-			case SCORE_RANK::RANK_B:
-				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreRankTextureNo[2]));
+			case (SCORE_RANK::RANK_B):
+				g_ScoreRankParam.PaternNo = 2.0f;
 				break;
-			case SCORE_RANK::RANK_C:
-				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreRankTextureNo[3]));
+			case (SCORE_RANK::RANK_C):
+				g_ScoreRankParam.PaternNo = 3.0f;
 				break;
 			}
-			
+
 			SpriteDrawColorRotation
 			(
 				g_ScoreRankParam.pos.x,
@@ -176,10 +169,10 @@ void Score::DrawScore() {
 				g_ScoreRankParam.size.y,
 				0.0f,
 				g_ScoreRankParam.color,
-				0,
+				g_ScoreRankParam.PaternNo,
+				1.0f / 6.0f,
 				1.0f / 1.0f,
-				1.0f / 1.0f,
-				1
+				6
 			);
 		}
 	}

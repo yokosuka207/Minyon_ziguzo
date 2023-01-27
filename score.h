@@ -29,6 +29,7 @@ typedef struct {
 	D3DXVECTOR2 pos;
 	D3DXVECTOR2 size;
 	D3DXCOLOR	color;
+	float		PaternNo;
 	bool		UseFlag;
 	bool		CalcFlag;	//ŒvŽZ‚µ‚½‚©‚Ç‚¤‚©
 	SCORE_RANK	rank;		//ƒ‰ƒ“ƒN
