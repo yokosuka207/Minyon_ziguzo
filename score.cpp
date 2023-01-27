@@ -99,8 +99,6 @@ void Score::DrawScore() {
 		if (pResult->type == LOSE) {
 			g_ScoreParam.pos.x = SCREEN_WIDTH / 2 + 80.0f;
 			g_ScoreParam.pos.y = SCREEN_HEIGHT / 2 + 50.0f;
-
-			g_ScoreRankParam.UseFlag = false;
 		}
 
 		score = CulcScore();
@@ -473,16 +471,16 @@ void Score::RankScore(int score) {
 		}
 		break;
 		//================================================
-		//	チュートリアル終わり
+		//	スイッチと高所落下と動くブロックとトゲ
 		//================================================
 	case 12:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 180 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 270 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 360 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
