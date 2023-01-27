@@ -97,12 +97,8 @@ void UninitHigh()
 //XVˆ—
 //=============================================================================
 void UpdateHigh(){
-	for (int i = 0; i < HIGH_MAX; i++) {
-		if (g_High[i].breakFlag) {
-			g_High[i].breakFlag = false;
-			SetHighAnime(g_High[i].Postion, g_High[i].Size, g_High[i].index);
-		}
-	}
+		
+	
 }
 
 //=============================================================================
