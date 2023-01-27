@@ -166,9 +166,19 @@ void DrawExplain()
 			//ブロック表示
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ExplainBlockNo));
 
-			SpriteDrawColorRotation(g_Explain[i].pos.x, g_Explain[i].pos.y, 0.0f,
-				g_Explain[i].size.x, g_Explain[i].size.y, g_Explain[i].rot, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-				0, 1.0f, 1.0f, 1);
+			SpriteDrawColorRotation(
+				g_Explain[i].pos.x,
+				g_Explain[i].pos.y,
+				0.0f,
+				g_Explain[i].size.x,
+				g_Explain[i].size.y,
+				g_Explain[i].rot,
+				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+				0,
+				1.0f,
+				1.0f,
+				1
+			);
 
 
 			//ヒント表示
