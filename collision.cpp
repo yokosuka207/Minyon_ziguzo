@@ -445,7 +445,7 @@ void UpdateCollision(){
 					//•Ç‚Æ“®‚­ƒuƒƒbƒN‚Ì”»’è
 					for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
 						if (CollisionBB(pSwitchWall[i].pos, pMoveBlock[j].pos, pSwitchWall[i].size, pMoveBlock[j].size)) {
-							pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+							pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
 						}
 					}
 				}
