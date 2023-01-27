@@ -452,6 +452,7 @@ void DeleteMapChip(int PieceNo) {
 	DeleteLamp(g_PieceMapChip[PieceNo].no);
 	DeleteLampSwitch(g_PieceMapChip[PieceNo].no);
 	DeleteSpawnPointD(g_PieceMapChip[PieceNo].no);
+	DeleteStoryKey(g_PieceMapChip[PieceNo].no);
 	DeleteBullet();
 }
 Piece* GetPiece() {
@@ -654,10 +655,10 @@ void SetField(D3DXVECTOR2 position, D3DXVECTOR2 DrawSize, int no, int Pin, int i
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 27);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN3):	//28 ③ヒントブロック(Piace)
-		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 28);
+		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction + 1, 28);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_BLOCKEXPLAIN):	//29 ヒントブロック(Block)
-		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction + 1, 29);
+		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 29);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMYEXPLAIN):	//30 ヒントブロック(Enemy)
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 30);

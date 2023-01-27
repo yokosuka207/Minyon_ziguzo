@@ -4,6 +4,7 @@
 #include "texture.h"
 #include "sprite.h"
 #include "sound.h"
+#include "StageSelect.h"
 
 #define START_UV_W (1.0f / 1.0f)
 #define START_UV_H (1.0f / 2.0f)
