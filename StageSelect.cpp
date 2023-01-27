@@ -564,7 +564,7 @@ void UpdateStageSelect() {
 			{
 				g_StageSelect[i].size = D3DXVECTOR2(330.0f, 180.0f);
 
-				g_StageSelectNumber[i].size = D3DXVECTOR2(0.0f, 0.0f);
+				g_StageSelectNumber[i].size = D3DXVECTOR2(110.0f, 35.0f);
 
 				if (ply.Position.x - ply.size.x / 2 > g_StageSelect[i].pos.x - g_StageSelect[i].size.x / 2 &&
 					ply.Position.x + ply.size.x / 2 < g_StageSelect[i].pos.x + g_StageSelect[i].size.x / 2 &&
