@@ -183,10 +183,6 @@ void UninitGame()
 
 void UpdateGame()
 {
-	if (Keyboard_IsKeyTrigger(KK_P)) {
-		InitGame();
-	}
-
 	//É|Å[ÉYèàóù
 	if (Keyboard_IsKeyTrigger(KK_TAB) ||				// keyboard TAB
 		IsButtonTriggered(0, XINPUT_GAMEPAD_START)){	// GamePad START

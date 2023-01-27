@@ -1098,11 +1098,12 @@ void UpdateCollision(){
 			//------------------------------------------------------------------
 			for (int i = 0; i < STORYKEY_MAX; i++)
 			{
-				if (pSKey[i].bUse) {
-					if (CollisionBB(pPlayer->Position, pSKey->pos, pPlayer->size, pSKey->size))
+				if (pSKey[i].bUse && !pSKey[i].bGet) {
+					if (CollisionBB(pPlayer->Position, pSKey[i].pos, pPlayer->size, pSKey[i].size))
 					{
 						pSKey[i].bUse = false;
 						pSKey[i].HaveSKey++;
+						pSKey[i].bGet = true;
 					}
 				}
 			}
