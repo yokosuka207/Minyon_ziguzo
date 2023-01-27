@@ -354,8 +354,8 @@ void UpdatePlayer()
 						//g_Player.Position.x = pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 + g_Player.size.x / 2;
 					}
 
-					//プレイヤー上・ブロック下,着地する
-					if (!GetThumbLeftY(0) < -0.3f ||		// GamePad	左スティック	下
+					//プレイヤー上・ロープ下,着地する
+					if (GetThumbLeftY(0) >= -0.3f &&		// GamePad	左スティック	下
 						!Keyboard_IsKeyDown(KK_S))		// Keyboard S
 					{
 						if (pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 < g_Player.Position.x + g_Player.size.x / 2 &&
