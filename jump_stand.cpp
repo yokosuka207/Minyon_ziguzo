@@ -132,7 +132,7 @@ void UpdateJumpStand()
 					//à¯Ç´Ç∏ÇÈâπ
 					if (g_JumpStand[i].oldpos.x != g_JumpStand[i].pos.x && g_JumpStand[i].JumpStandNotMove == true)//ìÆÇ©ÇµÇΩèuä‘
 					{
-						SetVolume(g_JumpStandSoundMoveNo, 0.25f);
+						SetVolume(g_JumpStandSoundMoveNo, 0.5f);
 						PlaySound(g_JumpStandSoundMoveNo, -1);
 						g_JumpStand[i].JumpStandNotMove = false;
 					}

@@ -1,8 +1,8 @@
 #pragma once
 
 #define KEYDISPLAY_MAX	(3)
-#define KEYDISPLAY_SIZE_X (100)
-#define KEYDISPLAY_SIZE_Y (100)
+#define KEYDISPLAY_SIZE_X (80)
+#define KEYDISPLAY_SIZE_Y (80)
 
 typedef struct
 {
