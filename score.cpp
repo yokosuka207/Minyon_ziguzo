@@ -81,7 +81,7 @@ void Score::InitScore() {
 	char filename[] = "data\\SoundData\\SE\\タイプライター.wav";
 	g_ScoreSoundNo = LoadSound(filename);
 
-	char filename2[] = "data\\SoundData\\SE\\タイプライター.wav";
+	char filename2[] = "data\\SoundData\\SE\\タイプライターランク.wav";
 	g_ScoreRankSoundNo = LoadSound(filename2);
 }
 void Score::UninitScore() {
@@ -148,7 +148,7 @@ void Score::DrawScore() {
 		}
 		if (frame == 150) {
 			g_ScoreRankParam.UseFlag = true;
-			SetVolume(g_ScoreRankSoundNo, 0.3f);
+			SetVolume(g_ScoreRankSoundNo, 0.8f);
 			PlaySound(g_ScoreRankSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
 		}
 
