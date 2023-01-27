@@ -115,7 +115,8 @@ HRESULT InitStageSelect() {
 			b = 0;
 		}
 
-		g_StageSelectfence[i].pos = D3DXVECTOR2(250.0f + (170.0f * b), 190.0f + (250 * a));
+		//g_StageSelectfence[i].pos = D3DXVECTOR2(300.0f + (170.0f * b), 190.0f + (250 * a));
+		g_StageSelectfence[i].pos = D3DXVECTOR2(420.0f + (170.0f * b), 190.0f + (250 * a));
 		g_StageSelectfence[i].size = D3DXVECTOR2(170.0f, 110.0f);
 		g_StageSelectfence[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_StageSelectfence[i].texno = LoadTexture(g_StageSelectfenceTextureName);
@@ -148,7 +149,8 @@ HRESULT InitStageSelect() {
 		}
 
 		//g_StageSelectStairs[i].pos = D3DXVECTOR2(90.0f+ (b * 28.0f), 270.0f+(b * 40.0f) + (250 * a));
-		g_StageSelectStairs[i].pos = D3DXVECTOR2(90.0f + (b * 23.0f), 267.0f + (b * 40.0f) + (250 * a));
+		//g_StageSelectStairs[i].pos = D3DXVECTOR2(90.0f + (b * 23.0f), 267.0f + (b * 40.0f) + (250 * a));
+		g_StageSelectStairs[i].pos = D3DXVECTOR2(140.0f + (b * 23.0f), 267.0f + (b * 40.0f) + (250 * a));
 		g_StageSelectStairs[i].size = D3DXVECTOR2(30.0f, 40.0f);
 		g_StageSelectStairs[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		b++;
@@ -174,11 +176,12 @@ HRESULT InitStageSelect() {
 			}
 			//ドア
 			//g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (180.0f) + (250.0f * a));
-			g_StageSelect[i].pos = D3DXVECTOR2((350.0f) + (DOOR_SPACE * b), (180.0f) + (250.0f * a));
+			//g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (DOOR_SPACE * b), (180.0f) + (250.0f * a));
+			g_StageSelect[i].pos = D3DXVECTOR2((420.0f) + (DOOR_SPACE * b), (180.0f) + (250.0f * a));
 			g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
 			g_StageSelect[i].UseFlag = true;
 			g_StageSelect[i].StagePieceIndex = i;
-			g_StageSelect[i].StageUseFlag = true;		// true : 全ステージ開放チート	false : 通常
+			g_StageSelect[i].StageUseFlag = false;		// true : 全ステージ開放チート	false : 通常
 			g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
 			//ドアSE
 			g_StageSelectSoundNo = LoadSound(g_StageSelectSoundName);
@@ -339,7 +342,7 @@ void UpdateStageSelect() {
 			if (!ply.SoundRightFlag) {
 				if (ply.PaternNo == 9.0f) {
 					PlaySound(g_StageSelectPlayerRightSoundNo, 0);
-					SetVolume(g_StageSelectPlayerRightSoundNo, 0.5f);
+					SetVolume(g_StageSelectPlayerRightSoundNo, 1.5f);
 					ply.SoundRightFlag = true;
 				}
 			}
@@ -351,7 +354,7 @@ void UpdateStageSelect() {
 			if (!ply.SoundLeftFlag) {
 				if (ply.PaternNo == 1.0f) {
 					PlaySound(g_StageSelectPlayerLeftSoundNo, 0);
-					SetVolume(g_StageSelectPlayerLeftSoundNo, 0.5f);
+					SetVolume(g_StageSelectPlayerLeftSoundNo, 1.5f);
 					ply.SoundLeftFlag = true;
 				}
 			}
@@ -527,7 +530,7 @@ void UpdateStageSelect() {
 					if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||					// keyboard Ctrl 左
 						Keyboard_IsKeyTrigger(KK_C) ||								// keyboard C
 						IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {					// GamePad B
-						//SetVolume(g_BrokenSoundNo, 0.5f);
+						SetVolume(g_StageSelectSoundNo, 0.5f);
 						PlaySound(g_StageSelectSoundNo, 0);
 						StageNo = i;
 						//SetScene(SCENE::SCENE_GAME);

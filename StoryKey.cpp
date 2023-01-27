@@ -43,7 +43,7 @@ HRESULT InitStoryKey()
 		gStoryKey[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		gStoryKey[i].rot = 0.0f;
 
-		gStoryKey[i].bUse = true;
+		gStoryKey[i].bUse = false;
 
 		gStoryKey[i].no = -1;
 	}

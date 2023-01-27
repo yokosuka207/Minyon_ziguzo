@@ -231,7 +231,7 @@ void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, int direction, int q)
 			g_Explain[i].pos = pos;
 			g_Explain[i].size = size;
 			g_Explain[i].bUse = true;
-			g_Explain[i].PieceIndex = no;
+
 			g_Explain[i].tex = q;
 		}
 	}

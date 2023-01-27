@@ -66,6 +66,9 @@ static int g_PlayerRightSoundNo = 0;
 static char g_PlayeRightSoundName[] = "data\\SoundData\\SE\\革靴で歩く右.wav";
 static int g_PlayerLeftSoundNo = 0;
 static char g_PlayerLeftSoundName[] = "data\\SoundData\\SE\\革靴で歩く左.wav";
+//ろうそく
+static int g_CandleSoundNo = 0;
+static char g_CandleSoundName[] = "data\\SoundData\\SE\\ろうそく(効果音ラボ).wav";
 
 //プレイヤー着地音導入したいです
 //
@@ -121,6 +124,7 @@ HRESULT InitPlayer()
 	g_Player.SoundLeftFlag = false;
 	g_PlayerRightSoundNo = LoadSound(g_PlayeRightSoundName);
 	g_PlayerLeftSoundNo = LoadSound(g_PlayerLeftSoundName);
+	g_CandleSoundNo = LoadSound(g_CandleSoundName);
 
 	return S_OK;
 }
@@ -132,6 +136,7 @@ void UninitPlayer()
 {
 	StopSound(g_PlayerRightSoundNo);
 	StopSound(g_PlayerLeftSoundNo);
+	StopSound(g_CandleSoundNo);
 }
 
 //=============================================================================
@@ -188,7 +193,7 @@ void UpdatePlayer()
 			//============================================================
 			if (!g_Player.SoundRightFlag) {
 				if (g_Player.PaternNo == 9.0f) {
-					SetVolume(g_PlayerRightSoundNo, 0.5f);
+					SetVolume(g_PlayerRightSoundNo, 1.5f);
 					PlaySound(g_PlayerRightSoundNo, 0);
 					g_Player.SoundRightFlag = true;
 				}
@@ -200,7 +205,7 @@ void UpdatePlayer()
 			}
 			if (!g_Player.SoundLeftFlag) {
 				if (g_Player.PaternNo == 1.0f) {
-					SetVolume(g_PlayerLeftSoundNo, 0.5f);
+					SetVolume(g_PlayerLeftSoundNo, 1.5f);
 					PlaySound(g_PlayerLeftSoundNo, 0);
 					g_Player.SoundLeftFlag = true;
 				}
@@ -411,7 +416,7 @@ void UpdatePlayer()
 				}
 			}
 			//プレイヤージャンプテクスチャー
-			if (g_Player.sp.y != 0)
+			if (g_Player.sp.y != 0 && !g_Player.isFallBlock)
 			{
 				g_Player.PaternNo = 16;
 				if (g_Player.uv_w < 0)
@@ -437,7 +442,7 @@ void UpdatePlayer()
 			{
 
 				g_Player.sp.y = 2.8f;			// スピードのyをマイナスにする
-				//SetVolume(g_PlayerRightSoundNo, 0.5f);
+				SetVolume(g_PlayerRightSoundNo, 1.5f);
 				PlaySound(g_PlayerRightSoundNo, 0);
 
 				pCamera->MoveFlag = true;
@@ -517,6 +522,8 @@ void UpdatePlayer()
 											g_Player.Position = pSpawnPoint[i].Position;
 											g_Player.oldpos = g_Player.Position;
 											g_Player.hp--;
+											SetVolume(g_CandleSoundNo, 0.8f);
+											PlaySound(g_CandleSoundNo, 0);
 											break;
 										}
 									}
@@ -577,6 +584,8 @@ void UpdatePlayer()
 					g_Player.Position = pStart->pos;
 					g_Player.oldpos = g_Player.Position;
 					g_Player.hp--;
+					SetVolume(g_CandleSoundNo, 0.8f);
+					PlaySound(g_CandleSoundNo, 0);
 
 				}
 

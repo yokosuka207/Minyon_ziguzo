@@ -315,7 +315,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetFallBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11Å@åÆ
-				SetKey(position, DrawSize, g_PieceMapChip[no].direction, no);
+				SetKey(position, D3DXVECTOR2(25.0f,25.0f), g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12Å@åÆïtÇ´ÇÃî‡
 				SetOpenKey(position, DrawSize, g_PieceMapChip[no].direction, no);
