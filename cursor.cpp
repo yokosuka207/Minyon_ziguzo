@@ -289,6 +289,7 @@ void UpdateCursor()
 							if (pBroken[i].index == NoIndex)
 							{
 								pBroken[i].Postion += temp;
+								
 							}
 
 						}
