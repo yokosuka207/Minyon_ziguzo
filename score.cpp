@@ -62,7 +62,7 @@ void Score::InitScore() {
 		g_AnimeParam[i].index = -1;
 	}
 
-	g_ScoreRankParam.pos = D3DXVECTOR2(SCREEN_WIDTH / 2 + 400.0f, 450.0f);
+	g_ScoreRankParam.pos = D3DXVECTOR2(SCREEN_WIDTH / 2 + 400.0f, 430.0f);
 	g_ScoreRankParam.size = D3DXVECTOR2(200.0f, 200.0f);
 	g_ScoreRankParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_ScoreRankParam.PaternNo = 0.0f;
@@ -90,7 +90,7 @@ void Score::DrawScore() {
 		g_ScoreParam.pos.x = SCREEN_WIDTH / 2 - 20.0f;
 		if (pResult->type == LOSE) {
 			g_ScoreParam.pos.x = SCREEN_WIDTH / 2 + 80.0f;
-			g_ScoreParam.pos.y = SCREEN_HEIGHT / 2 + 50.0f;
+			g_ScoreParam.pos.y = SCREEN_HEIGHT / 2 + 80.0f;
 		}
 
 		score = CulcScore();
@@ -603,13 +603,13 @@ void Score::RankScore(int score) {
 		//	ドッペルゲンガー
 		//================================================
 	case 20:
-		if (score < 480 && pResult[0].type == WIN) {
+		if (score < 600 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 720 && pResult[0].type == WIN) {
+		else if (score < 900 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 960 && pResult[0].type == WIN) {
+		else if (score < 1200 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {

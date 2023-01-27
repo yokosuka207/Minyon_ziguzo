@@ -124,7 +124,7 @@ void	InitResult()
 	g_ResultLifeTextureNo = LoadTexture(g_ResultLifeTextureName);
 	g_ResultLifeMaxTextureNo = LoadTexture(g_ResultLifeMaxTextureName);
 	g_ResultLifeVolumeTextureNo = LoadTexture(g_ResultLifeVolumeTextureName);
-	g_ResultScoreTextureNo = LoadTexture(g_ResultRankTextureName);
+	g_ResultScoreTextureNo = LoadTexture(g_ResultScoreTextureName);
 	g_ResultRankTextureNo = LoadTexture(g_ResultRankTextureName);
 	g_ResultTimeTextureNo = LoadTexture(g_ResultTimeTextureName);
 	g_ResultClearTextureNo = LoadTexture(g_ResultClearTextureName);
@@ -133,7 +133,7 @@ void	InitResult()
 	// ボタンの初期化とセット
 	for (int i = 0; i < BUTTON_MAX; i++) {
 		g_ResultButton[i].Init();
-		g_ResultButton[i].SetButton(D3DXVECTOR2(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 4) * (i * 2 + 1)), D3DXVECTOR2(BUTTON_SIZE_X, BUTTON_SIZE_Y), 
+		g_ResultButton[i].SetButton(D3DXVECTOR2(SCREEN_WIDTH / 3 *(i + 1), (SCREEN_HEIGHT / 5) * 4), D3DXVECTOR2(BUTTON_SIZE_X, BUTTON_SIZE_Y), 
 			D3DXVECTOR2(BUTTON_DRAWSIZE_X, BUTTON_DRAWSIZE_Y), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), LoadTexture(g_ResultButtonTextureName[i]));
 	}
 	// 選択されているボタンの初期化
@@ -141,11 +141,11 @@ void	InitResult()
 
 	pScore->SetScore(D3DXVECTOR2(SCORE_POS_X, SCREEN_HEIGHT / 2 + 90.0f), D3DXVECTOR2(50.0f, 50.0f));
 
-	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400.0f, 250.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Life
-	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400.0f, 500.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Score
+	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 410.0f, 280.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Life
+	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 390.0f, 500.0f, 0.0f), D3DXVECTOR2(300.0f, 300.0f));//Score
 	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 + 400.0f, 250.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Rank
 	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400.0f, 400.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Time
-	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2, 100.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Clear,Over
+	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2, 70.0f, 0.0f), D3DXVECTOR2(600.0f, 600.0f));//Clear,Over
 
 	g_ChangeSceneResultSoundNo = LoadSound(g_ChangeSceneResultSoundName);
 }
@@ -176,20 +176,107 @@ void	UpdateResult()
 	FADEPARAM* pFadeParam = GetFadeParam();
 	if (ResultObject.type == WIN) 
 	{
-		//キー入力のチェック
-		if (Keyboard_IsKeyTrigger(KK_SPACE) ||				// keyboard SPACE
-			IsButtonTriggered(0, XINPUT_GAMEPAD_B))			// GamePad B
-		{
-			//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
-			PlaySound(g_ChangeSceneResultSoundNo, 0);
-			// ステージセレクトへ
-			if (ReturnStageNo() == STAGE_MAX - 1) {
+		if (ReturnStageNo() == STAGE_MAX - 1) {
+			//キー入力のチェック
+			if (Keyboard_IsKeyTrigger(KK_SPACE) ||				// keyboard SPACE
+				IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_LEFT) ||		// GamePad B
+				IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_RIGHT))			// GamePad B
+			{
+				//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
+				PlaySound(g_ChangeSceneResultSoundNo, 0);
 				pFadeParam->FinFlag = true;
+				StartFade(FADE::FADE_ALPHA_OUT);
+
 			}
-			StartFade(FADE::FADE_ALPHA_OUT);
 		}
+		else {
+			// ボタンの更新処理
+			for (Button& b : g_ResultButton) {
+				b.Update();
+			}
+			//[----------コントローラーによるボタンの選択----------
+			if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_LEFT)) {		// GamePad 十字キー 上
+				for (int i = 0; i < BUTTON_MAX; i++) {
+					// 選ばれているボタンを見つけたら
+					if (g_pSelectResultButton == &g_ResultButton[i]) {
+						// そのボタンが最後のボタンなら
+						if (i == BUTTON_MAX - 1) {
+							// 0番目のボタンを選ぶ
+							g_pSelectResultButton = &g_ResultButton[0];
+						}
+						else {	// 最後以外なら
+							// 次のボタンを選ぶ
+							g_pSelectResultButton = &g_ResultButton[i + 1];
+						}
+						break;
+					}
+				}
+			}
+			if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_RIGHT)) {		// GamePad 十字キー 下
+				for (int i = 0; i < BUTTON_MAX; i++) {
+					// 選ばれているボタンを見つけたら
+					if (g_pSelectResultButton == &g_ResultButton[i]) {
+						// そのボタンが0番目のボタンなら
+						if (i == 0) {
+							// 最後のボタンを選ぶ
+							g_pSelectResultButton = &g_ResultButton[BUTTON_MAX - 1];
+						}
+						else {		// 0番目以外
+							// ひとつ前のボタンを選ぶ
+							g_pSelectResultButton = &g_ResultButton[i - 1];
+						}
+						break;
+					}
+				}
+			}
+			//----------コントローラーによるボタンの選択----------]
 
+			//[----------ボタンの処理----------
+			for (int i = 0; i < BUTTON_MAX; i++) {
+				// マウスが動いていたら
+				if (MouseOldPosX != GetMousePosX() ||
+					MouseOldPosY != GetMousePosY()) {
+					// マウスとボタンが当たっていたらそのボタンを選ぶ
+					if (g_ResultButton[i].CollisionMouse()) {
+						g_pSelectResultButton = &g_ResultButton[i];
+					}
+				}
 
+				// 選ばれているかいないか
+				if (g_pSelectResultButton == &g_ResultButton[i]) {
+					// 色を変える
+					g_ResultButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+					// ボタンが押された時の処理
+					if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad B
+						(Mouse_IsLeftTrigger() && g_pSelectResultButton->CollisionMouse())) {		// Mouse 左クリック (当たっている状態で)
+						// 0:Exit Stage ステージセレクトシーンへ
+						if (i == 0) {
+							//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
+							PlaySound(g_ChangeSceneResultSoundNo, 0);
+							// ステージセレクトへ
+							StartFade(FADE::FADE_ALPHA_OUT);
+						}
+						// 1:Continue ゲームシーンへ
+						else {
+							//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
+							PlaySound(g_ChangeSceneResultSoundNo, 0);
+							pFadeParam->ExceptFlag = true;
+							StartFade(FADE::FADE_ALPHA_OUT);
+						}
+						g_pSelectResultButton->ChangeType();
+						break;
+					}
+				}
+				else {
+					// 色を変える
+					g_ResultButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f));
+				}
+			}
+			// 次に備えて1フレーム前の座標に入れる
+			MouseOldPosX = GetMousePosX();
+			MouseOldPosY = GetMousePosY();
+		}
 	}
 	else if (ResultObject.type == LOSE)
 	{
@@ -198,7 +285,7 @@ void	UpdateResult()
 			b.Update();
 		}
 		//[----------コントローラーによるボタンの選択----------
-		if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_UP)) {		// GamePad 十字キー 上
+		if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_LEFT)) {		// GamePad 十字キー 上
 			for (int i = 0; i < BUTTON_MAX; i++) {
 				// 選ばれているボタンを見つけたら
 				if (g_pSelectResultButton == &g_ResultButton[i]) {
@@ -215,7 +302,7 @@ void	UpdateResult()
 				}
 			}
 		}
-		if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_DOWN)) {		// GamePad 十字キー 下
+		if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_RIGHT)) {		// GamePad 十字キー 下
 			for (int i = 0; i < BUTTON_MAX; i++) {
 				// 選ばれているボタンを見つけたら
 				if (g_pSelectResultButton == &g_ResultButton[i]) {
@@ -315,7 +402,42 @@ void	DrawResult()
 		for (Button& b : g_ResultButton) {
 			b.Draw();
 		}
+		//タイム
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultTimeTextureNo));
+		g_Result[3].Position = D3DXVECTOR3(SCREEN_WIDTH / 2 - 390.0f, 400.0f, 0.0f);
+		SpriteDrawColorRotation
+		(
+			g_Result[3].Position.x,
+			g_Result[3].Position.y,
+			0.0f,
+			g_Result[3].Size.x,
+			g_Result[3].Size.y,
+			g_Result[3].Rotate,
+			g_Result[3].Color,
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
+		//スコア
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultScoreTextureNo));
 
+		SpriteDrawColorRotation
+		(
+			g_Result[1].Position.x,
+			g_Result[1].Position.y,
+			0.0f,
+			g_Result[1].Size.x,
+			g_Result[1].Size.y,
+			g_Result[1].Rotate,
+			g_Result[1].Color,
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
+
+		//ランク
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultRankTextureNo));
 		SpriteDrawColorRotation
 		(
@@ -331,6 +453,7 @@ void	DrawResult()
 			1.0f,
 			1
 		);
+		//ゲームオーバー
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultOverTextureNo));
 		SpriteDrawColorRotation
 		(
@@ -406,7 +529,7 @@ void	DrawResult()
 			}
 
 			if (i == 1) {
-				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultRankTextureNo));
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultScoreTextureNo));
 			}
 
 			if (i == 2) {
@@ -436,6 +559,11 @@ void	DrawResult()
 				1.0f,
 				1
 			);
+
+			// ボタン
+			for (Button& b : g_ResultButton) {
+				b.Draw();
+			}
 		}
 	}
 }
