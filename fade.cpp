@@ -85,6 +85,9 @@ void UpdateFade() {
 					SetScene(SCENE::SCENE_STAGESELECT);
 				}
 				break;
+			case SCENE::SCENE_FIN:
+				SetScene(SCENE::SCENE_TITLE);
+				break;
 			default:
 				break;
 			}
@@ -138,6 +141,9 @@ void UpdateFade() {
 				else if(g_FadeParam.TitleFlag){
 					SetScene(SCENE::SCENE_TITLE);
 				}
+				break;
+			case SCENE::SCENE_FIN:
+				SetScene(SCENE::SCENE_TITLE);
 				break;
 			default:
 				break;
