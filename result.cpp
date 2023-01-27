@@ -285,7 +285,7 @@ void	UpdateResult()
 			b.Update();
 		}
 		//[----------コントローラーによるボタンの選択----------
-		if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_UP)) {		// GamePad 十字キー 上
+		if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_LEFT)) {		// GamePad 十字キー 上
 			for (int i = 0; i < BUTTON_MAX; i++) {
 				// 選ばれているボタンを見つけたら
 				if (g_pSelectResultButton == &g_ResultButton[i]) {
@@ -302,7 +302,7 @@ void	UpdateResult()
 				}
 			}
 		}
-		if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_DOWN)) {		// GamePad 十字キー 下
+		if (IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_RIGHT)) {		// GamePad 十字キー 下
 			for (int i = 0; i < BUTTON_MAX; i++) {
 				// 選ばれているボタンを見つけたら
 				if (g_pSelectResultButton == &g_ResultButton[i]) {
