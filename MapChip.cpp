@@ -63,9 +63,7 @@ Piece g_PieceMapChip[PUZZLE_MAX];
 //**************************************************
 // グローバル変数:
 //**************************************************
-static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
-//static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
-//static char* g_MapChipTextureName = (char*)"data\\texture\\パズルピース修正版\\16.png";	//テクスチャファイルパス
+
 // 各ピースのテクスチャファイル名
 static char* g_MapChipTextureName[PIECE_TEX_MAX] = {
 	(char*)"data\\texture\\パズルピース_スプライトシート\\00.png",
@@ -205,10 +203,7 @@ HRESULT InitMapChip() {
 	return S_OK;
 }
 void UninitMapChip() {
-	if (g_MapChipTexture != NULL) {
-		g_MapChipTexture->Release();
-		g_MapChipTexture = NULL;
-	}
+
 }
 void UpdateMapChip() {
 	// アニメーション
@@ -280,7 +275,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 	g_EnemyIndex = 0;	//敵の数
 	//p=ブロック最大数
 	//i=y方向
-	if (g_PieceMapChip[Pin].direction >= 2) {
+	if (g_PieceMapChip[Pin].direction == 0) {//方向0
 		for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
 			//j=x方向
 			for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
@@ -292,10 +287,36 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			}
 		}
 	}
-	else {
+	else if (g_PieceMapChip[Pin].direction == 1) {//方向1
+			//j=x方向
+		for (int j = BLOCK_CHIP_ARRAY - 1; j >= 0; j--) {
+			for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
+
+				// 中心座標変数
+				D3DXVECTOR2 position = D3DXVECTOR2((pos.x + PUZZLE_SIZE / 2) - j * BLOCK_CHIP_SIZE - BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
+				D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
+
+				SetField(position, DrawSize, no, Pin, i, j);
+			}
+		}
+	}
+	else if (g_PieceMapChip[Pin].direction == 2) {//方向2
 		for (int i = BLOCK_CHIP_ARRAY - 1; i >= 0; i--) {
 			//j=x方向
 			for (int j = BLOCK_CHIP_ARRAY - 1; j >= 0; j--) {
+				// 中心座標変数
+				D3DXVECTOR2 position = D3DXVECTOR2((pos.x + PUZZLE_SIZE / 2) - j * BLOCK_CHIP_SIZE - BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
+				D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
+
+				SetField(position, DrawSize, no, Pin, i, j);
+			}
+		}
+	}
+	else if (g_PieceMapChip[Pin].direction == 3) {//方向3
+			//j=x方向
+		for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
+			for (int i = BLOCK_CHIP_ARRAY - 1; i >= 0; i--) {
+
 				// 中心座標変数
 				D3DXVECTOR2 position = D3DXVECTOR2((pos.x + PUZZLE_SIZE / 2) - j * BLOCK_CHIP_SIZE - BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
 				D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
@@ -650,7 +671,7 @@ void SetField(D3DXVECTOR2 position, D3DXVECTOR2 DrawSize, int no, int Pin, int i
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 28);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_BLOCKEXPLAIN):	//29 ヒントブロック(Block)
-		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 29);
+		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction + 1, 29);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMYEXPLAIN):	//30 ヒントブロック(Enemy)
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 30);

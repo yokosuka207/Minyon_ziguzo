@@ -281,13 +281,15 @@ void UpdateCollision(){
 		//=========================================
 		//ƒWƒƒƒ“ƒv‘äƒqƒ“ƒg
 		
-		if (p_Explain->bUse) {
-			if (CollisionBB(pPlayer->Position, p_Explain->pos, pPlayer->size * 2, p_Explain->size * 2))
-			{
-				p_Explain->CollisionUse = true;
-			}
-			else {
-				p_Explain->CollisionUse = false;
+		for (int i = 0; i < EXPLAIN_MAX; i++) {
+			if (p_Explain[i].bUse) {
+				if (CollisionBB(pPlayer->Position, p_Explain[i].pos, pPlayer->size, p_Explain[i].size))
+				{
+					p_Explain[i].CollisionUse = true;
+				}
+				else {
+					p_Explain[i].CollisionUse = false;
+				}
 			}
 		}
 		
