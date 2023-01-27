@@ -21,10 +21,10 @@ static ID3D11ShaderResourceView* g_ScoreTexture;	//画像一枚で一つの変数が必要
 
 static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";
 static char* g_ScoreRankTextureName[] = {
-	(char*)"data\\texture\\number1.png" ,
-	(char*)"data\\texture\\number1.png" ,
-	(char*)"data\\texture\\number1.png" ,
-	(char*)"data\\texture\\number1.png" ,
+	(char*)"data\\texture\\ランクS.png" ,
+	(char*)"data\\texture\\ランクA.png" ,
+	(char*)"data\\texture\\ランクB.png" ,
+	(char*)"data\\texture\\ランクC.png" ,
 };
 
 static int g_ScoreTextureNo = 0;
@@ -48,6 +48,12 @@ static int score = 0;
 static int frame = 0;
 
 void Score::InitScore() {
+
+	m_Rank_S = false;
+	m_Rank_A = false;
+	m_Rank_B = false;
+	m_Rank_C = false;
+
 	g_ScoreTextureNo = LoadTexture(g_ScoreTextureName);
 	for (int i = 0; i < 4; i++) {
 		g_ScoreRankTextureNo[i] = LoadTexture(g_ScoreRankTextureName[i]);
@@ -75,7 +81,7 @@ void Score::InitScore() {
 	char filename[] = "data\\SoundData\\SE\\タイプライター.wav";
 	g_ScoreSoundNo = LoadSound(filename);
 
-	char filename2[] = "data\\SoundData\\SE\\タイプライター.wav";
+	char filename2[] = "data\\SoundData\\SE\\タイプライターランク.wav";
 	g_ScoreRankSoundNo = LoadSound(filename2);
 }
 void Score::UninitScore() {
@@ -140,13 +146,13 @@ void Score::DrawScore() {
 				g_ScoreParam.pos.x -= 30.0f;
 			}
 		}
-		if (pResult->type == WIN && frame == 150) {
+		if (frame == 150) {
 			g_ScoreRankParam.UseFlag = true;
-			SetVolume(g_ScoreRankSoundNo, 0.3f);
+			SetVolume(g_ScoreRankSoundNo, 0.8f);
 			PlaySound(g_ScoreRankSoundNo, 0);				//0 = 一回だけ再生 sound.h参照
 		}
 
-		if (pResult->type == WIN && g_ScoreRankParam.UseFlag) {
+		if (g_ScoreRankParam.UseFlag) {
 
 			switch (g_ScoreParam.rank) {
 			case SCORE_RANK::RANK_S:
@@ -191,16 +197,20 @@ int Score::CulcScore() {
 
 	switch (g_ScoreParam.rank) {
 	case (SCORE_RANK::RANK_S):
-		m_score = m_TimeScore * 999;
+		m_score = m_TimeScore * 199;
+		m_Rank_S = true;
 		break;
 	case (SCORE_RANK::RANK_A):
-		m_score = m_TimeScore * 555;
+		m_score = m_TimeScore * 99;
+		m_Rank_A = true;
 		break;
 	case (SCORE_RANK::RANK_B):
-		m_score = m_TimeScore * 222;
+		m_score = m_TimeScore * 49;
+		m_Rank_B = true;
 		break;
 	case (SCORE_RANK::RANK_C):
 		m_score = m_TimeScore / 2;
+		m_Rank_C = true;
 		break;
 	default:
 		break;
@@ -208,13 +218,47 @@ int Score::CulcScore() {
 
 	PLAYER* pPlayer = GetPlayer();
 	switch (pPlayer->hp) {
-	case 0:m_score *= 0;
+	case 0:
+		m_score /= 2;
+		g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		break;
-	case 1:m_score *= 1;
+	case 1:
+		m_score *= 1;
+		g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		break;
-	case 2:m_score *= 2;
+	case 2:
+		m_score *= 2;
+		g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		break;
-	case 3:m_score *= 3;
+	case 3:
+		m_score *= 3;
+		g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		break;
+	default:
+		break;
+	}
+
+	switch (g_ScoreParam.rank){
+	case (SCORE_RANK::RANK_S):
+		if (m_Rank_S)g_ScoreParam.rank = SCORE_RANK::RANK_S;
+		else if (m_Rank_A)g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		else if (m_Rank_B)g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		else if (m_Rank_C)g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		break;
+	case (SCORE_RANK::RANK_A):
+		if (m_Rank_S)g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		else if (m_Rank_A)g_ScoreParam.rank = SCORE_RANK::RANK_A;
+		else if (m_Rank_B)g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		else if (m_Rank_C)g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		break;
+	case (SCORE_RANK::RANK_B):
+		if (m_Rank_S)g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		else if (m_Rank_A)g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		else if (m_Rank_B)g_ScoreParam.rank = SCORE_RANK::RANK_B;
+		else if (m_Rank_C)g_ScoreParam.rank = SCORE_RANK::RANK_C;
+		break;
+	case (SCORE_RANK::RANK_C):
+		g_ScoreParam.rank = SCORE_RANK::RANK_C;
 		break;
 	default:
 		break;
