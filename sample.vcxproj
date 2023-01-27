@@ -149,6 +149,7 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="fallblock.cpp" />
+    <ClCompile Include="fin.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="goal.cpp" />
     <ClCompile Include="goal_key.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="fallblock.h" />
+    <ClInclude Include="fin.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="goal.h" />
     <ClInclude Include="goal_key.h" />

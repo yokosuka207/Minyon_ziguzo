@@ -67,6 +67,7 @@
     <ClCompile Include="lamp_switch.cpp" />
     <ClCompile Include="spawnpoint_d.cpp" />
     <ClCompile Include="EffectLight.cpp" />
+    <ClCompile Include="fin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -147,5 +148,6 @@
     <ClInclude Include="lamp_switch.h" />
     <ClInclude Include="spawnpoint_d.h" />
     <ClInclude Include="EffectLight.h" />
+    <ClInclude Include="fin.h" />
   </ItemGroup>
 </Project>
