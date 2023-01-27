@@ -378,6 +378,7 @@ void UpdateCollision(){
 				}
 			}
 		}
+		bool SwitchWallFlag = false;
 		for (int i = 0; i < SWITCHWALL_MAX * SWITCHWALL_LIMIT; i++) {
 			if (pSwitchWall[i].UseFlag)
 			{
@@ -386,8 +387,8 @@ void UpdateCollision(){
 					//壁の左とプレイヤーの右
 					if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 						pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
-						pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+						pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 3 &&
+						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 3)
 					{
 						pPlayer->Position.x = pPlayer->oldpos.x;
 					}
@@ -410,15 +411,29 @@ void UpdateCollision(){
 					//壁の↑とプレイヤーの↓
 					if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 						pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y + pPlayer->size.y / 2 &&
-						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y + pPlayer->size.y / 2)
+						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
+						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
 					{
-						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 + pPlayer->size.y / 2 + 0.02f;
-						pPlayer->jump = false;
-						pPlayer->fall = false;
-						pPlayer->WarpFlag = false;
-						pPlayer->sp.y = 0;
-						pPlayer->frame = 0;
+						if (!pPlayer->isSwithWall)
+						{
+							pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 + pPlayer->size.y / 2;
+							pPlayer->jump = false;
+							pPlayer->fall = false;
+							pPlayer->WarpFlag = false;
+							pPlayer->isSwithWall = true;
+							pPlayer->sp.y = 0;
+							pPlayer->frame = 0;
+							SwitchWallFlag = true;
+
+						}
+						else {
+							pPlayer->isSwithWall = false;
+
+						}
+					}
+					else if (!SwitchWallFlag) {
+						pPlayer->isSwithWall = false;
+
 					}
 
 					//壁とjumpstandの判定

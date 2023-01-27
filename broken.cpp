@@ -166,9 +166,11 @@ void SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index, int number){
 
 	bool MatchFlag = false;
 
-	for (int i = 0; i < BROKEN_MAX; i++)
+	for (int i = BrokenIndex; i > 0; i--)
 	{
-		if (!g_Broken[i].UseFlag) 
+
+	
+		if (!g_Broken[i].UseFlag)
 		{
 			if (g_Broken[i].index == index)
 			{
@@ -187,13 +189,15 @@ void SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index, int number){
 					}
 					else {
 
+
 						break;
 
 					}
 				}
 			}
-
 		}
+
+		
 
 
 	}
