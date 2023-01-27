@@ -28,6 +28,23 @@ static int	  g_Piace2ExplainNo = 0;
 static ID3D11ShaderResourceView* g_Piace3Explain;
 static char* g_Piace3ExplainName = (char*)"data\\texture\\Piace3Explain.png";
 static int	  g_Piace3ExplainNo = 0;
+// Piace4 ƒqƒ“ƒg
+static ID3D11ShaderResourceView* g_Piace4Explain;
+static char* g_Piace4ExplainName = (char*)"data\\texture\\Piace4Explain.png";
+static int	  g_Piace4ExplainNo = 0;
+// Piace5 ƒqƒ“ƒg
+static ID3D11ShaderResourceView* g_Piace5Explain;
+static char* g_Piace5ExplainName = (char*)"data\\texture\\Piace5Explain.png";
+static int	  g_Piace5ExplainNo = 0;
+// Piace6 ƒqƒ“ƒg
+static ID3D11ShaderResourceView* g_Piace6Explain;
+static char* g_Piace6ExplainName = (char*)"data\\texture\\Piace6Explain.png";
+static int	  g_Piace6ExplainNo = 0;
+// Piace7 ƒqƒ“ƒg
+static ID3D11ShaderResourceView* g_Piace7Explain;
+static char* g_Piace7ExplainName = (char*)"data\\texture\\Piace7Explain.png";
+static int	  g_Piace7ExplainNo = 0;
+
 // Block ƒqƒ“ƒg
 static ID3D11ShaderResourceView* g_BlockExplain;
 static char* g_BlockExplainName = (char*)"data\\texture\\BlockExplain.png";
@@ -55,9 +72,14 @@ HRESULT InitExplain()
 	//ƒqƒ“ƒg•\Ž¦ƒuƒƒbƒN‰Šú‰»
 	g_ExplainBlockNo = LoadTexture(g_ExplainBlockName);
 
+	//
 	g_PiaceExplainNo = LoadTexture(g_PiaceExplainName);
 	g_Piace2ExplainNo = LoadTexture(g_Piace2ExplainName);
 	g_Piace3ExplainNo = LoadTexture(g_Piace3ExplainName);
+	g_Piace4ExplainNo = LoadTexture(g_Piace4ExplainName);
+	g_Piace5ExplainNo = LoadTexture(g_Piace5ExplainName);
+	g_Piace6ExplainNo = LoadTexture(g_Piace6ExplainName);
+	g_Piace7ExplainNo = LoadTexture(g_Piace7ExplainName);
 	g_BlockExplainNo = LoadTexture(g_BlockExplainName);
 	g_EnemyExplainNo = LoadTexture(g_EnemyExplainName);
 	g_BrokenExplainNo = LoadTexture(g_BrokenExplainName);
@@ -97,6 +119,26 @@ void UninitExplain()
 	{
 		g_Piace3Explain->Release();
 		g_Piace3Explain = NULL;
+	}
+	if (g_Piace4Explain)
+	{		   
+		g_Piace4Explain->Release();
+		g_Piace4Explain = NULL;
+	}
+	if (g_Piace5Explain)
+	{		   
+		g_Piace5Explain->Release();
+		g_Piace5Explain = NULL;
+	}
+	if (g_Piace6Explain)
+	{		   
+		g_Piace6Explain->Release();
+		g_Piace6Explain = NULL;
+	}
+	if (g_Piace7Explain)
+	{		   
+		g_Piace7Explain->Release();
+		g_Piace7Explain = NULL;
 	}
 
 	if (g_BlockExplain)
@@ -200,6 +242,18 @@ void DrawExplain()
 				case 33:
 					GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SheerExplainNo));
 					break;
+				case 38:
+					GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Piace4ExplainNo));
+					break;
+				case 39:
+					GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Piace5ExplainNo));
+					break;
+				case 40:
+					GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Piace6ExplainNo));
+					break;
+				case 41:
+					GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Piace7ExplainNo));
+					break;
 				}
 				SpriteDrawColorRotation(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f,
 					HINT_SIZE_X, HINT_SIZE_Y, 0.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
@@ -231,6 +285,7 @@ void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, int direction, int q)
 			g_Explain[i].pos = pos;
 			g_Explain[i].size = size;
 			g_Explain[i].bUse = true;
+			g_Explain[i].PieceIndex = no;
 
 			g_Explain[i].tex = q;
 		}
