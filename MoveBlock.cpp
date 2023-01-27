@@ -189,7 +189,7 @@ void UpdateMoveBlock()
 							//’…’n‚µ‚½uŠÔ‚¾‚¯‰¹‚ª–Â‚é
 							if (gMoveBlock[i].oldoldpos.y != gMoveBlock[i].pos.y)
 							{
-								SetVolume(g_MoveBolckLandingSoundNo, 0.25f);
+								SetVolume(g_MoveBolckLandingSoundNo, 0.5f);
 								PlaySound(g_MoveBolckLandingSoundNo, 0);
 							}
 						}
