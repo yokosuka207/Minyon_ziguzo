@@ -11,6 +11,7 @@
 #include "sprite.h"
 #include "texture.h"
 #include "pause.h"
+#include "result.h"
 #include <iostream>
 #include <Windows.h>
 #include <vector>
@@ -68,10 +69,15 @@ void Time:: DrawGameTime() {
 
 //ƒ|[ƒYŽžŠÔ‚ð‚Ç‚¤‚É‚©‚µ‚È‚¢‚Æ
 void Time::DrawResultTime(clock_t elapsedtime, clock_t pause) {
+
+	RESULT* pResult = GetResult();
+
 	SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_TimeTextureNo));
-
 	g_TimeParam.pos.x = SCREEN_WIDTH / 2 - 30.0f;
+	if(pResult->type==LOSE){
+		g_TimeParam.pos.x = SCREEN_WIDTH / 2 + 70.0f;
+	}
 	g_TimeParam.pos.y = SCREEN_HEIGHT / 2;
 	g_TimeParam.size = D3DXVECTOR2(50.0f, 50.0f);
 	g_TimeParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
