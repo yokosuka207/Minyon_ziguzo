@@ -3474,6 +3474,7 @@ bool fourPieceCollision(Piece piece, int index)
 
 	bool hitFlag;
 	bool 	JointFlag = false;
+	bool 	JointFlag2 = false;
 	for (int i = 0; i < PUZZLE_MAX; i++)
 	{
 		if (pPiece[i].UseFlag)
@@ -3496,6 +3497,7 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
+				JointFlag2 = true;
 				if (piece.pos.x + PIECE_SIZE / 3 < pJoint[i].pos.x)	//ジョイントがピースの右だったら
 				{
 
@@ -3530,7 +3532,7 @@ bool fourPieceCollision(Piece piece, int index)
 				}
 			}
 		}
-		if (!JointFlag)
+		if (!JointFlag&& JointFlag2)
 		{
 			return false;
 		}
@@ -3538,6 +3540,7 @@ bool fourPieceCollision(Piece piece, int index)
 
 	}
 	JointFlag = false;
+	JointFlag2 = false;
 
 	//左が開いていなかったら
 	hitFlag = PieceOpen(piece, index, LEFT);
@@ -3549,6 +3552,7 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
+				JointFlag2 = true;
 				if (piece.pos.x - PIECE_SIZE / 3 > pJoint[i].pos.x)	//ジョイントがピースの右だったら
 				{
 
@@ -3583,7 +3587,7 @@ bool fourPieceCollision(Piece piece, int index)
 				}
 			}
 		}
-		if (!JointFlag)
+		if (!JointFlag&& JointFlag2)
 		{
 			return false;
 		}
@@ -3591,6 +3595,7 @@ bool fourPieceCollision(Piece piece, int index)
 	}
 	hitFlag = PieceOpen(piece, index, UP);
 	JointFlag = false;
+	JointFlag2 = false;
 
 
 	if (!hitFlag)
@@ -3602,7 +3607,7 @@ bool fourPieceCollision(Piece piece, int index)
 			{
 				if (piece.pos.y + PIECE_SIZE / 3 < pJoint[i].pos.y)	//ジョイントがピースの上だったら
 				{
-
+					JointFlag2 = true;
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
 						if (pJoint[j].pieNo == pPiece[punum].no)
@@ -3636,7 +3641,7 @@ bool fourPieceCollision(Piece piece, int index)
 				}
 			}
 		}
-		if (!JointFlag)
+		if (!JointFlag&& JointFlag2)
 		{
 			return false;
 
@@ -3647,6 +3652,7 @@ bool fourPieceCollision(Piece piece, int index)
 
 	hitFlag = PieceOpen(piece, index, DOWN);
 	JointFlag = false;
+	JointFlag2 = false;
 
 
 	if (!hitFlag)
@@ -3659,7 +3665,7 @@ bool fourPieceCollision(Piece piece, int index)
 			{
 				if (piece.pos.y - PIECE_SIZE / 3 > pJoint[i].pos.y)	//ジョイントがピースの下だったら
 				{
-
+					JointFlag2 = true;
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
 						if (pJoint[j].pieNo == pPiece[punum].no)
@@ -3690,7 +3696,7 @@ bool fourPieceCollision(Piece piece, int index)
 				}
 			}
 		}
-		if (!JointFlag)
+		if (!JointFlag&& JointFlag2)
 		{
 			return false;
 		}
