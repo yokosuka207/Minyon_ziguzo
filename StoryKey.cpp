@@ -85,7 +85,7 @@ void DrawStoryKey()
 }
 
 
-void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, int direction)
+void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, int direction, int tex)
 {
 	for (int i = 0; i < STORYKEY_MAX; i++) {
 		switch (direction) {
