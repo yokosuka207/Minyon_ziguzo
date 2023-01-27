@@ -111,7 +111,7 @@ void	InitStory()
 
 	//ストーリー初期化	
 	s.pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	s.size = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	s.size = D3DXVECTOR2(SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2);
 
 	pSKey = GetStoryKey();
 
