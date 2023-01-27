@@ -36,6 +36,8 @@
 static CAMERA			g_Camera;		// カメラデータ
 static CAMERA			g_Camera2;		// カメラデータ
 
+bool g_auto = true;		// 勝手にズームするか
+
 //=============================================================================
 // 初期化処理
 //=============================================================================
@@ -91,27 +93,43 @@ void UpdateCamera(void)
 
 	// ズームイン
 	if (Keyboard_IsKeyDown(KK_UP) ||		// 矢印　上
-		IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_UP) ||		// GamePad　十字キー　上
-		//GetThumbLeftX(0) != 0 ||			// GamePad　左スティック 
-		//GetThumbLeftY(0) != 0 ||
-		g_Camera.MoveFlag)
+		IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_UP))		// GamePad　十字キー　上
 	{
 		g_Camera.fov = 20.0f;
 		g_Camera.zoomFlag = true;
 	}
 	// ズームアウト
 	if (Keyboard_IsKeyDown(KK_DOWN) ||						// 矢印　下
-		IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_DOWN) ||		// GamePad 十字キー　下
-		GetThumbRightX(0) != 0 ||			// GamePad　右スティック
-		GetThumbRightY(0) != 0 ||
-		abs(pMouse->PosX - pMouse->oldPosX) > 7 ||
-		abs(pMouse->PosY - pMouse->oldPosY) > 7)
+		IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_DOWN))		// GamePad 十字キー　下
 	{
 		g_Camera.MoveFlag = false;
 		g_Camera.fov = 45.0f;
 		InitCamera();
 		g_Camera.zoomFlag = false;
 	}
+
+	// 勝手にズームする
+	if (g_auto) {
+		if (g_Camera.MoveFlag) {
+			g_Camera.fov = 20.0f;
+			g_Camera.zoomFlag = true;
+		}
+		if (abs(pMouse->PosX - pMouse->oldPosX) > 7 ||
+			abs(pMouse->PosY - pMouse->oldPosY) > 7 ||
+			GetThumbRightX(0) != 0 ||			// GamePad　右スティック
+			GetThumbRightY(0) != 0) {
+			g_Camera.MoveFlag = false;
+			g_Camera.fov = 45.0f;
+			InitCamera();
+			g_Camera.zoomFlag = false;
+		}
+	}
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_BACK) ||
+		Keyboard_IsKeyTrigger(KK_LEFTALT)) {
+		if (g_auto) g_auto = false;
+		else g_auto = true;
+	}
+
 	if (g_Camera.zoomFlag)
 	{
 		SetCameraAT(D3DXVECTOR3(pPlayer->Position.x, pPlayer->Position.y, 0.0f));	// カメラの注視点
