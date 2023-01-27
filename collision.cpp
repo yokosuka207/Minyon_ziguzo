@@ -876,9 +876,12 @@ void UpdateCollision(){
 							//pPlayer->isHigh = false;
 							(pHigh + i)->UseFlag = false;
 							pHigh[i].breakFlag = true;
+							SetHighAnime(pHigh[i].Postion, pHigh[i].Size, pHigh[i].index);
+
 							//SetVolume(g_HighSoundNo, 0.5f);
 							//PlaySound(g_HighSoundNo, 0);
 							pPlayer->frame = 50;
+							break;
 						}
 						else {
 							//pPlayer->isHigh = true;
@@ -962,6 +965,8 @@ void UpdateCollision(){
 			//-----------------------------------------------------
 			//プレイヤーと鍵付き扉の当たり判定(PlayerとOpenKey)
 			//-----------------------------------------------------
+			bool OpenKeyFlag = false;
+
 			for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
 				for (int i = 0; i < OPEN_KEY_MAX; i++) {
 					if ((pOpenKey + j + i)->DrawFlag) {
@@ -969,8 +974,8 @@ void UpdateCollision(){
 						//扉の左とプレイヤーの右
 						if ((pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 							(pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
-							(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-							(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+							(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 3 &&
+							(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 3)
 						{
 							pPlayer->Position.x = pPlayer->oldpos.x;
 						}
@@ -988,7 +993,8 @@ void UpdateCollision(){
 							(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
 							(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 >= pPlayer->oldpos.y + pPlayer->size.y / 2)
 						{
-							pPlayer->Position = pPlayer->oldpos;
+							pPlayer->Position.y = pPlayer->oldpos.y;
+							pPlayer->sp.y = 0.0f;
 						}
 						//扉の↑とプレイヤーの↓
 						if ((pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
@@ -996,12 +1002,27 @@ void UpdateCollision(){
 							(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
 							(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
 						{
-							pPlayer->Position.y = pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 + pPlayer->size.y / 2 + 0.02f;
-							pPlayer->jump = false;
-							pPlayer->fall = false;
-							pPlayer->WarpFlag = false;
-							pPlayer->sp.y = 0;
-							pPlayer->frame = 0;
+							OpenKeyFlag = true;
+							if (!pPlayer->isHigh)
+							{
+								pPlayer->Position.y = pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 + pPlayer->size.y / 2 + 0.02f;
+								pPlayer->jump = false;
+								pPlayer->fall = false;
+								pPlayer->WarpFlag = false;
+								pPlayer->isHigh = true;
+								pPlayer->sp.y = 0.0f;
+								pPlayer->frame = 0;
+
+							}
+							else
+							{
+								pPlayer->isHigh = false;
+
+							}
+						}
+						else if (!OpenKeyFlag) {
+							pPlayer->isHigh = false;
+
 						}
 						//扉とjumpstandの判定
 						for (int j = 0; j < JUMPSTAND_MAX; j++) {
