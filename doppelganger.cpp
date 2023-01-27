@@ -91,6 +91,7 @@
 #include"bullet.h"
 
 #include "sound.h"
+#include"start.h"
 //=============================================================================
 //É}ÉNÉçíËã`
 //=============================================================================
@@ -1581,6 +1582,9 @@ void UpdateDoppelganger()
 
 	if (g_Doppel.hp <= 0)
 	{
+		START* pStart = GetStart();
+		pStart[0].GoalFlag = true;
+		pStart[1].GoalFlag = true;
 		g_Doppel.UseFlag = false;
 	}
 
