@@ -140,13 +140,13 @@ void Score::DrawScore() {
 				g_ScoreParam.pos.x -= 30.0f;
 			}
 		}
-		if (frame == 150) {
+		if (pResult->type == WIN && frame == 150) {
 			g_ScoreRankParam.UseFlag = true;
 			SetVolume(g_ScoreRankSoundNo, 0.3f);
 			PlaySound(g_ScoreRankSoundNo, 0);				//0 = ˆê‰ñ‚¾‚¯Ä¶ sound.hŽQÆ
 		}
 
-		if (g_ScoreRankParam.UseFlag) {
+		if (pResult->type == WIN && g_ScoreRankParam.UseFlag) {
 
 			switch (g_ScoreParam.rank) {
 			case SCORE_RANK::RANK_S:

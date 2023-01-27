@@ -13,6 +13,7 @@
 #include	"fade.h"
 #include	"sound.h"
 #include	"button.h"
+#include "player.h"
 //======================
 //マクロ定義
 //=======================
@@ -32,12 +33,14 @@ static	char* g_ResultButtonTextureName[BUTTON_MAX] = { (char*)"data\\texture\\te
 												(char*)"data\\texture\\text_continue game.png" };
 
 static	char* g_ResultLifeTextureName = (char*)"data\\texture\\text_life.png";
+static	char* g_ResultLifeVolumeTextureName = (char*)"data\\texture\\残機ある.png";
 static	char* g_ResultScoreTextureName = (char*)"data\\texture\\text_rank.png";
 static	char* g_ResultRankTextureName = (char*)"data\\texture\\text_rank.png";
 static	char* g_ResultTimeTextureName = (char*)"data\\texture\\text_time.png";
 static	char* g_ResultClearTextureName = (char*)"data\\texture\\text_rank.png";
 
 static int g_ResultLifeTextureNo = 0;
+static int g_ResultLifeVolumeTextureNo = 0;
 static int g_ResultScoreTextureNo = 0;
 static int g_ResultRankTextureNo = 0;
 static int g_ResultTimeTextureNo = 0;
@@ -50,6 +53,8 @@ static char g_ChangeSceneResultSoundName[] = "data\\SoundData\\SE\\シーン遷移(魔
 RESULT	ResultObject;//タイトル画面オブジェクト	背景分
 
 RESULT g_Result[RESULT_MAX];
+
+RESULT g_ResultLife;
 
 int		ResultBGTextureNo;//テクスチャ番号
 
@@ -94,7 +99,7 @@ void	InitResult()
 	}
 
 	// 背景分
-	ResultObject.Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
+	ResultObject.Position = D3DXVECTOR3(SCREEN_WIDTH / 2 - 20.0f, SCREEN_HEIGHT / 2, 0);
 	ResultObject.Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	ResultObject.Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	ResultObject.Rotate = 0.0f;
@@ -105,7 +110,14 @@ void	InitResult()
 		g_Result[i].Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_Result[i].UseFlag = false;
 	}
+	
+	g_ResultLife.Position = D3DXVECTOR3(SCREEN_WIDTH / 2, 200.0f, 0.0f);
+	g_ResultLife.Size = D3DXVECTOR2(200.0f, 200.0f);
+	g_ResultLife.Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	g_ResultLife.UseFlag = false;
+	
 	g_ResultLifeTextureNo = LoadTexture(g_ResultLifeTextureName);
+	g_ResultLifeVolumeTextureNo = LoadTexture(g_ResultLifeVolumeTextureName);
 	g_ResultScoreTextureNo = LoadTexture(g_ResultRankTextureName);
 	g_ResultRankTextureNo = LoadTexture(g_ResultRankTextureName);
 	g_ResultTimeTextureNo = LoadTexture(g_ResultTimeTextureName);
@@ -314,8 +326,34 @@ void	DrawResult()
 			1.0f,
 			1
 		);
-	
+		//============================================
+		//	Life
+		//============================================
+		{
+			PLAYER* pPlayer = GetPlayer();
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultLifeVolumeTextureNo));
+			if (!g_ResultLife.UseFlag) {
+				g_ResultLife.Position.x = SCREEN_WIDTH / 2 - 20.0f;
 
+				for (int i = 0; i < pPlayer->hp; i++) {
+					SpriteDrawColorRotation
+					(
+						g_ResultLife.Position.x,
+						g_ResultLife.Position.y,
+						0.0f,
+						g_ResultLife.Size.x,
+						g_ResultLife.Size.y,
+						g_ResultLife.Rotate,
+						g_ResultLife.Color,
+						0,
+						1.0f,
+						1.0f,
+						1
+					);
+					g_ResultLife.Position.x -= 100.0f;
+				}
+			}
+		}
 		for (int i = 0; i < RESULT_MAX; i++) {
 
 			if (i == 0) {
