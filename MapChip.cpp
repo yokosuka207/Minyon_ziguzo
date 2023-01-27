@@ -513,9 +513,9 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			break;
 		}
 	}
-	int brokenIndex = 0;
-	int HighbrokenIndex = 0;
-	int EnemyIndex = 0;
+	g_brokenIndex = 0;
+	g_HighbrokenIndex = 0;
+	g_EnemyIndex = 0;
 	//p=ƒuƒƒbƒNÅ‘å”
 	//i=y•ûŒü
 	if (g_PieceMapChip[Pin].direction >= 2) {
