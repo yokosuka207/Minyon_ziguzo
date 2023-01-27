@@ -45,6 +45,12 @@ HRESULT InitStoryKey()
 		gStoryKey[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		gStoryKey[i].rot = 0.0f;
 
+		if (gStoryKey[0].HaveSKey > i) {
+			gStoryKey[i].bGet = true;
+		}
+		else {
+			gStoryKey[i].bGet = false;
+		}
 		gStoryKey[i].bUse = false;
 
 		gStoryKey[i].no = -1;
@@ -83,7 +89,7 @@ void DrawStoryKey()
 
 	for (int i = 0; i < STORYKEY_MAX; i++)
 	{
-		if (gStoryKey[i].bUse)
+		if (gStoryKey[i].bUse && !gStoryKey[i].bGet)
 		{
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryKeyTextureNo));
 

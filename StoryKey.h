@@ -24,6 +24,7 @@ typedef struct
 	float	rot;				//回転
 	int		no;				//マップチップ番号
 
+	bool	bGet;			// 取得フラグ
 	bool	bUse;			//使用中フラグ
 
 	int		HaveSKey;			//鍵所持数

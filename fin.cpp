@@ -8,6 +8,7 @@
 #include "xinput.h"
 #include "fade.h"
 #include "scene.h"
+#include "StoryKey.h"
 
 static ID3D11ShaderResourceView* g_FinBGTexture;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
 static char* g_FinBGTextureName = (char*)"data\\texture\\fin.png";
@@ -30,6 +31,8 @@ void InitFin() {
 	char filename[] = "data\\SoundData\\BGM\\Fin.wav";
 	g_FinSoundNo = LoadSound(filename);
 	PlaySound(g_FinSoundNo, -1);
+
+	GetStoryKey()->HaveSKey++;
 }
 void UninitFin() {
 	StopSound(g_FinSoundNo);

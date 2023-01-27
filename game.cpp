@@ -189,8 +189,7 @@ void UpdateGame()
 
 	//ポーズ処理
 	if (Keyboard_IsKeyTrigger(KK_TAB) ||				// keyboard TAB
-		IsButtonTriggered(0, XINPUT_GAMEPAD_START) ||	// GamePad START
-		IsButtonTriggered(0, XINPUT_GAMEPAD_BACK)) {	// Gamepad BACK
+		IsButtonTriggered(0, XINPUT_GAMEPAD_START)){	// GamePad START
 		//ポーズフラグがoff
 		if (!(*pause)) {
 			(*pause) = true;
