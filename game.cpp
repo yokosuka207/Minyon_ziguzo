@@ -250,6 +250,7 @@ void UpdateGame()
 		UpdatePlayerLife();
 		UpdateKeyDisplay();
 		UpdateExplain();
+
 	}
 	else {
 		UpdatePause();
