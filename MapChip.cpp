@@ -279,16 +279,29 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 	g_HighbrokenIndex = 0;	//高い壊れるブロックの個数
 	g_EnemyIndex = 0;	//敵の数
 	//p=ブロック最大数
-		//i=y方向
-	for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
-		//j=x方向
-		for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
-			// 中心座標変数
-			//D3DXVECTOR2 position = D3DXVECTOR2((pos.x - PUZZLE_SIZE / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
-			D3DXVECTOR2 position = D3DXVECTOR2((pos.x + PUZZLE_SIZE / 2) - j * BLOCK_CHIP_SIZE - BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
-			D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
+	//i=y方向
+	if (g_PieceMapChip[Pin].direction >= 2) {
+		for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
+			//j=x方向
+			for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
+				// 中心座標変数
+				D3DXVECTOR2 position = D3DXVECTOR2((pos.x + PUZZLE_SIZE / 2) - j * BLOCK_CHIP_SIZE - BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
+				D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
 
-			SetField(position, DrawSize, no, Pin, i, j);
+				SetField(position, DrawSize, no, Pin, i, j);
+			}
+		}
+	}
+	else {
+		for (int i = BLOCK_CHIP_ARRAY - 1; i >= 0; i--) {
+			//j=x方向
+			for (int j = BLOCK_CHIP_ARRAY - 1; j >= 0; j--) {
+				// 中心座標変数
+				D3DXVECTOR2 position = D3DXVECTOR2((pos.x + PUZZLE_SIZE / 2) - j * BLOCK_CHIP_SIZE - BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
+				D3DXVECTOR2 DrawSize = D3DXVECTOR2(BLOCK_DRAW_SIZE, BLOCK_DRAW_SIZE);
+
+				SetField(position, DrawSize, no, Pin, i, j);
+			}
 		}
 	}
 }
@@ -504,17 +517,31 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 	int HighbrokenIndex = 0;
 	int EnemyIndex = 0;
 	//p=ブロック最大数
-		//i=y方向
-	for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
-		//j=x方向
-		for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
-			// 中心座標変数
-			//D3DXVECTOR2 position = D3DXVECTOR2((pos.x - PUZZLE_SIZE / 2) + j * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2, (pos.y - PUZZLE_SIZE / 2) + i * BLOCK_CHIP_SIZE + BLOCK_CHIP_SIZE / 2);
-			D3DXVECTOR2 position = D3DXVECTOR2((pos.x + INVENTORY_PUZZLE_SIZE / 2) - j * 6.0f - 6.0f / 2, (pos.y - INVENTORY_PUZZLE_SIZE / 2) + i * 6.0f + 6.0f / 2);
-			D3DXVECTOR2 DrawSize = D3DXVECTOR2(6.0f, 6.0f);
+	//i=y方向
+	if (g_PieceMapChip[Pin].direction >= 2) {
+		for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
+			//j=x方向
+			for (int j = 0; j < BLOCK_CHIP_ARRAY; j++) {
+				// 中心座標変数
+				D3DXVECTOR2 position = D3DXVECTOR2((pos.x + INVENTORY_PUZZLE_SIZE / 2) - j * 6.0f - 6.0f / 2, (pos.y - INVENTORY_PUZZLE_SIZE / 2) + i * 6.0f + 6.0f / 2);
+				D3DXVECTOR2 DrawSize = D3DXVECTOR2(6.0f, 6.0f);
 
-			SetField(position, DrawSize, no, Pin, i, j);
+				SetField(position, DrawSize, no, Pin, i, j);
+			}
 		}
+	}
+	else {
+		for (int i = BLOCK_CHIP_ARRAY - 1; i >= 0; i--) {
+			//j=x方向
+			for (int j = BLOCK_CHIP_ARRAY - 1; j >= 0; j--) {
+				// 中心座標変数
+				D3DXVECTOR2 position = D3DXVECTOR2((pos.x + INVENTORY_PUZZLE_SIZE / 2) - j * 6.0f - 6.0f / 2, (pos.y - INVENTORY_PUZZLE_SIZE / 2) + i * 6.0f + 6.0f / 2);
+				D3DXVECTOR2 DrawSize = D3DXVECTOR2(6.0f, 6.0f);
+
+				SetField(position, DrawSize, no, Pin, i, j);
+			}
+		}
+
 	}
 }
 
@@ -592,11 +619,11 @@ void SetField(D3DXVECTOR2 position, D3DXVECTOR2 DrawSize, int no, int Pin, int i
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_DOPPELGANGER)://22　ドッペルゲンガー
 		SetDoppelGanger(position, DrawSize, no);
 		break;
-	case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_LEFT)://23　敵
+	case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_LEFT)://23　敵 左
 		SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_LEFT, g_EnemyIndex);
 		g_EnemyIndex++;
 		break;
-	case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_RIGHT)://24　敵
+	case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_RIGHT)://24　敵　右
 		SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_RIGHT, g_EnemyIndex);
 		g_EnemyIndex++;
 		break;
