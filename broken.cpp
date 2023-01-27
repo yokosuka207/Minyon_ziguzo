@@ -172,7 +172,7 @@ void SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index, int number){
 		{
 			if (g_Broken[i].index == index)
 			{
-				if (g_Broken[i].Number == number-1)
+				if (g_Broken[i].Number == number)
 				{
 					MatchFlag = true;
 					if (!g_Broken[i].breakFlag)
