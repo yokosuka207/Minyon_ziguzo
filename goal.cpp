@@ -27,7 +27,7 @@ HRESULT InitGoal(){
 	g_Goal.texno = LoadTexture(g_textureName_Goal);
 	g_Goal.Pos = D3DXVECTOR2(0.0f, 0.0f);
 	g_Goal.Size = D3DXVECTOR2(GOAL_SIEZX*2, GOAL_SIZEY*2);
-	g_Goal.Col = D3DXCOLOR(0.7f, 1.0f, 0.7f, 1.0f);
+	g_Goal.Col = D3DXCOLOR(1.0f, 1.6f, 1.0f, 1.0f);
 	g_Goal.Rotation = 0.0f;
 	g_Goal.pieceIndex = -1;
 

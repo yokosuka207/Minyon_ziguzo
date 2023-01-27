@@ -281,13 +281,15 @@ void UpdateCollision(){
 		//=========================================
 		//ジャンプ台ヒント
 		
-		if (p_Explain->bUse) {
-			if (CollisionBB(pPlayer->Position, p_Explain->pos, pPlayer->size * 2, p_Explain->size * 2))
-			{
-				p_Explain->CollisionUse = true;
-			}
-			else {
-				p_Explain->CollisionUse = false;
+		for (int i = 0; i < EXPLAIN_MAX; i++) {
+			if (p_Explain[i].bUse) {
+				if (CollisionBB(pPlayer->Position, p_Explain[i].pos, pPlayer->size, p_Explain[i].size))
+				{
+					p_Explain[i].CollisionUse = true;
+				}
+				else {
+					p_Explain[i].CollisionUse = false;
+				}
 			}
 		}
 		
@@ -1122,10 +1124,6 @@ void UpdateCollision(){
 			//------------------------------------------------------
 			//敵の目の前とプレイヤー当たり判定(プレイヤーが死ぬ場合)
 			//------------------------------------------------------
-			//しんちゃんへ
-			//SE導入してるときに気になったから追加してみたけど余計なことしてたらごめんね追加部分はコメントアウトしとくね
-			//エネミー関連のSE部分はいろいろ決まったら随時追加予定
-			//OK
 			for (int i = 0; i < ENEMY_MAX; i++) {
 				if (pEnemy[i].UseFlag) {
 					pEnemy[i].AIFlag = false;

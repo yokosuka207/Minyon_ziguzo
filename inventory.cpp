@@ -45,7 +45,6 @@ static KEEP_PUZZLE		g_Inventory[INVENTORY_MAX];
 
 // テクスチャの名前
 static char* g_InventoryBGTextureName = (char*)"data\\texture\\white.jpg";
-static char* g_InventoryTextureName = (char*)"data\\texture\\blue.png";
 
 //==================================================
 // 初期化
@@ -54,7 +53,6 @@ HRESULT InitInventory()
 {
 	// 各テクスチャのロード
 	float BGTexNo = LoadTexture(g_InventoryBGTextureName);
-	float TexNo = LoadTexture(g_InventoryTextureName);
 
 	// 背景の初期化
 	g_InventoryBG.pos = D3DXVECTOR2(INVENTORYBG_POS_X, INVENTORYBG_POS_Y);
@@ -69,7 +67,7 @@ HRESULT InitInventory()
 		g_Inventory[i].pos = D3DXVECTOR2(0.0f, INVENTORY_POS_Y);
 		g_Inventory[i].size = D3DXVECTOR2(INVENTORY_SIZE_X, INVENTORY_SIZE_Y);
 		g_Inventory[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		g_Inventory[i].texno = TexNo;
+		g_Inventory[i].texno = -1;
 		
 		g_Inventory[i].IsIn = true;
 		g_Inventory[i].IsCatch = false;
