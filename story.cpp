@@ -25,25 +25,25 @@ static	char* g_StoryTextureNameBlock = (char*)"data\\texture\\ストーリーブロック
 
 
 static	ID3D11ShaderResourceView* g_StoryTexture1 = NULL;//テクスチャ情報
-static	char* g_StoryTextureName1 = (char*)"data\\texture\\日記No.7.png";
+static	char* g_StoryTextureName1 = (char*)"data\\texture\\日記No.1.png";
 
 static	ID3D11ShaderResourceView* g_StoryTexture2 = NULL;//操作説明情報
-static	char* g_StoryTextureName2 = (char*)"data\\texture\\日記No.1.png";
+static	char* g_StoryTextureName2 = (char*)"data\\texture\\日記No.2.png";
 
 static	ID3D11ShaderResourceView* g_StoryTexture3 = NULL;//テクスチャ情報
-static	char* g_StoryTextureName3 = (char*)"data\\texture\\日記No.2.png";
+static	char* g_StoryTextureName3 = (char*)"data\\texture\\日記No.3.png";
 
 static	ID3D11ShaderResourceView* g_StoryTexture4 = NULL;//テクスチャ情報
-static	char* g_StoryTextureName4 = (char*)"data\\texture\\日記No.3.png";
+static	char* g_StoryTextureName4 = (char*)"data\\texture\\日記No.4.png";
 
 static	ID3D11ShaderResourceView* g_StoryTexture5 = NULL;//テクスチャ情報
-static	char* g_StoryTextureName5 = (char*)"data\\texture\\日記No.4.png";
+static	char* g_StoryTextureName5 = (char*)"data\\texture\\日記No.5.png";
 
 static	ID3D11ShaderResourceView* g_StoryTexture6 = NULL;//テクスチャ情報
-static	char* g_StoryTextureName6 = (char*)"data\\texture\\日記No.5.png";
+static	char* g_StoryTextureName6 = (char*)"data\\texture\\日記No.6.png";
 
 static	ID3D11ShaderResourceView* g_StoryTexture7 = NULL;//テクスチャ情報
-static	char* g_StoryTextureName7 = (char*)"data\\texture\\日記No.6.png";
+static	char* g_StoryTextureName7 = (char*)"data\\texture\\日記No.7.png";
 
 static	ID3D11ShaderResourceView* g_StoryTexture8 = NULL;//テクスチャ情報
 static	char* g_StoryTextureName8 = (char*)"data\\texture\\日記No.8.png";
