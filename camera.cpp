@@ -5,8 +5,6 @@
 //
 //=============================================================================
 #include "main.h"
-//#include "input.h"
-//#include "keyboard.h"
 #include "xkeyboard.h"
 #include "mouse.h"
 #include "camera.h"
@@ -55,6 +53,7 @@ void InitCamera(void)
 	vz = g_Camera.pos.z - g_Camera.at.z;
 	g_Camera.len = sqrtf(vx * vx + vz * vz);
 	g_Camera.zoomFlag = false;
+	g_Camera.MoveFlag = false;
 	g_Camera.fov = 45.0f;		// 視野角の初期化
 
 
@@ -88,58 +87,29 @@ void UninitCamera(void)
 void UpdateCamera(void)
 {
 	PLAYER* pPlayer = GetPlayer();
-	// カメラを初期に戻す
-	if (Keyboard_IsKeyTrigger(KK_P))
-	{
-		UninitCamera();
-		InitCamera();
-	}
+	MOUSE* pMouse = GetMouse();
 
-	// 視野角を変更する
-	//if (Keyboard_IsKeyTrigger(KK_O))
-	//{// 角度を大きくする
-	//	g_Camera.fov += 1.0f;
-	//}
-	//else if (Keyboard_IsKeyTrigger(KK_L))
-	//{// 角度を小さくする
-	//	g_Camera.fov -= 1.0f;
-	//}
-	if (Keyboard_IsKeyDown(KK_UP))		// 矢印　上
-	{
-		g_Camera.fov = 20.0f;
-		g_Camera.zoomFlag = true;
-		if (g_Camera.fov < 20.0f)
-		{
-			g_Camera.fov = 20.0f;
-
-		}
-
-	}
-	if (Keyboard_IsKeyDown(KK_DOWN))	// 矢印　下
-	{
-		g_Camera.fov = 48.0f;
-		if (g_Camera.fov > 47.0f)
-		{
-			InitCamera();
-			g_Camera.fov = 45.0f;
-
-			g_Camera.zoomFlag = false;
-
-		}
-
-	}
-
-	// 左スティックを動かすか、Aを押す
-	if (GetThumbLeftX(0) != 0|| GetThumbLeftY(0) != 0|| IsButtonPressed(0, XINPUT_GAMEPAD_A))		
+	// ズームイン
+	if (Keyboard_IsKeyDown(KK_UP) ||		// 矢印　上
+		IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_UP) ||		// GamePad　十字キー　上
+		//GetThumbLeftX(0) != 0 ||			// GamePad　左スティック 
+		//GetThumbLeftY(0) != 0 ||
+		g_Camera.MoveFlag)
 	{
 		g_Camera.fov = 20.0f;
 		g_Camera.zoomFlag = true;
 	}
-	// 右スティックを動かす
-	if (GetThumbRightX(0) != 0 || GetThumbRightY(0) != 0)
+	// ズームアウト
+	if (Keyboard_IsKeyDown(KK_DOWN) ||						// 矢印　下
+		IsButtonTriggered(0, XINPUT_GAMEPAD_DPAD_DOWN) ||		// GamePad 十字キー　下
+		GetThumbRightX(0) != 0 ||			// GamePad　右スティック
+		GetThumbRightY(0) != 0 ||
+		abs(pMouse->PosX - pMouse->oldPosX) > 7 ||
+		abs(pMouse->PosY - pMouse->oldPosY) > 7)
 	{
-		InitCamera();
+		g_Camera.MoveFlag = false;
 		g_Camera.fov = 45.0f;
+		InitCamera();
 		g_Camera.zoomFlag = false;
 	}
 	if (g_Camera.zoomFlag)

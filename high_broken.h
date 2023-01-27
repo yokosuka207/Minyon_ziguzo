@@ -16,6 +16,7 @@
 #define HIGH_SIZE_W (50)
 #define HIGH_SIZE_H (10)
 #define HIGH_MAX (10)
+#define HIGH_ANIME_MAX (4)
 #define HIGH_SPEED (2.0f)
 
 struct HIGH
@@ -39,6 +40,20 @@ struct HIGH
 
 };
 
+struct HIGH_ANIME
+{
+	bool UseFlag;//構造体利用中フラグ
+	D3DXVECTOR2 Size;//BOXサイズ
+	D3DXVECTOR2 Postion;//表示座標(中心座標)
+	int index;	//ピースの番号
+	D3DXCOLOR col;//色
+	float PaternNo;//パターン番号
+	float uv_w;//横サイズ
+	float uv_h;//縦サイズ
+	int NumPatern;//横枚数
+};
+
+
 //=============================================================================
 //プロトタイプ宣言
 //=============================================================================
@@ -48,6 +63,7 @@ void UpdateHigh();
 void DrawHigh();
 
 void SetHigh(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index,int number);
+void SetHighAnime(D3DXVECTOR2 pos, D3DXVECTOR2 size,int index);
 void DeleteHigh(int PieceNo);
 
 HIGH* GetHigh();//BROKEN構造体の先頭ポインタを取得

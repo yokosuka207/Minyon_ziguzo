@@ -10,9 +10,9 @@
 
 #include"main.h"
 
-#define CIP_MAX	(20)
-#define	CIP_SIZE_X	(20)
-#define	CIP_SIZE_Y	(20)
+#define CIP_MAX	(10)
+#define	CIP_SIZE_X	(30)
+#define	CIP_SIZE_Y	(30)
 #define CIP_UV_W (1.0f / 4)
 #define CIP_UV_H (1.0f / 4)
 

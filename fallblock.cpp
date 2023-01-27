@@ -43,7 +43,6 @@ HRESULT InitFallBlock()
 		g_FallBlock[i].texno = LoadTexture(g_TextureNameBroken);
 		g_FallBlock[i].PieceIndex = -1;
 		g_FallBlock[i].UseFlag = false;
-
 	}
 
 	return S_OK;
@@ -89,6 +88,7 @@ void SetFallBlock(D3DXVECTOR2 pos, D3DXVECTOR2 size,int PieceNo)
 		if (!g_FallBlock[i].UseFlag)
 		{
 			g_FallBlock[i].Position = pos;
+			g_FallBlock[i].oldpos = pos;
 			g_FallBlock[i].Size = size;
 			g_FallBlock[i].PieceIndex = PieceNo;
 			g_FallBlock[i].UseFlag = true;

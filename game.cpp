@@ -46,9 +46,13 @@
 #include "PlayerLife.h"
 #include "start.h"
 #include "JumpStandExplain.h"
+#include "spawnpoint.h"
 #include"fallblock.h"
 #include "StoryKey.h"
 #include"KeyDisplay.h"
+#include"lamp.h"
+#include"lamp_switch.h"
+#include "EffectLight.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -98,13 +102,16 @@ void InitGame()
 		InitEnemy();
 		InitPause();
 		InitEffectSpark();		// ヒバナエフェクト
+		InitEffectLight();
 		InitBullet();
 		InitPlayerLife();
 		InitKeyDisplay();
 		InitExplain();
 		InitStoryKey();
-
 		InitCollision();
+		InitLamp();
+		InitLampSwitch();
+		InitSpawnPoint();
 	}
 	InitMapChip();
 	SetCursor(D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), D3DXVECTOR2(100, 100));
@@ -159,19 +166,24 @@ void UninitGame()
 	UninitExplain();
 	UninitStoryKey();
 	UninitCollision();
+	UninitLamp();
+	UninitLampSwitch();
+	UninitSpawnPoint();
 
 	UninitPause();
 	pScore->UninitScore();
 	pTime->UninitTime();
 	g_Player3D.Uninit();
 	UninitEffectSpark();		// ヒバナエフェクト
+	UninitEffectLight();
 }
 
 void UpdateGame()
 {
 	//ポーズ処理
 	if (Keyboard_IsKeyTrigger(KK_TAB) ||				// keyboard TAB
-		IsButtonTriggered(0, XINPUT_GAMEPAD_START)) {		// GamePad START
+		IsButtonTriggered(0, XINPUT_GAMEPAD_START) ||	// GamePad START
+		IsButtonTriggered(0, XINPUT_GAMEPAD_BACK)) {	// Gamepad BACK
 		//ポーズフラグがoff
 		if (!(*pause)) {
 			(*pause) = true;
@@ -186,6 +198,7 @@ void UpdateGame()
 			pTime->PauseElapsedTime();
 		}
 	}
+	CAMERA* pCamera = GetCamera();
 	if (!(*pause)) {
 		//UpdatePolygon();	//ポリゴンの更新
 		BgUpdate();
@@ -193,8 +206,8 @@ void UpdateGame()
 		//PuzzleCollision();
 		UpdatePlayer();
 		UpdateDoppelganger();//ドッペルゲンガー
-		PieceCollision();
 		UpdateCollision();
+		PieceCollision();
 
 		UpdateBlock();
 		UpdateJoint();
@@ -217,6 +230,8 @@ void UpdateGame()
 		UpdateSwitch();
 		UpdateSwitchWall();
 		UpdateStoryKey();
+		UpdateLamp();
+		UpdateLampSwitch();
 
 		UpdateEnemy();
 		UpdateBullet();
@@ -224,10 +239,13 @@ void UpdateGame()
 		UpdateInventory();			// インベントリの更新
 		UpdateMapChip();
 		UpdateGameMouse();
-		UpdateCursor();				// カーソルの更新
+		if (!pCamera->MoveFlag) {
+			UpdateCursor();				// カーソルの更新
+		}
 		g_Player3D.Update();
 		UpdateCamera();
 		UpdateEffectSpark();	// ヒバナエフェクト
+		UpdateEffectLight();
 
 		UpdatePlayerLife();
 		UpdateKeyDisplay();
@@ -236,7 +254,9 @@ void UpdateGame()
 	else {
 		UpdatePause();
 		UpdateGameMouse();
-		UpdateCursor();				// カーソルの更新
+		if (!pCamera->MoveFlag) {
+			UpdateCursor();				// カーソルの更新
+		}
 	}
 }	
 
@@ -244,6 +264,7 @@ void UpdateGame()
 void DrawGame()
 {
 	if (!(*pause)) {
+		CAMERA* pCamera = GetCamera();
 		SetCamera();
 
 		BgDraw();
@@ -258,6 +279,7 @@ void DrawGame()
 
 		DrawPuzzleCip();
 		DrawStart();
+		DrawLamp();
 		DrawPlayer();
 		DrawDoppelganger();//ドッペルゲンガー
 		DrawGKey();
@@ -275,6 +297,7 @@ void DrawGame()
 		DrawGoal();
 		DrawBroken();		
 		DrawThornBlock();
+		DrawLampSwitch();
 
 		DrawEnemy();
 		DrawBullet();
@@ -283,13 +306,14 @@ void DrawGame()
 		DrawPlayerLife();
 		DrawKeyDisplay();
 
-		//DrawRay();				// 光線の描画
-		//DrawIssuer();			// 光線発射装置の描画
 		DrawInventory();			// インベントリの描画
 		pTime->DrawGameTime();
-		DrawCursor();				// カーソルの描画
+		if (!pCamera->MoveFlag) {
+			DrawCursor();				// カーソルの描画
+		}
 		g_Player3D.Draw();
 		DrawEffectSpark();		// ヒバナエフェクト
+		DrawEffectLight();
 		SetCamera();
 		DrawStoryKey();
 		DrawExplain();

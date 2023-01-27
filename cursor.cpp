@@ -42,6 +42,10 @@
 #include"enemy.h"
 #include "JumpStandExplain.h"
 #include "StoryKey.h"
+#include"lamp.h"
+#include"lamp_switch.h"
+#include"spawnpoint_d.h"
+
 //--------------------------------------------------
 // マクロ定義
 //--------------------------------------------------
@@ -91,6 +95,7 @@ HRESULT InitCursor()
 		g_Cursor.texNo = LoadTexture(g_CursorTextureName);
 		g_Cursor.RotIndex = 0;
 		g_Cursor.pFlag = false;
+		g_Cursor.dFlag = false;
 		g_Cursor.useFlag = false;
 		g_Cursor.type = 0;
 		g_Cursor.PieceIndex = -1;
@@ -145,6 +150,9 @@ void UpdateCursor()
 	ENEMY* pEnemy = GetEnemy();
 	EXPLAIN* pExplain = GetExplain();
 	STORYKEY* pStoryKey = GetStoryKey();
+	LAMP* pLamp = GetLamp();
+	LAMP_SWITCH* pLampSwitch = GetLampSwitch();
+	SpawnPointD* pSpawnPointD = GetSpawnPointD();
 	//g_Cursor.useFlag = Mouse_IsLeftDown();
 
 	static float MouseOldPosX = GetMousePosX();
@@ -221,6 +229,17 @@ void UpdateCursor()
 						
 						pPlayer->OneOldpos = pPlayer->Position;
 					}
+					//持ったピースの中にドッペルゲンガーがいたら
+					if (pPiece[i].pos.y - PUZZLE_HEIGHT / 2 < pDoppel->Position.y &&
+						pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pDoppel->Position.y &&
+						pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pDoppel->Position.x &&
+						pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pDoppel->Position.x &&
+						pDoppel->UseFlag == true)
+					{
+						g_Cursor.dFlag = true;
+
+						pDoppel->OneOldpos = pDoppel->Position;
+					}
 
 					g_Cursor.RotIndex = 0;
 
@@ -251,16 +270,6 @@ void UpdateCursor()
 					D3DXVECTOR2 temp = (pPiece[g_Cursor.PieceIndex].pos - pPiece[g_Cursor.PieceIndex].OldPos);
 
 
-					//ブロック動かす
-					if (pDoppel->UseFlag)
-					{
-						if (pDoppel->PieceIndex == NoIndex)
-						{
-							pDoppel->Position += temp;
-						}
-
-					}
-
 					for (int i = 0; i < BLOCK_CHIP_MAX; i++)
 					{//ブロック動かす
 						if (pCipBlock[i].UseFlag)
@@ -280,6 +289,7 @@ void UpdateCursor()
 							if (pBroken[i].index == NoIndex)
 							{
 								pBroken[i].Postion += temp;
+								
 							}
 
 						}
@@ -316,6 +326,8 @@ void UpdateCursor()
 							if (pMoveBlock[i].NowPieceIndex == NoIndex)
 							{
 								pMoveBlock[i].pos += temp;
+								pMoveBlock[i].oldpos = pMoveBlock[i].pos;
+
 							}
 
 						}
@@ -328,6 +340,7 @@ void UpdateCursor()
 							if (pFallBlock[i].PieceIndex == NoIndex)
 							{
 								pFallBlock[i].Position += temp;
+								pFallBlock[i].oldpos = pFallBlock[i].Position;
 							}
 						}
 					}
@@ -414,6 +427,8 @@ void UpdateCursor()
 							if (pJumpStand[i].NowPieceIndex == NoIndex)
 							{
 								pJumpStand[i].pos += temp;
+								pJumpStand[i].oldpos = pJumpStand[i].pos;
+
 							}
 						}
 					}
@@ -440,7 +455,7 @@ void UpdateCursor()
 
 						}
 					}
-					for (int i = 0; i < SWITCHWALL_MAX; i++)
+					for (int i = 0; i < SWITCHWALL_MAX * SWITCHWALL_LIMIT; i++)
 					{//スイッチ壁
 						if (pSwitchWall[i].UseFlag)
 						{
@@ -478,26 +493,84 @@ void UpdateCursor()
 							}
 						}
 					}
+					for (int i = 0; i < LAMP_MAX; i++)
+					{
+						if (pLamp[i].UseFlag)
+						{
+							if (pLamp[i].PieceIndex == NoIndex)
+							{
+								pLamp[i].pos += temp;
+							}
+						}
+					}
+					for (int i = 0; i < LAMP_SWITCH_MAX; i++)
+					{
+						if (pLampSwitch[i].UseFlag)
+						{
+							if (pLampSwitch[i].PieceIndex == NoIndex)
+							{
+								pLampSwitch[i].pos += temp;
+							}
+						}
+					}
+					for (int i = 0; i < SPAWN_POINT_D_MAX; i++)
+					{
+						if (pSpawnPointD[i].UseFlag)
+						{
+							if (pSpawnPointD[i].PieceIndex == NoIndex)
+							{
+								pSpawnPointD[i].Position += temp;
+							}
+						}
+					}
 					// ピースの中にプレイヤーがいない
-					if (!g_Cursor.pFlag)
+					if (!g_Cursor.pFlag && !g_Cursor.dFlag)
 					{
 						// 回転
-						if (Keyboard_IsKeyTrigger(KK_A) ||								// keyboard A
-							IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_SHOULDER))		// GamePad R
+						if (Keyboard_IsKeyTrigger(KK_E) ||								// keyboard E
+							IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_SHOULDER))			// GamePad R
 						{
 							RotateMapChipR(NoIndex);
 							g_Cursor.RotIndex++;
 						}
-						else if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_SHOULDER)) {	// GamePad L
+						else if (Keyboard_IsKeyTrigger(KK_Q) ||					// keyboard Q
+							IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_SHOULDER)) {	// GamePad L
 							RotateMapChipL(NoIndex);
 							g_Cursor.RotIndex--;
 						}
 					}
 					else
 					{
-						pPlayer->Position += temp;
-						pPlayer->oldpos = pPlayer->Position;
+						if (g_Cursor.pFlag)
+						{
+							pPlayer->Position += temp;
+							pPlayer->oldpos = pPlayer->Position;
+						}
+						if (g_Cursor.dFlag)
+						{
+							pDoppel->Position += temp;
+							pDoppel->oldpos = pDoppel->Position;
+						}
 					}
+					//if (!g_Cursor.pFlag)
+					//{
+					//	// 回転
+					//	if (Keyboard_IsKeyTrigger(KK_A) ||								// keyboard A
+					//		IsButtonTriggered(0, XINPUT_GAMEPAD_RIGHT_SHOULDER))		// GamePad R
+					//	{
+					//		RotateMapChipR(NoIndex);
+					//		g_Cursor.RotIndex++;
+					//	}
+					//	else if (IsButtonTriggered(0, XINPUT_GAMEPAD_LEFT_SHOULDER)) {	// GamePad L
+					//		RotateMapChipL(NoIndex);
+					//		g_Cursor.RotIndex--;
+					//	}
+					//}
+					//else
+					//{
+					//	pPlayer->Position += temp;
+					//	pPlayer->oldpos = pPlayer->Position;
+					//}
 					break;
 				}
 				else {
@@ -521,6 +594,7 @@ void UpdateCursor()
 			//g_Cursor.RotIndex = 0;
 		}
 		g_Cursor.pFlag = false;
+		g_Cursor.dFlag = false;
 
 		oneFlag = false;
 		g_Cursor.PieceIndex = -1;

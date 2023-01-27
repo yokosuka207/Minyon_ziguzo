@@ -24,7 +24,6 @@ Update:
 //**************************************************
 // マクロ定義
 //**************************************************
-#define INVENTORY_MAX			(4)
 #define INVENTORY_SIZE_X		(96)
 #define INVENTORY_SIZE_Y		(96)
 #define INVENTORY_BIGSIZE_X		(120)
@@ -47,9 +46,6 @@ static KEEP_PUZZLE		g_Inventory[INVENTORY_MAX];
 // テクスチャの名前
 static char* g_InventoryBGTextureName = (char*)"data\\texture\\white.jpg";
 static char* g_InventoryTextureName = (char*)"data\\texture\\blue.png";
-
-bool g_bPieceHave = false;					// ピースを持っているフラグ
-
 
 //==================================================
 // 初期化
@@ -80,8 +76,6 @@ HRESULT InitInventory()
 		g_Inventory[i].IsUse = false;
 	}
 
-	g_bPieceHave = false;
-
 	return S_OK;
 }
 
@@ -102,15 +96,6 @@ void UpdateInventory()
 	MOUSE* pMouse = GetMouse();
 	D3DXVECTOR2 MousePos = D3DXVECTOR2(GetMousePosX(), GetMousePosY());		// マウスの座標
 
-	if (IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
-		if (!g_bPieceHave) g_bPieceHave = true;
-		else g_bPieceHave = false;
-	}
-
-	if (Mouse_IsLeftRelease()) {
-		g_bPieceHave = false;
-	}
-
 	for (int i = 0; i < INVENTORY_MAX; i++) {
 		if (g_Inventory[i].IsUse)
 		{
@@ -123,7 +108,7 @@ void UpdateInventory()
 			float bgmax_x = -INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X * 2.3f;
 			// 入力(マウス左Press)
 			if (Mouse_IsLeftDown() ||
-				g_bPieceHave) {
+				pCursor->bHave) {
 					//----------Trigger挙動----------
 					if (!g_Inventory[i].IsCatch) {
 						// マウスと所持パズルが当たっていたら
@@ -146,7 +131,6 @@ void UpdateInventory()
 									g_Inventory[i].IsCatch = true;
 								}
 							}
-							//g_Inventory[i].IsCatch = true;
 						}
 					}
 				
@@ -187,8 +171,7 @@ void UpdateInventory()
 				//----------Release挙動----------
 				if (g_Inventory[i].IsCatch) {
 					// 初期位置に戻る
-					//g_Inventory[i].pos = D3DXVECTOR2(i * INVENTORY_POS_X, INVENTORY_POS_Y);		// 下ver
-					g_Inventory[i].pos = g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f * 2 - i * 150.0f);// 左ver
+					g_Inventory[i].pos = g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f * 2 - i * 150.0f);
  					DeleteMapChip(g_Inventory[i].PieNo);
 					SetInventoryMapChip(g_Inventory[i].pos, g_Inventory[i].PieNo, g_Inventory[i].PieNo);
 
@@ -233,6 +216,7 @@ void SetInventory(int PieNo)
 
 				g_Inventory[i].pos = D3DXVECTOR2(-550.0f, 100.0f*2 - i * 150.0f);
 				SetInventoryMapChip(g_Inventory[i].pos, PieNo, PieNo);
+				g_Inventory[i].IsIn = true;
 				g_Inventory[i].IsUse = true;
 				g_Inventory[i].IsCatch = true;
 

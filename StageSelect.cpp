@@ -27,7 +27,7 @@
 //	マクロ定義
 //*****************************************************************************
 
-#define STAIRS_LEFT	75
+#define STAIRS_LEFT	65
 #define STAIRS_RIGHT	245
 
 #define DOOR_SPACE	1050 / 7
@@ -39,22 +39,30 @@
 static STAGESELECT g_StageSelect[STAGE_MAX];
 static STAGESELECT g_StageSelectBlack[STAGE_MAX];
 static STAGESELECT_BG g_StageSelectBg;
-static STAGESELECT_BG g_StageSelectfence[21];
+static STAGESELECT_BG g_StageSelectfence[24];
 static STAGESELECT_BLOCK g_StageSelectBlock[3];
 static STAGESELECT_STAIRS g_StageSelectStairs[12];
 
 static ID3D11ShaderResourceView* g_StageSelectTexture;	//画像一枚で一つの変数が必要
-static char* g_StageSelectTextureName = (char*)"data\\texture\\ドア.png";	//テクスチャファイルパス
+static char* g_StageSelectTextureName = (char*)"data\\texture\\ドア3.png";	//テクスチャファイルパス
+
 static ID3D11ShaderResourceView* g_StageSelect2Texture;	//画像一枚で一つの変数が必要
 static char* g_StageSelect2TextureName = (char*)"data\\texture\\black.png";	//テクスチャファイルパス
+
 static ID3D11ShaderResourceView* g_StageSelectTextureBg;	//画像一枚で一つの変数が必要
-static char* g_StageSelectBgTextureName = (char*)"data\\texture\\スレージセレクト背景.png";	//テクスチャファイルパス
+static char* g_StageSelectBgTextureName = (char*)"data\\texture\\ステージセレクト背景.png";	//テクスチャファイルパス
+
 static ID3D11ShaderResourceView* g_StageSelectTextureBlock;	//画像一枚で一つの変数が必要
 static char* g_StageSelectBlockTextureName = (char*)"data\\texture\\ステージ選択床.png";	//テクスチャファイルパス
+
 static ID3D11ShaderResourceView* g_StageSelectTextureStairs;	//画像一枚で一つの変数が必要
-static char* g_StageSelectStairsTextureName = (char*)"data\\texture\\jumpstand.png";	//テクスチャファイルパス
+static char* g_StageSelectStairsTextureName = (char*)"data\\texture\\階段6.png";	//テクスチャファイルパス
+static char* g_StageSelectStairsTextureName2 = (char*)"data\\texture\\階段2.png";	//テクスチャファイルパス
+static int g_StageSelectStairsTexNo = 0;
+static int g_StageSelectStairsTexNo2 = 0;
+
 static ID3D11ShaderResourceView* g_StageSelectTexturefence;	//画像一枚で一つの変数が必要
-static char* g_StageSelectfenceTextureName = (char*)"data\\texture\\柵.png";	//テクスチャファイルパス
+static char* g_StageSelectfenceTextureName = (char*)"data\\texture\\新柵1.png";	//テクスチャファイルパス
 
 
 static PLAYER ply;
@@ -88,7 +96,7 @@ static int g_ClearStageNum = 0;
 HRESULT InitStageSelect() {
 	//StageNo = 0;
 
-	g_StageSelectBg.pos = D3DXVECTOR2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+	g_StageSelectBg.pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	g_StageSelectBg.size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	g_StageSelectBg.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_StageSelectBg.texno = LoadTexture(g_StageSelectBgTextureName);
@@ -96,23 +104,28 @@ HRESULT InitStageSelect() {
 
 	int a = 0;
 	int b = 0;
-
-	for (int i = 0; i < 21; i++)
+	//=============================================
+	//フェンス
+	//=============================================
+	for (int i = 0; i < 24; i++)
 	{
-		if (i % 7 == 0 && i != 0)
+		if (i % 8 == 0 && i != 0)
 		{
 			a++;
 			b = 0;
 		}
 
-		g_StageSelectfence[i].pos = D3DXVECTOR2(250.0f+(170.0f*b), 220.0f + (250 * a));
+		//g_StageSelectfence[i].pos = D3DXVECTOR2(300.0f + (170.0f * b), 190.0f + (250 * a));
+		g_StageSelectfence[i].pos = D3DXVECTOR2(420.0f + (170.0f * b), 190.0f + (250 * a));
 		g_StageSelectfence[i].size = D3DXVECTOR2(170.0f, 110.0f);
 		g_StageSelectfence[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		g_StageSelectfence[i].texno = LoadTexture(g_StageSelectfenceTextureName);
 		b++;
 	}
 
-
+	//=============================================
+	// ブロック
+	//=============================================
 	for (int i = 0; i < 3; i++)
 	{
 		g_StageSelectBlock[i].pos = D3DXVECTOR2(SCREEN_WIDTH / 2, 250.0f + (250 * i));
@@ -121,8 +134,11 @@ HRESULT InitStageSelect() {
 		g_StageSelectBlock[i].texno = LoadTexture(g_StageSelectBlockTextureName);
 
 	}
-	 a = 0;
-	 b = 0;
+	//=============================================
+	// 階段
+	//=============================================
+	a = 0;
+	b = 0;
 
 	for (int i = 0; i < 12; i++)
 	{
@@ -132,17 +148,20 @@ HRESULT InitStageSelect() {
 			b = 0;
 		}
 
-		g_StageSelectStairs[i].pos = D3DXVECTOR2(90.0f+(b*25.0f), 270.0f+(b*40.0f) + (250 * a));
+		//g_StageSelectStairs[i].pos = D3DXVECTOR2(90.0f+ (b * 28.0f), 270.0f+(b * 40.0f) + (250 * a));
+		//g_StageSelectStairs[i].pos = D3DXVECTOR2(90.0f + (b * 23.0f), 267.0f + (b * 40.0f) + (250 * a));
+		g_StageSelectStairs[i].pos = D3DXVECTOR2(140.0f + (b * 23.0f), 267.0f + (b * 40.0f) + (250 * a));
 		g_StageSelectStairs[i].size = D3DXVECTOR2(30.0f, 40.0f);
 		g_StageSelectStairs[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		g_StageSelectStairs[i].texno = LoadTexture(g_StageSelectStairsTextureName);
 		b++;
 	}
+	g_StageSelectStairsTexNo = LoadTexture(g_StageSelectStairsTextureName);
+	g_StageSelectStairsTexNo2 = LoadTexture(g_StageSelectStairsTextureName2);
 
 	//g_Texturenumber = LoadTexture(g_StageSelectStairsTextureName);
 
 
-	 a = 0;
+	a = 0;
 	b = 0;
 
 
@@ -157,11 +176,12 @@ HRESULT InitStageSelect() {
 			}
 			//ドア
 			//g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (180.0f) + (250.0f * a));
-			g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (DOOR_SPACE * b), (180.0f) + (250.0f * a));
+			//g_StageSelect[i].pos = D3DXVECTOR2((300.0f) + (DOOR_SPACE * b), (180.0f) + (250.0f * a));
+			g_StageSelect[i].pos = D3DXVECTOR2((420.0f) + (DOOR_SPACE * b), (180.0f) + (250.0f * a));
 			g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
 			g_StageSelect[i].UseFlag = true;
 			g_StageSelect[i].StagePieceIndex = i;
-			g_StageSelect[i].StageUseFlag = true;		// true : 全ステージ開放チート	false : 通常
+			g_StageSelect[i].StageUseFlag = false;		// true : 全ステージ開放チート	false : 通常
 			g_StageSelect[i].texno = LoadTexture(g_StageSelectTextureName);
 			//ドアSE
 			g_StageSelectSoundNo = LoadSound(g_StageSelectSoundName);
@@ -259,14 +279,14 @@ void UpdateStageSelect() {
 
 				//移動
 				if (GetThumbLeftX(0) > 0.3f ||					// GamePad	右スティック	右
-					Keyboard_IsKeyDown(KK_RIGHT))				// Keyboard	右
+					Keyboard_IsKeyDown(KK_D))				// Keyboard	D
 				{//押されているときの処理
 					ply.sp.x = 3.0f;
 					ply.PaternNo += 0.25f;
 					if (ply.isHigh)
 					{
-						ply.sp.x = 3.0f;
-						ply.sp.y = 4.0f;
+						ply.sp.x = 2.0f;
+						ply.sp.y = 5.0f;
 
 					}
 
@@ -275,7 +295,7 @@ void UpdateStageSelect() {
 					ply.uv_w = PLAYER_UV_W;
 				}
 				else if (GetThumbLeftX(0) < -0.3f ||			// GamePad	右スティック	左
-					Keyboard_IsKeyDown(KK_LEFT))				// Keyboard	左
+					Keyboard_IsKeyDown(KK_A))				// Keyboard	A
 				{//押されているときの処理
 					ply.sp.x = -3.0f;
 					ply.PaternNo -= 0.25f;
@@ -294,14 +314,15 @@ void UpdateStageSelect() {
 				{
 					if (ply.isHigh)
 					{
-						ply.sp.y = 0.0f;
+						//ply.sp.y = 0.0f;
 					}
 					ply.sp.x = 0;
 
 				}
 			}
 			if (STAIRS_LEFT < ply.Position.x && ply.Position.x < STAIRS_RIGHT) {
-				if (Keyboard_IsKeyDown(KK_DOWN))//右キー
+				if (GetThumbLeftY(0) < -0.3f ||		// GamePad 左スティック 下
+					Keyboard_IsKeyDown(KK_S))		// keyboard S
 				{
 
 					if (ply.Position.y < SCREEN_HEIGHT - 100.0f)
@@ -321,7 +342,7 @@ void UpdateStageSelect() {
 			if (!ply.SoundRightFlag) {
 				if (ply.PaternNo == 9.0f) {
 					PlaySound(g_StageSelectPlayerRightSoundNo, 0);
-					SetVolume(g_StageSelectPlayerRightSoundNo, 0.5f);
+					SetVolume(g_StageSelectPlayerRightSoundNo, 1.5f);
 					ply.SoundRightFlag = true;
 				}
 			}
@@ -333,7 +354,7 @@ void UpdateStageSelect() {
 			if (!ply.SoundLeftFlag) {
 				if (ply.PaternNo == 1.0f) {
 					PlaySound(g_StageSelectPlayerLeftSoundNo, 0);
-					SetVolume(g_StageSelectPlayerLeftSoundNo, 0.5f);
+					SetVolume(g_StageSelectPlayerLeftSoundNo, 1.5f);
 					ply.SoundLeftFlag = true;
 				}
 			}
@@ -372,6 +393,10 @@ void UpdateStageSelect() {
 		if (ply.Position.x > SCREEN_WIDTH)
 		{
 			ply.Position.x = SCREEN_WIDTH;
+		}
+		if (ply.Position.x < 0)
+		{
+			ply.Position.x = 0;
 		}
 
 
@@ -447,7 +472,8 @@ void UpdateStageSelect() {
 					{
 						//ply.Position.x = g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x / 2 + ply.size.x / 2;
 						//ply.sp = D3DXVECTOR2(0.0f,-4.0f);
-						if (Keyboard_IsKeyDown(KK_UP))
+						if (GetThumbLeftY(0) > 0.3f ||			// GamePad 左スティック 上
+							Keyboard_IsKeyDown(KK_W))			// keyboard W
 						{
 							ply.isHigh = true;	//上に上る
 
@@ -467,7 +493,7 @@ void UpdateStageSelect() {
 						ply.fall = false;
 						ply.WarpFlag = false;
 						//ply.isGround = true;
-						ply.sp.y = 4.0f;
+						ply.sp.y = 5.0f;
 						ply.frame = 0;
 					}
 					//プレイヤー下・ブロック上,落下する
@@ -501,9 +527,10 @@ void UpdateStageSelect() {
 					ply.Position.y + ply.size.y / 2 > g_StageSelect[i].pos.y - g_StageSelect[i].size.y / 2 &&
 					ply.Position.y - ply.size.y / 2 < g_StageSelect[i].pos.y + g_StageSelect[i].size.y / 2)
 				{
-					if (Keyboard_IsKeyTrigger(KK_A) ||					// keyboard A
-						IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
-						//SetVolume(g_BrokenSoundNo, 0.5f);
+					if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||					// keyboard Ctrl 左
+						Keyboard_IsKeyTrigger(KK_C) ||								// keyboard C
+						IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {					// GamePad B
+						SetVolume(g_StageSelectSoundNo, 0.5f);
 						PlaySound(g_StageSelectSoundNo, 0);
 						StageNo = i;
 						//SetScene(SCENE::SCENE_GAME);
@@ -519,13 +546,15 @@ void UpdateStageSelect() {
 		if (pStory->bUse) {
 			if (CollisionBB(ply.Position, pStory->pos, ply.size, pStory->size))
 			{
-
-				if (Keyboard_IsKeyTrigger(KK_B) ||					// keyboard B
-					IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
+				if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||	// keyboard Ctrl 左
+					Keyboard_IsKeyTrigger(KK_C)) {				// keyboard C
+					if (pStory->KeyUse) pStory->KeyUse = false;
+					else pStory->KeyUse = true;
+				}
+				if (IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
 					pStory->KeyUse = true;
 				}
-				if (Keyboard_IsKeyTrigger(KK_M) ||					// keyboard M
-					IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {			// GamePad B
+				if (IsButtonTriggered(0, XINPUT_GAMEPAD_A)) {			// GamePad A
 					pStory->KeyUse = false;
 				}
 			}
@@ -539,22 +568,22 @@ void UpdateStageSelect() {
 //-----------------------------------------------------------------------------
 void DrawStageSelect() {
 
-	D3DXCOLOR color(1, 1, 1, 1);
+	D3DXCOLOR color(1.0f, 1.0f, 1.0f, 1.0f);
 
 	if (pStory->KeyUse) {
 		color = D3DXCOLOR(0, 0, 0, 0.5);
 	}
 	else {
-		color = D3DXCOLOR(1, 1, 1, 1);
+		color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	}
-	
+
 	{	//背景ポリゴン表示
 		SetWorldViewProjection2D();
 
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectBg.texno));
 		SpriteDrawColorRotation(
 			g_StageSelectBg.pos.x, g_StageSelectBg.pos.y, 0.5f, g_StageSelectBg.size.x, g_StageSelectBg.size.y
-			, 0.0f, color, 0, 1.0f, 1.0f, 1);
+			, 0.0f, D3DXCOLOR(0.7f, 0.7f, 0.76f, 1.0f), 0, 1.0f, 1.0f, 1);
 	}
 	for (int i = 0; i < 3; i++)
 	{
@@ -564,24 +593,9 @@ void DrawStageSelect() {
 
 		SpriteDrawColorRotation(
 			g_StageSelectBlock[i].pos.x, g_StageSelectBlock[i].pos.y, 0.5f, g_StageSelectBlock[i].size.x, g_StageSelectBlock[i].size.y
-			, 0.0f, color, 0, 1.0f, 1.0f, 1);
+			, 0.0f, D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f), 0, 1.0f, 1.0f, 1);
 
 	}
-
-	//階段
-	for (int i = 0; i < 12; i++)
-	{
-		SetWorldViewProjection2D();
-
-		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairs[i].texno));
-
-		SpriteDrawColorRotation(
-			g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x + 10, g_StageSelectStairs[i].size.y + 10
-			, 0.0f, color, 0, 1.0f, 1.0f, 1);
-
-	}
-
-
 
 	for (int i = 0; i < STAGE_MAX; i++)
 	{		
@@ -611,31 +625,95 @@ void DrawStageSelect() {
 		);
 		//g_StageSelect[i].pos.x -= 30;
 	}
+	if (!pStory->KeyUse)
+	{
+		DrawStory();
+	}
+	//===========================================
+	// プレイヤー
+	//===========================================
+	if (ply.UseFlag == true)
+	{
+		SetWorldViewProjection2D();
 
-	DrawStory();
+		//テクスチャの設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ply.texno));
+		//スプライトを表示
+		D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		SpriteDrawColorRotation(ply.Position.x, ply.Position.y, -0.0f, ply.size.x, ply.size.y, ply.rot, color, ply.PaternNo, ply.uv_w, ply.uv_h, ply.NumPatern);
+	}
 
-		if (ply.UseFlag == true)
-		{
-			SetWorldViewProjection2D();
+	//===========================================
+	//階段
+	//===========================================
+	for (int i = 0; i < 12; i += 6)
+	{
+		SetWorldViewProjection2D();
+		if (i == 0 || i == 6) {
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairsTexNo));
 
-			//テクスチャの設定
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(ply.texno));
-			//スプライトを表示
-			D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-			SpriteDrawColorRotation(ply.Position.x, ply.Position.y, -0.0f, ply.size.x, ply.size.y, ply.rot, color, ply.PaternNo, ply.uv_w, ply.uv_h, ply.NumPatern);
-		}
-
-		for (int i = 0; i < 21; i++)
-		{
-
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectfence[i].texno));
 			SpriteDrawColorRotation(
-				g_StageSelectfence[i].pos.x, g_StageSelectfence[i].pos.y, 0.5f, g_StageSelectfence[i].size.x, g_StageSelectfence[i].size.y
-				, 0.0f, color, 0, 1.0f, 1.0f, 1);
-
+				g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x * 2,
+				g_StageSelectStairs[i].pos.y + g_StageSelectStairs[i].size.y * 2,
+				0.5f,
+				g_StageSelectStairs[i].size.x * 8,
+				g_StageSelectStairs[i].size.y * 8,
+				0.0f,
+				D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f),
+				0,
+				1.0f,
+				1.0f,
+				1
+			);
 		}
+		//else if (i == 3 || i == 9) {
+		//	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectStairsTexNo2));
+		//	SpriteDrawColorRotation(
+		//		g_StageSelectStairs[i].pos.x + g_StageSelectStairs[i].size.x + 24.0f,
+		//		g_StageSelectStairs[i].pos.y + 4.0f,
+		//		0.5f,
+		//		g_StageSelectStairs[i].size.x * 5,
+		//		g_StageSelectStairs[i].size.y * 5,
+		//		0.0f,
+		//		color,
+		//		0,
+		//		1.0f,
+		//		1.0f,
+		//		1
+		//	);
+		//}
+		//SpriteDrawColorRotation(
+		//	g_StageSelectStairs[i].pos.x, g_StageSelectStairs[i].pos.y, 0.5f, g_StageSelectStairs[i].size.x * 2, g_StageSelectStairs[i].size.y * 2,
+		//	0.0f, color, 0, 1.0f, 1.0f, 1);
+	}
 
-	
+
+	//===========================================================
+	// フェンス
+	//===========================================================
+	for (int i = 0; i < 24; i++)
+	{
+
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectfence[i].texno));
+		SpriteDrawColorRotation(
+			g_StageSelectfence[i].pos.x, 
+			g_StageSelectfence[i].pos.y,
+			0.5f,
+			g_StageSelectfence[i].size.x,
+			g_StageSelectfence[i].size.y,
+			0.0f,
+			D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f),
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
+
+	}
+	if (pStory->KeyUse)
+	{
+		DrawStory();
+	}
 }
 
 //-----------------------------------------------------------------------------

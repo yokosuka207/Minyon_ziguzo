@@ -9,6 +9,7 @@
 #include "main.h"
 #include "renderer.h"
 #include "goal_key.h"
+#include "lamp_switch.h"
 
 //=============================================================================
 //マクロ定義
@@ -49,12 +50,16 @@ struct DOPPELGANGER
 	bool isSheerFloorsUse;
 	bool isMoveBlock;
 	bool isHigh;
+	bool isFallBlock;
+	bool isBrokenBlock;
 	bool WarpFlag;
+	bool LampSwitchFlag[LAMP_SWITCH_MAX];
 
 	D3DXVECTOR2 size;//BOXサイズ
 	D3DXVECTOR2 Drawsize;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
 	D3DXVECTOR2 oldpos;//1フレーム前の座標
+	D3DXVECTOR2 OneOldpos;
 	//D3DXVECTOR2 OneOldpos;//1フレーム前の座標
 
 	D3DXVECTOR2 sp;
@@ -71,6 +76,8 @@ struct DOPPELGANGER
 	DOPPELGANGER_DIRECTION dir;			// 反プレイヤーの向き
 	int PieceIndex;	//動いでいるピースの番号
 
+	int hp;
+	int LightFrame;
 };
 
 //=============================================================================

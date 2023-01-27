@@ -69,52 +69,32 @@ void UpdateEnemy() {
 
 		for (int i = 0; i < ENEMY_MAX; i++) {
 			if (g_Enemy[i].UseFlag) {
-
-				switch (g_Enemy[i].dir)
-				{
-				case ENEMY_DIRECTION::DIRECTION_LEFT:
-					g_Enemy[i].uv_w = -1.0f;
-					break;
-				case ENEMY_DIRECTION::DIRECTION_RIGHT:
-					//g_Enemy[i].uv_w = 1.0f;
-
-					break;
-				default:
-					break;
-				}
-				if (g_Enemy[i].AIFlag)
-				{
+				if (g_Enemy[i].AIFlag){
 					g_Enemy[i].BulletWait++;
-					if (g_Enemy[i].BulletWait > 120)
-					{
+					if (g_Enemy[i].BulletWait > 120){
 						switch (g_Enemy[i].dir)
 						{
 						case ENEMY_DIRECTION::DIRECTION_LEFT:
-							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(-BULLET_SPEED, 0.0f));
+							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(-BULLET_SPEED, 0.0f),g_Enemy[i].rot / 90);
 							break;
 						case ENEMY_DIRECTION::DIRECTION_RIGHT:
-							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(BULLET_SPEED, 0.0f));
+							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(BULLET_SPEED, 0.0f), g_Enemy[i].rot / 90);
 
 							break;
 						case ENEMY_DIRECTION::DIRECTION_UP:
-							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(0.0f, BULLET_SPEED));
+							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(0.0f, BULLET_SPEED), g_Enemy[i].rot / 90);
 
 							break;
 						case ENEMY_DIRECTION::DIRECTION_DOWN:
-							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(0.0f, -BULLET_SPEED));
+							SetBullet(g_Enemy[i].pos, D3DXVECTOR2(BULLET_SIZE_W, BULLET_SIZE_H), D3DXVECTOR2(0.0f, -BULLET_SPEED), g_Enemy[i].rot / 90);
 
 							break;
 						default:
 							break;
 						}
-
-
-
 						g_Enemy[i].BulletWait = 0;
-
 					}
 				}
-
 			}
 		}
 	}
@@ -126,10 +106,10 @@ void DrawEnemy() {
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Enemy[i].texno));
 			SpriteDrawColorRotation(
 				g_Enemy[i].pos.x,
-				g_Enemy[i].pos.y,
+				g_Enemy[i].pos.y - 5.0f,
 				-0.1f,
-				g_Enemy[i].size.x,
-				g_Enemy[i].size.y,
+				-g_Enemy[i].size.x,
+				-g_Enemy[i].size.y,
 				g_Enemy[i].rot,
 				g_Enemy[i].color,
 				g_Enemy[i].PaternNo,
@@ -145,19 +125,21 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 		if (!g_Enemy[i].UseFlag) {
 			if (d==ENEMY_DIRECTION::DIRECTION_LEFT)
 			{
+				g_Enemy[i].uv_w = -1.0f;
+
 				switch (direction) {
-				case 0:g_Enemy[i].rot = direction * 90;
+				case 0:g_Enemy[i].rot = (direction + 2) * 90;
 					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_RIGHT;
 
 					break;
-				case 1:g_Enemy[i].rot = (direction + 2) * 90;
+				case 1:g_Enemy[i].rot =  direction * 90;
 					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_DOWN;
 
 					break;
-				case 2:g_Enemy[i].rot = direction * 90;
-					g_Enemy[i].dir = d;
+				case 2:g_Enemy[i].rot = (direction - 2) * 90;
+					
 					break;
-				case 3:g_Enemy[i].rot = (direction - 2) * 90;
+				case 3:g_Enemy[i].rot =  direction * 90;
 					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_UP;
 
 					break;
@@ -168,19 +150,21 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 			}
 			if (d == ENEMY_DIRECTION::DIRECTION_RIGHT)
 			{
+				g_Enemy[i].uv_w = 1.0f;
+
 				switch (direction) {
-				case 0:g_Enemy[i].rot = direction * 90;
+				case 0:g_Enemy[i].rot = (direction + 2) * 90;
 					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_LEFT;
 
 					break;
-				case 1:g_Enemy[i].rot = (direction + 2) * 90;
+				case 1:g_Enemy[i].rot = direction * 90;
 					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_UP;
 
 					break;
-				case 2:g_Enemy[i].rot = direction * 90;
+				case 2:g_Enemy[i].rot = (direction  - 2) * 90;
 					g_Enemy[i].dir = d;
 					break;
-				case 3:g_Enemy[i].rot = (direction - 2) * 90;
+				case 3:g_Enemy[i].rot = direction * 90;
 					g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_DOWN;
 
 
@@ -192,13 +176,13 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 			}
 
 			switch (direction) {
-			case 0:g_Enemy[i].rot = direction * 90;
+			case 0:g_Enemy[i].rot = (direction + 2) * 90;
 				break;
-			case 1:g_Enemy[i].rot = (direction - 2) * 90;
+			case 1:g_Enemy[i].rot = direction * 90;
 				break;
-			case 2:g_Enemy[i].rot = direction * 90;
+			case 2:g_Enemy[i].rot = (direction - 2) * 90;
 				break;
-			case 3:g_Enemy[i].rot = (direction + 2) * 90;
+			case 3:g_Enemy[i].rot = direction * 90;
 				break;
 			default:
 				break;

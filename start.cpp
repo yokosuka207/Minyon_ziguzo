@@ -12,7 +12,7 @@
 static START g_Start[START_MAX];
 
 static ID3D11ShaderResourceView* g_StartTexture;	//画像一枚で一つの変数が必要
-static char* g_StartTextureName = (char*)"data\\texture\\ドア.png";	//テクスチャファイルパス
+static char* g_StartTextureName = (char*)"data\\texture\\ドア3.png";	//テクスチャファイルパス
 static int g_StartTextureNo = 0;
 
 static float green;
@@ -65,7 +65,7 @@ void DrawStart() {
 	//SetWorldViewProjection2D();
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StartTextureNo));
 	for (int i = 0; i < START_MAX; i++) {
-		g_Start[i].PaternNo += i;
+		g_Start[i].PaternNo = i;
 		if (g_Start[i].UseFlag) {
 			SpriteDrawColorRotation(
 				g_Start[i].pos.x,

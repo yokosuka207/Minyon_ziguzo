@@ -26,8 +26,6 @@ typedef struct
 
 void InitSpawnPoint();
 void UninitSpawnPoint();
-void UpdateSpawnPoint();
-
 
 void SetSpawnPoint(D3DXVECTOR2 p, D3DXVECTOR2 s,int index);
 

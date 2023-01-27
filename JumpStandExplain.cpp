@@ -7,12 +7,13 @@
 #include "xkeyboard.h"
 #include "collision.h"
 #include "JumpStandExplain.h"
+#include "camera.h"
 
 static EXPLAIN g_Explain[EXPLAIN_MAX];
 
 // ヒント表示オブジェクト
 static ID3D11ShaderResourceView* g_ExplainBlock;
-static char* g_ExplainBlockName = (char*)"data\\texture\\ヒントブロック.jpg";
+static char* g_ExplainBlockName = (char*)"data\\texture\\ヒントブロック.png";
 static int	  g_ExplainBlockNo = 0;
 
 // Piace ヒント
@@ -66,7 +67,7 @@ HRESULT InitExplain()
 	for (int i = 0; i < EXPLAIN_MAX; i++) {
 		g_Explain[i].pos = D3DXVECTOR2(-127, 150);
 		g_Explain[i].size = D3DXVECTOR2(EXPLAIN_SIZE, EXPLAIN_SIZE);
-		g_Explain[i].rot = 180.0f;
+		g_Explain[i].rot = 0.0f;
 		g_Explain[i].PieceIndex = -1;
 		g_Explain[i].bUse = false;
 	}
@@ -128,11 +129,14 @@ void UninitExplain()
 
 void UpdateExplain()
 {
+	CAMERA* pCamera = GetCamera();
 	for (int i = 0; i < EXPLAIN_MAX; i++) {
-		if (g_Explain[i].CollisionUse)
+		if (g_Explain[i].CollisionUse && 
+			pCamera->fov != 45.0f)
 		{
-			if (Keyboard_IsKeyDown(KK_B) ||					// keyboard B
-				IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {	// GamePad B
+			if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||					// keyboard Ctrl 左
+				Keyboard_IsKeyTrigger(KK_C) ||								// keyboard C
+				IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {					// GamePad B
 				if (g_Explain[i].No == 0) {
 					g_Explain[i].HintUse = true;
 					g_Explain[i].No++;
@@ -143,11 +147,11 @@ void UpdateExplain()
 				}
 			}
 		}
-		else if (!g_Explain[i].CollisionUse) {
+		else{
 			g_Explain[i].HintUse = false;
+			g_Explain[i].No = 0;
 		}
 	}
-
 }
 
 void DrawExplain()
@@ -212,13 +216,13 @@ void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, int direction, int q)
 		if (!g_Explain[i].bUse)
 		{
 			switch (direction) {
-			case 0:g_Explain[i].rot = (direction - 2) * 90;
+			case 0:g_Explain[i].rot = direction * 90;
 				break;
-			case 1:g_Explain[i].rot = direction * 90;
+			case 1:g_Explain[i].rot = (direction + 2) * 90;
 				break;
-			case 2:g_Explain[i].rot = (direction + 2) * 90;
+			case 2:g_Explain[i].rot = direction * 90;
 				break;
-			case 3:g_Explain[i].rot = direction * 90;
+			case 3:g_Explain[i].rot = (direction - 2) * 90;
 				break;
 			default:
 				break;
@@ -227,7 +231,7 @@ void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, int direction, int q)
 			g_Explain[i].pos = pos;
 			g_Explain[i].size = size;
 			g_Explain[i].bUse = true;
-			g_Explain[i].PieceIndex = no;
+
 			g_Explain[i].tex = q;
 		}
 	}
@@ -242,7 +246,7 @@ void DeleteExplain(int PieceNo)
 {
 	for (int i = 0; i < EXPLAIN_MAX; i++) {
 		if (g_Explain[i].bUse) {
-			if(g_Explain[i].tex == PieceNo)
+			if(g_Explain[i].PieceIndex == PieceNo)
 			g_Explain[i].bUse = false;
 		}
 	}

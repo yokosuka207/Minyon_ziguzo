@@ -64,11 +64,11 @@ HRESULT InitJumpStand()
 
 void UninitJumpStand()
 {
-	if (g_textureBlock)
-	{
-		g_textureBlock->Release();
-		g_textureBlock = NULL;
-	}
+	//if (g_textureBlock)
+	//{
+	//	g_textureBlock->Release();
+	//	g_textureBlock = NULL;
+	//}
 
 	StopSound(g_JumpStandSoundNo);
 	StopSound(g_JumpStandSoundMoveNo);
@@ -81,8 +81,10 @@ void UpdateJumpStand()
 	MOUSE* pMouse = GetMouse();
 	p_Player = GetPlayer();
 	p_Block = GetChipBlock();
+	CURSOR* pCursor = GetCurso();
 
-	if (!Mouse_IsLeftDown())
+	if (!Mouse_IsLeftDown() && 
+		!pCursor->bHave)
 	{
 
 
@@ -130,7 +132,7 @@ void UpdateJumpStand()
 					//ˆø‚«‚¸‚é‰¹
 					if (g_JumpStand[i].oldpos.x != g_JumpStand[i].pos.x && g_JumpStand[i].JumpStandNotMove == true)//“®‚©‚µ‚½uŠÔ
 					{
-						//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
+						SetVolume(g_JumpStandSoundMoveNo, 0.5f);
 						PlaySound(g_JumpStandSoundMoveNo, -1);
 						g_JumpStand[i].JumpStandNotMove = false;
 					}
@@ -199,7 +201,7 @@ void UpdateJumpStand()
 					{
 						g_JumpStand[i].JumpStandFlag = true;
 
-						SetVolume(g_JumpStandSoundNo, 1.5f);
+						SetVolume(g_JumpStandSoundNo, 0.25f);
 						PlaySound(g_JumpStandSoundNo, 0);
 
 						p_Player->sp.y = 0.0f;

@@ -98,7 +98,8 @@ void	InitStory()
 
 	//ストーリー初期化
 	
-	gStory.pos = D3DXVECTOR2(30.0f, 210.0f);
+	//gStory.pos = D3DXVECTOR2(30.0f, 210.0f);
+	gStory.pos = D3DXVECTOR2(45.0f, 200.0f);//gStory.pos = D3DXVECTOR2(60.0f, 700.0f);
 	gStory.size = D3DXVECTOR2(60, 90);
 	gStory.color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
 
@@ -110,13 +111,16 @@ void	InitStory()
 
 	//ストーリー初期化	
 	s.pos = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	s.size = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	s.size = D3DXVECTOR2(SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2);
 
 	pSKey = GetStoryKey();
 
 	if (gStory.n == 0) {
 		pSKey[0].HaveSKey = 1;
 		gStory.n++;
+	}
+	if (pSKey[0].HaveSKey >= 9) {
+		pSKey[0].HaveSKey = 8;
 	}
 	gStory.HaveKey = pSKey[0].HaveSKey;
 

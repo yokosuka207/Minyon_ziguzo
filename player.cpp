@@ -46,6 +46,8 @@
 #include"cursor.h"
 #include "sound.h"
 #include "start.h"
+#include"camera.h"
+#include "goal.h"
 //=============================================================================
 //マクロ定義
 //=============================================================================
@@ -64,6 +66,9 @@ static int g_PlayerRightSoundNo = 0;
 static char g_PlayeRightSoundName[] = "data\\SoundData\\SE\\革靴で歩く右.wav";
 static int g_PlayerLeftSoundNo = 0;
 static char g_PlayerLeftSoundName[] = "data\\SoundData\\SE\\革靴で歩く左.wav";
+//ろうそく
+static int g_CandleSoundNo = 0;
+static char g_CandleSoundName[] = "data\\SoundData\\SE\\ろうそく(効果音ラボ).wav";
 
 //プレイヤー着地音導入したいです
 //
@@ -80,7 +85,7 @@ HRESULT InitPlayer()
 	//プレイヤーの初期化
 	//g_Player.Position = D3DXVECTOR2(pPiece->pos.x+30.0f,pPiece->pos.y);
 	g_Player.Position = D3DXVECTOR2(pStart[0].pos.x, pStart[0].pos.y);
-	g_Player.OneOldpos = g_Player.oldpos = g_Player.Position;
+	g_Player.OneOldpos = g_Player.oldpos = g_Player.oldoldpos = g_Player.Position;
 	g_Player.sp = D3DXVECTOR2(0.0f,-8.0f);
 	g_Player.size = D3DXVECTOR2(PLAYER_SIZE_W, PLAYER_SIZE_H);
 	g_Player.Drawsize = D3DXVECTOR2(33.0f, 33.0f);
@@ -100,6 +105,7 @@ HRESULT InitPlayer()
 	g_Player.isMoveBlock = false;
 	g_Player.isBrokenBlock = false;
 	g_Player.isFallBlock = false;
+
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
 	g_Player.PaternNo = 0;//パターン番号
@@ -108,14 +114,17 @@ HRESULT InitPlayer()
 	g_Player.NumPatern = 4;//横枚数
 
 	g_Player.hp = PLAYER_HP;
+	g_Player.oldHP = g_Player.hp;
 	g_Player.frame = 0;
 	g_Player.CoolTime = PLAYER_COOLTIME;
 	g_Player.PieceIndex = 0;
+	g_Player.HaveKey = 0;
 
 	g_Player.SoundRightFlag = false;
 	g_Player.SoundLeftFlag = false;
 	g_PlayerRightSoundNo = LoadSound(g_PlayeRightSoundName);
 	g_PlayerLeftSoundNo = LoadSound(g_PlayerLeftSoundName);
+	g_CandleSoundNo = LoadSound(g_CandleSoundName);
 
 	return S_OK;
 }
@@ -127,6 +136,7 @@ void UninitPlayer()
 {
 	StopSound(g_PlayerRightSoundNo);
 	StopSound(g_PlayerLeftSoundNo);
+	StopSound(g_CandleSoundNo);
 }
 
 //=============================================================================
@@ -138,27 +148,34 @@ void UpdatePlayer()
 	//-------------------------------------------------
 
 	MOUSE* pMouse = GetMouse();
-	if (!Mouse_IsLeftDown())
+	CAMERA* pCamera = GetCamera();
+	CURSOR* pCursor = GetCurso();
+	GOAL* pGoal = GetGoal();
+	START* pStart = GetStart();
+
+	if (!Mouse_IsLeftDown() &&
+		!pCursor->bHave)
 	{
 
 		if (g_Player.UseFlag == true)
 		{
 			//移動
 			if (GetThumbLeftX(0) > 0.3f ||					// GamePad	右スティック	右
-				Keyboard_IsKeyDown(KK_RIGHT))				// Keyboard	右
+				Keyboard_IsKeyDown(KK_D))				// Keyboard	D
 			{//押されているときの処理
 				g_Player.sp.x = 1.3f;
 				g_Player.PaternNo -= 0.25f;
-
+				pCamera->MoveFlag = true;
 				// 向きを変える
 				g_Player.dir = PLAYER_DIRECTION::RIGHT;
 				g_Player.uv_w = -PLAYER_UV_W;
 			}
 			else if (GetThumbLeftX(0) < -0.3f ||			// GamePad	右スティック	左
-				Keyboard_IsKeyDown(KK_LEFT))				// Keyboard	左
+				Keyboard_IsKeyDown(KK_A))				// Keyboard	A
 			{//押されているときの処理
 				g_Player.sp.x = -1.3f;
 				g_Player.PaternNo += 0.25f;
+				pCamera->MoveFlag = true;
 
 				// 向きを変える
 				g_Player.dir = PLAYER_DIRECTION::LEFT;
@@ -176,7 +193,7 @@ void UpdatePlayer()
 			//============================================================
 			if (!g_Player.SoundRightFlag) {
 				if (g_Player.PaternNo == 9.0f) {
-					SetVolume(g_PlayerRightSoundNo, 0.5f);
+					SetVolume(g_PlayerRightSoundNo, 1.5f);
 					PlaySound(g_PlayerRightSoundNo, 0);
 					g_Player.SoundRightFlag = true;
 				}
@@ -188,7 +205,7 @@ void UpdatePlayer()
 			}
 			if (!g_Player.SoundLeftFlag) {
 				if (g_Player.PaternNo == 1.0f) {
-					SetVolume(g_PlayerLeftSoundNo, 0.5f);
+					SetVolume(g_PlayerLeftSoundNo, 1.5f);
 					PlaySound(g_PlayerLeftSoundNo, 0);
 					g_Player.SoundLeftFlag = true;
 				}
@@ -198,7 +215,8 @@ void UpdatePlayer()
 					g_Player.SoundLeftFlag = false;
 				}
 			}
-			if (g_Player.sp.x == 0)
+			//下に移行
+			/*if (g_Player.sp.x == 0)
 			{
 				g_Player.PaternNo = 17;
 
@@ -217,6 +235,18 @@ void UpdatePlayer()
 
 				}
 
+			}*/
+
+			//===================================================
+			// ゴールピースを持った状態でダメージを受けた場合
+			//===================================================
+			g_Player.oldHP = g_Player.hp;
+			if (g_Player.hp != g_Player.oldHP) {
+				pGoal->GetFlag = false;
+				pGoal->UseFlag = true;
+				for (int i = 0; i < START_MAX; i++) {
+					pStart[i].GoalFlag = false;
+				}
 			}
 
 			//----------------
@@ -227,7 +257,8 @@ void UpdatePlayer()
 			for (int i = 0; i < JUMPSTAND_MAX; i++) {
 				if (p_JumpStand[i].UseJumpStand) {
 					if (IsButtonPressed(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
-						Keyboard_IsKeyDown(KK_B))						// Keyboard	B
+						Keyboard_IsKeyDown(KK_LEFTCONTROL) ||			// keyboard	Ctrl　左
+						Keyboard_IsKeyDown(KK_C))						// keyoard C
 					{
 						if (CollisionBB(g_Player.Position, p_JumpStand[i].pos, g_Player.size, p_JumpStand[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
 							p_JumpStand[i].GetJumpStand = true;
@@ -248,7 +279,8 @@ void UpdatePlayer()
 			for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 				if (pMoveBlock[i].bUse) {
 					if (IsButtonPressed(0, XINPUT_GAMEPAD_B) ||		// GamePad	B
-						Keyboard_IsKeyDown(KK_B))						// Keyboard	B
+						Keyboard_IsKeyDown(KK_LEFTCONTROL)	||		// Keyboard	Ctrl　左
+						Keyboard_IsKeyDown(KK_C))					// Keyboard	C
 					{
 						if (CollisionBB(g_Player.Position, pMoveBlock[i].pos, g_Player.size, pMoveBlock[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
 							pMoveBlock[i].GetMoveBlock = true;
@@ -269,6 +301,14 @@ void UpdatePlayer()
 			for (int i = 0; i < BLOCK_CHIP_MAX; i++) {
 				if (block[i].UseFlag)
 				{
+					if (block[i].Position.x - block[i].Size.x / 2 < g_Player.Position.x + g_Player.size.x / 2 &&
+						block[i].Position.x + block[i].Size.x / 2 > g_Player.Position.x - g_Player.size.x / 2 &&
+						block[i].Position.y + block[i].Size.y / 2 > g_Player.Position.y - g_Player.size.y / 2 &&
+						block[i].Position.y + block[i].Size.y / 2 <= g_Player.oldpos.y - g_Player.size.y / 2)
+					{
+						//break;
+					}
+
 					// プレイヤーの下にブロックがあったら
 					if ((g_Player.Position.y - g_Player.size.y / 2 - 0.05f < block[i].Position.y + block[i].Size.y / 2) &&
 						(g_Player.Position.y + g_Player.size.y / 2 > block[i].Position.y - block[i].Size.y / 2) &&
@@ -276,9 +316,10 @@ void UpdatePlayer()
 						(g_Player.Position.x - g_Player.size.x / 2 < block[i].Position.x + block[i].Size.x / 2))
 					{	// 着地中にする
 						if (!g_Player.isGround) {
-							g_Player.sp.y = 0.0f;
+							//g_Player.sp.y = 0.0f;
 							g_Player.isGround = true;
 							g_Player.PieceIndex = block[i].PieceIndex;
+
 							break;
 						}
 					}
@@ -291,7 +332,7 @@ void UpdatePlayer()
 			//---------------
 			//透ける床の場合
 			//---------------
-
+			bool HitFlag = false;	//当たったか
 			SHEERFLOORS* pSheerFloors = GetSheerFloors();
 			for (int i = 0; i < SHEERFLOORS_NUM; i++)
 			{
@@ -315,7 +356,7 @@ void UpdatePlayer()
 
 					//プレイヤー上・ブロック下,着地する
 					if (!GetThumbLeftY(0) < -0.3f ||		// GamePad	左スティック	下
-						!Keyboard_IsKeyDown(KK_DOWN))		// Keyboard 下
+						!Keyboard_IsKeyDown(KK_S))		// Keyboard S
 					{
 						if (pSheerFloors[i].pos.x - pSheerFloors[i].size.x / 2 < g_Player.Position.x + g_Player.size.x / 2 &&
 							pSheerFloors[i].pos.x + pSheerFloors[i].size.x / 2 > g_Player.Position.x - g_Player.size.x / 2 &&
@@ -329,21 +370,23 @@ void UpdatePlayer()
 								p_JumpStand[i].JumpStandFlag = false;
 
 							}
+							g_Player.PieceIndex = pSheerFloors[i].index;
+
 							g_Player.Position.y = pSheerFloors[i].pos.y + pSheerFloors[i].size.y / 2 + g_Player.size.y / 2;
 							g_Player.jump = false;
-							g_Player.sp.y = -0.3f;
-
+							g_Player.sp.y = 0.0f;
+							HitFlag = true;
 							g_Player.fall = false;
 							if (!g_Player.isSheerFloors) {
-								//g_Player.sp.y = 0.0f;
+								//g_Player.sp.y = -0.4f;
 								g_Player.isSheerFloors = true;
 
 							}
-							else {
-								g_Player.sp.y = 0.0f;
+						}
+						else if(!HitFlag){
+							//g_Player.sp.y = 0.0f;
 
-								g_Player.isSheerFloors = false;
-							}
+							g_Player.isSheerFloors = false;
 						}
 
 						//プレイヤー下・ブロック上,落下する
@@ -359,21 +402,50 @@ void UpdatePlayer()
 
 			}
 
-			if (GetThumbLeftY(0) < -0.3f ||			// GamePad	左スティック	下
-				Keyboard_IsKeyDown(KK_DOWN))		// Keyboard	下
+
+
+			//プレイヤー停止テクスチャー
+			if (g_Player.sp.x == 0)
 			{
+				g_Player.PaternNo = 17;
+
+				if (g_Player.uv_w < 0)
+				{
+					g_Player.PaternNo = 18;
+
+				}
+			}
+			//プレイヤージャンプテクスチャー
+			if (g_Player.sp.y != 0 && !g_Player.isFallBlock)
+			{
+				g_Player.PaternNo = 16;
+				if (g_Player.uv_w < 0)
+				{
+					g_Player.PaternNo = 19;
+
+				}
+
+			}
+
+			if (GetThumbLeftY(0) < -0.3f ||			// GamePad	左スティック	下
+				Keyboard_IsKeyDown(KK_S))		// Keyboard	S
+			{
+				pCamera->MoveFlag = true;
+
 				g_Player.isSheerFloors = false;
 			}
 
 			// ジャンプ
 			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock||g_Player.isBrokenBlock||g_Player.isFallBlock)
-				&& g_Player.sp.y <= 0 && (Keyboard_IsKeyDown(KK_SPACE)|| IsButtonPressed(0, XINPUT_GAMEPAD_A)))
+				&& g_Player.sp.y <= 0 && (Keyboard_IsKeyDown(KK_SPACE) ||		// keyboard SPACE
+					IsButtonPressed(0, XINPUT_GAMEPAD_A)))						// GamePad A
 			{
 
 				g_Player.sp.y = 2.8f;			// スピードのyをマイナスにする
-				//SetVolume(g_PlayerRightSoundNo, 0.5f);
+				SetVolume(g_PlayerRightSoundNo, 1.5f);
 				PlaySound(g_PlayerRightSoundNo, 0);
 
+				pCamera->MoveFlag = true;
 
 				if (g_Player.isGround) {
 					g_Player.isGround = false;			// フラグをジャンプ中にする
@@ -387,14 +459,25 @@ void UpdatePlayer()
 				if (g_Player.isMoveBlock) {
 					g_Player.isMoveBlock = false;
 				}
+				if (g_Player.isFallBlock) {
+					g_Player.isFallBlock = false;
+				}
+				if (g_Player.isBrokenBlock) {
+					g_Player.isBrokenBlock = false;
+				}
 			}
 
 			// 空中
 			if (!g_Player.isGround && !g_Player.isHigh && !g_Player.isSheerFloors && !g_Player.isMoveBlock&&!g_Player.isBrokenBlock&&!g_Player.isFallBlock) {
 				g_Player.sp.y -= 0.1f;			// スピードのyを増やす
 			}
+			else
+			{
+				g_Player.sp.y = 0.0f;
+			}
 	
 			//反映
+			g_Player.oldoldpos = g_Player.oldpos;
 			g_Player.oldpos = g_Player.Position;
 			g_Player.Position += g_Player.sp;
 
@@ -410,7 +493,8 @@ void UpdatePlayer()
 			{
 				//プレイヤーとパズルの画面外判定
 				Piece* pPiece = GetPiece();
-
+				bool SpawnFlag = false;
+				bool SpawnFlag2 = false;
 				for (int i = 0; i < PUZZLE_MAX; i++)
 				{
 					if (pPiece[i].UseFlag)
@@ -425,25 +509,28 @@ void UpdatePlayer()
 
 								if (!hitflag2)
 								{
-									g_Player.sp.y -= 0.2f;//加速
+									//g_Player.sp.y -=0.2f;//加速
 								}
 								else
 								{//下に何もなく死亡する場合
-
+									SpawnFlag2 = true;
 									if (pSpawnPoint[i].UseFlag)
 									{
 										if (g_Player.PieceIndex == pSpawnPoint[i].PieceIndex)
 										{
+											SpawnFlag = true;
 											g_Player.Position = pSpawnPoint[i].Position;
+											g_Player.oldpos = g_Player.Position;
 											g_Player.hp--;
+											SetVolume(g_CandleSoundNo, 0.8f);
+											PlaySound(g_CandleSoundNo, 0);
 											break;
 										}
-
-
 									}
+
 								}
 							}
-							else if (g_Player.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
+							else if (g_Player.Position.x > pPiece[i].pos.x + PUZZLE_WIDHT / 2)
 							{
 
 								bool hitflag2 = PlayerPieceOpen(pPiece[i], i, RIGHT);
@@ -459,7 +546,7 @@ void UpdatePlayer()
 
 
 							}
-							else if (g_Player.Position.x <= pPiece[i].pos.x - PUZZLE_WIDHT / 2)
+							else if (g_Player.Position.x < pPiece[i].pos.x - PUZZLE_WIDHT / 2)
 							{
 								bool hitflag2 = PlayerPieceOpen(pPiece[i], i, LEFT);
 
@@ -474,43 +561,40 @@ void UpdatePlayer()
 
 
 							}
-							else if (g_Player.Position.y >= pPiece[i].pos.y + PUZZLE_HEIGHT / 2)
+							else if (g_Player.Position.y > pPiece[i].pos.y + PUZZLE_HEIGHT / 2)
 							{
 								bool hitflag2 = PlayerPieceOpen(pPiece[i], i, UP);
 
 								if (!hitflag2)
 								{
-									//g_Player.sp.y += 0.2;//加速
 								}
 								else
 								{
-
-									g_Player.fall = true;
-									//g_Player.sp.y = 0;
-									//g_Player.getfall = true;
-									g_Player.frame = 50;
-									//g_Player.sp.y += 0.2;//加速
 								}
 
-							}
+							}//
 						}
 					}
 
 
 				}
+				if (!SpawnFlag&& SpawnFlag2)
+				{
+					START* pStart = GetStart();
+					g_Player.Position = pStart->pos;
+					g_Player.oldpos = g_Player.Position;
+					g_Player.hp--;
+					SetVolume(g_CandleSoundNo, 0.8f);
+					PlaySound(g_CandleSoundNo, 0);
+
+				}
 
 
 			}
-			if (IsButtonTriggered(0, XINPUT_GAMEPAD_BACK) || 	// GamePad	Lタブ
-				Keyboard_IsKeyTrigger(KK_R))						// Keyboard	R
-			{
-				ResetGame();
-			}
-
 			//プレイヤーとパズルの画面外判定
 			Piece* pPiece = GetPiece();
 
-			for (int i = 0; i < PUZZLE_MAX; i++)
+			/*for (int i = 0; i < PUZZLE_MAX; i++)
 			{
 				if (pPiece[i].UseFlag)
 				{
@@ -600,7 +684,7 @@ void UpdatePlayer()
 
 			}
 
-
+			*/
 			}
 
 		}

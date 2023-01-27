@@ -56,6 +56,7 @@ struct PLAYER
 	D3DXVECTOR2 Drawsize;//BOXサイズ
 	D3DXVECTOR2 Position;//表示座標(中心座標)
 	D3DXVECTOR2 oldpos;//1フレーム前の座標
+	D3DXVECTOR2 oldoldpos;//2フレーム前の座標
 	D3DXVECTOR2 OneOldpos;//1フレーム前の座標
 
 	D3DXVECTOR2 sp;
@@ -67,6 +68,7 @@ struct PLAYER
 	float uv_h;//縦サイズ
 	int NumPatern;//横枚数
 	int hp;
+	int oldHP;
 	int frame;
 	int CoolTime;//クールタイム
 	PLAYER_DIRECTION dir;			// プレイヤーの向き
