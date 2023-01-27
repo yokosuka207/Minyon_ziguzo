@@ -90,6 +90,13 @@ void Score::DrawScore() {
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreTextureNo));
 
 		g_ScoreParam.pos.x = SCREEN_WIDTH / 2 - 20.0f;
+		if (pResult->type == LOSE) {
+			g_ScoreParam.pos.x = SCREEN_WIDTH / 2 + 80.0f;
+			g_ScoreParam.pos.y = SCREEN_HEIGHT / 2 + 50.0f;
+
+			g_ScoreRankParam.UseFlag = false;
+		}
+
 		score = CulcScore();
 		
 		frame++;

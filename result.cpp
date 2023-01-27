@@ -166,6 +166,8 @@ void	UpdateResult()
 			// ステージセレクトへ
 			StartFade(FADE::FADE_ALPHA_OUT);
 		}
+
+
 	}
 	else if (ResultObject.type == LOSE)
 	{
@@ -312,45 +314,46 @@ void	DrawResult()
 			1.0f,
 			1
 		);
-	}
+	
 
-	for (int i = 0; i < RESULT_MAX; i++) {
+		for (int i = 0; i < RESULT_MAX; i++) {
 
-		if (i == 0) {
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultLifeTextureNo));
+			if (i == 0) {
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultLifeTextureNo));
+			}
+
+			if (i == 1) {
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultRankTextureNo));
+			}
+
+			if (i == 2) {
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultRankTextureNo));
+			}
+
+			if (i == 3) {
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultTimeTextureNo));
+			}
+
+			if (i == 4) {
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultClearTextureNo));
+			}
+
+
+			SpriteDrawColorRotation
+			(
+				g_Result[i].Position.x,
+				g_Result[i].Position.y,
+				0.0f,
+				g_Result[i].Size.x,
+				g_Result[i].Size.y,
+				g_Result[i].Rotate,
+				g_Result[i].Color,
+				0,
+				1.0f,
+				1.0f,
+				1
+			);
 		}
-
-		if (i == 1) {
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultRankTextureNo));
-		}
-
-		if (i == 2) {
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultRankTextureNo));
-		}
-
-		if (i == 3) {
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultTimeTextureNo));
-		}
-
-		if (i == 4) {
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultClearTextureNo));
-		}
-
-
-		SpriteDrawColorRotation
-		(
-			g_Result[i].Position.x,
-			g_Result[i].Position.y,
-			0.0f,
-			g_Result[i].Size.x,
-			g_Result[i].Size.y,
-			g_Result[i].Rotate,
-			g_Result[i].Color,
-			0,
-			1.0f,
-			1.0f,
-			1
-		);
 	}
 }
 
