@@ -107,6 +107,7 @@ void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, int direction)
 
 			gStoryKey[i].no = no;
 			gStoryKey[i].bUse = true;
+			break;
 		}
 	}
 }
@@ -116,7 +117,7 @@ void DeleteStoryKey(int no)
 {
 	for (int i = 0; i < STORYKEY_MAX; i++) {
 		if (gStoryKey[i].no == no) {
-			if (!gStoryKey[i].bUse)
+			if (gStoryKey[i].bUse)
 			gStoryKey[i].bUse = false;
 		}
 	}
