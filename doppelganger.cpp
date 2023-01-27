@@ -351,7 +351,7 @@ void UpdateDoppelganger()
 						if (!g_Doppel.isGround) {
 							g_Doppel.sp.y = 0.0f;
 							g_Doppel.isGround = true;
-							g_Doppel.PieceIndex = block[i].PieceIndex;
+							//g_Doppel.PieceIndex = block[i].PieceIndex;
 							break;
 						}
 					}
@@ -613,85 +613,87 @@ void UpdateDoppelganger()
 			{
 				if (pPiece[i].UseFlag)
 				{
-					bool hitflag = CollisionBB(g_Doppel.Position, pPiece[i].pos, g_Doppel.size, pPiece[i].size);
-
-					if (hitflag)
+					if (pPiece[i].no == g_Doppel.PieceIndex)
 					{
-						if (g_Doppel.Position.y < pPiece[i].pos.y - PUZZLE_HEIGHT / 2)
-						{
-							bool hitflag2 = DoppelPieceOpen(pPiece[i], i, DOWN);
 
-							if (!hitflag2)
+
+						bool hitflag = CollisionBB(g_Doppel.Position, pPiece[i].pos, g_Doppel.size, pPiece[i].size);
+
+						if (hitflag)
+						{
+							if (g_Doppel.Position.y <= pPiece[i].pos.y - PUZZLE_HEIGHT / 2)
 							{
-								g_Doppel.sp.y -= 0.2;//‰Á‘¬
-							}
-							else
-							{//‰º‚É‰½‚à‚È‚­Ž€–S‚·‚éê‡
-								SpawnFlag2 = true;
+								bool hitflag2 = DoppelPieceOpen(pPiece[i], i, DOWN);
+
+								if (!hitflag2)
+								{
+									//g_Doppel.sp.y -= 0.2f;//‰Á‘¬
+								}
+								else
+								{//‰º‚É‰½‚à‚È‚­Ž€–S‚·‚éê‡
+									SpawnFlag2 = true;
 									if (pSpawnPointD[i].UseFlag)
 									{
 										if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex)
 										{
 											SpawnFlag = true;
 											g_Doppel.Position = pSpawnPointD[i].Position;
+											g_Doppel.oldpos = g_Doppel.Position;
 
 										}
 
 
 									}
-								
 
+
+								}
 							}
-						}
-						else if (g_Doppel.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
-						{
-
-							bool hitflag2 = DoppelPieceOpen(pPiece[i], i, RIGHT);
-
-							if (!hitflag2)
-							{
-								//g_Doppel.sp.y += 0.2;//‰Á‘¬
-							}
-							else
-							{
-								g_Doppel.Position.x = g_Doppel.oldpos.x;
-							}
-
-
-						}
-						else if (g_Doppel.Position.x <= pPiece[i].pos.x - PUZZLE_WIDHT / 2)
-						{
-							bool hitflag2 = DoppelPieceOpen(pPiece[i], i, LEFT);
-
-							if (!hitflag2)
-							{
-								//g_Doppel.sp.y += 0.2;//‰Á‘¬
-							}
-							else
-							{
-								g_Doppel.Position.x = g_Doppel.oldpos.x;
-							}
-
-
-						}
-						else if (g_Doppel.Position.y >= pPiece[i].pos.y + PUZZLE_HEIGHT / 2)
-						{
-							bool hitflag2 = DoppelPieceOpen(pPiece[i], i, UP);
-
-							if (!hitflag2)
-							{
-								//g_Doppel.sp.y += 0.2;//‰Á‘¬
-							}
-							else
+							else if (g_Doppel.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
 							{
 
-								g_Doppel.fall = true;
-								//g_Doppel.sp.y = 0;
-								//g_Doppel.getfall = true;
-								g_Doppel.frame = 50;
-								//g_Doppel.sp.y += 0.2;//‰Á‘¬
-							}
+								bool hitflag2 = DoppelPieceOpen(pPiece[i], i, RIGHT);
 
+								if (!hitflag2)
+								{
+									//g_Doppel.sp.y += 0.2;//‰Á‘¬
+								}
+								else
+								{
+									g_Doppel.Position.x = g_Doppel.oldpos.x;
+								}
+
+
+							}
+							else if (g_Doppel.Position.x <= pPiece[i].pos.x - PUZZLE_WIDHT / 2)
+							{
+								bool hitflag2 = DoppelPieceOpen(pPiece[i], i, LEFT);
+
+								if (!hitflag2)
+								{
+									//g_Doppel.sp.y += 0.2;//‰Á‘¬
+								}
+								else
+								{
+									g_Doppel.Position.x = g_Doppel.oldpos.x;
+								}
+
+
+							}
+							else if (g_Doppel.Position.y > pPiece[i].pos.y + PUZZLE_HEIGHT / 2)
+							{
+								bool hitflag2 = DoppelPieceOpen(pPiece[i], i, UP);
+
+								if (!hitflag2)
+								{
+									//g_Doppel.sp.y += 0.2;//‰Á‘¬
+								}
+								else
+								{
+
+									//g_Doppel.sp.y += 0.2;//‰Á‘¬
+								}
+
+							}
 						}
 					}
 				}
@@ -700,9 +702,10 @@ void UpdateDoppelganger()
 			}
 			if (!SpawnFlag && SpawnFlag2)
 			{
-				g_Doppel.Position = D3DXVECTOR2(pPiece[7].pos.x+70.0f, pPiece[7].pos.y+3.0f);
+				g_Doppel.Position = D3DXVECTOR2(pPiece[7].pos.x + 70.0f, pPiece[7].pos.y + 3.0f);
 				g_Doppel.oldpos = g_Doppel.Position;
 				g_Doppel.sp.y = 0.0f;
+				
 			}
 
 
@@ -872,6 +875,8 @@ void UpdateDoppelganger()
 				g_Doppel.Position.y - g_Doppel.size.y / 2 < (pChipblock + i)->Position.y + (pChipblock + i)->Size.y / 2 &&
 				g_Doppel.oldpos.y - g_Doppel.size.y / 2 >= (pChipblock + i)->Position.y + (pChipblock + i)->Size.y / 2)
 			{
+				g_Doppel.PieceIndex = pChipblock[i].PieceIndex;
+
 				g_Doppel.Position.y = (pChipblock + i)->Position.y + (pChipblock + i)->Size.y / 2 + g_Doppel.size.y / 2 + 0.02f;
 				g_Doppel.jump = false;
 				g_Doppel.fall = false;

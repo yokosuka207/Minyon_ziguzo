@@ -68,6 +68,7 @@ void UpdateStageSelect();
 void DrawStageSelect();
 void SetStageSelect(int a);
 STAGESELECT* GetSelect();
+STAGESELECT* GetSelectNumber();
 PLAYER* GetSelectPlayer();
 
 int ReturnStageNo();

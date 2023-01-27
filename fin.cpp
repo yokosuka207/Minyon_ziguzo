@@ -5,11 +5,12 @@
 #include "sound.h"
 
 #include "xkeyboard.h"
+#include "xinput.h"
 #include "fade.h"
 #include "scene.h"
 
 static ID3D11ShaderResourceView* g_FinBGTexture;	//画像一枚で一つの変数が必要
-static char* g_FinBGTextureName = (char*)"data\\texture\\number.png";
+static char* g_FinBGTextureName = (char*)"data\\texture\\fin.png";
 static int g_FinBGTextureNo = 0;
 
 static int g_FinSoundNo = 0;
@@ -26,7 +27,7 @@ void InitFin() {
 	g_FinBG.NumPatern = 1;
 
 	g_FinBGTextureNo = LoadTexture(g_FinBGTextureName);
-	char filename[] = "data\\SoundData\\SE\\タイプライター.wav";
+	char filename[] = "data\\SoundData\\BGM\\Fin.wav";
 	g_FinSoundNo = LoadSound(filename);
 	PlaySound(g_FinSoundNo, -1);
 }
@@ -38,7 +39,10 @@ void UninitFin() {
 	}
 }
 void UpdateFin() {
-	//StartFade(FADE::FADE_ALPHA_OUT);
+	if (IsButtonTriggered(0, XINPUT_GAMEPAD_B) ||		// GamePad B
+		Keyboard_IsKeyTrigger(KK_SPACE)) {				// keyboard SPACE
+		StartFade(FADE::FADE_ALPHA_OUT);
+	}
 }
 void DrawFin() {
 	SetWorldViewProjection2D();
