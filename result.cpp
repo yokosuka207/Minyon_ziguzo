@@ -33,13 +33,15 @@ static	char* g_ResultButtonTextureName[BUTTON_MAX] = { (char*)"data\\texture\\te
 												(char*)"data\\texture\\text_continue game.png" };
 
 static	char* g_ResultLifeTextureName = (char*)"data\\texture\\text_life.png";
-static	char* g_ResultLifeVolumeTextureName = (char*)"data\\texture\\残機ある.png";
+static	char* g_ResultLifeMaxTextureName = (char*)"data\\texture\\残機ある.png";
+static	char* g_ResultLifeVolumeTextureName = (char*)"data\\texture\\残機ない.png";
 static	char* g_ResultScoreTextureName = (char*)"data\\texture\\text_rank.png";
 static	char* g_ResultRankTextureName = (char*)"data\\texture\\text_rank.png";
 static	char* g_ResultTimeTextureName = (char*)"data\\texture\\text_time.png";
 static	char* g_ResultClearTextureName = (char*)"data\\texture\\text_rank.png";
 
 static int g_ResultLifeTextureNo = 0;
+static int g_ResultLifeMaxTextureNo = 0;
 static int g_ResultLifeVolumeTextureNo = 0;
 static int g_ResultScoreTextureNo = 0;
 static int g_ResultRankTextureNo = 0;
@@ -99,7 +101,7 @@ void	InitResult()
 	}
 
 	// 背景分
-	ResultObject.Position = D3DXVECTOR3(SCREEN_WIDTH / 2 - 20.0f, SCREEN_HEIGHT / 2, 0);
+	ResultObject.Position = D3DXVECTOR3(SCREEN_WIDTH / 2 - 220.0f, SCREEN_HEIGHT / 2, 0);
 	ResultObject.Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	ResultObject.Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	ResultObject.Rotate = 0.0f;
@@ -117,6 +119,7 @@ void	InitResult()
 	g_ResultLife.UseFlag = false;
 	
 	g_ResultLifeTextureNo = LoadTexture(g_ResultLifeTextureName);
+	g_ResultLifeMaxTextureNo = LoadTexture(g_ResultLifeMaxTextureName);
 	g_ResultLifeVolumeTextureNo = LoadTexture(g_ResultLifeVolumeTextureName);
 	g_ResultScoreTextureNo = LoadTexture(g_ResultRankTextureName);
 	g_ResultRankTextureNo = LoadTexture(g_ResultRankTextureName);
@@ -132,10 +135,10 @@ void	InitResult()
 	// 選択されているボタンの初期化
 	g_pSelectResultButton = &g_ResultButton[0];
 
-	pScore->SetScore(D3DXVECTOR2(SCORE_POS_X, SCREEN_HEIGHT / 2 + 190.0f), D3DXVECTOR2(50.0f, 50.0f));
+	pScore->SetScore(D3DXVECTOR2(SCORE_POS_X, SCREEN_HEIGHT / 2 + 90.0f), D3DXVECTOR2(50.0f, 50.0f));
 
 	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400.0f, 200.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Life
-	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400.0f, 600.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Score
+	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400.0f, 500.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Score
 	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 + 400.0f, 200.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Rank
 	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400.0f, 400.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Time
 	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2, 100.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Clear
@@ -305,6 +308,22 @@ void	DrawResult()
 		for (Button& b : g_ResultButton) {
 			b.Draw();
 		}
+
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultRankTextureNo));
+		SpriteDrawColorRotation
+		(
+			g_Result[2].Position.x,
+			g_Result[2].Position.y,
+			0.0f,
+			g_Result[2].Size.x,
+			g_Result[2].Size.y,
+			g_Result[2].Rotate,
+			g_Result[2].Color,
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
 	}
 	else if (ResultObject.type == WIN)		// クリア
 	{
@@ -331,11 +350,14 @@ void	DrawResult()
 		//============================================
 		{
 			PLAYER* pPlayer = GetPlayer();
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultLifeVolumeTextureNo));
-			if (!g_ResultLife.UseFlag) {
-				g_ResultLife.Position.x = SCREEN_WIDTH / 2 - 20.0f;
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultLifeMaxTextureNo));
+			g_ResultLife.Position.x = SCREEN_WIDTH / 2 - 220.0f;
 
-				for (int i = 0; i < pPlayer->hp; i++) {
+			for (int i = 0; i < PLAYER_HP; i++) {
+				if (!g_ResultLife.UseFlag) {
+					if (i == pPlayer->hp) {
+						GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultLifeVolumeTextureNo));
+					}
 					SpriteDrawColorRotation
 					(
 						g_ResultLife.Position.x,
@@ -350,7 +372,7 @@ void	DrawResult()
 						1.0f,
 						1
 					);
-					g_ResultLife.Position.x -= 100.0f;
+					g_ResultLife.Position.x += 100.0f;
 				}
 			}
 		}

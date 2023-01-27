@@ -53,6 +53,7 @@
 #include"lamp.h"
 #include"lamp_switch.h"
 #include "EffectLight.h"
+#include "DoppelGangerLife.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -105,6 +106,7 @@ void InitGame()
 		InitEffectLight();
 		InitBullet();
 		InitPlayerLife();
+		InitDoppelgangerLife();
 		InitKeyDisplay();
 		InitExplain();
 		InitStoryKey();
@@ -162,6 +164,7 @@ void UninitGame()
 	UninitEnemy();
 	UninitBullet();
 	UninitPlayerLife();
+	UninitDoppelgangerLife();
 	UninitKeyDisplay();
 	UninitExplain();
 	UninitStoryKey();
@@ -248,6 +251,7 @@ void UpdateGame()
 		UpdateEffectLight();
 
 		UpdatePlayerLife();
+		UpdateDoppelgangerLife();
 		UpdateKeyDisplay();
 		UpdateExplain();
 
@@ -305,6 +309,7 @@ void DrawGame()
 		DrawNoizu();
 
 		DrawPlayerLife();
+		DrawDoppelgangerLife();
 		DrawKeyDisplay();
 
 		DrawInventory();			// ƒCƒ“ƒxƒ“ƒgƒŠ‚Ì•`‰æ
