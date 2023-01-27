@@ -241,7 +241,7 @@ void UpdateGame()
 		UpdateInventory();			// インベントリの更新
 		UpdateMapChip();
 		UpdateGameMouse();
-		if (!pCamera->MoveFlag) {
+		if (!pCamera->zoomFlag) {
 			UpdateCursor();				// カーソルの更新
 		}
 		g_Player3D.Update();
@@ -258,7 +258,7 @@ void UpdateGame()
 	else {
 		UpdatePause();
 		UpdateGameMouse();
-		if (!pCamera->MoveFlag) {
+		if (!pCamera->zoomFlag) {
 			UpdateCursor();				// カーソルの更新
 		}
 	}
@@ -313,7 +313,7 @@ void DrawGame()
 
 		DrawInventory();			// インベントリの描画
 		pTime->DrawGameTime();
-		if (!pCamera->MoveFlag) {
+		if (!pCamera->zoomFlag) {
 			DrawCursor();				// カーソルの描画
 		}
 		g_Player3D.Draw();
