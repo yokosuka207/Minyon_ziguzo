@@ -284,24 +284,7 @@ void UpdateDoppelganger()
 					g_Doppel.SoundLeftFlag = false;
 				}
 			}*/
-			if (g_Doppel.sp.x == 0)
-			{
-				g_Doppel.PaternNo = 17;
-
-				if (g_Doppel.uv_w > 0)
-				{
-					g_Doppel.PaternNo = 18;
-				}
-			}
-			if (g_Doppel.sp.y != 0)
-			{
-				g_Doppel.PaternNo = 16;
-				if (g_Doppel.uv_w > 0)
-				{
-					g_Doppel.PaternNo = 19;
-				}
-
-			}
+			
 
 
 			//----------------
@@ -311,8 +294,9 @@ void UpdateDoppelganger()
 
 			for (int i = 0; i < JUMPSTAND_MAX; i++) {
 				if (p_JumpStand[i].UseJumpStand) {
-					if (IsButtonPressed(0, XINPUT_GAMEPAD_X) ||					// GamePad	X
-						Keyboard_IsKeyDown(KK_LEFTCONTROL))						// Keyboard	Ctrl　左
+					if (IsButtonPressed(0, XINPUT_GAMEPAD_B) ||					// GamePad	B
+						Keyboard_IsKeyDown(KK_LEFTCONTROL) ||					// Keyboard	Ctrl　左
+						Keyboard_IsKeyDown(KK_C))								// Keyboard	C
 					{
 						if (CollisionBB(g_Doppel.Position, p_JumpStand[i].pos, g_Doppel.size, p_JumpStand[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
 							p_JumpStand[i].GetJumpStand = true;
@@ -332,8 +316,9 @@ void UpdateDoppelganger()
 
 			for (int i = 0; i < MOVE_BLOCK_MAX; i++) {
 				if (pMoveBlock[i].bUse) {
-					if (IsButtonPressed(0, XINPUT_GAMEPAD_X) ||					// GamePad	X
-						Keyboard_IsKeyDown(KK_LEFTCONTROL))						// Keyboard	Ctrl 左
+					if (IsButtonPressed(0, XINPUT_GAMEPAD_B) ||					// GamePad	B
+						Keyboard_IsKeyDown(KK_LEFTCONTROL) ||					// Keyboard	Ctrl 左
+						Keyboard_IsKeyDown(KK_C))								// Keyboard	C
 					{
 						if (CollisionBB(g_Doppel.Position, pMoveBlock[i].pos, g_Doppel.size, pMoveBlock[i].size + D3DXVECTOR2(10.0f, 0.0f))) {
 							pMoveBlock[i].GetMoveBlock = true;
@@ -447,15 +432,37 @@ void UpdateDoppelganger()
 
 			}
 
-				// スケスケブロック下降りる
-				if (GetThumbLeftY(0) < -0.3f ||			// GamePad	左スティック	下
-					Keyboard_IsKeyDown(KK_S))		// Keyboard	S
+
+
+			if (g_Doppel.sp.x == 0)
+			{
+				g_Doppel.PaternNo = 17;
+
+				if (g_Doppel.uv_w > 0)
 				{
-					g_Doppel.isSheerFloors = false;
+					g_Doppel.PaternNo = 18;
+				}
+			}
+			if (g_Doppel.sp.y != 0 && !g_Doppel.isFallBlock)
+			{
+				g_Doppel.PaternNo = 16;
+				if (g_Doppel.uv_w > 0)
+				{
+					g_Doppel.PaternNo = 19;
 				}
 
+			}
+
+				// スケスケブロック下降りる
+			if (GetThumbLeftY(0) < -0.3f ||			// GamePad	左スティック	下
+				Keyboard_IsKeyDown(KK_S))		// Keyboard	S
+			{
+				g_Doppel.isSheerFloors = false;
+			}
+
 			// ジャンプ
-			if ((g_Doppel.isGround || g_Doppel.isSheerFloors || g_Doppel.isHigh || g_Doppel.isMoveBlock) && g_Doppel.sp.y <= 0 && (Keyboard_IsKeyTrigger(KK_SPACE) || IsButtonTriggered(0, XINPUT_GAMEPAD_A)))
+			if ((g_Doppel.isGround || g_Doppel.isSheerFloors || g_Doppel.isHigh || g_Doppel.isMoveBlock || g_Doppel.isFallBlock || g_Doppel.isBrokenBlock) && g_Doppel.sp.y <= 0 &&
+				(Keyboard_IsKeyDown(KK_SPACE) || IsButtonPressed(0, XINPUT_GAMEPAD_A)))
 			{
 
 				g_Doppel.sp.y = 2.8f;			// スピードのyをマイナスにする
@@ -475,10 +482,16 @@ void UpdateDoppelganger()
 				if (g_Doppel.isMoveBlock) {
 					g_Doppel.isMoveBlock = false;
 				}
+				if (g_Doppel.isFallBlock) {
+					g_Doppel.isFallBlock = false;
+
+				}if (g_Doppel.isBrokenBlock) {
+					g_Doppel.isBrokenBlock = false;
+				}
 			}
 
 			// 空中
-			if (!g_Doppel.isGround && !g_Doppel.isHigh && !g_Doppel.isSheerFloors && !g_Doppel.isMoveBlock) {
+			if (!g_Doppel.isGround && !g_Doppel.isHigh && !g_Doppel.isSheerFloors && !g_Doppel.isMoveBlock && !g_Doppel.isFallBlock && !g_Doppel.isBrokenBlock) {
 				g_Doppel.sp.y -= 0.1f;			// スピードのyを増やす
 			}
 
@@ -495,99 +508,99 @@ void UpdateDoppelganger()
 
 			//ドッペルゲンガー・ワープ 当たり判定 collision.cppへ移動
 
-			{
-				//ドッペルゲンガーとパズルの画面外判定
-				Piece* pPiece = GetPiece();
+			//{
+			//	//ドッペルゲンガーとパズルの画面外判定
+			//	Piece* pPiece = GetPiece();
 
-				for (int i = 0; i < PUZZLE_MAX; i++)
-				{
-					if (pPiece[i].UseFlag)
-					{
-						bool hitflag = CollisionBB(g_Doppel.Position, pPiece[i].pos, g_Doppel.size, pPiece[i].size);
+			//	for (int i = 0; i < PUZZLE_MAX; i++)
+			//	{
+			//		if (pPiece[i].UseFlag)
+			//		{
+			//			bool hitflag = CollisionBB(g_Doppel.Position, pPiece[i].pos, g_Doppel.size, pPiece[i].size);
 
-						if (hitflag)
-						{
-							if (g_Doppel.Position.y < pPiece[i].pos.y - PUZZLE_HEIGHT / 2)
-							{
-								bool hitflag2 = DoppelPieceOpen(pPiece[i], i, DOWN);
+			//			if (hitflag)
+			//			{
+			//				if (g_Doppel.Position.y < pPiece[i].pos.y - PUZZLE_HEIGHT / 2)
+			//				{
+			//					bool hitflag2 = DoppelPieceOpen(pPiece[i], i, DOWN);
 
-								if (!hitflag2)
-								{
-									g_Doppel.sp.y -= 0.2f;//加速
-								}
-								else
-								{//下に何もなく死亡する場合
-									for (int i = 0; i < SPAWN_POINT_D_MAX; i++)
-									{
-										if (pSpawnPointD[i].UseFlag)
-										{
-											if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex)
-											{
-												g_Doppel.Position = pSpawnPointD[i].Position;
-												/////////////////////////////////////////////////////g_Doppel.hp--;
-											}
-										}
-									}
-								}
-							}
-							else if (g_Doppel.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
-							{
+			//					if (!hitflag2)
+			//					{
+			//						g_Doppel.sp.y -= 0.2f;//加速
+			//					}
+			//					else
+			//					{//下に何もなく死亡する場合
+			//						for (int i = 0; i < SPAWN_POINT_D_MAX; i++)
+			//						{
+			//							if (pSpawnPointD[i].UseFlag)
+			//							{
+			//								if (g_Doppel.PieceIndex == pSpawnPointD[i].PieceIndex)
+			//								{
+			//									g_Doppel.Position = pSpawnPointD[i].Position;
+			//									/////////////////////////////////////////////////////g_Doppel.hp--;
+			//								}
+			//							}
+			//						}
+			//					}
+			//				}
+			//				else if (g_Doppel.Position.x >= pPiece[i].pos.x + PUZZLE_WIDHT / 2)
+			//				{
 
-								bool hitflag2 = DoppelPieceOpen(pPiece[i], i, RIGHT);
+			//					bool hitflag2 = DoppelPieceOpen(pPiece[i], i, RIGHT);
 
-								if (!hitflag2)
-								{
-									//g_Doppel.sp.y += 0.2;//加速
-								}
-								else
-								{
-									g_Doppel.Position.x = g_Doppel.oldpos.x;
-								}
-
-
-							}
-							else if (g_Doppel.Position.x <= pPiece[i].pos.x - PUZZLE_WIDHT / 2)
-							{
-								bool hitflag2 = DoppelPieceOpen(pPiece[i], i, LEFT);
-
-								if (!hitflag2)
-								{
-									//g_Doppel.sp.y += 0.2;//加速
-								}
-								else
-								{
-									g_Doppel.Position.x = g_Doppel.oldpos.x;
-								}
+			//					if (!hitflag2)
+			//					{
+			//						//g_Doppel.sp.y += 0.2;//加速
+			//					}
+			//					else
+			//					{
+			//						g_Doppel.Position.x = g_Doppel.oldpos.x;
+			//					}
 
 
-							}
-							else if (g_Doppel.Position.y >= pPiece[i].pos.y + PUZZLE_HEIGHT / 2)
-							{
-								bool hitflag2 = DoppelPieceOpen(pPiece[i], i, UP);
+			//				}
+			//				else if (g_Doppel.Position.x <= pPiece[i].pos.x - PUZZLE_WIDHT / 2)
+			//				{
+			//					bool hitflag2 = DoppelPieceOpen(pPiece[i], i, LEFT);
 
-								if (!hitflag2)
-								{
-									//g_Doppel.sp.y += 0.2;//加速
-								}
-								else
-								{
-
-									g_Doppel.fall = true;
-									//g_Doppel.sp.y = 0;
-									//g_Doppel.getfall = true;
-									g_Doppel.frame = 50;
-									//g_Doppel.sp.y += 0.2;//加速
-								}
-
-							}
-						}
-					}
+			//					if (!hitflag2)
+			//					{
+			//						//g_Doppel.sp.y += 0.2;//加速
+			//					}
+			//					else
+			//					{
+			//						g_Doppel.Position.x = g_Doppel.oldpos.x;
+			//					}
 
 
-				}
+			//				}
+			//				else if (g_Doppel.Position.y >= pPiece[i].pos.y + PUZZLE_HEIGHT / 2)
+			//				{
+			//					bool hitflag2 = DoppelPieceOpen(pPiece[i], i, UP);
+
+			//					if (!hitflag2)
+			//					{
+			//						//g_Doppel.sp.y += 0.2;//加速
+			//					}
+			//					else
+			//					{
+
+			//						g_Doppel.fall = true;
+			//						//g_Doppel.sp.y = 0;
+			//						//g_Doppel.getfall = true;
+			//						g_Doppel.frame = 50;
+			//						//g_Doppel.sp.y += 0.2;//加速
+			//					}
+
+			//				}
+			//			}
+			//		}
 
 
-			}
+			//	}
+
+
+			//}
 
 			//ドッペルゲンガーとパズルの画面外判定
 			Piece* pPiece = GetPiece();
@@ -911,7 +924,7 @@ void UpdateDoppelganger()
 								{
 									g_Doppel.Position = (pWarp + i + 1)->Position;
 									g_Doppel.CoolTime = PLAYER_COOLTIME;
-									//SetVolume(g_SwitchSoundNo, 0.5f);
+									SetVolume(g_WarpSoundNo, 0.5f);
 									PlaySound(g_WarpSoundNo, 0);
 									pSwitch[i].NotPressed = false;
 									g_Doppel.WarpFlag = true;
@@ -1049,6 +1062,7 @@ void UpdateDoppelganger()
 	//====================================================================
 	//ドッペルゲンガーと落ちるブロックの当たり判定(DoppelGangerとFallBlockの当たり判定)
 	//====================================================================
+	bool FallFlag = false;
 	for (int i = 0; i < FALLBLOCK_MAX; i++) {
 		if ((pFallBlock + i)->UseFlag) {
 			//ドッペルゲンガー左・ブロック右判定
@@ -1087,10 +1101,14 @@ void UpdateDoppelganger()
 				g_Doppel.jump = false;
 				g_Doppel.fall = false;
 				g_Doppel.frame = 50;
-				g_Doppel.isHigh = true;
+				g_Doppel.isFallBlock = true;
 				(pFallBlock + i)->oldpos = (pFallBlock + i)->Position;
-				(pFallBlock + i)->Position.y--;
-
+				(pFallBlock + i)->Position.y -= 3.0f;
+				FallFlag = true;
+			}
+			else if (!FallFlag)
+			{
+				g_Doppel.isFallBlock = false;
 			}
 
 			for (int j = 0; j < BLOCK_CHIP_MAX; j++)
@@ -1137,17 +1155,25 @@ void UpdateDoppelganger()
 				g_Doppel.Position.y - g_Doppel.size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
 				g_Doppel.oldpos.y - g_Doppel.size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
 			{
-				if (g_Doppel.sp.y >= 5.0f) {
+				if (g_Doppel.sp.y <= -5.0f) {
 					//g_Doppel.isHigh = false;
 					(pHigh + i)->UseFlag = false;
+					pHigh[i].breakFlag = true;
 					//SetVolume(g_HighSoundNo, 0.5f);
 					//PlaySound(g_HighSoundNo, 0);
 					g_Doppel.frame = 50;
 				}
 				else {
 					//g_Doppel.isHigh = true;
-					g_Doppel.sp.y = 0.0f;
 					g_Doppel.Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + g_Doppel.size.y / 2;
+					if (!g_Doppel.isHigh) {
+						//pPlayer->sp.y = -0.1f;
+						g_Doppel.isHigh = true;
+						break;
+					}
+					else {
+						g_Doppel.isHigh = false;
+					}
 				}
 
 			}/*
@@ -1169,15 +1195,6 @@ void UpdateDoppelganger()
 				(g_Doppel.Position.x + g_Doppel.size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2) &&
 				(g_Doppel.Position.x - g_Doppel.size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2))
 			{
-				// 着地中にする
-				if (!g_Doppel.isHigh) {
-					g_Doppel.sp.y = 0.0f;
-					g_Doppel.isHigh = true;
-					break;
-				}
-			}
-			else {
-				g_Doppel.isHigh = false;
 			}
 		}
 	}
@@ -1401,7 +1418,7 @@ void UpdateDoppelganger()
 				p_LampSwitch[i].PaternNo = 1;
 				if (p_LampSwitch[i].NotPressed)
 				{
-					//SetVolume(g_SwitchSoundNo, 0.5f);
+					SetVolume(g_LampSwitchSoundNo, 0.5f);
 					PlaySound(g_LampSwitchSoundNo, 0);
 					p_LampSwitch[i].NotPressed = false;
 				}
@@ -1424,6 +1441,7 @@ void UpdateDoppelganger()
 				p_LampSwitch[i].PaternNo = 1;
 				if (p_LampSwitch[i].NotPressed)
 				{
+					SetVolume(g_LampSwitchSoundNo, 0.5f);
 					PlaySound(g_LampSwitchSoundNo, 0);
 					p_LampSwitch[i].NotPressed = false;
 					p_LampSwitch[i].NotPressed = false;
@@ -1484,7 +1502,7 @@ void UpdateDoppelganger()
 					if (CollisionBB(g_Doppel.Position, p_Lamp[i].pos, g_Doppel.size, p_Lamp[i].size))
 					{
 						g_Doppel.LightFrame++;
-						if (g_Doppel.LightFrame >= 100)
+						if (g_Doppel.LightFrame >= 60)
 						{
 							g_Doppel.LightFrame = 0;
 							g_Doppel.hp--;

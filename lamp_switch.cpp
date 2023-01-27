@@ -22,7 +22,7 @@
 LAMP_SWITCH g_LampSwitch[LAMP_SWITCH_MAX];
 
 static ID3D11ShaderResourceView* g_LampSwitchTexture;	//画像一枚で一つの変数が必要
-static char* g_LampSwitchTextureName = (char*)"data\\texture\\ボタン.png";	//テクスチャファイルパス
+static char* g_LampSwitchTextureName = (char*)"data\\texture\\街頭スイッチ.png";	//テクスチャファイルパス
 static int g_LampSwitchTextureNo = 0;
 
 
@@ -98,7 +98,7 @@ void SetLampSwitch(D3DXVECTOR2 pos, D3DXVECTOR2 size, int direction, int PieceNo
 			}
 			g_LampSwitch[i].pos = pos;
 			g_LampSwitch[i].size = size;
-			g_LampSwitch[i].color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+			g_LampSwitch[i].color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 			g_LampSwitch[i].PieceIndex = PieceNo;
 			g_LampSwitch[i].LampSwitchIndex = i;
 			g_LampSwitch[i].UseFlag = true;

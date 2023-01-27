@@ -129,7 +129,7 @@ static int g_StagePieceInfo[21][8] = {
 	{  10,   10,   53,   33,   20,    0,    0,    0,},	// 9	○			 ┃・左右を反転させたい場合は -(マイナス) にする ┃
 	{ 143,   10,  150,   51,   61,    0,    0,    0,},	// 10	○			 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
 	{  43,  110, -131,  181,   10,    0,    0,    0,},	// 11	○							
-	{ 101,  190,   72,   01,   01,    0,    0,    0,},	// 12	○						
+	{ 101,  190,   72,   01,   40,    0,    0,    0,},	// 12	○						
 	{  10,   43,  140,   43,   53,    0,    0,    0,},	// 13	○					
 	{  52,   72,  181,   01,   10,    0,    0,    0,},	// 14	○				
 	{-131, -143, -140, -151, -141,   10,    0,    0,},	// 15	○							
@@ -215,9 +215,6 @@ void UpdateMapChip() {
 				p.bAnim = false;
 			}
 		}
-	}
-	if (Keyboard_IsKeyTrigger(KK_S)) {
-		StartPieceAnimation(0);
 	}
 }
 void DrawMapChip() {
@@ -318,7 +315,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetFallBlock(position, DrawSize, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_KEY):	//11　鍵
-				SetKey(position, DrawSize, g_PieceMapChip[no].direction, no);
+				SetKey(position, D3DXVECTOR2(25.0f,25.0f), g_PieceMapChip[no].direction, no);
 				break;
 			case static_cast <int> (MAPCHIP_TYPE::TYPE_DOOR):	//12　鍵付きの扉
 				SetOpenKey(position, DrawSize, g_PieceMapChip[no].direction, no);
