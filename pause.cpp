@@ -13,6 +13,7 @@
 #include	 "pause.h"
 #include	"game.h"
 #include	"button.h"
+#include	"sound.h"
 
 //======================
 //マクロ定義
@@ -37,6 +38,10 @@ static	char* g_PauseEndTextureName = (char*)"data\\texture\\text_continue game.p
 
 static	ID3D11ShaderResourceView* g_PauseSelectTexture = NULL;//テクスチャ情報
 static	char* g_PauseSelectTextureName = (char*)"data\\texture\\text_exit stage.png";
+
+//サウンド
+static int g_ChangeScenePauseSoundNo = 0;
+static char g_ChangeScenePauseSoundName[] = "data\\SoundData\\SE\\シーン遷移(魔王魂).wav";
 
 PAUSE	PauseObject[5];//タイトル画面オブジェクト
 
@@ -96,6 +101,8 @@ void	InitPause()
 	PauseEndTextureNo = LoadTexture(g_PauseEndTextureName);
 	PauseSelectTextureNo = LoadTexture(g_PauseSelectTextureName);
 
+	g_ChangeScenePauseSoundNo = LoadSound(g_ChangeScenePauseSoundName);
+
 	// ボタンの初期化
 	g_PauseButton[0].Init();
 	g_PauseButton[1].Init();
@@ -141,7 +148,7 @@ void	UninitPause()
 		g_PauseSelectTexture->Release();
 		g_PauseSelectTexture = NULL;
 	}
-
+	StopSound(g_ChangeScenePauseSoundNo);
 }
 
 //======================
@@ -217,11 +224,15 @@ void	UpdatePause()
 					(Mouse_IsLeftTrigger() && g_pSelectPauseButton->CollisionMouse())) {		// Mouse 左クリック
 					// 0:Quit ゲームに戻る
 					if (i == 0) {
+						SetVolume(g_ChangeScenePauseSoundNo, 0.3f);
+						PlaySound(g_ChangeScenePauseSoundNo, 0);
 						SetScene(SCENE::SCENE_GAME);
 						PauseClick = true;
 					}
 					// 1:Exit Stage ステージセレクトに戻る
 					else {
+						SetVolume(g_ChangeScenePauseSoundNo, 0.3f);
+						PlaySound(g_ChangeScenePauseSoundNo, 0);
 						SetScene(SCENE::SCENE_STAGESELECT);
 					}
 					g_pSelectPauseButton->ChangeType();

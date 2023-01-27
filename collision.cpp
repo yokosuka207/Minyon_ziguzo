@@ -130,6 +130,9 @@ static char g_CandleSoundName[] = "data\\SoundData\\SE\\ろうそく(効果音ラボ).wav
 //スタート
 static int g_GoalSoundNo = 0;
 static char g_GoalSoundName[] = "data\\SoundData\\SE\\ドアを開ける音(無料効果音で遊ぼう！).wav";
+//敵死亡
+static int g_EnemySoundNo = 0;
+static char g_EnemySoundName[] = "data\\SoundData\\SE\\ろうそく(効果音ラボ).wav";
 
 
 
@@ -149,6 +152,7 @@ void InitCollision()
 	g_MatchPieceSoundNo = LoadSound(g_MatchPieceSoundName);
 	g_CandleSoundNo = LoadSound(g_CandleSoundName);
 	g_GoalSoundNo = LoadSound(g_GoalSoundName);
+	g_EnemySoundNo = LoadSound(g_EnemySoundName);
 }
 
 
@@ -166,6 +170,7 @@ void UninitCollision()
 	StopSound(g_MatchPieceSoundNo);
 	StopSound(g_CandleSoundNo);
 	//StopSound(g_GoalSoundNo);
+	StopSound(g_EnemySoundNo);
 }
 
 
@@ -1117,6 +1122,8 @@ void UpdateCollision(){
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 5.0f, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
 								pEnemy[i].DedFlag = true;
+								SetVolume(g_EnemySoundNo, 0.8f);
+								PlaySound(g_EnemySoundNo, 0);
 							}
 
 						}
@@ -1134,7 +1141,8 @@ void UpdateCollision(){
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
 								pEnemy[i].DedFlag = true;
-
+								SetVolume(g_EnemySoundNo, 0.8f);
+								PlaySound(g_EnemySoundNo, 0);
 							}
 
 						}
@@ -1153,7 +1161,8 @@ void UpdateCollision(){
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y - 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
 								pEnemy[i].DedFlag = true;
-
+								SetVolume(g_EnemySoundNo, 0.8f);
+								PlaySound(g_EnemySoundNo, 0);
 							}
 
 						}
@@ -1171,7 +1180,8 @@ void UpdateCollision(){
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
 								pEnemy[i].DedFlag = true;
-
+								SetVolume(g_EnemySoundNo, 0.8f);
+								PlaySound(g_EnemySoundNo, 0);
 							}
 
 						}
