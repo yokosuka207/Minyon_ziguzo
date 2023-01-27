@@ -46,6 +46,7 @@ struct PLAYER
 	bool isMoveBlock;
 	bool isBrokenBlock;
 	bool isFallBlock;
+	bool isOpenKey;
 	bool SoundRightFlag;
 	bool SoundLeftFlag;
 	int	HaveKey; //Œ®Š”

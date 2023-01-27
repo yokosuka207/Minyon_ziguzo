@@ -8,7 +8,6 @@
 ==============================================================================*/
 #include	"main.h"
 #include	"renderer.h"
-//#include "input.h"	//入力処理
 #include "xinput.h"		// xinput版入力
 #include "xkeyboard.h"	// xinput版キーボード
 #include "xmouse.h"		// xinput版マウス

@@ -47,7 +47,7 @@ static ID3D11ShaderResourceView* g_StageSelectTexture;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•
 static char* g_StageSelectTextureName = (char*)"data\\texture\\ƒhƒA3.png";	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
 
 static ID3D11ShaderResourceView* g_StageSelect2Texture;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
-static char* g_StageSelect2TextureName = (char*)"data\\texture\\black.png";	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
+static char* g_StageSelect2TextureName = (char*)"data\\texture\\15.png";	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
 
 static ID3D11ShaderResourceView* g_StageSelectTextureBg;	//‰æ‘œˆê–‡‚Åˆê‚Â‚Ì•Ï”‚ª•K—v
 static char* g_StageSelectBgTextureName = (char*)"data\\texture\\ƒXƒe[ƒWƒZƒŒƒNƒg”wŒi.png";	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
@@ -314,7 +314,7 @@ void UpdateStageSelect() {
 				{
 					if (ply.isHigh)
 					{
-						//ply.sp.y = 0.0f;
+						ply.sp.y = 0.0f;
 					}
 					ply.sp.x = 0;
 
@@ -522,6 +522,8 @@ void UpdateStageSelect() {
 		{
 			if (g_StageSelect[i].StageUseFlag)
 			{
+				g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
+
 				if (ply.Position.x - ply.size.x / 2 > g_StageSelect[i].pos.x - g_StageSelect[i].size.x / 2 &&
 					ply.Position.x + ply.size.x / 2 < g_StageSelect[i].pos.x + g_StageSelect[i].size.x / 2 &&
 					ply.Position.y + ply.size.y / 2 > g_StageSelect[i].pos.y - g_StageSelect[i].size.y / 2 &&
@@ -537,6 +539,18 @@ void UpdateStageSelect() {
 						StartFade(FADE::FADE_OUT);
 						break;
 					}
+				}
+			}
+			else
+			{
+				g_StageSelect[i].size = D3DXVECTOR2(330.0f, 180.0f);
+
+				if (ply.Position.x - ply.size.x / 2 > g_StageSelect[i].pos.x - g_StageSelect[i].size.x / 2 &&
+					ply.Position.x + ply.size.x / 2 < g_StageSelect[i].pos.x + g_StageSelect[i].size.x / 2 &&
+					ply.Position.y + ply.size.y / 2 > g_StageSelect[i].pos.y - g_StageSelect[i].size.y / 2 &&
+					ply.Position.y - ply.size.y / 2 < g_StageSelect[i].pos.y + g_StageSelect[i].size.y / 2)
+				{
+					ply.Position = ply.oldpos;
 				}
 			}
 		}
@@ -603,26 +617,20 @@ void DrawStageSelect() {
 		if (g_StageSelect[i].StageUseFlag)
 		{
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelect[i].texno));
+			SpriteDrawColorRotation(g_StageSelect[i].pos.x, g_StageSelect[i].pos.y - 10, 0.0f,
+				g_StageSelect[i].size.x / 2, g_StageSelect[i].size.y, 0.0f, color, 0, 1.0f, 1.0f, 1);
 
 		}
 		else
 		{
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(TexNo));
+			SpriteDrawColorRotation(g_StageSelect[i].pos.x, g_StageSelect[i].pos.y - 10, 0.0f,
+				g_StageSelect[i].size.x / 2, g_StageSelect[i].size.y, 0.0f, D3DXCOLOR(0.2f,0.2f,0.2f,1.0f), 0, 1.0f, 1.0f, 1);
 
 		}
 
 		//g_StageSelect[i].pos.x = g_SelectDistance;
 
-		SpriteDrawColorRotation(
-			g_StageSelect[i].pos.x, g_StageSelect[i].pos.y - 10, 0.0f,
-			g_StageSelect[i].size.x / 2, g_StageSelect[i].size.y,
-			0.0f,
-			color,
-			0,
-			1.0f,
-			1.0f,
-			1
-		);
 		//g_StageSelect[i].pos.x -= 30;
 	}
 	if (!pStory->KeyUse)

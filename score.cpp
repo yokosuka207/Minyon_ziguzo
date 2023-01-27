@@ -65,7 +65,7 @@ void Score::InitScore() {
 		g_AnimeParam[i].index = -1;
 	}
 
-	g_ScoreRankParam.pos = D3DXVECTOR2(SCREEN_WIDTH / 2 + 400.0f, 400.0f);
+	g_ScoreRankParam.pos = D3DXVECTOR2(SCREEN_WIDTH / 2 + 400.0f, 350.0f);
 	g_ScoreRankParam.size = D3DXVECTOR2(100.0f, 100.0f);
 	g_ScoreRankParam.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	g_ScoreRankParam.UseFlag = false;
@@ -90,6 +90,13 @@ void Score::DrawScore() {
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ScoreTextureNo));
 
 		g_ScoreParam.pos.x = SCREEN_WIDTH / 2 - 20.0f;
+		if (pResult->type == LOSE) {
+			g_ScoreParam.pos.x = SCREEN_WIDTH / 2 + 80.0f;
+			g_ScoreParam.pos.y = SCREEN_HEIGHT / 2 + 50.0f;
+
+			g_ScoreRankParam.UseFlag = false;
+		}
+
 		score = CulcScore();
 		
 		frame++;
@@ -133,13 +140,13 @@ void Score::DrawScore() {
 				g_ScoreParam.pos.x -= 30.0f;
 			}
 		}
-		if (frame == 150) {
+		if (pResult->type == WIN && frame == 150) {
 			g_ScoreRankParam.UseFlag = true;
 			SetVolume(g_ScoreRankSoundNo, 0.3f);
 			PlaySound(g_ScoreRankSoundNo, 0);				//0 = ˆê‰ñ‚¾‚¯Ä¶ sound.hŽQÆ
 		}
 
-		if (g_ScoreRankParam.UseFlag) {
+		if (pResult->type == WIN && g_ScoreRankParam.UseFlag) {
 
 			switch (g_ScoreParam.rank) {
 			case SCORE_RANK::RANK_S:
