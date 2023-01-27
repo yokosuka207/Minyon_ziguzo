@@ -89,7 +89,7 @@ static int	  g_MoveExplainNo = 0;
 //=====================================================
 // “§‚¯‚éƒuƒƒbƒN‚Ìãà–¾
 //=====================================================
-static char* g_SheerExplainName = (char*)"data\\texture\\Piace6Explain.png";
+static char* g_SheerExplainName = (char*)"data\\texture\\PiaceExplain6.png";
 static int	  g_SheerExplainNo = 0;
 
 
@@ -221,7 +221,7 @@ void DrawExplain()
 				//	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Piace6ExplainNo));
 				//	break;
 				case 41:
-					GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Piace7ExplainNo));
+					GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_SheerExplainNo));
 					break;
 				}
 				SpriteDrawColorRotation(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f,
