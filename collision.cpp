@@ -1009,19 +1009,19 @@ void UpdateCollision(){
 								pPlayer->jump = false;
 								pPlayer->fall = false;
 								pPlayer->WarpFlag = false;
-								pPlayer->isHigh = true;
+								pPlayer->isOpenKey = true;
 								pPlayer->sp.y = 0.0f;
 								pPlayer->frame = 0;
 
 							}
 							else
 							{
-								pPlayer->isHigh = false;
+								pPlayer->isOpenKey = false;
 
 							}
 						}
 						else if (!OpenKeyFlag) {
-							pPlayer->isHigh = false;
+							pPlayer->isOpenKey = false;
 
 						}
 						//”à‚Æjumpstand‚Ì”»’è
