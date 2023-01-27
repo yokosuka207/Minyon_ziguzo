@@ -239,7 +239,6 @@ void UpdateCollision(){
 				pPiece[i].pos.y + PUZZLE_HEIGHT / 2 > pDoppel->Position.y &&
 				pPiece[i].pos.x - PUZZLE_WIDHT / 2 < pDoppel->Position.x &&
 				pPiece[i].pos.x + PUZZLE_WIDHT / 2 > pDoppel->Position.x &&
-				pPiece[i].no == pDoppel->PieceIndex &&
 				pDoppel->UseFlag == true)
 			{
 				dFlag = true;
@@ -256,7 +255,7 @@ void UpdateCollision(){
 		for (int i = 0; i < PUZZLE_MAX; i++) {
 			if (pPiece[i].UseFlag)
 			{
-				if (pPlayer->PieceIndex != pPiece[i].no)
+				if (pPlayer->PieceIndex != pPiece[i].no&& pDoppel->PieceIndex != pPiece[i].no)
 				{
 					// ピースをインベントリにしまう
 					if (!pPiece[i].InventoryFlag && pPiece[i].UseFlag && pPiece[i].pos.x < -INVENTORYBG_POS_X_REVESE + INVENTORYBG_SIZE_X * 2.3f) {
@@ -267,6 +266,8 @@ void UpdateCollision(){
 						break;
 					}
 				}
+
+				
 			}
 		}
 
