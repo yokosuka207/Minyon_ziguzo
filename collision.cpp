@@ -439,12 +439,16 @@ void UpdateCollision(){
 					//•Ç‚Æjumpstand‚Ì”»’è
 					for (int j = 0; j < JUMPSTAND_MAX; j++) {
 						if (CollisionBB(pSwitchWall[i].pos, pJumpStand[j].pos, pSwitchWall[i].size, pJumpStand[j].size)) {
-							pJumpStand[j].pos = pJumpStand[j].oldpos;
+							pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 						}
 					}
 					//•Ç‚Æ“®‚­ƒuƒƒbƒN‚Ì”»’è
 					for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
-						if (CollisionBB(pSwitchWall[i].pos, pMoveBlock[j].pos, pSwitchWall[i].size, pMoveBlock[j].size)) {
+						if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pMoveBlock[j].pos.x + pMoveBlock[j].size.x / 2 &&
+							pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pMoveBlock[j].pos.x - pMoveBlock[j].size.x / 2 &&
+							pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pMoveBlock[j].pos.y - pMoveBlock[j].size.y / 2 &&
+							pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <=pMoveBlock[j].oldpos.y - pMoveBlock[j].size.y / 2)
+						{
 							pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
 						}
 					}
@@ -1051,7 +1055,7 @@ void UpdateCollision(){
 							if ((pOpenKey + j + i)->DrawFlag) {
 								if (!(pOpenKey + j + i)->KeyOpen) {
 									if (CollisionBB((pOpenKey + j + i)->Position, pJumpStand[j].pos, (pOpenKey + j + i)->Size, pJumpStand[j].size)) {
-										pJumpStand[j].pos = pJumpStand[j].oldpos;
+										pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 									}
 								}
 							}
@@ -1061,7 +1065,7 @@ void UpdateCollision(){
 							if ((pOpenKey + j + i)->DrawFlag) {
 								if (!(pOpenKey + j + i)->KeyOpen) {
 									if (CollisionBB((pOpenKey + j + i)->Position, pMoveBlock[j].pos, (pOpenKey + j + i)->Size, pMoveBlock[j].size)) {
-										pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+										pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
 									}
 								}
 							}
@@ -1217,7 +1221,7 @@ void UpdateCollision(){
 						if (pJumpStand[j].UseJumpStand) {
 
 							if (CollisionBB(pMoveBlock[i].pos, pJumpStand[j].pos, pMoveBlock[i].size, pJumpStand[j].size)) {
-								pJumpStand[j].pos = pJumpStand[j].oldpos;
+								pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 							}
 						}
 					}
@@ -1233,7 +1237,7 @@ void UpdateCollision(){
 						if (pJumpStand[j].UseJumpStand) {
 
 							if (CollisionBB(pThornBlock[i].Postion, pJumpStand[j].pos, pThornBlock[i].Size, pJumpStand[j].size)) {
-								pJumpStand[j].pos = pJumpStand[j].oldpos;
+								pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 							}
 						}
 					}
@@ -1274,7 +1278,7 @@ void UpdateCollision(){
 					for (int j = 0; j < JUMPSTAND_MAX; j++) {
 						if (pJumpStand[j].UseJumpStand) {
 							if (CollisionBB(pHigh[i].Postion, pJumpStand[j].pos, pHigh[i].Size, pJumpStand[j].size)) {
-								pJumpStand[j].pos = pJumpStand[j].oldpos;
+								pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 							}
 						}
 					}
@@ -1290,7 +1294,7 @@ void UpdateCollision(){
 						if (pMoveBlock[j].bUse)
 						{
 							if (CollisionBB(pMoveBlock[j].pos, pBroken[i].Postion, pMoveBlock[j].size, pBroken[i].Size)) {
-								pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+								pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
 							}
 						}
 					}
@@ -1306,7 +1310,7 @@ void UpdateCollision(){
 						if (pMoveBlock[j].bUse)
 						{
 							if (CollisionBB(pMoveBlock[j].pos, pThornBlock[i].Postion, pMoveBlock[j].size, pThornBlock[i].Size)) {
-								pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+								pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
 							}
 						}
 					}
