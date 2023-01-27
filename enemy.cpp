@@ -145,8 +145,8 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 
 							switch (direction) {
 							case 0:g_Enemy[i].rot = (direction + 2) * 90;
-								g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_RIGHT;
 
+								g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_RIGHT;
 								break;
 							case 1:g_Enemy[i].rot = direction * 90;
 								g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_DOWN;
@@ -170,8 +170,8 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 
 							switch (direction) {
 							case 0:g_Enemy[i].rot = (direction + 2) * 90;
-								g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_LEFT;
 
+								g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_LEFT;
 								break;
 							case 1:g_Enemy[i].rot = direction * 90;
 								g_Enemy[i].dir = ENEMY_DIRECTION::DIRECTION_UP;
@@ -205,7 +205,7 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 						}
 
 						g_Enemy[i].pos = pos;
-						g_Enemy[i].pos.y -= 5.0f;
+						g_Enemy[i].pos.y -= 6.0f;
 						g_Enemy[i].size = size*2;
 						g_Enemy[i].index = index;
 						g_Enemy[i].Number = Number;
@@ -295,7 +295,7 @@ void SetEnemy(D3DXVECTOR2 pos, D3DXVECTOR2 size,int direction, int index, ENEMY_
 					break;
 				}
 				g_Enemy[i].pos = pos;
-				g_Enemy[i].pos.y -= 5.0f;
+				g_Enemy[i].pos.y -= 6.0f;
 
 				g_Enemy[i].size = size * 2.0f;
 				g_Enemy[i].index = index;
