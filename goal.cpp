@@ -87,6 +87,7 @@ void UpdateGoal()
 				}
 				else {		// 最後のステージだったら
 					SetStageAllClear(true);
+					StartFade(FADE::FADE_ALPHA_OUT);
 				}
 				for (int i = 0; i < START_MAX; i++) {
 					if (pStart[i].UseFlag) {

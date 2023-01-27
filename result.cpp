@@ -101,7 +101,7 @@ void	InitResult()
 	}
 
 	// ”wŒi•ª
-	ResultObject.Position = D3DXVECTOR3(SCREEN_WIDTH / 2 - 220.0f, SCREEN_HEIGHT / 2, 0);
+	ResultObject.Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
 	ResultObject.Size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	ResultObject.Color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	ResultObject.Rotate = 0.0f;
