@@ -120,6 +120,12 @@ void Save::Init()
 			fclose(fp);
 		}
 		g_DataButton[i].SetNum(m_saveData.clearStageNum);
+		if (m_saveData.clearStageNum == STAGE_MAX) {
+			g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+			g_DataButton[i].SetNumColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+			//g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+			//g_DataButton[i].SetNumColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+		}
 	}
 	// データ削除ボタン
 	g_DataButton[3].SetButton(D3DXVECTOR2((SCREEN_WIDTH / 3) * 2.5f, (SCREEN_HEIGHT / 4) * 3.5f), D3DXVECTOR2(SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6), 
@@ -205,12 +211,13 @@ void Save::Update()
 			}
 		}
 
+		D3DXCOLOR col = g_DataButton[i].GetCol();
 		// そのボタンが選ばれてたら
 		if (&g_DataButton[i] == m_pButton) {
-			g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			g_DataButton[i].SetButtonColor(D3DXCOLOR(col.r, col.g, col.b, 1.0f));
 		}
 		else {
-			g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.4f));
+			g_DataButton[i].SetButtonColor(D3DXCOLOR(col.r, col.g, col.b, 0.4f));
 		}
 
 		// 選択されているボタンだったら

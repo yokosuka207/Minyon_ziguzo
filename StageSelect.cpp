@@ -38,6 +38,7 @@
 //*****************************************************************************
 static STAGESELECT g_StageSelect[STAGE_MAX];
 static STAGESELECT g_StageSelectBlack[STAGE_MAX];
+static STAGESELECT g_StageSelectNumber[STAGE_MAX];
 static STAGESELECT_BG g_StageSelectBg;
 static STAGESELECT_BG g_StageSelectfence[24];
 static STAGESELECT_BLOCK g_StageSelectBlock[3];
@@ -63,6 +64,9 @@ static int g_StageSelectStairsTexNo2 = 0;
 
 static ID3D11ShaderResourceView* g_StageSelectTexturefence;	//画像一枚で一つの変数が必要
 static char* g_StageSelectfenceTextureName = (char*)"data\\texture\\新柵1.png";	//テクスチャファイルパス
+
+static ID3D11ShaderResourceView* g_StageSelectTextureNumber;	//画像一枚で一つの変数が必要
+static char* g_StageSelectNumberTextureName = (char*)"data\\texture\\number.png";	//テクスチャファイルパス
 
 
 static PLAYER ply;
@@ -186,6 +190,14 @@ HRESULT InitStageSelect() {
 			//ドアSE
 			g_StageSelectSoundNo = LoadSound(g_StageSelectSoundName);
 
+			//番号
+			g_StageSelectNumber[i].pos = D3DXVECTOR2((420.0f) + (DOOR_SPACE * b), (85.0f) + (250.0f * a));
+			g_StageSelectNumber[i].size = D3DXVECTOR2(300.0f, 20.0f);
+			g_StageSelectNumber[i].UseFlag = true;
+			g_StageSelectNumber[i].StagePieceIndex = i;
+			g_StageSelectNumber[i].StageUseFlag = false;		// true : 全ステージ開放チート	false : 通常
+			g_StageSelectNumber[i].texno = LoadTexture(g_StageSelectNumberTextureName);
+
 			g_StageSelectBlack[i].pos = D3DXVECTOR2((300.0f) + (120.0f * b), (175.0f) + (250.0f * a));
 			g_StageSelectBlack[i].size = D3DXVECTOR2(120.0f, 150.0f);
 			g_StageSelectBlack[i].texno = LoadTexture(g_StageSelect2TextureName);
@@ -194,10 +206,15 @@ HRESULT InitStageSelect() {
 			{
 				g_StageSelect[i].StageUseFlag = true;
 				g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
+
+				g_StageSelectNumber[i].StageUseFlag = true;
+				g_StageSelectNumber[i].size = D3DXVECTOR2(140.0f, 150.0f);
 			}
 			// クリアステージ数分解放する
 			else if (i <= g_ClearStageNum) {
 				g_StageSelect[i].StageUseFlag = true;
+
+				g_StageSelectNumber[i].StageUseFlag = true;
 			}
 		}
 		TexNo = LoadTexture(g_StageSelect2TextureName);
@@ -524,6 +541,8 @@ void UpdateStageSelect() {
 			{
 				g_StageSelect[i].size = D3DXVECTOR2(140.0f, 150.0f);
 
+				g_StageSelectNumber[i].size = D3DXVECTOR2(110.0f, 35.0f);
+
 				if (ply.Position.x - ply.size.x / 2 > g_StageSelect[i].pos.x - g_StageSelect[i].size.x / 2 &&
 					ply.Position.x + ply.size.x / 2 < g_StageSelect[i].pos.x + g_StageSelect[i].size.x / 2 &&
 					ply.Position.y + ply.size.y / 2 > g_StageSelect[i].pos.y - g_StageSelect[i].size.y / 2 &&
@@ -544,6 +563,8 @@ void UpdateStageSelect() {
 			else
 			{
 				g_StageSelect[i].size = D3DXVECTOR2(330.0f, 180.0f);
+
+				g_StageSelectNumber[i].size = D3DXVECTOR2(0.0f, 0.0f);
 
 				if (ply.Position.x - ply.size.x / 2 > g_StageSelect[i].pos.x - g_StageSelect[i].size.x / 2 &&
 					ply.Position.x + ply.size.x / 2 < g_StageSelect[i].pos.x + g_StageSelect[i].size.x / 2 &&
@@ -628,6 +649,47 @@ void DrawStageSelect() {
 				g_StageSelect[i].size.x / 2, g_StageSelect[i].size.y, 0.0f, D3DXCOLOR(0.2f,0.2f,0.2f,1.0f), 0, 1.0f, 1.0f, 1);
 
 		}
+
+
+		//ステージ番号
+		if (i + 1 < 10)//1~9
+		{
+			if (g_StageSelectNumber[i].StageUseFlag)
+			{
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectNumber[i].texno));
+				SpriteDrawColorRotation(g_StageSelectNumber[i].pos.x, g_StageSelectNumber[i].pos.y - 10, 0.0f,
+					g_StageSelectNumber[i].size.x / 2, g_StageSelectNumber[i].size.y, 0.0f, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), i + 1, 1.0f / 10, 1.0f, 10);
+
+			}
+		}
+		else if (i + 1 < 20)//10~19
+		{
+			if (g_StageSelectNumber[i].StageUseFlag)
+			{
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectNumber[i].texno));
+				SpriteDrawColorRotation(g_StageSelectNumber[i].pos.x - 15, g_StageSelectNumber[i].pos.y - 10, 0.0f,
+					g_StageSelectNumber[i].size.x / 2, g_StageSelectNumber[i].size.y, 0.0f, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), 1, 1.0f / 10, 1.0f, 10);
+
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectNumber[i].texno));
+				SpriteDrawColorRotation(g_StageSelectNumber[i].pos.x + 15, g_StageSelectNumber[i].pos.y - 10, 0.0f,
+					g_StageSelectNumber[i].size.x / 2, g_StageSelectNumber[i].size.y, 0.0f, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), i + 1, 1.0f / 10, 1.0f, 10);
+			}
+		}
+		else//20~21
+		{
+			if (g_StageSelectNumber[i].StageUseFlag)
+			{
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectNumber[i].texno));
+				SpriteDrawColorRotation(g_StageSelectNumber[i].pos.x - 15, g_StageSelectNumber[i].pos.y - 10, 0.0f,
+					g_StageSelectNumber[i].size.x / 2, g_StageSelectNumber[i].size.y, 0.0f, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), 2, 1.0f / 10, 1.0f, 10);
+
+				GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_StageSelectNumber[i].texno));
+				SpriteDrawColorRotation(g_StageSelectNumber[i].pos.x + 15, g_StageSelectNumber[i].pos.y - 10, 0.0f,
+					g_StageSelectNumber[i].size.x / 2, g_StageSelectNumber[i].size.y, 0.0f, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), i + 1, 1.0f / 10, 1.0f, 10);
+			}
+		}
+
+
 
 		//g_StageSelect[i].pos.x = g_SelectDistance;
 

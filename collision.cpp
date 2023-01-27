@@ -378,6 +378,7 @@ void UpdateCollision(){
 				}
 			}
 		}
+		bool SwitchWallFlag = false;
 		for (int i = 0; i < SWITCHWALL_MAX * SWITCHWALL_LIMIT; i++) {
 			if (pSwitchWall[i].UseFlag)
 			{
@@ -386,8 +387,8 @@ void UpdateCollision(){
 					//壁の左とプレイヤーの右
 					if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 						pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
-						pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+						pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 3 &&
+						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 3)
 					{
 						pPlayer->Position.x = pPlayer->oldpos.x;
 					}
@@ -410,27 +411,45 @@ void UpdateCollision(){
 					//壁の↑とプレイヤーの↓
 					if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 						pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pPlayer->Position.x - pPlayer->size.x / 2 &&
-						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y + pPlayer->size.y / 2 &&
-						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y + pPlayer->size.y / 2)
+						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
+						pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
 					{
-						pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 + pPlayer->size.y / 2 + 0.02f;
-						pPlayer->jump = false;
-						pPlayer->fall = false;
-						pPlayer->WarpFlag = false;
-						pPlayer->sp.y = 0;
-						pPlayer->frame = 0;
+						if (!pPlayer->isSwithWall)
+						{
+							pPlayer->Position.y = pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 + pPlayer->size.y / 2;
+							pPlayer->jump = false;
+							pPlayer->fall = false;
+							pPlayer->WarpFlag = false;
+							pPlayer->isSwithWall = true;
+							pPlayer->sp.y = 0;
+							pPlayer->frame = 0;
+							SwitchWallFlag = true;
+
+						}
+						else {
+							pPlayer->isSwithWall = false;
+
+						}
+					}
+					else if (!SwitchWallFlag) {
+						pPlayer->isSwithWall = false;
+
 					}
 
 					//壁とjumpstandの判定
 					for (int j = 0; j < JUMPSTAND_MAX; j++) {
 						if (CollisionBB(pSwitchWall[i].pos, pJumpStand[j].pos, pSwitchWall[i].size, pJumpStand[j].size)) {
-							pJumpStand[j].pos = pJumpStand[j].oldpos;
+							pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 						}
 					}
 					//壁と動くブロックの判定
 					for (int j = 0; j < MOVE_BLOCK_MAX; j++) {
-						if (CollisionBB(pSwitchWall[i].pos, pMoveBlock[j].pos, pSwitchWall[i].size, pMoveBlock[j].size)) {
-							pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+						if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pMoveBlock[j].pos.x + pMoveBlock[j].size.x / 2 &&
+							pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pMoveBlock[j].pos.x - pMoveBlock[j].size.x / 2 &&
+							pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pMoveBlock[j].pos.y - pMoveBlock[j].size.y / 2 &&
+							pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <=pMoveBlock[j].oldpos.y - pMoveBlock[j].size.y / 2)
+						{
+							pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
 						}
 					}
 				}
@@ -1036,7 +1055,7 @@ void UpdateCollision(){
 							if ((pOpenKey + j + i)->DrawFlag) {
 								if (!(pOpenKey + j + i)->KeyOpen) {
 									if (CollisionBB((pOpenKey + j + i)->Position, pJumpStand[j].pos, (pOpenKey + j + i)->Size, pJumpStand[j].size)) {
-										pJumpStand[j].pos = pJumpStand[j].oldpos;
+										pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 									}
 								}
 							}
@@ -1046,7 +1065,7 @@ void UpdateCollision(){
 							if ((pOpenKey + j + i)->DrawFlag) {
 								if (!(pOpenKey + j + i)->KeyOpen) {
 									if (CollisionBB((pOpenKey + j + i)->Position, pMoveBlock[j].pos, (pOpenKey + j + i)->Size, pMoveBlock[j].size)) {
-										pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+										pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
 									}
 								}
 							}
@@ -1198,7 +1217,7 @@ void UpdateCollision(){
 						if (pJumpStand[j].UseJumpStand) {
 
 							if (CollisionBB(pMoveBlock[i].pos, pJumpStand[j].pos, pMoveBlock[i].size, pJumpStand[j].size)) {
-								pJumpStand[j].pos = pJumpStand[j].oldpos;
+								pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 							}
 						}
 					}
@@ -1214,7 +1233,7 @@ void UpdateCollision(){
 						if (pJumpStand[j].UseJumpStand) {
 
 							if (CollisionBB(pThornBlock[i].Postion, pJumpStand[j].pos, pThornBlock[i].Size, pJumpStand[j].size)) {
-								pJumpStand[j].pos = pJumpStand[j].oldpos;
+								pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 							}
 						}
 					}
@@ -1255,7 +1274,7 @@ void UpdateCollision(){
 					for (int j = 0; j < JUMPSTAND_MAX; j++) {
 						if (pJumpStand[j].UseJumpStand) {
 							if (CollisionBB(pHigh[i].Postion, pJumpStand[j].pos, pHigh[i].Size, pJumpStand[j].size)) {
-								pJumpStand[j].pos = pJumpStand[j].oldpos;
+								pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 							}
 						}
 					}
@@ -1271,7 +1290,7 @@ void UpdateCollision(){
 						if (pMoveBlock[j].bUse)
 						{
 							if (CollisionBB(pMoveBlock[j].pos, pBroken[i].Postion, pMoveBlock[j].size, pBroken[i].Size)) {
-								pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+								pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
 							}
 						}
 					}
@@ -1287,7 +1306,7 @@ void UpdateCollision(){
 						if (pMoveBlock[j].bUse)
 						{
 							if (CollisionBB(pMoveBlock[j].pos, pThornBlock[i].Postion, pMoveBlock[j].size, pThornBlock[i].Size)) {
-								pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+								pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
 							}
 						}
 					}
@@ -3451,6 +3470,7 @@ bool fourPieceCollision(Piece piece, int index)
 
 	bool hitFlag;
 	bool 	JointFlag = false;
+	bool 	JointFlag2 = false;
 	for (int i = 0; i < PUZZLE_MAX; i++)
 	{
 		if (pPiece[i].UseFlag)
@@ -3473,6 +3493,7 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
+				JointFlag2 = true;
 				if (piece.pos.x + PIECE_SIZE / 3 < pJoint[i].pos.x)	//ジョイントがピースの右だったら
 				{
 
@@ -3507,7 +3528,7 @@ bool fourPieceCollision(Piece piece, int index)
 				}
 			}
 		}
-		if (!JointFlag)
+		if (!JointFlag&& JointFlag2)
 		{
 			return false;
 		}
@@ -3515,6 +3536,7 @@ bool fourPieceCollision(Piece piece, int index)
 
 	}
 	JointFlag = false;
+	JointFlag2 = false;
 
 	//左が開いていなかったら
 	hitFlag = PieceOpen(piece, index, LEFT);
@@ -3526,6 +3548,7 @@ bool fourPieceCollision(Piece piece, int index)
 		{
 			if (pJoint[i].pieNo == piece.no)	//元のピースのジョイントだったら
 			{
+				JointFlag2 = true;
 				if (piece.pos.x - PIECE_SIZE / 3 > pJoint[i].pos.x)	//ジョイントがピースの右だったら
 				{
 
@@ -3560,7 +3583,7 @@ bool fourPieceCollision(Piece piece, int index)
 				}
 			}
 		}
-		if (!JointFlag)
+		if (!JointFlag&& JointFlag2)
 		{
 			return false;
 		}
@@ -3568,6 +3591,7 @@ bool fourPieceCollision(Piece piece, int index)
 	}
 	hitFlag = PieceOpen(piece, index, UP);
 	JointFlag = false;
+	JointFlag2 = false;
 
 
 	if (!hitFlag)
@@ -3579,7 +3603,7 @@ bool fourPieceCollision(Piece piece, int index)
 			{
 				if (piece.pos.y + PIECE_SIZE / 3 < pJoint[i].pos.y)	//ジョイントがピースの上だったら
 				{
-
+					JointFlag2 = true;
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
 						if (pJoint[j].pieNo == pPiece[punum].no)
@@ -3613,7 +3637,7 @@ bool fourPieceCollision(Piece piece, int index)
 				}
 			}
 		}
-		if (!JointFlag)
+		if (!JointFlag&& JointFlag2)
 		{
 			return false;
 
@@ -3624,6 +3648,7 @@ bool fourPieceCollision(Piece piece, int index)
 
 	hitFlag = PieceOpen(piece, index, DOWN);
 	JointFlag = false;
+	JointFlag2 = false;
 
 
 	if (!hitFlag)
@@ -3636,7 +3661,7 @@ bool fourPieceCollision(Piece piece, int index)
 			{
 				if (piece.pos.y - PIECE_SIZE / 3 > pJoint[i].pos.y)	//ジョイントがピースの下だったら
 				{
-
+					JointFlag2 = true;
 					for (int j = 0; j < JOINT_MAX; j++)
 					{
 						if (pJoint[j].pieNo == pPiece[punum].no)
@@ -3667,7 +3692,7 @@ bool fourPieceCollision(Piece piece, int index)
 				}
 			}
 		}
-		if (!JointFlag)
+		if (!JointFlag&& JointFlag2)
 		{
 			return false;
 		}

@@ -106,6 +106,7 @@ HRESULT InitPlayer()
 	g_Player.isBrokenBlock = false;
 	g_Player.isFallBlock = false;
 	g_Player.isOpenKey = false;
+	g_Player.isSwithWall = false;
 
 	g_Player.texno = LoadTexture(g_TextureNameBroken);
 
@@ -437,7 +438,7 @@ void UpdatePlayer()
 			}
 
 			// ジャンプ
-			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock||g_Player.isBrokenBlock||g_Player.isFallBlock||g_Player.isOpenKey)
+			if ((g_Player.isGround || g_Player.isSheerFloors || g_Player.isHigh || g_Player.isMoveBlock||g_Player.isBrokenBlock||g_Player.isFallBlock||g_Player.isOpenKey|| g_Player.isSwithWall)
 				&& g_Player.sp.y <= 0 && (Keyboard_IsKeyDown(KK_SPACE) ||		// keyboard SPACE
 					IsButtonPressed(0, XINPUT_GAMEPAD_A)))						// GamePad A
 			{
@@ -469,10 +470,13 @@ void UpdatePlayer()
 				if (g_Player.isOpenKey) {
 					g_Player.isOpenKey = false;
 				}
+				if (g_Player.isSwithWall) {
+					g_Player.isSwithWall = false;
+				}
 			}
 
 			// 空中
-			if (!g_Player.isGround && !g_Player.isHigh && !g_Player.isSheerFloors && !g_Player.isMoveBlock&&!g_Player.isBrokenBlock&&!g_Player.isFallBlock&&!g_Player.isOpenKey) {
+			if (!g_Player.isGround && !g_Player.isHigh && !g_Player.isSheerFloors && !g_Player.isMoveBlock&&!g_Player.isBrokenBlock&&!g_Player.isFallBlock&&!g_Player.isOpenKey&&!g_Player.isSwithWall) {
 				g_Player.sp.y -= 0.1f;			// スピードのyを増やす
 			}
 			else

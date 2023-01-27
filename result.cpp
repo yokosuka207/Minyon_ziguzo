@@ -308,6 +308,22 @@ void	DrawResult()
 		for (Button& b : g_ResultButton) {
 			b.Draw();
 		}
+
+		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_ResultRankTextureNo));
+		SpriteDrawColorRotation
+		(
+			g_Result[2].Position.x,
+			g_Result[2].Position.y,
+			0.0f,
+			g_Result[2].Size.x,
+			g_Result[2].Size.y,
+			g_Result[2].Rotate,
+			g_Result[2].Color,
+			0,
+			1.0f,
+			1.0f,
+			1
+		);
 	}
 	else if (ResultObject.type == WIN)		// ÉNÉäÉA
 	{

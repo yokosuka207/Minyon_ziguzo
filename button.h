@@ -36,7 +36,7 @@ private:
 	float m_texNo = -1;										// テクスチャの番号
 	int m_num = -1;											// クリアステージ数表示用
 	float m_numTexNo = -1;									// 数字のテクスチャ
-	float m_frameTexNo = -1;								// 枠のテクスチャ
+	D3DXCOLOR m_numCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);	// 数字の色
 public:
 	Button() {}
 	~Button() {}
@@ -50,6 +50,7 @@ public:
 	// 各種ゲッター
 	D3DXVECTOR2 GetPosition() { return m_pos; }
 	D3DXVECTOR2 GetSize() { return m_size; }
+	D3DXCOLOR GetCol() { return m_color; }
 	
 	// セッター
 	// 引数：ポジション, 当たり判定サイズ, 表示サイズ, 色, テクスチャ番号
@@ -58,6 +59,7 @@ public:
 	void SetButtonColor(D3DXCOLOR col) { m_color = col; }		// 色の切り替え
 	void SetNum(int num) { m_num = num; }		// 数字のセット
 	void SetNumTexNo(float no) { m_numTexNo = no; }	// 数字のテクスチャのセット
+	void SetNumColor(D3DXCOLOR col) { m_numCol = col; }	// 数字のテクスチャのセット
 
 	// マウスとの当たり判定
 	bool CollisionMouse();
