@@ -143,6 +143,7 @@ void UpdateFade() {
 				else{
 					SetScene(SCENE::SCENE_STAGESELECT);
 				}
+
 				if(g_FadeParam.TitleFlag){
 					SetScene(SCENE::SCENE_TITLE);
 				}
