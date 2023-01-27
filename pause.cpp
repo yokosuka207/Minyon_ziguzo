@@ -64,8 +64,8 @@ void	InitPause()
 	PauseObject[0].Rotate = 0.0;
 
 	//コントローラー
-	PauseObject[1].Position = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4, 0);
-	PauseObject[1].Size = D3DXVECTOR2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	PauseObject[1].Position = D3DXVECTOR3(SCREEN_WIDTH / 2 + 90.0f, SCREEN_HEIGHT / 4, 0);
+	PauseObject[1].Size = D3DXVECTOR2(SCREEN_WIDTH / 1.4, SCREEN_HEIGHT / 2);
 	PauseObject[1].Color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
 	PauseObject[1].Rotate = 0.0;
 
