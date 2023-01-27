@@ -63,9 +63,7 @@ Piece g_PieceMapChip[PUZZLE_MAX];
 //**************************************************
 // グローバル変数:
 //**************************************************
-static ID3D11ShaderResourceView* g_MapChipTexture;	//画像一枚で一つの変数が必要
-//static char* g_MapChipTextureName = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
-//static char* g_MapChipTextureName = (char*)"data\\texture\\パズルピース修正版\\16.png";	//テクスチャファイルパス
+
 // 各ピースのテクスチャファイル名
 static char* g_MapChipTextureName[PIECE_TEX_MAX] = {
 	(char*)"data\\texture\\パズルピース_スプライトシート\\00.png",
@@ -205,10 +203,7 @@ HRESULT InitMapChip() {
 	return S_OK;
 }
 void UninitMapChip() {
-	if (g_MapChipTexture != NULL) {
-		g_MapChipTexture->Release();
-		g_MapChipTexture = NULL;
-	}
+
 }
 void UpdateMapChip() {
 	// アニメーション
@@ -647,10 +642,10 @@ void SetField(D3DXVECTOR2 position, D3DXVECTOR2 DrawSize, int no, int Pin, int i
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 27);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN3):	//28 ③ヒントブロック(Piace)
-		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction + 1, 28);
+		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 28);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_BLOCKEXPLAIN):	//29 ヒントブロック(Block)
-		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 29);
+		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction + 1, 29);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMYEXPLAIN):	//30 ヒントブロック(Enemy)
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 30);
