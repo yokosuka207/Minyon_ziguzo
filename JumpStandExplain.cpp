@@ -20,35 +20,30 @@ static int	  g_ExplainBlockNo = 0;
 //=====================================================
 // 入手したピース説明、掴む、つなげる、移動できる
 //=====================================================
-static ID3D11ShaderResourceView* g_PiaceExplain;
 static char* g_PiaceExplainName = (char*)"data\\texture\\PiaceExplain.png";
 static int	  g_PiaceExplainNo = 0;
 // Piace2 ヒント
 //=====================================================
 // 回転できる
 //=====================================================
-static ID3D11ShaderResourceView* g_Piace2Explain;
 static char* g_Piace2ExplainName = (char*)"data\\texture\\PiaceExplain2.png";
 static int	  g_Piace2ExplainNo = 0;
 // Piace3 ヒント
 //=====================================================
 // ゴール説明
 //=====================================================
-static ID3D11ShaderResourceView* g_Piace3Explain;
 static char* g_Piace3ExplainName = (char*)"data\\texture\\PiaceExplain3.png";
 static int	  g_Piace3ExplainNo = 0;
 // Piace4 ヒント
 //=====================================================
 // プレイヤーがいる際にピース移動できる、回転はできない
 //=====================================================
-static ID3D11ShaderResourceView* g_Piace4Explain;
 static char* g_Piace4ExplainName = (char*)"data\\texture\\PiaceExplain4.png";
 static int	  g_Piace4ExplainNo = 0;
 // Piace5 ヒント
 //=====================================================
 // ピース回転、リセットされる
 //=====================================================
-static ID3D11ShaderResourceView* g_Piace5Explain;
 static char* g_Piace5ExplainName = (char*)"data\\texture\\PiaceExplain5.png";
 static int	  g_Piace5ExplainNo = 0;
 // Piace6 ヒント
@@ -63,7 +58,6 @@ static int	  g_Piace5ExplainNo = 0;
 //=====================================================
 // 日記ページ拾う
 //=====================================================
-static ID3D11ShaderResourceView* g_Piace7Explain;
 static char* g_Piace7ExplainName = (char*)"data\\texture\\PiaceExplain7.png";
 static int	  g_Piace7ExplainNo = 0;
 
@@ -71,35 +65,30 @@ static int	  g_Piace7ExplainNo = 0;
 //=====================================================
 // ピースの回転によってブロック落下する
 //=====================================================
-static ID3D11ShaderResourceView* g_BlockExplain;
 static char* g_BlockExplainName = (char*)"data\\texture\\BlockExplain.png";
 static int	  g_BlockExplainNo = 0;
 // Enemy ヒント
 //=====================================================
 // 敵説明
 //=====================================================
-static ID3D11ShaderResourceView* g_EnemyExplain;
 static char* g_EnemyExplainName = (char*)"data\\texture\\EnemyExplain.png";
 static int	  g_EnemyExplainNo = 0;
 // BrokenBlock ヒント
 //=====================================================
 // ひび割れた床　高所落果
 //=====================================================
-static ID3D11ShaderResourceView* g_BrokenExplain;
 static char* g_BrokenExplainName = (char*)"data\\texture\\BrokenExplain.png";
 static int	  g_BrokenExplainNo = 0;
 // MoveBlock ヒント
 //=====================================================
 // 棘の上に重しがおける
 //=====================================================
-static ID3D11ShaderResourceView* g_MoveExplain;
 static char* g_MoveExplainName = (char*)"data\\texture\\MoveExplain.png";
 static int	  g_MoveExplainNo = 0;
 // SheerBlock ヒント
 //=====================================================
 // 透けるブロックの上説明
 //=====================================================
-static ID3D11ShaderResourceView* g_SheerExplain;
 static char* g_SheerExplainName = (char*)"data\\texture\\Piace6Explain.png";
 static int	  g_SheerExplainNo = 0;
 
@@ -136,74 +125,7 @@ HRESULT InitExplain()
 
 void UninitExplain()
 {
-	if (g_ExplainBlock)
-	{
-		g_ExplainBlock->Release();
-		g_ExplainBlock = NULL;
-	}
-
-	if (g_PiaceExplain)
-	{
-		g_PiaceExplain->Release();
-		g_PiaceExplain = NULL;
-	}
-	if (g_Piace2Explain)
-	{
-		g_Piace2Explain->Release();
-		g_Piace2Explain = NULL;
-	}
-	if (g_Piace3Explain)
-	{
-		g_Piace3Explain->Release();
-		g_Piace3Explain = NULL;
-	}
-	if (g_Piace4Explain)
-	{		   
-		g_Piace4Explain->Release();
-		g_Piace4Explain = NULL;
-	}
-	if (g_Piace5Explain)
-	{		   
-		g_Piace5Explain->Release();
-		g_Piace5Explain = NULL;
-	}
-	//if (g_Piace6Explain)
-	//{		   
-	//	g_Piace6Explain->Release();
-	//	g_Piace6Explain = NULL;
-	//}
-	if (g_Piace7Explain)
-	{		   
-		g_Piace7Explain->Release();
-		g_Piace7Explain = NULL;
-	}
-
-	if (g_BlockExplain)
-	{	  
-		g_BlockExplain->Release();
-		g_BlockExplain = NULL;
-	}
-	if (g_EnemyExplain)
-	{	  
-		g_EnemyExplain->Release();
-		g_EnemyExplain = NULL;
-	}
-	if (g_BrokenExplain)
-	{	  
-		g_BrokenExplain->Release();
-		g_BrokenExplain = NULL;
-	}
-	if (g_MoveExplain)
-	{	  
-		g_MoveExplain->Release();
-		g_MoveExplain = NULL;
-	}
-	if (g_SheerExplain)
-	{	  
-		g_SheerExplain->Release();
-		g_SheerExplain = NULL;
-	}
-
+	
 }
 
 void UpdateExplain()
@@ -325,7 +247,10 @@ void SetExplain(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, int direction, int q)
 			g_Explain[i].PieceIndex = no;
 
 			g_Explain[i].tex = q;
+
+			break;
 		}
+
 	}
 }
 
