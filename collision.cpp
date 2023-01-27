@@ -1093,6 +1093,7 @@ void UpdateCollision(){
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 5.0f, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
+								pEnemy[i].DedFlag = true;
 							}
 
 						}
@@ -1109,6 +1110,8 @@ void UpdateCollision(){
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
+								pEnemy[i].DedFlag = true;
+
 							}
 
 						}
@@ -1126,6 +1129,8 @@ void UpdateCollision(){
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y - 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
+								pEnemy[i].DedFlag = true;
+
 							}
 
 						}
@@ -1142,6 +1147,8 @@ void UpdateCollision(){
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
+								pEnemy[i].DedFlag = true;
+
 							}
 
 						}
