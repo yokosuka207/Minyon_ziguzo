@@ -407,6 +407,15 @@ void RotateMapChipL(int PieceNo) {
 //==================================================
 void DeleteMapChip(int PieceNo) {
 
+	for (int i = 0; i < PUZZLE_MAX; i++)
+	{
+		if (g_PieceMapChip[i].no == PieceNo)
+		{
+			g_PieceMapChip[i].UseFlag = false;
+
+		}
+
+	}
 
 	if (g_PieceMapChip[PieceNo].UseFlag) {
 		g_PieceMapChip[PieceNo].UseFlag = false;
