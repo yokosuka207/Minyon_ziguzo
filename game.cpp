@@ -86,7 +86,7 @@ void InitGame()
 		InitJumpStand();
 		InitSheerFloors();
 		InitPuzzleCip();
-		InitPuzzle();
+		//InitPuzzle();
 		InitInventory();			// インベントリの初期化
 		InitCursor();				// カーソルの初期化
 		InitThornBlock();
@@ -137,7 +137,7 @@ void UninitGame()
 	BgUninit();
 	UninitBlock();
 	UninitJoint();
-	UninitPuzzle();
+	//UninitPuzzle();
 	UninitGameMouse();
 	UninitGoal();
 	UninitStart();
@@ -218,7 +218,7 @@ void UpdateGame()
 
 		UpdateBlock();
 		UpdateJoint();
-		UpdatePuzzle();
+		//UpdatePuzzle();
 		UpdatePuzzleCip();
 
 		UpdateGoal();
@@ -280,7 +280,7 @@ void DrawGame()
 		DrawSplitStage();			// 区切り枠の描画
 
 		DrawPolygon();		//ポリゴンの描画
-		DrawPuzzle();
+		//DrawPuzzle();
 		DrawMapChip();
 
 		//DrawJoint();				// （#^ω^）

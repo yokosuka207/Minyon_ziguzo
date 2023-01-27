@@ -27,7 +27,7 @@
 static STORYKEY gStoryKey[STORYKEY_MAX];
 
 static	ID3D11ShaderResourceView* g_StoryKeyTexture = NULL;//テクスチャ情報
-static	char* g_StoryKeyTextureName = (char*)"data\\texture\\StoryKey.jpg";
+static	char* g_StoryKeyTextureName = (char*)"data\\texture\\StoryKey.png";
 int		StoryKeyTextureNo = 0;
 
 

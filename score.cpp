@@ -20,7 +20,7 @@
 static ID3D11ShaderResourceView* g_ScoreTexture;	//画像一枚で一つの変数が必要
 
 static char* g_ScoreTextureName = (char*)"data\\texture\\number.png";
-static char* g_ScoreRankTextureName = (char*)"data\\texture\\ランク.png";
+static char* g_ScoreRankTextureName = (char*)"data\\texture\\ランク色1.png";
 
 static int g_ScoreTextureNo = 0;
 static int g_ScoreRankTextureNo = 0;
@@ -170,9 +170,9 @@ void Score::DrawScore() {
 				0.0f,
 				g_ScoreRankParam.color,
 				g_ScoreRankParam.PaternNo,
-				1.0f / 6.0f,
+				1.0f / 4.0f,
 				1.0f / 1.0f,
-				6
+				4
 			);
 		}
 	}
@@ -481,16 +481,16 @@ void Score::RankScore(int score) {
 		}
 		break;
 		//================================================
-		//	チュートリアル終わり
+		//	落ちるブロックとトゲ
 		//================================================
 	case 13:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 75 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 150 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 225 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
@@ -498,16 +498,16 @@ void Score::RankScore(int score) {
 		}
 		break;
 		//================================================
-		//	チュートリアル終わり
+		//	鍵付き扉とトゲと高所落下と下から壊すとジャンプ台
 		//================================================
 	case 14:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 180 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 360 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 540 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
@@ -515,16 +515,16 @@ void Score::RankScore(int score) {
 		}
 		break;
 		//================================================
-		//	チュートリアル終わり
+		//	敵と紐と鍵付き扉
 		//================================================
 	case 15:
-		if (score < 30 && pResult[0].type == WIN) {
+		if (score < 150 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 45 && pResult[0].type == WIN) {
+		else if (score < 300 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 60 && pResult[0].type == WIN) {
+		else if (score < 450 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
@@ -532,7 +532,7 @@ void Score::RankScore(int score) {
 		}
 		break;
 		//================================================
-		//	チュートリアル終わり
+		//	
 		//================================================
 	case 16:
 		if (score < 30 && pResult[0].type == WIN) {

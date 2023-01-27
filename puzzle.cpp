@@ -10,8 +10,7 @@
 
 PUZZLE g_Puzzle[PUZZLE_MAX];
 
-static ID3D11ShaderResourceView	*g_texturePuzzle;	//画像一枚で一つの変数が必要
-static char *g_textureName_Puzzle = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
+//static char *g_textureName_Puzzle = (char*)"data\\texture\\black&white.jpg";	//テクスチャファイルパス
 static	ID3D11Buffer		*g_VertexBufferP = NULL;	//頂点バッファ
 
 HRESULT InitPuzzle()
@@ -30,7 +29,7 @@ HRESULT InitPuzzle()
 
 	for (int i = 0; i < PUZZLE_MAX; i++)
 	{
-		g_Puzzle[i].texno = LoadTexture(g_textureName_Puzzle);
+		//g_Puzzle[i].texno = LoadTexture(g_textureName_Puzzle);
 
 		g_Puzzle[i].Position = D3DXVECTOR2(0.0f, 0.0f);
 		g_Puzzle[i].OneOldPosition = g_Puzzle[i].oldPosition = g_Puzzle[i].Position;
@@ -72,11 +71,7 @@ HRESULT InitPuzzle()
 
 void UninitPuzzle()
 {
-	if (g_texturePuzzle)
-	{
-		g_texturePuzzle->Release();
-		g_texturePuzzle = NULL;
-	}
+
 	if (g_VertexBufferP)
 	{
 		g_VertexBufferP->Release();//使い終わったので解放する
@@ -98,7 +93,7 @@ void UpdatePuzzle()
 			if (g_Puzzle[i].BrokenIndex != -1)
 			{
 				BROKEN* pBroken = GetBroken();
-				pBroken[g_Puzzle[i].BrokenIndex].Postion = D3DXVECTOR2(g_Puzzle[i].Position.x, g_Puzzle[i].Position.y);
+				//pBroken[g_Puzzle[i].BrokenIndex].Postion = D3DXVECTOR2(g_Puzzle[i].Position.x, g_Puzzle[i].Position.y);
 			}
 
 		}
