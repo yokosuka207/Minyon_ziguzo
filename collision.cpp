@@ -132,7 +132,7 @@ static int g_GoalSoundNo = 0;
 static char g_GoalSoundName[] = "data\\SoundData\\SE\\ドアを開ける音(無料効果音で遊ぼう！).wav";
 //敵死亡
 static int g_EnemySoundNo = 0;
-static char g_EnemySoundName[] = "data\\SoundData\\SE\\ろうそく(効果音ラボ).wav";
+static char g_EnemySoundName[] = "data\\SoundData\\SE\\攻撃(無料効果音で遊ぼう！).wav";
 
 
 
@@ -1122,10 +1122,6 @@ void UpdateCollision(){
 			//------------------------------------------------------
 			//敵の目の前とプレイヤー当たり判定(プレイヤーが死ぬ場合)
 			//------------------------------------------------------
-			//しんちゃんへ
-			//SE導入してるときに気になったから追加してみたけど余計なことしてたらごめんね追加部分はコメントアウトしとくね
-			//エネミー関連のSE部分はいろいろ決まったら随時追加予定
-			//OK
 			for (int i = 0; i < ENEMY_MAX; i++) {
 				if (pEnemy[i].UseFlag) {
 					pEnemy[i].AIFlag = false;
