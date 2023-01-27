@@ -466,7 +466,7 @@ void UpdatePlayer()
 				if (g_Player.isBrokenBlock) {
 					g_Player.isBrokenBlock = false;
 				}
-				if (g_Player.isBrokenBlock) {
+				if (g_Player.isOpenKey) {
 					g_Player.isOpenKey = false;
 				}
 			}
