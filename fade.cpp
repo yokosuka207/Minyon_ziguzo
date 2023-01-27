@@ -143,10 +143,11 @@ void UpdateFade() {
 				else{
 					SetScene(SCENE::SCENE_STAGESELECT);
 				}
-
+				//タイトル
 				if(g_FadeParam.TitleFlag){
 					SetScene(SCENE::SCENE_TITLE);
 				}
+				//終わり
 				if (g_FadeParam.FinFlag) {
 					SetScene(SCENE::SCENE_FIN);
 				}
