@@ -38,6 +38,9 @@ typedef struct {
 	float			uv_w;
 	float			uv_h;
 	int				NumPatern;
+	int Number;	//ピースの何番目のブロックか
+
+	bool DedFlag;	//死んだかどうか
 	bool			UseFlag;
 	bool			AIFlag; //player ト　えねんみ　当たり判定
 }ENEMY;
@@ -46,7 +49,7 @@ HRESULT InitEnemy();
 void UninitEnemy();
 void UpdateEnemy();
 void DrawEnemy();
-void SetEnemy(D3DXVECTOR2 pos,D3DXVECTOR2 size, int direction,int index, ENEMY_DIRECTION d);
+void SetEnemy(D3DXVECTOR2 pos,D3DXVECTOR2 size, int direction,int index, ENEMY_DIRECTION d, int Number);
 ENEMY* GetEnemy();
 void DeleteEnemy(int index);
 

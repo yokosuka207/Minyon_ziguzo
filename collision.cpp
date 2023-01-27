@@ -705,7 +705,7 @@ void UpdateCollision(){
 						SetVolume(g_BrokenSoundNo, 0.5f);
 						PlaySound(g_BrokenSoundNo, 0);
 						(pBroken + i)->UseFlag = false;
-						SetBrokenAnime(pBroken[i].Postion, pBroken[i].Size, pBroken[i].index);
+						SetBrokenAnime(D3DXVECTOR2(pBroken[i].Postion.x, pBroken[i].Postion.y + 8), D3DXVECTOR2(pBroken[i].Size.x*2, pBroken[i].Size.y*2), pBroken[i].index);
 						pPlayer->fall = true;
 						pPlayer->getfall = true;
 						pPlayer->frame = 50;
@@ -876,9 +876,12 @@ void UpdateCollision(){
 							//pPlayer->isHigh = false;
 							(pHigh + i)->UseFlag = false;
 							pHigh[i].breakFlag = true;
+							SetHighAnime(pHigh[i].Postion, pHigh[i].Size, pHigh[i].index);
+
 							//SetVolume(g_HighSoundNo, 0.5f);
 							//PlaySound(g_HighSoundNo, 0);
 							pPlayer->frame = 50;
+							break;
 						}
 						else {
 							//pPlayer->isHigh = true;
@@ -962,6 +965,8 @@ void UpdateCollision(){
 			//-----------------------------------------------------
 			//プレイヤーと鍵付き扉の当たり判定(PlayerとOpenKey)
 			//-----------------------------------------------------
+			bool OpenKeyFlag = false;
+
 			for (int j = 0; j < STAGE_OPEN_KEY_MAX; j++) {
 				for (int i = 0; i < OPEN_KEY_MAX; i++) {
 					if ((pOpenKey + j + i)->DrawFlag) {
@@ -969,8 +974,8 @@ void UpdateCollision(){
 						//扉の左とプレイヤーの右
 						if ((pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
 							(pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 >= pPlayer->oldpos.x + pPlayer->size.x / 2 &&
-							(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
-							(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2)
+							(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 3 &&
+							(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 3)
 						{
 							pPlayer->Position.x = pPlayer->oldpos.x;
 						}
@@ -988,7 +993,8 @@ void UpdateCollision(){
 							(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 < pPlayer->Position.y + pPlayer->size.y / 2 &&
 							(pOpenKey + j + i)->Position.y - (pOpenKey + j + i)->Size.y / 2 >= pPlayer->oldpos.y + pPlayer->size.y / 2)
 						{
-							pPlayer->Position = pPlayer->oldpos;
+							pPlayer->Position.y = pPlayer->oldpos.y;
+							pPlayer->sp.y = 0.0f;
 						}
 						//扉の↑とプレイヤーの↓
 						if ((pOpenKey + j + i)->Position.x - (pOpenKey + j + i)->Size.x / 2 < pPlayer->Position.x + pPlayer->size.x / 2 &&
@@ -996,12 +1002,27 @@ void UpdateCollision(){
 							(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 > pPlayer->Position.y - pPlayer->size.y / 2 &&
 							(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
 						{
-							pPlayer->Position.y = pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 + pPlayer->size.y / 2 + 0.02f;
-							pPlayer->jump = false;
-							pPlayer->fall = false;
-							pPlayer->WarpFlag = false;
-							pPlayer->sp.y = 0;
-							pPlayer->frame = 0;
+							OpenKeyFlag = true;
+							if (!pPlayer->isOpenKey)
+							{
+								pPlayer->Position.y = pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 + pPlayer->size.y / 2 + 0.02f;
+								pPlayer->jump = false;
+								pPlayer->fall = false;
+								pPlayer->WarpFlag = false;
+								pPlayer->isOpenKey = true;
+								pPlayer->sp.y = 0.0f;
+								pPlayer->frame = 0;
+
+							}
+							else
+							{
+								pPlayer->isOpenKey = false;
+
+							}
+						}
+						else if (!OpenKeyFlag) {
+							pPlayer->isOpenKey = false;
+
 						}
 						//扉とjumpstandの判定
 						for (int j = 0; j < JUMPSTAND_MAX; j++) {
@@ -1093,6 +1114,7 @@ void UpdateCollision(){
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x + 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x + 5.0f, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
+								pEnemy[i].DedFlag = true;
 							}
 
 						}
@@ -1109,6 +1131,8 @@ void UpdateCollision(){
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x - 4.0f, pEnemy[i].pos.y), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
+								pEnemy[i].DedFlag = true;
+
 							}
 
 						}
@@ -1126,6 +1150,8 @@ void UpdateCollision(){
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y - 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
+								pEnemy[i].DedFlag = true;
+
 							}
 
 						}
@@ -1142,6 +1168,8 @@ void UpdateCollision(){
 						{
 							if (CollisionBB(D3DXVECTOR2(pEnemy[i].pos.x, pEnemy[i].pos.y + 4.0f), pPlayer->Position, D3DXVECTOR2(pEnemy[i].size.x, pEnemy[i].size.y), pPlayer->size)) {
 								pEnemy[i].UseFlag = false;
+								pEnemy[i].DedFlag = true;
+
 							}
 
 						}

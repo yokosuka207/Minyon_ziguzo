@@ -272,6 +272,7 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 
 	int brokenIndex = 0;	//壊れるブロックの個数
 	int HighbrokenIndex = 0;	//高い壊れるブロックの個数
+	int EnemyIndex = 0;	//敵の数
 	//p=ブロック最大数
 		//i=y方向
 	for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
@@ -355,10 +356,12 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetDoppelGanger(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_LEFT)://23　敵
-				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_LEFT);
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_LEFT, EnemyIndex);
+				EnemyIndex++;
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_RIGHT)://24　敵
-				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_RIGHT);
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_RIGHT, EnemyIndex);
+				EnemyIndex++;
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
@@ -628,6 +631,7 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 	}
 	int brokenIndex = 0;
 	int HighbrokenIndex = 0;
+	int EnemyIndex = 0;
 	//p=ブロック最大数
 		//i=y方向
 	for (int i = 0; i < BLOCK_CHIP_ARRAY; i++) {
@@ -709,10 +713,12 @@ void SetInventoryMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 				SetDoppelGanger(position, DrawSize, no);
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_LEFT)://23　敵
-				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_LEFT);
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_LEFT, EnemyIndex);
+				EnemyIndex++;
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_ENEMY_RIGHT)://24　敵
-				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_RIGHT);
+				SetEnemy(position, DrawSize, g_PieceMapChip[no].direction, no, ENEMY_DIRECTION::DIRECTION_RIGHT, EnemyIndex);
+				EnemyIndex++;
 				break;
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_START):	//25 スタート地点
 				SetStart(position, DrawSize, g_PieceMapChip[no].direction, no);
