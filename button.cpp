@@ -52,6 +52,7 @@ void Button::Update()
 {
 	// ボタンの状態リセット
 	ChangeType(BUTTON_TYPE::TYPE_NORMAL);
+	m_numCol.a = m_color.a;
 }
 
 
@@ -73,15 +74,16 @@ void Button::Draw()
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(m_numTexNo));
 			// 十の位
 			SpriteDrawColorRotation(m_pos.x + NUM_DIFFERENCE_X, m_drawPos.y + NUM_DIFFERENCE_Y, 0.0f, NUM_SIZE, NUM_SIZE, 0.0f, 
-				m_color, m_num / 10, NUM_TEXTURE_UV_W, NUM_TEXTURE_UV_H, NUM_TEXTURE_NUM_X);
+				m_numCol, m_num / 10, NUM_TEXTURE_UV_W, NUM_TEXTURE_UV_H, NUM_TEXTURE_NUM_X);
 			// 一の位
 			SpriteDrawColorRotation(m_pos.x + NUM_DIFFERENCE_X + NUM_SIZE, m_drawPos.y + NUM_DIFFERENCE_Y, 0.0f, NUM_SIZE, NUM_SIZE, 0.0f,
-				m_color, m_num % 10, NUM_TEXTURE_UV_W, NUM_TEXTURE_UV_H, NUM_TEXTURE_NUM_X);
+				m_numCol, m_num % 10, NUM_TEXTURE_UV_W, NUM_TEXTURE_UV_H, NUM_TEXTURE_NUM_X);
 		}
 	}
 	else {						// 押されている状態
 		m_drawPos.y = m_pos.y + 10.0f;
-		D3DXCOLOR col = D3DXCOLOR(m_color.r - 0.3f, m_color.g - 0.3f, m_color.b - 0.3f, m_color.a);
+		D3DXCOLOR col = D3DXCOLOR(m_color.r - 0.3f, m_color.g - 0.3f, m_color.b - 0.3f, m_color.a);		// ボタンの色
+		D3DXCOLOR numCol = D3DXCOLOR(m_numCol.r - 0.3f, m_numCol.g - 0.3f, m_numCol.b - 0.3f, m_numCol.a);		// 数字の色
 		// テクスチャの設定
 		GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(m_texNo));
 		SpriteDrawColorRotation(m_pos.x, m_drawPos.y,0.0f, m_DrawSize.x, m_DrawSize.y, 0.0f, 
@@ -91,9 +93,9 @@ void Button::Draw()
 			// テクスチャの設定
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(m_numTexNo));
 			SpriteDrawColorRotation(m_pos.x + NUM_DIFFERENCE_X, m_drawPos.y + NUM_DIFFERENCE_Y, 0.0f, NUM_SIZE, NUM_SIZE, 0.0f,
-				col, m_num / 10, NUM_TEXTURE_UV_W, NUM_TEXTURE_UV_H, NUM_TEXTURE_NUM_X);
+				numCol, m_num / 10, NUM_TEXTURE_UV_W, NUM_TEXTURE_UV_H, NUM_TEXTURE_NUM_X);
 			SpriteDrawColorRotation(m_pos.x + NUM_DIFFERENCE_X + NUM_SIZE, m_drawPos.y + NUM_DIFFERENCE_Y, 0.0f, NUM_SIZE, NUM_SIZE, 0.0f, 
-				col, m_num % 10, NUM_TEXTURE_UV_W, NUM_TEXTURE_UV_H, NUM_TEXTURE_NUM_X);
+				numCol, m_num % 10, NUM_TEXTURE_UV_W, NUM_TEXTURE_UV_H, NUM_TEXTURE_NUM_X);
 		}
 	}
 

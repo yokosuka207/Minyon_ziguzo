@@ -118,6 +118,7 @@ void DrawMapChip();
 
 //-----enum別にセット-----
 void SetMapChip(D3DXVECTOR2 pos, int no,int Pin);
+void SetField(D3DXVECTOR2 pos, D3DXVECTOR2 size, int no, int Pin, int i, int j);
 //-----ファイル一括管理----
 void FileLoad(int StageNo);
 
