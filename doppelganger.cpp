@@ -167,7 +167,7 @@ HRESULT InitDoppelganger()
 	//g_Doppel.hp = PLAYER_HP;
 	g_Doppel.frame = 0;
 	g_Doppel.CoolTime = PLAYER_COOLTIME;
-	g_Doppel.PieceIndex = 0;
+	g_Doppel.PieceIndex = -1;
 
 	g_Doppel.LightFrame = 0;
 
