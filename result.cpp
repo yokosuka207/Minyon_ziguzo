@@ -14,6 +14,7 @@
 #include	"sound.h"
 #include	"button.h"
 #include "player.h"
+#include "StageSelect.h"
 //======================
 //マクロ定義
 //=======================
@@ -182,6 +183,9 @@ void	UpdateResult()
 			//SetVolume(g_ChangeSceneResultSoundNo, 0.5f);
 			PlaySound(g_ChangeSceneResultSoundNo, 0);
 			// ステージセレクトへ
+			if (ReturnStageNo() == STAGE_MAX - 1) {
+				pFadeParam->FinFlag = true;
+			}
 			StartFade(FADE::FADE_ALPHA_OUT);
 		}
 
