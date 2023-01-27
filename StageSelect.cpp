@@ -596,6 +596,15 @@ void UpdateStageSelect() {
 		}
 	
 	
+
+
+		for (int i = 0; i < STAGE_MAX; i++)
+		{
+			if (g_StageSelect[i].StageUseFlag)
+			{
+				g_StageSelectNumber[i].StageUseFlag = true;
+			}
+		}
 }
 
 //-----------------------------------------------------------------------------
