@@ -27,7 +27,7 @@
 //	É}ÉNÉçíËã`
 //*****************************************************************************
 
-#define STAIRS_LEFT	65
+#define STAIRS_LEFT	75
 #define STAIRS_RIGHT	245
 
 #define DOOR_SPACE	1050 / 7

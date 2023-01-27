@@ -201,12 +201,12 @@ void SetBroken(D3DXVECTOR2 Pos, D3DXVECTOR2 s,int index, int number){
 	if (!MatchFlag)
 	{
 		for (int i = BrokenIndex; i < BROKEN_MAX; i++) {
-			if (!g_Broken[i].UseFlag) {
-				g_Broken[i].Postion = Pos;
-				g_Broken[i].Size = s;
-				g_Broken[i].index = index;
-				g_Broken[i].Number = number;
-				g_Broken[i].UseFlag = true;
+			if (!g_Broken[BrokenIndex].UseFlag) {
+				g_Broken[BrokenIndex].Postion = Pos;
+				g_Broken[BrokenIndex].Size = s;
+				g_Broken[BrokenIndex].index = index;
+				g_Broken[BrokenIndex].Number = number;
+				g_Broken[BrokenIndex].UseFlag = true;
 				BrokenIndex++;
 				if (BrokenIndex == BROKEN_MAX)
 				{
