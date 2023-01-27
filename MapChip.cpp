@@ -407,6 +407,15 @@ void RotateMapChipL(int PieceNo) {
 //==================================================
 void DeleteMapChip(int PieceNo) {
 
+	for (int i = 0; i < PUZZLE_MAX; i++)
+	{
+		if (g_PieceMapChip[i].no == PieceNo)
+		{
+			g_PieceMapChip[i].UseFlag = false;
+
+		}
+
+	}
 
 	if (g_PieceMapChip[PieceNo].UseFlag) {
 		g_PieceMapChip[PieceNo].UseFlag = false;
@@ -667,16 +676,16 @@ void SetField(D3DXVECTOR2 position, D3DXVECTOR2 DrawSize, int no, int Pin, int i
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT_D)://37　ドッペルゲンガーの初期位置?
 		SetSpawnPointD(position, DrawSize, no);
 		break;
-	case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN4):	//38 ③ヒントブロック(Piace)
+	case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN4):	//38 ④ヒントブロック(Piace)
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 38);
 		break;
-	case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN5):	//39 ③ヒントブロック(Piace)
+	case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN5):	//39 ⑤ヒントブロック(Piace)
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 39);
 		break;
-	case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN6):	//40 ③ヒントブロック(Piace)
+	case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN6):	//40 ⑥ヒントブロック(Piace)
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 40);
 		break;
-	case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN7):	//41 ③ヒントブロック(Piace)
+	case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN7):	//41 ⑦ヒントブロック(Piace)
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 41);
 		break;
 	default:

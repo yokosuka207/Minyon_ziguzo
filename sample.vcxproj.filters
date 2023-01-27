@@ -68,6 +68,7 @@
     <ClCompile Include="spawnpoint_d.cpp" />
     <ClCompile Include="EffectLight.cpp" />
     <ClCompile Include="DoppelGangerLife.cpp" />
+    <ClCompile Include="fin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
@@ -149,5 +150,6 @@
     <ClInclude Include="spawnpoint_d.h" />
     <ClInclude Include="EffectLight.h" />
     <ClInclude Include="DoppelGangerLife.h" />
+    <ClInclude Include="fin.h" />
   </ItemGroup>
 </Project>

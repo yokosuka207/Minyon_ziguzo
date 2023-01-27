@@ -132,7 +132,7 @@ static int g_GoalSoundNo = 0;
 static char g_GoalSoundName[] = "data\\SoundData\\SE\\ƒhƒA‚ğŠJ‚¯‚é‰¹(–³—¿Œø‰Ê‰¹‚Å—V‚Ú‚¤I).wav";
 //“G€–S
 static int g_EnemySoundNo = 0;
-static char g_EnemySoundName[] = "data\\SoundData\\SE\\‚ë‚¤‚»‚­(Œø‰Ê‰¹ƒ‰ƒ{).wav";
+static char g_EnemySoundName[] = "data\\SoundData\\SE\\UŒ‚(–³—¿Œø‰Ê‰¹‚Å—V‚Ú‚¤I).wav";
 
 
 

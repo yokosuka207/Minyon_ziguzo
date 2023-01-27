@@ -13,6 +13,7 @@
 #include "noizu.h"
 #include "sound.h"
 #include "story.h"
+#include "fin.h"
 
 #define SOUND_FADE_OUT_VOLUME (0.02f)
 
@@ -93,6 +94,9 @@ void InitScene(SCENE no){
 		InitNoizu();
 		g_SaveScene.DataSave();
 		break;
+	case SCENE::SCENE_FIN:
+		InitFin();
+		break;
 	default:
 		break;
 	}
@@ -133,6 +137,9 @@ void UninitScene(){
 		UninitResult();
 		UninitNoizu();
 
+		break;
+	case SCENE::SCENE_FIN:
+		UninitFin();
 		break;
 	default:
 		break;
@@ -191,6 +198,9 @@ void UpdateScene(){
 		UpdateNoizu();
 
 		break;
+	case SCENE::SCENE_FIN:
+		UpdateFin();
+		break;
 	default:
 		break;
 	}
@@ -234,6 +244,9 @@ void DrawScene(){
 		pScore->SetStageNo(StageNo);
 		DrawNoizu();
 
+		break;
+	case SCENE::SCENE_FIN:
+		DrawFin();
 		break;
 	default:
 		break;
