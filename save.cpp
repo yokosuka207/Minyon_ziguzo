@@ -25,6 +25,7 @@ Update:
 #include "mouse.h"
 #include "StageSelect.h"
 #include "button.h"
+#include "StoryKey.h"
 
 #include "sound.h"
 
@@ -99,7 +100,7 @@ void Save::Init()
 
 	// セーブデータ系の初期化
 	m_saveData.clearStageNum = 0;
-
+	m_saveData.clearStageNum = 0;
 
 
 	FILE* fp;		// ファイルポインタ
@@ -313,6 +314,7 @@ void Save::DataSave()
 	else {
 		m_saveData.clearStageNum = (GetClearStageNum() - 1);
 	}
+	m_saveData.storyHaveNum = GetStoryKey()->HaveSKey;
 
 	FILE* fp;		// ファイルポインタ
 
@@ -335,6 +337,7 @@ void Save::DataSave()
 void Save::DeleteSaveData()
 {
 	m_saveData.clearStageNum = 0;
+	m_saveData.storyHaveNum = 1;
 
 	FILE* fp;		// ファイルポインタ
 
@@ -374,6 +377,7 @@ void Save::DataLoad()
 		g_StageAllClear = true;
 	}
 	SetClearStageNum(m_saveData.clearStageNum);
+	GetStoryKey()->HaveSKey = m_saveData.storyHaveNum;
 }
 
 
