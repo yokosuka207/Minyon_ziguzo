@@ -44,6 +44,11 @@ class Score{
 private:
 	int m_score = 0;	//ƒXƒRƒA‚ğ“ü‚ê‚é
 	int m_TimeScore = 0;
+
+	bool m_Rank_S = false;
+	bool m_Rank_A = false;
+	bool m_Rank_B = false;
+	bool m_Rank_C = false;
 public:
 	void InitScore();
 	void UninitScore();
