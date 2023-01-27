@@ -143,6 +143,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="cursor.cpp" />
+    <ClCompile Include="DoppelGangerLife.cpp" />
     <ClCompile Include="EffectLight.cpp" />
     <ClCompile Include="EffectSpark.cpp" />
     <ClCompile Include="doppelganger.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="cursor.h" />
+    <ClInclude Include="DoppelGangerLife.h" />
     <ClInclude Include="EffectLight.h" />
     <ClInclude Include="EffectSpark.h" />
     <ClInclude Include="doppelganger.h" />
