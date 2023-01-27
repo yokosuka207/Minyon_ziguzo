@@ -209,7 +209,7 @@ void UninitDoppelganger()
 void UpdateDoppelganger()
 {	
 	MOUSE* pMouse = GetMouse();
-
+	CURSOR* pCursor = GetCurso();
 	if (IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {		// GamePad B
 		if (!g_bHave) {
 			g_bHave = true;
@@ -224,7 +224,7 @@ void UpdateDoppelganger()
 	}
 
 	if (!Mouse_IsLeftDown() &&			// mouse ¶
-		!g_bHave)
+		!pCursor->bHave)
 	{
 
 		if (g_Doppel.UseFlag == true)
@@ -1502,7 +1502,7 @@ void UpdateDoppelganger()
 					if (CollisionBB(g_Doppel.Position, p_Lamp[i].pos, g_Doppel.size, p_Lamp[i].size))
 					{
 						g_Doppel.LightFrame++;
-						if (g_Doppel.LightFrame >= 60)
+						if (g_Doppel.LightFrame >= 30)
 						{
 							g_Doppel.LightFrame = 0;
 							g_Doppel.hp--;

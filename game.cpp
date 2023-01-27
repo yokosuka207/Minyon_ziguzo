@@ -53,6 +53,7 @@
 #include"lamp.h"
 #include"lamp_switch.h"
 #include "EffectLight.h"
+#include "DoppelGangerLife.h"
 
 static Time* pTime = pTime->GetTime();
 static Score* pScore = pScore->GetScore();
@@ -105,6 +106,7 @@ void InitGame()
 		InitEffectLight();
 		InitBullet();
 		InitPlayerLife();
+		InitDoppelgangerLife();
 		InitKeyDisplay();
 		InitExplain();
 		InitStoryKey();
@@ -162,6 +164,7 @@ void UninitGame()
 	UninitEnemy();
 	UninitBullet();
 	UninitPlayerLife();
+	UninitDoppelgangerLife();
 	UninitKeyDisplay();
 	UninitExplain();
 	UninitStoryKey();
@@ -180,6 +183,10 @@ void UninitGame()
 
 void UpdateGame()
 {
+	if (Keyboard_IsKeyTrigger(KK_P)) {
+		InitGame();
+	}
+
 	//ポーズ処理
 	if (Keyboard_IsKeyTrigger(KK_TAB) ||				// keyboard TAB
 		IsButtonTriggered(0, XINPUT_GAMEPAD_START) ||	// GamePad START
@@ -248,8 +255,10 @@ void UpdateGame()
 		UpdateEffectLight();
 
 		UpdatePlayerLife();
+		UpdateDoppelgangerLife();
 		UpdateKeyDisplay();
 		UpdateExplain();
+
 	}
 	else {
 		UpdatePause();
@@ -304,6 +313,7 @@ void DrawGame()
 		DrawNoizu();
 
 		DrawPlayerLife();
+		DrawDoppelgangerLife();
 		DrawKeyDisplay();
 
 		DrawInventory();			// インベントリの描画
