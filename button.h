@@ -51,6 +51,7 @@ public:
 	D3DXVECTOR2 GetPosition() { return m_pos; }
 	D3DXVECTOR2 GetSize() { return m_size; }
 	D3DXCOLOR GetCol() { return m_color; }
+	int GetNum() { return m_num; }
 	
 	// セッター
 	// 引数：ポジション, 当たり判定サイズ, 表示サイズ, 色, テクスチャ番号

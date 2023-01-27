@@ -1103,7 +1103,7 @@ void UpdateCollision(){
 					if (CollisionBB(pPlayer->Position, pSKey[i].pos, pPlayer->size, pSKey[i].size))
 					{
 						pSKey[i].bUse = false;
-						pSKey[i].HaveSKey++;
+						pSKey[0].HaveSKey++;
 						pSKey[i].bGet = true;
 					}
 				}

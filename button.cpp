@@ -52,7 +52,7 @@ void Button::Update()
 {
 	// ボタンの状態リセット
 	ChangeType(BUTTON_TYPE::TYPE_NORMAL);
-	m_numCol.a = m_color.a;
+	m_numCol = m_color;
 }
 
 

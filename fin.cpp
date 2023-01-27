@@ -32,7 +32,8 @@ void InitFin() {
 	g_FinSoundNo = LoadSound(filename);
 	PlaySound(g_FinSoundNo, -1);
 
-	GetStoryKey()->HaveSKey++;
+	STORYKEY* pSK = GetStoryKey();
+	pSK[0].HaveSKey++;
 }
 void UninitFin() {
 	StopSound(g_FinSoundNo);

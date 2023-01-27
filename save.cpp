@@ -124,8 +124,6 @@ void Save::Init()
 		if (m_saveData.clearStageNum == STAGE_MAX) {
 			g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
 			g_DataButton[i].SetNumColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
-			//g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
-			//g_DataButton[i].SetNumColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
 		}
 	}
 	// データ削除ボタン
@@ -202,6 +200,17 @@ void Save::Update()
 	//----------入力----------]
 
 	for (int i = 0; i < BUTTON_MAX; i++) {
+		D3DXCOLOR col = g_DataButton[i].GetCol();
+		if (g_DataButton[i].GetNum() == STAGE_MAX) {
+			g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, col.a));
+			g_DataButton[i].SetNumColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, col.a));
+		}
+		else
+		{
+			g_DataButton[i].SetButtonColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, col.a));
+			g_DataButton[i].SetNumColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, col.a));
+		}
+		col = g_DataButton[i].GetCol();
 		// 各ボタンの更新
 		g_DataButton[i].Update();
 		// マウスが動いていたら
@@ -212,7 +221,6 @@ void Save::Update()
 			}
 		}
 
-		D3DXCOLOR col = g_DataButton[i].GetCol();
 		// そのボタンが選ばれてたら
 		if (&g_DataButton[i] == m_pButton) {
 			g_DataButton[i].SetButtonColor(D3DXCOLOR(col.r, col.g, col.b, 1.0f));
@@ -314,7 +322,8 @@ void Save::DataSave()
 	else {
 		m_saveData.clearStageNum = (GetClearStageNum() - 1);
 	}
-	m_saveData.storyHaveNum = GetStoryKey()->HaveSKey;
+	STORYKEY* pSK = GetStoryKey();
+	m_saveData.storyHaveNum = pSK[0].HaveSKey;
 
 	FILE* fp;		// ファイルポインタ
 
@@ -377,7 +386,8 @@ void Save::DataLoad()
 		g_StageAllClear = true;
 	}
 	SetClearStageNum(m_saveData.clearStageNum);
-	GetStoryKey()->HaveSKey = m_saveData.storyHaveNum;
+	STORYKEY* pSK = GetStoryKey();
+	pSK[0].HaveSKey = m_saveData.storyHaveNum;
 }
 
 
