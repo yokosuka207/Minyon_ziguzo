@@ -73,7 +73,12 @@ void UpdateFade() {
 				SetScene(SCENE::SCENE_GAME);
 				break;
 			case SCENE::SCENE_GAME:
-				SetScene(SCENE::SCENE_RESULT);
+				if (g_FadeParam.ExceptFlag) {
+					SetScene(SCENE::SCENE_FIN);
+				}
+				else {
+					SetScene(SCENE::SCENE_RESULT);
+				}
 				break;
 			case SCENE::SCENE_RESULT:
 				//continueéû
@@ -135,11 +140,14 @@ void UpdateFade() {
 					SetScene(SCENE::SCENE_GAME);
 				}
 				//í èÌ
-				else if(!g_FadeParam.ExceptFlag && !g_FadeParam.TitleFlag){
+				else{
 					SetScene(SCENE::SCENE_STAGESELECT);
 				}
-				else if(g_FadeParam.TitleFlag){
+				if(g_FadeParam.TitleFlag){
 					SetScene(SCENE::SCENE_TITLE);
+				}
+				if (g_FadeParam.FinFlag) {
+					SetScene(SCENE::SCENE_FIN);
 				}
 				break;
 			case SCENE::SCENE_FIN:
