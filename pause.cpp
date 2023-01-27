@@ -31,7 +31,7 @@ static	ID3D11ShaderResourceView* g_PauseTexture = NULL;//テクスチャ情報
 static	char* g_PauseTextureName = (char*)"data\\texture\\black.png";
 
 static	ID3D11ShaderResourceView* g_PauseOperationTexture = NULL;//操作説明情報
-static	char* g_PauseOperationTextureName = (char*)"data\\texture\\操作説明.png";
+static	char* g_PauseOperationTextureName = (char*)"data\\texture\\操作説明完.png";
 
 static	ID3D11ShaderResourceView* g_PauseEndTexture = NULL;//テクスチャ情報
 static	char* g_PauseEndTextureName = (char*)"data\\texture\\text_continue game.png";
