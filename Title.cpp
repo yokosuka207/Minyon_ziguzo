@@ -195,7 +195,7 @@ void	UpdateTitle()
 				(Mouse_IsLeftTrigger() && g_pSelectTitleButton->CollisionMouse())) {		// Mouse 左クリック (当たっている状態で)
 				// 0:Start セーブシーンへ
 				if (i == 0) {
-					//SetVolume(g_ChangeSceneTitleSoundNo, 0.5f);
+					SetVolume(g_ChangeSceneTitleSoundNo, 0.3f);
 					PlaySound(g_ChangeSceneTitleSoundNo, 0);
 					// セーブデータ選択へ
 					StartFade(FADE::FADE_ALPHA_OUT);

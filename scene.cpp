@@ -58,8 +58,8 @@ void InitScene(SCENE no){
 		InitTitle();
 		InitNoizu();
 		g_TitleSoundNo = LoadSound(TitleSoundName);
-		PlaySound(g_TitleSoundNo, -1);	//-1ÇÕloop
 		SetVolume(g_TitleSoundNo, 1.0f);//í èÌÇÕvolume 1.0f
+		PlaySound(g_TitleSoundNo, -1);	//-1ÇÕloop
 		break;
 	case SCENE::SCENE_TUTORIAL:
 		InitNoizu();
@@ -77,7 +77,7 @@ void InitScene(SCENE no){
 		//g_StageSelectSoundNo = LoadSound(StageSelectName[Irand(3)]);
 		g_StageSelectSoundNo = LoadSound(StageSelectName);
 		PlaySound(g_StageSelectSoundNo, -1);
-		SetVolume(g_StageSelectSoundNo, 0.4f);
+		SetVolume(g_StageSelectSoundNo, 0.8f);
 		//SetStageSelect();
 		break;
 	case SCENE::SCENE_GAME :
@@ -86,7 +86,7 @@ void InitScene(SCENE no){
 		InitGame();
 		g_GameSoundNo = LoadSound(GameSoundName);
 		PlaySound(g_GameSoundNo, -1);
-		SetVolume(g_GameSoundNo, 1.0f);
+		SetVolume(g_GameSoundNo, 2.0f);
 		break;
 	case SCENE::SCENE_RESULT:
 		InitResult();

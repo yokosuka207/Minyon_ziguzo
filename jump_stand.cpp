@@ -64,11 +64,11 @@ HRESULT InitJumpStand()
 
 void UninitJumpStand()
 {
-	if (g_textureBlock)
-	{
-		g_textureBlock->Release();
-		g_textureBlock = NULL;
-	}
+	//if (g_textureBlock)
+	//{
+	//	g_textureBlock->Release();
+	//	g_textureBlock = NULL;
+	//}
 
 	StopSound(g_JumpStandSoundNo);
 	StopSound(g_JumpStandSoundMoveNo);
@@ -132,7 +132,7 @@ void UpdateJumpStand()
 					//à¯Ç´Ç∏ÇÈâπ
 					if (g_JumpStand[i].oldpos.x != g_JumpStand[i].pos.x && g_JumpStand[i].JumpStandNotMove == true)//ìÆÇ©ÇµÇΩèuä‘
 					{
-						//SetVolume(g_JumpStandSoundMoveNo, 0.5f);
+						SetVolume(g_JumpStandSoundMoveNo, 0.5f);
 						PlaySound(g_JumpStandSoundMoveNo, -1);
 						g_JumpStand[i].JumpStandNotMove = false;
 					}

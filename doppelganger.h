@@ -50,6 +50,8 @@ struct DOPPELGANGER
 	bool isSheerFloorsUse;
 	bool isMoveBlock;
 	bool isHigh;
+	bool isFallBlock;
+	bool isBrokenBlock;
 	bool WarpFlag;
 	bool LampSwitchFlag[LAMP_SWITCH_MAX];
 

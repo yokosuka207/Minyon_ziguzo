@@ -218,7 +218,7 @@ void SetInventory(int PieNo)
 				SetInventoryMapChip(g_Inventory[i].pos, PieNo, PieNo);
 				g_Inventory[i].IsIn = true;
 				g_Inventory[i].IsUse = true;
-				g_Inventory[i].IsCatch = false;
+				g_Inventory[i].IsCatch = true;
 
 				break;
 			}

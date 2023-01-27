@@ -106,7 +106,7 @@ void DrawEnemy() {
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_Enemy[i].texno));
 			SpriteDrawColorRotation(
 				g_Enemy[i].pos.x,
-				g_Enemy[i].pos.y,
+				g_Enemy[i].pos.y - 5.0f,
 				-0.1f,
 				-g_Enemy[i].size.x,
 				-g_Enemy[i].size.y,

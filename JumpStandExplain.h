@@ -17,6 +17,8 @@ typedef struct
 	int		PieceIndex;
 	float  rot;
 
+	int PiaceIndex;
+
 	bool bUse;
 	bool HintUse;
 	bool CollisionUse;

@@ -173,7 +173,7 @@ void SetBullet(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXVECTOR2 spd ,int direction
 			g_Bullet[i].h = BULLET_SIZE_H;
 			g_Bullet[i].w = BULLET_SIZE_W;
 			g_Bullet[i].use = true;
-			SetVolume(g_BulletSoundNo, 0.25f);
+			SetVolume(g_BulletSoundNo, 0.05f);
 			PlaySound(g_BulletSoundNo, 0);
 			return;
 		}

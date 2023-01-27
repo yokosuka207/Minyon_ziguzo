@@ -289,6 +289,7 @@ void UpdateCursor()
 							if (pBroken[i].index == NoIndex)
 							{
 								pBroken[i].Postion += temp;
+								
 							}
 
 						}
@@ -325,6 +326,8 @@ void UpdateCursor()
 							if (pMoveBlock[i].NowPieceIndex == NoIndex)
 							{
 								pMoveBlock[i].pos += temp;
+								pMoveBlock[i].oldpos = pMoveBlock[i].pos;
+
 							}
 
 						}
@@ -337,6 +340,7 @@ void UpdateCursor()
 							if (pFallBlock[i].PieceIndex == NoIndex)
 							{
 								pFallBlock[i].Position += temp;
+								pFallBlock[i].oldpos = pFallBlock[i].Position;
 							}
 						}
 					}
@@ -423,6 +427,8 @@ void UpdateCursor()
 							if (pJumpStand[i].NowPieceIndex == NoIndex)
 							{
 								pJumpStand[i].pos += temp;
+								pJumpStand[i].oldpos = pJumpStand[i].pos;
+
 							}
 						}
 					}
