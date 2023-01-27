@@ -209,7 +209,7 @@ void UninitDoppelganger()
 void UpdateDoppelganger()
 {	
 	MOUSE* pMouse = GetMouse();
-
+	CURSOR* pCursor = GetCurso();
 	if (IsButtonTriggered(0, XINPUT_GAMEPAD_B)) {		// GamePad B
 		if (!g_bHave) {
 			g_bHave = true;
@@ -224,7 +224,7 @@ void UpdateDoppelganger()
 	}
 
 	if (!Mouse_IsLeftDown() &&			// mouse ¶
-		!g_bHave)
+		!pCursor->bHave)
 	{
 
 		if (g_Doppel.UseFlag == true)
