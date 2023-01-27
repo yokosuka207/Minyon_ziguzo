@@ -107,6 +107,7 @@ void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, int direction)
 
 			gStoryKey[i].no = no;
 			gStoryKey[i].bUse = true;
+			break;
 		}
 	}
 }
