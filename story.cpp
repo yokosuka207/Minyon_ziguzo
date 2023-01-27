@@ -207,25 +207,25 @@ void DrawStory()
 	{
 		switch (gStory.HaveKey) {
 		case 1:
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo7));
-			break;
-		case 2:
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo1));
-			break;
-		case 3:
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo2));
 			break;
-		case 4:
+		case 2:
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo3));
 			break;
-		case 5:
+		case 3:
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo4));
 			break;
-		case 6:
+		case 4:
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo5));
 			break;
-		case 7:
+		case 5:
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo6));
+			break;
+		case 6:
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo7));
+			break;
+		case 7:
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo1));
 			break;
 		case 8:
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo8));

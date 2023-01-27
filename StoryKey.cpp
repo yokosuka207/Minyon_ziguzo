@@ -31,6 +31,7 @@ static	char* g_StoryKeyTextureName = (char*)"data\\texture\\StoryKey.png";
 int		StoryKeyTextureNo = 0;
 
 float g_sub = 0;
+bool g_bSub = false;
 
 HRESULT InitStoryKey()
 {
@@ -39,11 +40,17 @@ HRESULT InitStoryKey()
 	for (int i = 0; i < STORYKEY_MAX; i++) 
 	{
 		//-127, 150)
-		gStoryKey[i].pos = D3DXVECTOR2(-127, 150);
-		gStoryKey[i].size = D3DXVECTOR2(STORYKEY_SIZE, STORYKEY_SIZE);
+		gStoryKey[i].pos = D3DXVECTOR2(100, 100);
+		gStoryKey[i].size = D3DXVECTOR2(100, 100);
 		gStoryKey[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		gStoryKey[i].rot = 0.0f;
 
+		if (gStoryKey[0].HaveSKey > i) {
+			gStoryKey[i].bGet = true;
+		}
+		else {
+			gStoryKey[i].bGet = false;
+		}
 		gStoryKey[i].bUse = false;
 
 		gStoryKey[i].no = -1;
@@ -64,7 +71,15 @@ void UninitStoryKey()
 
 void UpdateStoryKey()
 {
-	
+	if (g_bSub) {
+		g_sub += 0.2f;
+	}
+	else {
+		g_sub -= 0.2f;
+	}
+
+	if (g_sub >= 4.0f) g_bSub = false;
+	else if (g_sub <= -4.0f) g_bSub = true;
 }
 
 
@@ -74,41 +89,37 @@ void DrawStoryKey()
 
 	for (int i = 0; i < STORYKEY_MAX; i++)
 	{
-		if (gStoryKey[i].bUse)
+		if (gStoryKey[i].bUse && !gStoryKey[i].bGet)
 		{
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryKeyTextureNo));
 
-			SpriteDrawColorRotation(gStoryKey[i].pos.x, gStoryKey[i].pos.y, 0.0f, gStoryKey[i].size.x, gStoryKey[i].size.y,
+			SpriteDrawColorRotation(gStoryKey[i].pos.x, gStoryKey[i].pos.y + g_sub, 0.0f, gStoryKey[i].size.x, gStoryKey[i].size.y,
 				gStoryKey[i].rot, gStoryKey[i].col, 0, 1.0f, 1.0f, 1);
 		}
 	}
 }
 
 
-void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, int direction)
+void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, int direction, int tex)
 {
-	for (int i = 0; i < STORYKEY_MAX; i++) {
-		switch (direction) {
-		case 0:gStoryKey[i].rot = (direction + 2) * 90;
-			break;
-		case 1:gStoryKey[i].rot = direction * 90;
-			break;
-		case 2:gStoryKey[i].rot = (direction - 2) * 90;
-			break;
-		case 3:gStoryKey[i].rot = direction * 90;
-			break;
-		default:
-			break;
-		}
+	switch (direction) {
+	case 0:gStoryKey[tex].rot = (direction + 2) * 90;
+		break;
+	case 1:gStoryKey[tex].rot = direction * 90;
+		break;
+	case 2:gStoryKey[tex].rot = (direction - 2) * 90;
+		break;
+	case 3:gStoryKey[tex].rot = direction * 90;
+		break;
+	default:
+		break;
+	}
 
-		if (!gStoryKey[i].bUse) {
-			gStoryKey[i].pos = p;
-			gStoryKey[i].size = s;
-
-			gStoryKey[i].no = no;
-			gStoryKey[i].bUse = true;
-			break;
-		}
+	if (!gStoryKey[tex].bUse && !gStoryKey[tex].bGet) {
+		gStoryKey[tex].pos = p;
+		gStoryKey[tex].size = s;
+		gStoryKey[tex].no = no;
+		gStoryKey[tex].bUse = true;
 	}
 }
 
@@ -117,6 +128,7 @@ void DeleteStoryKey(int no)
 {
 	for (int i = 0; i < STORYKEY_MAX; i++) {
 		if (gStoryKey[i].no == no) {
+			if (gStoryKey[i].bUse)
 			gStoryKey[i].bUse = false;
 		}
 	}

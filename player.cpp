@@ -70,8 +70,6 @@ static char g_PlayerLeftSoundName[] = "data\\SoundData\\SE\\革靴で歩く左.wav";
 static int g_CandleSoundNo = 0;
 static char g_CandleSoundName[] = "data\\SoundData\\SE\\ろうそく(効果音ラボ).wav";
 
-//プレイヤー着地音導入したいです
-//
 
 static Time		g_Time;
 

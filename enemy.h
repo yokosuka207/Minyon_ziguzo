@@ -11,7 +11,7 @@
 
 #include "main.h"
 
-#define ENEMY_MAX (10)
+#define ENEMY_MAX (15)
 #define ENEMY_SIZE_W (10)
 #define ENEMY_SIZE_H (30)
 

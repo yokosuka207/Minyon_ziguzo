@@ -133,7 +133,7 @@ void UpdateExplain()
 	CAMERA* pCamera = GetCamera();
 	for (int i = 0; i < EXPLAIN_MAX; i++) {
 		if (g_Explain[i].CollisionUse && 
-			pCamera->fov != 45.0f)
+			pCamera->zoomFlag)
 		{
 			if (Keyboard_IsKeyTrigger(KK_LEFTCONTROL) ||					// keyboard Ctrl ç∂
 				Keyboard_IsKeyTrigger(KK_C) ||								// keyboard C

@@ -11,7 +11,7 @@
 //==============================================================
 //マクロ定義
 //==============================================================
-#define STORYKEY_SIZE	(15)
+//#define STORYKEY_SIZE	(1)
 #define STORYKEY_MAX	(8)
 
 
@@ -24,6 +24,7 @@ typedef struct
 	float	rot;				//回転
 	int		no;				//マップチップ番号
 
+	bool	bGet;			// 取得フラグ
 	bool	bUse;			//使用中フラグ
 
 	int		HaveSKey;			//鍵所持数
@@ -39,6 +40,6 @@ void UninitStoryKey();
 void UpdateStoryKey();
 void DrawStoryKey();
 
-void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, int direction);
+void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, int direction, int tex);
 STORYKEY* GetStoryKey();
 void DeleteStoryKey(int no);

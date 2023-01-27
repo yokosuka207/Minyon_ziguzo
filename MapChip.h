@@ -69,7 +69,7 @@ enum class MAPCHIP_TYPE{
 	TYPE_BROKENEXPLAIN,		//31	壊れるブロックヒントブロック
 	TYPE_MOVEEXPLAIN,		//32	棘の上にブロックおけるよヒントブロック
 	TYPE_SHEEREXPLAIN,		//33	ブロックすけるよヒントブロック
-	TYPE_STORYKEY,		//34	ストーリーキー
+	TYPE_STORYKEY_1,		//34	ストーリーキー1
 	///////////////////////TYPE_EXPLAIN,		//35	ヒントブロック
 	TYPE_LAMP,			//36	街灯
 	TYPE_LAMP_SWITCH,	//37	街灯スイッチ
@@ -78,6 +78,11 @@ enum class MAPCHIP_TYPE{
 	TYPE_PIACEEXPLAIN5,		//40	ピース回転説明ブロック5
 	TYPE_PIACEEXPLAIN6,		//41	ピース回転説明ブロック6
 	TYPE_PIACEEXPLAIN7,		//42	ピース回転説明ブロック7
+	TYPE_STORYKEY_2,		//43	ストーリー2
+	TYPE_STORYKEY_3,		//44	ストーリー3
+	TYPE_STORYKEY_4,		//45	ストーリー4
+	TYPE_STORYKEY_5,		//46	ストーリー5
+	TYPE_STORYKEY_6,		//47	ストーリー6
 
 	TYPE_NUM		
 };
