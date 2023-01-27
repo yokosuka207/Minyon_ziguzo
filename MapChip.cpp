@@ -139,19 +139,6 @@ static int g_StagePieceInfo[21][8] = {
 	{  43,  180,  160,  190,  180,  180,  112,   80,},	// 21	○							
 };										 
 
-/*　　　				　		／＼			↑触るな危険！  不用意に踏み込まない方がいいぞ！
-*							　／	＼				
-*							／・　・　＼		
-*						　／＿_	　　 _＿＼		
-*							　｜ マ ｜			
-*							　｜ ジ	｜			
-*							　｜ で ｜			
-*							　｜ カ ｜			
-*							　｜ ス ｜			
-*							　｜＿＿｜					
-*							    || ||
-*							   || ||		
-*/
 
 int g_brokenIndex = 0;	//壊れるブロックの個数
 int g_HighbrokenIndex = 0;	//高い壊れるブロックの個数
@@ -221,7 +208,6 @@ void DrawMapChip() {
 	float DrawSize;
 	for (int p = 0; p < PUZZLE_MAX; p++) {
 		if (g_PieceMapChip[p].UseFlag) {
-			//SetWorldViewProjection2D();
 
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(g_PieceMapChip[p].TexNo));
 			if (g_PieceMapChip[p].InventoryFlag) {
@@ -678,7 +664,7 @@ void SetField(D3DXVECTOR2 position, D3DXVECTOR2 DrawSize, int no, int Pin, int i
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 30);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_BROKENEXPLAIN): //31 ヒントブロック(BrokenBlock)
-		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 31);
+		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction - 1, 31);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEEXPLAIN):	//32 ヒントブロック(MoveBlock)
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 32);
