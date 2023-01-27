@@ -453,8 +453,23 @@ void UpdateCollision(){
 								pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pMoveBlock[j].pos.y - pMoveBlock[j].size.y / 2 &&
 								pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 <= pMoveBlock[j].oldpos.y - pMoveBlock[j].size.y / 2)
 							{
-								pMoveBlock[j].pos = pMoveBlock[j].oldpos;
+								pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
 							}
+							if (pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 > pMoveBlock[j].pos.x - pMoveBlock[j].size.x / 2 &&
+								pSwitchWall[i].pos.x + pSwitchWall[i].size.x / 2 <= pMoveBlock[j].oldpos.x - pMoveBlock[j].size.x / 2 &&
+								pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pMoveBlock[j].pos.y + pMoveBlock[j].size.y / 2 &&
+								pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pMoveBlock[j].pos.y - pMoveBlock[j].size.y / 2)
+							{
+								pMoveBlock[j].pos.x = pMoveBlock[j].oldpos.x;
+							}
+						}
+						if (pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 < pMoveBlock[j].pos.x - pMoveBlock[j].size.x / 2 &&
+							pSwitchWall[i].pos.x - pSwitchWall[i].size.x / 2 >= pMoveBlock[j].oldpos.x - pMoveBlock[j].size.x / 2 &&
+							pSwitchWall[i].pos.y - pSwitchWall[i].size.y / 2 < pMoveBlock[j].pos.y + pMoveBlock[j].size.y / 3 &&
+							pSwitchWall[i].pos.y + pSwitchWall[i].size.y / 2 > pMoveBlock[j].pos.y - pMoveBlock[j].size.y / 3)
+						{
+								pMoveBlock[j].pos.x = pMoveBlock[j].oldpos.x;
+							
 						}
 					}
 				}
