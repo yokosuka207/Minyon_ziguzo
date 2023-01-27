@@ -664,7 +664,7 @@ void SetField(D3DXVECTOR2 position, D3DXVECTOR2 DrawSize, int no, int Pin, int i
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 30);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_BROKENEXPLAIN): //31 ヒントブロック(BrokenBlock)
-		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 31);
+		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction - 1, 31);
 		break;
 	case static_cast<int>(MAPCHIP_TYPE::TYPE_MOVEEXPLAIN):	//32 ヒントブロック(MoveBlock)
 		SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 32);

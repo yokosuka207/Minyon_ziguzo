@@ -94,8 +94,6 @@ void	InitStory()
 	gStory.size = D3DXVECTOR2(60, 90);
 	gStory.color = D3DXCOLOR(1.0, 1.0, 1.0, 1.0);
 
-	//gStory.HaveKey = 1;
-
 	gStory.bUse = true;
 	gStory.KeyUse = false;
 
@@ -106,11 +104,10 @@ void	InitStory()
 
 	pSKey = GetStoryKey();
 
-	//if (gStory.n == 0) {
-	//	pSKey[0].HaveSKey = 1;
-	//	gStory.n++;
-	//}
-
+	if (gStory.n == 0) {
+		pSKey[0].HaveSKey = 1;
+		gStory.n++;
+	}
 	if (pSKey[0].HaveSKey >= 9) {
 		pSKey[0].HaveSKey = 8;
 	}
@@ -214,25 +211,25 @@ void DrawStory()
 	{
 		switch (gStory.HaveKey) {
 		case 1:
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo1));
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo7));
 			break;
 		case 2:
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo2));
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo1));
 			break;
 		case 3:
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo3));
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo2));
 			break;
 		case 4:
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo4));
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo3));
 			break;
 		case 5:
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo5));
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo4));
 			break;
 		case 6:
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo6));
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo5));
 			break;
 		case 7:
-			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo7));
+			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo6));
 			break;
 		case 8:
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryTextureNo8));
