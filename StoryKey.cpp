@@ -30,6 +30,7 @@ static	ID3D11ShaderResourceView* g_StoryKeyTexture = NULL;//テクスチャ情報
 static	char* g_StoryKeyTextureName = (char*)"data\\texture\\StoryKey.png";
 int		StoryKeyTextureNo = 0;
 
+float g_sub = 0;
 
 HRESULT InitStoryKey()
 {
@@ -48,6 +49,8 @@ HRESULT InitStoryKey()
 		gStoryKey[i].no = -1;
 	}
 
+	g_sub = 0;
+
 	return S_OK;
 
 }
@@ -61,7 +64,7 @@ void UninitStoryKey()
 
 void UpdateStoryKey()
 {
-
+	
 }
 
 
@@ -75,11 +78,8 @@ void DrawStoryKey()
 		{
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryKeyTextureNo));
 
-			for (int i = 0; i < STORYKEY_MAX; i++)
-			{
-				SpriteDrawColorRotation(gStoryKey[i].pos.x, gStoryKey[i].pos.y, 0.0f, gStoryKey[i].size.x, gStoryKey[i].size.y,
-					gStoryKey[i].rot, gStoryKey[i].col, 0, 1.0f, 1.0f, 1);
-			}
+			SpriteDrawColorRotation(gStoryKey[i].pos.x, gStoryKey[i].pos.y, 0.0f, gStoryKey[i].size.x, gStoryKey[i].size.y,
+				gStoryKey[i].rot, gStoryKey[i].col, 0, 1.0f, 1.0f, 1);
 		}
 	}
 }
@@ -103,7 +103,7 @@ void SetStoryKey(D3DXVECTOR2 p, D3DXVECTOR2 s, int no, int direction)
 
 		if (!gStoryKey[i].bUse) {
 			gStoryKey[i].pos = p;
-			gStoryKey[i].size = s * 2;
+			gStoryKey[i].size = s;
 
 			gStoryKey[i].no = no;
 			gStoryKey[i].bUse = true; 

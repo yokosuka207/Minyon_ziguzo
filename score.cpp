@@ -399,13 +399,13 @@ void Score::RankScore(int score) {
 		//	(‰)ƒ[ƒv
 		//================================================
 	case 8:
-		if (score < 90 && pResult[0].type == WIN) {
+		if (score < 120 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_S;
 		}
-		else if (score < 120 && pResult[0].type == WIN) {
+		else if (score < 150 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_A;
 		}
-		else if (score < 150 && pResult[0].type == WIN) {
+		else if (score < 180 && pResult[0].type == WIN) {
 			g_ScoreParam.rank = SCORE_RANK::RANK_B;
 		}
 		else {
