@@ -27,7 +27,8 @@ enum class SAVE_TYPE
 
 struct SaveData
 {
-	int clearStageNum = 0;
+	int storyHaveNum = 0;		// ストーリー解放数
+	int clearStageNum = 0;		// クリアステージ数
 };
 
 //**************************************************

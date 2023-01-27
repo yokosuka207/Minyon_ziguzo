@@ -1253,7 +1253,7 @@ void UpdateCollision(){
 						if (pJumpStand[j].UseJumpStand) {
 
 							if (CollisionBB(pThornBlock[i].Postion, pJumpStand[j].pos, pThornBlock[i].Size, pJumpStand[j].size)) {
-								pJumpStand[j].pos = pJumpStand[j].oldpos;
+								//pJumpStand[j].pos = pJumpStand[j].oldpos;
 							}
 						}
 					}
@@ -1326,7 +1326,7 @@ void UpdateCollision(){
 						if (pMoveBlock[j].bUse)
 						{
 							if (CollisionBB(pMoveBlock[j].pos, pThornBlock[i].Postion, pMoveBlock[j].size, pThornBlock[i].Size)) {
-								pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
+								//pMoveBlock[j].pos.y = pMoveBlock[j].oldpos.y;
 							}
 						}
 					}
