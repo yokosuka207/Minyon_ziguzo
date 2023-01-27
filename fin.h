@@ -9,7 +9,7 @@ typedef struct {
 
 	D3DXCOLOR	color;
 
-	int			PaternNo;
+	float		PaternNo;
 	float		uv_w;
 	float		uv_h;
 	int			NumPatern;
