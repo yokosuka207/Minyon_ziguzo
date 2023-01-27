@@ -702,7 +702,7 @@ void UpdateDoppelganger()
 			}
 			if (!SpawnFlag && SpawnFlag2)
 			{
-				g_Doppel.Position = D3DXVECTOR2(pPiece[7].pos.x + 70.0f, pPiece[7].pos.y + 3.0f);
+				g_Doppel.Position = D3DXVECTOR2(pPiece[7].pos.x + 40.0f, pPiece[7].pos.y + 3.0f);
 				g_Doppel.oldpos = g_Doppel.Position;
 				g_Doppel.sp.y = 0.0f;
 				
