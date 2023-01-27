@@ -128,6 +128,9 @@ static char g_WarpSoundName[] = "data\\SoundData\\SE\\ƒ[ƒv(–³—¿Œø‰Ê‰¹‚Å—V‚Ú‚¤
 //‚‚¢‚Æ‚±‚©‚ç‰ó‚ê‚é°
 static int g_HighSoundNo = 0;
 static char g_HighSoundName[] = "data\\SoundData\\SE\\ƒ^ƒCƒvƒ‰ƒCƒ^[.wav";
+//‚ë‚¤‚»‚­
+static int g_CandleSoundNo = 0;
+static char g_CandleSoundName[] = "data\\SoundData\\SE\\‚ë‚¤‚»‚­(Œø‰Ê‰¹ƒ‰ƒ{).wav";
 
 //=============================================================================
 //‰Šú‰»ˆ—
@@ -183,7 +186,7 @@ HRESULT InitDoppelganger()
 	g_LampSwitchSoundNo = LoadSound(g_LampSwitchSoundName);
 	g_WarpSoundNo = LoadSound(g_WarpSoundName);
 	g_HighSoundNo = LoadSound(g_HighSoundName);
-	
+	g_CandleSoundNo = LoadSound(g_CandleSoundName);
 
 	return S_OK;
 }
@@ -198,7 +201,7 @@ void UninitDoppelganger()
 	StopSound(g_LampSwitchSoundNo);
 	StopSound(g_WarpSoundNo);
 	StopSound(g_HighSoundNo);
-	
+	StopSound(g_CandleSoundNo);
 }
 
 //=============================================================================
@@ -1506,6 +1509,8 @@ void UpdateDoppelganger()
 						{
 							g_Doppel.LightFrame = 0;
 							g_Doppel.hp--;
+							SetVolume(g_CandleSoundNo, 0.8f);
+							PlaySound(g_CandleSoundNo, 0);
 							g_Doppel.LampSwitchFlag[i] = false;
 							for (int i = 0; i < SPAWN_POINT_D_MAX; i++) {//ƒŠƒXƒ|ƒ“‚¹‚¸‚ÉHP‚ªŒ¸‚è‘±‚¯‚Ä‚¢‚é
 								if (pSpawnPointD[i].UseFlag) {
