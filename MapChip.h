@@ -74,6 +74,10 @@ enum class MAPCHIP_TYPE{
 	TYPE_LAMP,			//36	街灯
 	TYPE_LAMP_SWITCH,	//37	街灯スイッチ
 	TYPE_SPWANPOINT_D,	//38	ドッペルゲンガーのスポーンポイント
+	TYPE_PIACEEXPLAIN4,		//39	ピース回転説明ブロック4
+	TYPE_PIACEEXPLAIN5,		//40	ピース回転説明ブロック5
+	TYPE_PIACEEXPLAIN6,		//41	ピース回転説明ブロック6
+	TYPE_PIACEEXPLAIN7,		//42	ピース回転説明ブロック7
 
 	TYPE_NUM		
 };
