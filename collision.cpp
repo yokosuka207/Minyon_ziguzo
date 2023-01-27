@@ -867,8 +867,8 @@ void UpdateCollision(){
 					//プレイヤー上・高所落ちるブロック下
 					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
 						pPlayer->Position.x - pPlayer->size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
-						pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
-						pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
+						pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 3 &&
+						pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 3)
 					{
 						pPlayer->PieceIndex = pHigh[i].index;
 
@@ -876,7 +876,9 @@ void UpdateCollision(){
 							//pPlayer->isHigh = false;
 							(pHigh + i)->UseFlag = false;
 							pHigh[i].breakFlag = true;
-							SetHighAnime(pHigh[i].Postion, pHigh[i].Size, pHigh[i].index);
+							SetVolume(g_BrokenSoundNo, 0.5f);
+							PlaySound(g_BrokenSoundNo, 0);
+							SetHighAnime(D3DXVECTOR2(pHigh[i].Postion.x, pHigh[i].Postion.y + 8), D3DXVECTOR2(pHigh[i].Size.x * 2, pHigh[i].Size.y * 2), pHigh[i].index);
 
 							//SetVolume(g_HighSoundNo, 0.5f);
 							//PlaySound(g_HighSoundNo, 0);
