@@ -40,8 +40,8 @@ HRESULT InitStoryKey()
 	for (int i = 0; i < STORYKEY_MAX; i++) 
 	{
 		//-127, 150)
-		gStoryKey[i].pos = D3DXVECTOR2(-127, 150);
-		gStoryKey[i].size = D3DXVECTOR2(STORYKEY_SIZE, STORYKEY_SIZE);
+		gStoryKey[i].pos = D3DXVECTOR2(100, 100);
+		gStoryKey[i].size = D3DXVECTOR2(100, 100);
 		gStoryKey[i].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		gStoryKey[i].rot = 0.0f;
 
@@ -128,6 +128,7 @@ void DeleteStoryKey(int no)
 {
 	for (int i = 0; i < STORYKEY_MAX; i++) {
 		if (gStoryKey[i].no == no) {
+			if (gStoryKey[i].bUse)
 			gStoryKey[i].bUse = false;
 		}
 	}
