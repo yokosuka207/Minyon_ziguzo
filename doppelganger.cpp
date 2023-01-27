@@ -1138,73 +1138,73 @@ void UpdateDoppelganger()
 	//====================================================================
 	//ドッペルゲンガーと高所落下ブロックの当たり判定(DoppelGangerとHighの当たり判定)
 	//====================================================================
-	for (int i = 0; i < HIGH_MAX; i++) {
-		if ((pHigh + i)->UseFlag) {
-			//ドッペルゲンガー左・高所落ちるブロック右
-			if (g_Doppel.Position.x + g_Doppel.size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
-				g_Doppel.oldpos.x + g_Doppel.size.x / 2 <= (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
-				g_Doppel.Position.y + g_Doppel.size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
-				g_Doppel.Position.y - g_Doppel.size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
-			{
-				g_Doppel.Position.x = (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 - g_Doppel.size.x / 2;
-			}
-			//ドッペルゲンガー右・高所落ちるブロック左
-			if (g_Doppel.Position.x - g_Doppel.size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
-				g_Doppel.oldpos.x - g_Doppel.size.x / 2 >= (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
-				g_Doppel.Position.y + g_Doppel.size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
-				g_Doppel.Position.y - g_Doppel.size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
-			{
-				g_Doppel.Position.x = (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 + g_Doppel.size.x / 2;
-			}
-			//ドッペルゲンガー上・高所落ちるブロック下
-			if (g_Doppel.Position.x + g_Doppel.size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
-				g_Doppel.Position.x - g_Doppel.size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
-				g_Doppel.Position.y - g_Doppel.size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
-				g_Doppel.oldpos.y - g_Doppel.size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
-			{
-				if (g_Doppel.sp.y <= -5.0f) {
-					//g_Doppel.isHigh = false;
-					(pHigh + i)->UseFlag = false;
-					pHigh[i].breakFlag = true;
-					//SetVolume(g_HighSoundNo, 0.5f);
-					//PlaySound(g_HighSoundNo, 0);
-					g_Doppel.frame = 50;
-				}
-				else {
-					//g_Doppel.isHigh = true;
-					g_Doppel.Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + g_Doppel.size.y / 2;
-					if (!g_Doppel.isHigh) {
-						//pPlayer->sp.y = -0.1f;
-						g_Doppel.isHigh = true;
-						break;
-					}
-					else {
-						g_Doppel.isHigh = false;
-					}
-				}
+	//for (int i = 0; i < HIGH_MAX; i++) {
+	//	if ((pHigh + i)->UseFlag) {
+	//		//ドッペルゲンガー左・高所落ちるブロック右
+	//		if (g_Doppel.Position.x + g_Doppel.size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
+	//			g_Doppel.oldpos.x + g_Doppel.size.x / 2 <= (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
+	//			g_Doppel.Position.y + g_Doppel.size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
+	//			g_Doppel.Position.y - g_Doppel.size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
+	//		{
+	//			g_Doppel.Position.x = (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 - g_Doppel.size.x / 2;
+	//		}
+	//		//ドッペルゲンガー右・高所落ちるブロック左
+	//		if (g_Doppel.Position.x - g_Doppel.size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
+	//			g_Doppel.oldpos.x - g_Doppel.size.x / 2 >= (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
+	//			g_Doppel.Position.y + g_Doppel.size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
+	//			g_Doppel.Position.y - g_Doppel.size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
+	//		{
+	//			g_Doppel.Position.x = (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 + g_Doppel.size.x / 2;
+	//		}
+	//		//ドッペルゲンガー上・高所落ちるブロック下
+	//		if (g_Doppel.Position.x + g_Doppel.size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
+	//			g_Doppel.Position.x - g_Doppel.size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
+	//			g_Doppel.Position.y - g_Doppel.size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 &&
+	//			g_Doppel.oldpos.y - g_Doppel.size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2)
+	//		{
+	//			if (g_Doppel.sp.y <= -5.0f) {
+	//				//g_Doppel.isHigh = false;
+	//				(pHigh + i)->UseFlag = false;
+	//				pHigh[i].breakFlag = true;
+	//				//SetVolume(g_HighSoundNo, 0.5f);
+	//				//PlaySound(g_HighSoundNo, 0);
+	//				g_Doppel.frame = 50;
+	//			}
+	//			else {
+	//				//g_Doppel.isHigh = true;
+	//				g_Doppel.Position.y = (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2 + g_Doppel.size.y / 2;
+	//				if (!g_Doppel.isHigh) {
+	//					//pPlayer->sp.y = -0.1f;
+	//					g_Doppel.isHigh = true;
+	//					break;
+	//				}
+	//				else {
+	//					g_Doppel.isHigh = false;
+	//				}
+	//			}
 
-			}/*
-			else
-			{
-				g_Doppel.isHigh = false;
-			}*/
-			//ドッペルゲンガー下・高所落ちるブロック上,
-			if (g_Doppel.Position.x + g_Doppel.size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
-				g_Doppel.Position.x - g_Doppel.size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
-				g_Doppel.Position.y + g_Doppel.size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
-				g_Doppel.oldpos.y + g_Doppel.size.y / 2 <= (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2)
-			{
-				g_Doppel.Position.y = (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 - g_Doppel.size.y / 2;
-			}
-			// ドッペルゲンガーの下にブロックがあったら
-			if ((g_Doppel.Position.y - g_Doppel.size.y / 2 - 0.05f < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2) &&
-				(g_Doppel.Position.y + g_Doppel.size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2) &&
-				(g_Doppel.Position.x + g_Doppel.size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2) &&
-				(g_Doppel.Position.x - g_Doppel.size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2))
-			{
-			}
-		}
-	}
+	//		}/*
+	//		else
+	//		{
+	//			g_Doppel.isHigh = false;
+	//		}*/
+	//		//ドッペルゲンガー下・高所落ちるブロック上,
+	//		if (g_Doppel.Position.x + g_Doppel.size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
+	//			g_Doppel.Position.x - g_Doppel.size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2 &&
+	//			g_Doppel.Position.y + g_Doppel.size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
+	//			g_Doppel.oldpos.y + g_Doppel.size.y / 2 <= (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2)
+	//		{
+	//			g_Doppel.Position.y = (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 - g_Doppel.size.y / 2;
+	//		}
+	//		// ドッペルゲンガーの下にブロックがあったら
+	//		if ((g_Doppel.Position.y - g_Doppel.size.y / 2 - 0.05f < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 2) &&
+	//			(g_Doppel.Position.y + g_Doppel.size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2) &&
+	//			(g_Doppel.Position.x + g_Doppel.size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2) &&
+	//			(g_Doppel.Position.x - g_Doppel.size.x / 2 < (pHigh + i)->Postion.x + (pHigh + i)->Size.x / 2))
+	//		{
+	//		}
+	//	}
+	//}
 	//-----------------------------------------------------
 	//ドッペルゲンガーと鍵付き扉の当たり判定(DoppelGangerとOpenKey)
 	//-----------------------------------------------------
@@ -1290,20 +1290,20 @@ void UpdateDoppelganger()
 
 				if (pJumpStand[i].GetJumpStand)//ジャンプ台を持った時
 				{
-					pJumpStand[i].spD = g_Doppel.sp;
-					pJumpStand[i].pos.x += pJumpStand[i].spD.x;
+					//pJumpStand[i].spD = g_Doppel.sp;
+					//pJumpStand[i].pos.x += pJumpStand[i].spD.x;
 
 					//引きずる音
 					if (pJumpStand[i].oldpos.x != pJumpStand[i].pos.x && pJumpStand[i].JumpStandNotMove == true)//動かした瞬間
 					{
 						//SetVolume(pJumpStandSoundMoveNo, 0.5f);
 						//////////////////////////////////////////////PlaySound(pJumpStandSoundMoveNo, -1);
-						pJumpStand[i].JumpStandNotMove = false;
+						//pJumpStand[i].JumpStandNotMove = false;
 					}
 				}
 				if (pJumpStand[i].oldpos.x == pJumpStand[i].pos.x)//動かしてない時
 				{
-					pJumpStand[i].JumpStandNotMove = true;
+					//pJumpStand[i].JumpStandNotMove = true;
 					///////////////////////////////////////////////////StopSound(pJumpStandSoundMoveNo);
 				}
 

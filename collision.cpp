@@ -255,7 +255,8 @@ void UpdateCollision(){
 	//============================
 	//インベントリ系
 	//============================
-	if (!pFlag&&!dFlag) {
+	if (!pFlag&&!dFlag)
+	{
 		// ピースとインベントリ範囲の当たり判定
 		for (int i = 0; i < PUZZLE_MAX; i++) {
 			if (pPiece[i].UseFlag)
@@ -914,9 +915,9 @@ void UpdateCollision(){
 						pPlayer->Position.y - pPlayer->size.y / 2 < (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 3 &&
 						pPlayer->oldpos.y - pPlayer->size.y / 2 >= (pHigh + i)->Postion.y + (pHigh + i)->Size.y / 3)
 					{
-						pPlayer->PieceIndex = pHigh[i].index;
+						//pPlayer->PieceIndex = pHigh[i].index;
 
-						if (pPlayer->sp.y <= -5.0f) {
+						if (pPlayer->sp.y <= -4.0f) {
 							//pPlayer->isHigh = false;
 							(pHigh + i)->UseFlag = false;
 							pHigh[i].breakFlag = true;
@@ -957,7 +958,7 @@ void UpdateCollision(){
 						pPlayer->Position.y + pPlayer->size.y / 2 > (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 &&
 						pPlayer->oldpos.y + pPlayer->size.y / 2 <= (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2)
 					{
-						pPlayer->Position.y = (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 - pPlayer->size.y / 2;
+						//pPlayer->Position.y = (pHigh + i)->Postion.y - (pHigh + i)->Size.y / 2 - pPlayer->size.y / 2;
 					}
 					// プレイヤーの下にブロックがあったら
 					if (pPlayer->Position.x + pPlayer->size.x / 2 > (pHigh + i)->Postion.x - (pHigh + i)->Size.x / 2 &&
@@ -1294,7 +1295,7 @@ void UpdateCollision(){
 					for (int j = 0; j < JUMPSTAND_MAX; j++) {
 						if (pJumpStand[j].UseJumpStand) {
 							if (CollisionBB(pHigh[i].Postion, pJumpStand[j].pos, pHigh[i].Size, pJumpStand[j].size)) {
-								pJumpStand[j].pos = pJumpStand[j].oldpos;
+								pJumpStand[j].pos.y = pJumpStand[j].oldpos.y;
 							}
 						}
 					}
