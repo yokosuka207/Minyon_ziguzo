@@ -12,7 +12,7 @@ static DOPPELGANGER*	 pDoppelganger;
 
 // JumpStand ヒント
 static ID3D11ShaderResourceView* gLife_A;
-static char* gLifeName = (char*)"data\\texture\\残機ある.png";
+static char* gLifeName = (char*)"data\\texture\\残機ある(紫).png";
 static int	  gDoppelgangerLifeNo = 0;
 
 static ID3D11ShaderResourceView* gLife_B;

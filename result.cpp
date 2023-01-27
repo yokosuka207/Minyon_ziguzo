@@ -144,7 +144,7 @@ void	InitResult()
 	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400.0f, 500.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Score
 	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 + 400.0f, 250.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Rank
 	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2 - 400.0f, 400.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Time
-	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2, 100.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Clear
+	SetResult(D3DXVECTOR3(SCREEN_WIDTH / 2, 100.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));//Clear,Over
 
 	g_ChangeSceneResultSoundNo = LoadSound(g_ChangeSceneResultSoundName);
 }
