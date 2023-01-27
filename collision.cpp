@@ -1003,7 +1003,7 @@ void UpdateCollision(){
 							(pOpenKey + j + i)->Position.y + (pOpenKey + j + i)->Size.y / 2 <= pPlayer->oldpos.y - pPlayer->size.y / 2)
 						{
 							OpenKeyFlag = true;
-							if (!pPlayer->isHigh)
+							if (!pPlayer->isOpenKey)
 							{
 								pPlayer->Position.y = pOpenKey[i].Position.y + pOpenKey[i].Size.y / 2 + pPlayer->size.y / 2 + 0.02f;
 								pPlayer->jump = false;
