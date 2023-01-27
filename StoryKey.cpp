@@ -31,6 +31,7 @@ static	char* g_StoryKeyTextureName = (char*)"data\\texture\\StoryKey.png";
 int		StoryKeyTextureNo = 0;
 
 float g_sub = 0;
+bool g_bSub = false;
 
 HRESULT InitStoryKey()
 {
@@ -64,7 +65,15 @@ void UninitStoryKey()
 
 void UpdateStoryKey()
 {
-	
+	if (g_bSub) {
+		g_sub += 0.2f;
+	}
+	else {
+		g_sub -= 0.2f;
+	}
+
+	if (g_sub >= 4.0f) g_bSub = false;
+	else if (g_sub <= -4.0f) g_bSub = true;
 }
 
 
@@ -78,7 +87,7 @@ void DrawStoryKey()
 		{
 			GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(StoryKeyTextureNo));
 
-			SpriteDrawColorRotation(gStoryKey[i].pos.x, gStoryKey[i].pos.y, 0.0f, gStoryKey[i].size.x, gStoryKey[i].size.y,
+			SpriteDrawColorRotation(gStoryKey[i].pos.x, gStoryKey[i].pos.y + g_sub, 0.0f, gStoryKey[i].size.x, gStoryKey[i].size.y,
 				gStoryKey[i].rot, gStoryKey[i].col, 0, 1.0f, 1.0f, 1);
 		}
 	}
