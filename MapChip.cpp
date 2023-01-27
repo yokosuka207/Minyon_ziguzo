@@ -403,6 +403,18 @@ void SetMapChip(D3DXVECTOR2 pos, int no, int Pin) {
 			case static_cast<int>(MAPCHIP_TYPE::TYPE_SPWANPOINT_D)://37　ドッペルゲンガーの初期位置?
 				SetSpawnPointD(position, DrawSize, no);
 				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN4):	//38 ③ヒントブロック(Piace)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 38);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN5):	//39 ③ヒントブロック(Piace)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 39);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN6):	//40 ③ヒントブロック(Piace)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 40);
+				break;
+			case static_cast<int>(MAPCHIP_TYPE::TYPE_PIACEEXPLAIN7):	//41 ③ヒントブロック(Piace)
+				SetExplain(position, DrawSize, no, g_PieceMapChip[no].direction, 41);
+				break;
 			default:
 				break;
 			}

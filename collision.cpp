@@ -705,7 +705,7 @@ void UpdateCollision(){
 						SetVolume(g_BrokenSoundNo, 0.5f);
 						PlaySound(g_BrokenSoundNo, 0);
 						(pBroken + i)->UseFlag = false;
-						SetBrokenAnime(pBroken[i].Postion, pBroken[i].Size, pBroken[i].index);
+						SetBrokenAnime(D3DXVECTOR2(pBroken[i].Postion.x, pBroken[i].Postion.y + 8), D3DXVECTOR2(pBroken[i].Size.x*2, pBroken[i].Size.y*2), pBroken[i].index);
 						pPlayer->fall = true;
 						pPlayer->getfall = true;
 						pPlayer->frame = 50;
